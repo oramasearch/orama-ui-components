@@ -5,6 +5,8 @@ import { generateRandomID, initOramaClient, validateCloudIndexConfig } from '@/u
 import type { CloudIndexConfig, SourcesMap } from '@/types'
 import type { OramaClient } from '@oramacloud/client'
 import '@phosphor-icons/webcomponents/dist/icons/PhArrowClockwise.mjs'
+import type { Orama } from '@orama/orama'
+import { Switch } from '@orama/switch'
 
 @Component({
   tag: 'orama-chat-box',
@@ -14,7 +16,7 @@ import '@phosphor-icons/webcomponents/dist/icons/PhArrowClockwise.mjs'
 export class ChatBox {
   @Element() el: HTMLElement
   @Prop() index?: CloudIndexConfig
-  @Prop() clientInstance?: OramaClient
+  @Prop() clientInstance?: OramaClient | Orama<unknown>
   @Prop() sourceBaseUrl?: string
   @Prop() linksTarget?: string
   @Prop() linksRel?: string
@@ -24,7 +26,6 @@ export class ChatBox {
   @Prop() autoFocus = true
   @Prop() systemPrompts?: string[]
 
-  @State() oramaClient: OramaClient
   @State() componentID = generateRandomID('chat-box')
 
   @Watch('index')
@@ -39,9 +40,10 @@ export class ChatBox {
 
   startChatService() {
     validateCloudIndexConfig(this.el, this.index, this.clientInstance)
-    this.oramaClient = this.clientInstance || initOramaClient(this.index)
+    const oramaClient = this.clientInstance || initOramaClient(this.index)
+    const switchInstance = new Switch(oramaClient)
 
-    chatContext.chatService = new ChatService(this.oramaClient)
+    chatContext.chatService = new ChatService(switchInstance)
   }
 
   render() {

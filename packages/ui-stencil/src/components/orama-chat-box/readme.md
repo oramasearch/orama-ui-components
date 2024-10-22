@@ -1,24 +1,22 @@
 # orama-chat-box
 
-
-
 <!-- Auto Generated Below -->
 
 
 ## Properties
 
-| Property         | Attribute         | Description | Type                                                       | Default     |
-| ---------------- | ----------------- | ----------- | ---------------------------------------------------------- | ----------- |
-| `autoFocus`      | `auto-focus`      |             | `boolean`                                                  | `true`      |
-| `clientInstance` | --                |             | `OramaClient`                                              | `undefined` |
-| `index`          | --                |             | `{ api_key: string; endpoint: string; }`                   | `undefined` |
-| `linksRel`       | `links-rel`       |             | `string`                                                   | `undefined` |
-| `linksTarget`    | `links-target`    |             | `string`                                                   | `undefined` |
-| `placeholder`    | `placeholder`     |             | `string`                                                   | `undefined` |
-| `sourceBaseUrl`  | `source-base-url` |             | `string`                                                   | `undefined` |
-| `sourcesMap`     | --                |             | `{ title?: string; path?: string; description?: string; }` | `undefined` |
-| `suggestions`    | --                |             | `string[]`                                                 | `undefined` |
-| `systemPrompts`  | --                |             | `string[]`                                                 | `undefined` |
+| Property         | Attribute         | Description | Type                                                                                                                                                                             | Default     |
+| ---------------- | ----------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `autoFocus`      | `auto-focus`      |             | `boolean`                                                                                                                                                                        | `true`      |
+| `clientInstance` | --                |             | `FunctionComponents<unknown> & Internals<unknown, Index, DocumentsStore, Sorter> & ArrayCallbackComponents<any> & OramaID & { plugins: OramaPlugin<unknown>[]; } \| OramaClient` | `undefined` |
+| `index`          | --                |             | `{ api_key: string; endpoint: string; }`                                                                                                                                         | `undefined` |
+| `linksRel`       | `links-rel`       |             | `string`                                                                                                                                                                         | `undefined` |
+| `linksTarget`    | `links-target`    |             | `string`                                                                                                                                                                         | `undefined` |
+| `placeholder`    | `placeholder`     |             | `string`                                                                                                                                                                         | `undefined` |
+| `sourceBaseUrl`  | `source-base-url` |             | `string`                                                                                                                                                                         | `undefined` |
+| `sourcesMap`     | --                |             | `{ title?: string; path?: string; description?: string; }`                                                                                                                       | `undefined` |
+| `suggestions`    | --                |             | `string[]`                                                                                                                                                                       | `undefined` |
+| `systemPrompts`  | --                |             | `string[]`                                                                                                                                                                       | `undefined` |
 
 
 ## Dependencies

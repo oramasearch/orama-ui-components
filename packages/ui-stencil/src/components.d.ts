@@ -9,12 +9,12 @@ import { ButtonProps } from "./components/internal/orama-button/orama-button";
 import { CloudIndexConfig, ColorScheme, ResultMap, SearchResult, SearchResultBySection, SourcesMap } from "./types/index";
 import { TChatInteraction } from "./context/chatContext";
 import { OramaClient } from "@oramacloud/client";
+import { AnyOrama, Orama, SearchParams } from "@orama/orama";
 import { Facet } from "./components/internal/orama-facets/orama-facets";
 import { InputProps } from "./components/internal/orama-input/orama-input";
 import { ModalStatus } from "./components/internal/orama-modal/orama-modal";
 import { HighlightOptions } from "@orama/highlight";
 import { TThemeOverrides } from "./config/theme";
-import { AnyOrama, Orama, SearchParams } from "@orama/orama";
 import { TThemeOverrides as TThemeOverrides1 } from "./components.d";
 import { SearchResultsProps } from "./components/internal/orama-search-results/orama-search-results";
 import { TextProps } from "./components/internal/orama-text/orama-text";
@@ -22,12 +22,12 @@ export { ButtonProps } from "./components/internal/orama-button/orama-button";
 export { CloudIndexConfig, ColorScheme, ResultMap, SearchResult, SearchResultBySection, SourcesMap } from "./types/index";
 export { TChatInteraction } from "./context/chatContext";
 export { OramaClient } from "@oramacloud/client";
+export { AnyOrama, Orama, SearchParams } from "@orama/orama";
 export { Facet } from "./components/internal/orama-facets/orama-facets";
 export { InputProps } from "./components/internal/orama-input/orama-input";
 export { ModalStatus } from "./components/internal/orama-modal/orama-modal";
 export { HighlightOptions } from "@orama/highlight";
 export { TThemeOverrides } from "./config/theme";
-export { AnyOrama, Orama, SearchParams } from "@orama/orama";
 export { TThemeOverrides as TThemeOverrides1 } from "./components.d";
 export { SearchResultsProps } from "./components/internal/orama-search-results/orama-search-results";
 export { TextProps } from "./components/internal/orama-text/orama-text";
@@ -58,7 +58,7 @@ export namespace Components {
     }
     interface OramaChatBox {
         "autoFocus": boolean;
-        "clientInstance"?: OramaClient;
+        "clientInstance"?: OramaClient | Orama<unknown>;
         "index"?: CloudIndexConfig;
         "linksRel"?: string;
         "linksTarget"?: string;
@@ -138,7 +138,7 @@ export namespace Components {
     }
     interface OramaSearchBox {
         "chatPlaceholder"?: string;
-        "clientInstance"?: OramaClient;
+        "clientInstance"?: OramaClient | Orama<unknown>;
         "colorScheme"?: ColorScheme;
         "disableChat"?: boolean;
         "facetProperty"?: string;
@@ -514,7 +514,7 @@ declare namespace LocalJSX {
     }
     interface OramaChatBox {
         "autoFocus"?: boolean;
-        "clientInstance"?: OramaClient;
+        "clientInstance"?: OramaClient | Orama<unknown>;
         "index"?: CloudIndexConfig;
         "linksRel"?: string;
         "linksTarget"?: string;
@@ -596,7 +596,7 @@ declare namespace LocalJSX {
     }
     interface OramaSearchBox {
         "chatPlaceholder"?: string;
-        "clientInstance"?: OramaClient;
+        "clientInstance"?: OramaClient | Orama<unknown>;
         "colorScheme"?: ColorScheme;
         "disableChat"?: boolean;
         "facetProperty"?: string;
