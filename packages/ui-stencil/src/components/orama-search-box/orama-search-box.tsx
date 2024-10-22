@@ -216,7 +216,7 @@ export class SearchBox {
           class={`${globalContext.currentTask === 'chat' ? 'section-active' : 'section-inactive'}`}
           defaultTerm={globalContext.currentTask === 'chat' ? globalContext.currentTerm : ''}
           showClearChat={false}
-          focusInput={globalContext.currentTask === 'chat' || chatContext.interactions.length === 0}
+          focusInput={globalContext.currentTask === 'chat'}
           placeholder={this?.chatPlaceholder || this.placeholder}
           sourceBaseUrl={this.sourceBaseUrl}
           linksTarget={this.linksTarget}
