@@ -71,6 +71,7 @@
   column-gap: var(--spacing-s, $spacing-s);
   border: 0;
   background-color: transparent;
+  font-size: var(--font-size-sm, $font-size-sm);
   cursor: pointer;
   padding: var(--spacing-s, $spacing-s) var(--spacing-m, $spacing-m);
   color: var(--text-color-secondary, text-color('secondary'));
