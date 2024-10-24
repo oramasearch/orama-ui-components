@@ -150,26 +150,6 @@ export const SearchBoxAsModal: Story = {
   },
 }
 
-export const WithNoInitialSuggestions: Story = {
-  render: Template as any,
-  args: {
-    preset: 'orama',
-    colorScheme: 'light',
-    chatPlaceholder: 'Ask me anything...',
-    suggestions: [],
-    disableChat: false,
-  },
-}
-
-export const WithChatDisabled: Story = {
-  render: Template as any,
-  args: {
-    preset: 'orama',
-    colorScheme: 'light',
-    disableChat: true,
-  },
-}
-
 export const SearchBoxAsEmbed: Story = {
   render: TemplateAsEmbed as any,
   args: {
