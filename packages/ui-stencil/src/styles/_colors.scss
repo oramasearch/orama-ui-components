@@ -3,6 +3,8 @@
 TODO: We'll make this task automatic in the future
 */
 
+@use 'sass:color';
+
 /**
 * * PRIMITIVE COLORS
 */
@@ -69,6 +71,8 @@ $semanticColors: (
 
 $elementColors: (
   'button-text': (
+    // TODO: example of how to use the color functions with semantic colors
+    // primary: color.adjust(text-color('primary', $semanticColors), $lightness: 10%),
     primary: $purple100,
     secondary: text-color('secondary', $semanticColors),
     inactive: $gray500,

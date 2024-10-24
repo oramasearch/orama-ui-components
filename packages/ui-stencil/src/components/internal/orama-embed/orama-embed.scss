@@ -1,5 +1,5 @@
 .embed {
-  background-color: var(--background-color-secondary, background-color('secondary'));
+  background-color: var(--background-color-primary, background-color('primary'));
   border: 1px solid var(--border-color-primary, border-color('primary'));
   border-radius: var(--radius-m, $radius-m);
   inset: 0;
@@ -14,6 +14,8 @@
   flex-direction: column;
 
   @media (--md-min) {
+    background-color: var(--background-color-secondary, background-color('secondary'));
+
     orama-input {
       padding: 0;
       margin: 0;
