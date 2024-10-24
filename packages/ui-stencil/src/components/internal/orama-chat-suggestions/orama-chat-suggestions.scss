@@ -1,5 +1,6 @@
 :host {
   display: block;
+  font-family: var(--font-primary, font('primary'));
 }
 
 .suggestions-chips {
@@ -7,7 +8,6 @@
   align-items: center;
   gap: var(--spacing-m, $spacing-m);
   padding: var(--radius-s, $spacing-s) var(--radius-l, $spacing-l);
-
   list-style: none;
   margin: 0;
   overflow-x: auto;
@@ -80,6 +80,7 @@
   -webkit-text-fill-color: transparent;
   width: 100%;
   border: 1px solid transparent;
+  font-family: inherit;
 
   &:focus-visible {
     outline: none;
