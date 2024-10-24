@@ -1,7 +1,7 @@
 :host {
   display: flex;
   align-items: center;
-  padding: var(--spacing-s, $spacing-s) var(--spacing-l, $spacing-l);
+  padding: var(--spacing-l, $spacing-l) var(--spacing-l, $spacing-l) var(--spacing-s, $spacing-s);
   background-color: var(--background-color-primary, background-color('primary'));
 
   @media (--md-min) {
