@@ -25,7 +25,8 @@ const meta: Meta<Components.OramaSearchBox & { preset: keyof DemoIndexConfig }> 
         },
       },
     },
-    chatPlaceholder: {
+    searchPlaceholder: {
+      control: { type: 'text' },
       table: {
         type: {
           summary: 'string',
@@ -33,12 +34,13 @@ const meta: Meta<Components.OramaSearchBox & { preset: keyof DemoIndexConfig }> 
         defaultValue: { summary: '' },
       },
     },
-    searchPlaceholder: {
+    chatPlaceholder: {
+      control: { type: 'text' },
       table: {
         type: {
           summary: 'string',
         },
-        defaultValue: { summary: 'Search...' },
+        defaultValue: { summary: '' },
       },
     },
     colorScheme: {
@@ -64,43 +66,72 @@ const meta: Meta<Components.OramaSearchBox & { preset: keyof DemoIndexConfig }> 
 }
 export default meta
 
-const Template = ({ preset, chatPlaceholder, searchPlaceholder, colorScheme, disableChat }) => {
+const Template = ({
+  preset,
+  chatPlaceholder,
+  searchPlaceholder,
+  colorScheme,
+  disableChat,
+  suggestions,
+  open,
+  facetProperty,
+  themeConfig,
+  index,
+  sourceBaseUrl,
+  sourcesMap,
+  highlight,
+  resultMap,
+}) => {
   return html`<div>
       <div style="width: 240px">
         <orama-search-button>Search...</orama-search-button>
       </div>
       <orama-search-box
-      .open=${preset?.open}
-      .facetProperty=${preset?.facetProperty}
-      .resultMap=${preset?.resultMap}
+      .open=${open || preset?.open}
+      .facetProperty=${facetProperty || preset?.facetProperty}
+      .resultMap=${resultMap || preset?.resultMap}
       .colorScheme=${colorScheme}
-      .themeConfig=${preset.themeConfig}
-      .index=${preset.index}
+      .themeConfig=${themeConfig || preset.themeConfig}
+      .index=${index || preset.index}
       .instance=${preset.instance}
-      .suggestions=${preset?.suggestions}
-      .sourceBaseUrl=${preset?.sourceBaseUrl}
-      .sourcesMap=${preset?.sourcesMap}
+      .suggestions=${suggestions || preset?.suggestions}
+      .sourceBaseUrl=${sourceBaseUrl || preset?.sourceBaseUrl}
+      .sourcesMap=${sourcesMap || preset?.sourcesMap}
       .disableChat=${disableChat}
       .chatPlaceholder=${chatPlaceholder}
       .searchPlaceholder=${searchPlaceholder}
-      .highlight=${preset?.highlight}
+      .highlight=${highlight || preset?.highlight}
     ></orama-search-box></div>`
 }
 
-const TemplateAsEmbed = ({ preset, chatPlaceholder, searchPlaceholder, colorScheme, disableChat }) => {
+const TemplateAsEmbed = ({
+  preset,
+  chatPlaceholder,
+  searchPlaceholder,
+  colorScheme,
+  disableChat,
+  open,
+  facetProperty,
+  resultMap,
+  themeConfig,
+  index,
+  sourceBaseURL,
+  suggestions,
+  sourcesMap,
+}) => {
   return html`<div style="height: 420px">
     <orama-search-box
       layout="embed"
-      .open=${preset?.open}
-      .facetProperty=${preset?.facetProperty}
-      .resultMap=${preset?.resultMap}
+      .open=${open || preset?.open}
+      .facetProperty=${facetProperty || preset?.facetProperty}
+      .resultMap=${resultMap || preset?.resultMap}
       .colorScheme=${colorScheme}
-      .themeConfig=${preset.themeConfig}
-      .index=${preset.index}
+      .themeConfig=${themeConfig || preset.themeConfig}
+      .index=${index || preset.index}
       .instance=${preset.instance}
-      .suggestions=${preset?.suggestions}
-      .sourceBaseUrl=${preset?.sourceBaseUrl}
-      .sourcesMap=${preset?.sourcesMap}
+      .suggestions=${suggestions || preset?.suggestions}
+      .sourceBaseUrl=${sourceBaseURL || preset?.sourceBaseUrl}
+      .sourcesMap=${sourcesMap || preset?.sourcesMap}
       .disableChat=${disableChat}
       .chatPlaceholder=${chatPlaceholder}
       .searchPlaceholder=${searchPlaceholder}
@@ -110,14 +141,32 @@ const TemplateAsEmbed = ({ preset, chatPlaceholder, searchPlaceholder, colorSche
 
 type Story = StoryObj<Components.OramaSearchBox & { preset: keyof DemoIndexConfig }>
 
-export const SearchBox: Story = {
+export const SearchBoxAsModal: Story = {
   render: Template as any,
   args: {
     preset: 'orama',
     colorScheme: 'light',
-    searchPlaceholder: 'Search...',
-    chatPlaceholder: 'Ask me anything...',
     disableChat: false,
+  },
+}
+
+export const WithNoInitialSuggestions: Story = {
+  render: Template as any,
+  args: {
+    preset: 'orama',
+    colorScheme: 'light',
+    chatPlaceholder: 'Ask me anything...',
+    suggestions: [],
+    disableChat: false,
+  },
+}
+
+export const WithChatDisabled: Story = {
+  render: Template as any,
+  args: {
+    preset: 'orama',
+    colorScheme: 'light',
+    disableChat: true,
   },
 }
 
@@ -126,7 +175,6 @@ export const SearchBoxAsEmbed: Story = {
   args: {
     preset: 'orama',
     colorScheme: 'light',
-    searchPlaceholder: 'Search...',
     chatPlaceholder: 'Ask me anything...',
     disableChat: false,
   },
