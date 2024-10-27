@@ -83,7 +83,11 @@ const Template = ({ preset, chatPlaceholder, searchPlaceholder, colorScheme, dis
       .disableChat=${disableChat}
       .chatPlaceholder=${chatPlaceholder}
       .searchPlaceholder=${searchPlaceholder}
-      .highlight=${preset?.highlight}
+      .highlightTitle=${preset?.highlightTitle}
+      .highlightDescription=${preset?.highlightDescription}
+      .linksTarget=${preset?.linksTarget}
+      .placeholder=${preset?.placeholder}
+      .searchParams=${preset?.searchParams}
     ></orama-search-box></div>`
 }
 
@@ -104,6 +108,11 @@ const TemplateAsEmbed = ({ preset, chatPlaceholder, searchPlaceholder, colorSche
       .disableChat=${disableChat}
       .chatPlaceholder=${chatPlaceholder}
       .searchPlaceholder=${searchPlaceholder}
+      .highlightTitle=${preset?.highlightTitle}
+      .highlightDescription=${preset?.highlightDescription}
+      .linksTarget=${preset?.linksTarget}
+      .placeholder=${preset?.placeholder}
+      .searchParams=${preset?.searchParams}
     ></orama-search-box>
   </div>`
 }

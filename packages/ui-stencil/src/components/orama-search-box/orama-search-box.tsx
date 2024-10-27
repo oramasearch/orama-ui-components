@@ -33,7 +33,8 @@ export class SearchBox {
   @Prop() sourcesMap?: SourcesMap
   @Prop() disableChat?: boolean = false
   @Prop() layout?: 'modal' | 'embed' = 'modal'
-  @Prop() highlight?: HighlightOptions | false = false
+  @Prop() highlightTitle?: HighlightOptions | false = false
+  @Prop() highlightDescription?: HighlightOptions | false = false
 
   // TODO: remove it in favor of dictionary
   @Prop() placeholder?: string
@@ -178,19 +179,14 @@ export class SearchBox {
     return (
       <Fragment>
         <orama-search
-          class={`${
-            this.windowWidth > 1024
-              ? 'section-active'
-              : globalContext.currentTask === 'search'
-                ? 'section-active'
-                : 'section-inactive'
-          }`}
+          class={`${this.windowWidth > 1024 ? 'section-active' : globalContext.currentTask === 'search' ? 'section-active' : 'section-inactive'}`}
           placeholder={this?.searchPlaceholder || 'Search...'}
           focusInput={globalContext.currentTask === 'search'}
           sourceBaseUrl={this.sourceBaseUrl}
           linksTarget={this.linksTarget}
           linksRel={this.linksRel}
-          highlight={this.highlight}
+          highlightTitle={this.highlightTitle}
+          highlightDescription={this.highlightDescription}
           disableChat={this.disableChat}
           suggestions={this.suggestions}
         >

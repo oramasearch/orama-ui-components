@@ -1,7 +1,13 @@
 import type { OramaClient, ClientSearchParams } from '@oramacloud/client'
 import { OramaClientNotInitializedError } from '@/erros/OramaClientNotInitialized'
 import { searchState } from '@/context/searchContext'
-import type { ResultMap, SearchResultBySection, SearchResultWithScore } from '@/types'
+import type {
+  ResultMap,
+  ResultMapKeys,
+  ResultMapRenderFunction,
+  SearchResultBySection,
+  SearchResultWithScore,
+} from '@/types'
 
 const LIMIT_RESULTS = 10
 
@@ -100,7 +106,8 @@ export class SearchService {
 
     for (const hit of hits) {
       const searchResultWithScore = this.hitToSearchResultParser(hit, resultMap)
-      const documentSectionValue = hit.document[resultMap.section]
+      const sectionKey = typeof resultMap.section === 'function' ? resultMap.section(hit.document) : resultMap.section
+      const documentSectionValue = hit.document[sectionKey]
 
       if (arraySectionMap[documentSectionValue] === undefined) {
         perSectionResults.push({
@@ -118,12 +125,28 @@ export class SearchService {
   }
 
   private hitToSearchResultParser = (hit: OramaHit, resultMap: ResultMap): SearchResultWithScore => {
+    function getResultMapValue(resultMapKey: ResultMapKeys): string {
+      const resultMapFunctionOrString = resultMap[resultMapKey]
+
+      if (!resultMapFunctionOrString) {
+        return hit.document[resultMapKey]
+      }
+
+      if (typeof resultMapFunctionOrString === 'function') {
+        const resultMapFunction = resultMapFunctionOrString as ResultMapRenderFunction
+        return resultMapFunction(hit.document)
+      }
+
+      const resultMapString = resultMap[resultMapKey] as string
+      return hit.document[resultMapString]
+    }
+
     return {
       id: hit.id,
       score: hit.score,
-      title: resultMap.title ? hit.document[resultMap.title] : hit.document.title,
-      description: resultMap.description ? hit.document[resultMap.description] : hit.document.description,
-      path: resultMap.path ? hit.document[resultMap.path] : hit.document.path,
+      title: getResultMapValue('title'),
+      description: getResultMapValue('description'),
+      path: getResultMapValue('path'),
     }
   }
 

@@ -7,16 +7,17 @@
 
 ## Properties
 
-| Property        | Attribute         | Description | Type                          | Default       |
-| --------------- | ----------------- | ----------- | ----------------------------- | ------------- |
-| `disableChat`   | `disable-chat`    |             | `boolean`                     | `false`       |
-| `focusInput`    | `focus-input`     |             | `boolean`                     | `false`       |
-| `highlight`     | `highlight`       |             | `HighlightOptions \| boolean` | `false`       |
-| `linksRel`      | `links-rel`       |             | `string`                      | `undefined`   |
-| `linksTarget`   | `links-target`    |             | `string`                      | `undefined`   |
-| `placeholder`   | `placeholder`     |             | `string`                      | `'Search...'` |
-| `sourceBaseUrl` | `source-base-url` |             | `string`                      | `undefined`   |
-| `suggestions`   | --                |             | `string[]`                    | `[]`          |
+| Property               | Attribute               | Description | Type                          | Default       |
+| ---------------------- | ----------------------- | ----------- | ----------------------------- | ------------- |
+| `disableChat`          | `disable-chat`          |             | `boolean`                     | `false`       |
+| `focusInput`           | `focus-input`           |             | `boolean`                     | `false`       |
+| `highlightDescription` | `highlight-description` |             | `HighlightOptions \| boolean` | `false`       |
+| `highlightTitle`       | `highlight-title`       |             | `HighlightOptions \| boolean` | `false`       |
+| `linksRel`             | `links-rel`             |             | `string`                      | `undefined`   |
+| `linksTarget`          | `links-target`          |             | `string`                      | `undefined`   |
+| `placeholder`          | `placeholder`           |             | `string`                      | `'Search...'` |
+| `sourceBaseUrl`        | `source-base-url`       |             | `string`                      | `undefined`   |
+| `suggestions`          | --                      |             | `string[]`                    | `[]`          |
 
 
 ## Dependencies
