@@ -33,6 +33,19 @@ export class SearchResults {
   private highlighterTitle?: Highlight
   private highlighterDescription?: Highlight
 
+  private getSourceUrl = (path: string) => {
+    if (!path) {
+      return '#'
+    }
+
+    if (this.sourceBaseUrl) {
+      const sourceUrl = new URL(path, this.sourceBaseUrl)
+      return sourceUrl.toString()
+    }
+
+    return path
+  }
+
   handleItemClick = (item: SearchResult) => {
     if (item?.path) {
       this.oramaItemClick.emit(item)
@@ -119,7 +132,7 @@ export class SearchResults {
                   <li class="list-item" key={result.id}>
                     <a
                       focus-on-arrow-nav
-                      href={`${this.sourceBaseUrl}${result.path}`}
+                      href={this.getSourceUrl(result.path)}
                       class="list-item-button"
                       target={this.linksTarget}
                       rel={this.linksRel}
