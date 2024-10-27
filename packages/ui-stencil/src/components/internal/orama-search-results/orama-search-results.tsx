@@ -33,14 +33,20 @@ export class SearchResults {
   private highlighterTitle?: Highlight
   private highlighterDescription?: Highlight
 
-  private getSourceUrl = (path: string) => {
+  private buildUrl(path: string): string {
     if (!path) {
       return '#'
     }
 
     if (this.sourceBaseUrl) {
-      const sourceUrl = new URL(path, this.sourceBaseUrl)
-      return sourceUrl.toString()
+      // Remove trailing slashes from the base URL
+      const sanitizedBaseUrl = this.sourceBaseUrl.replace(/\/+$/, '')
+
+      // Remove leading slashes from the path
+      const sanitizedPath = path.replace(/^\/+/, '')
+
+      // Concatenate the base URL with the path
+      return `${sanitizedBaseUrl}/${sanitizedPath}`
     }
 
     return path
@@ -132,7 +138,7 @@ export class SearchResults {
                   <li class="list-item" key={result.id}>
                     <a
                       focus-on-arrow-nav
-                      href={this.getSourceUrl(result.path)}
+                      href={this.buildUrl(result.path)}
                       class="list-item-button"
                       target={this.linksTarget}
                       rel={this.linksRel}
