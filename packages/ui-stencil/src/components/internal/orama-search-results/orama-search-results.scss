@@ -70,13 +70,6 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-
-  // todo: should be based on available space
-  width: 300px;
-
-  @media (--sm-min) {
-    width: pxToRem(480);
-  }
 }
 
 .result-title {
@@ -102,6 +95,13 @@
   text-transform: uppercase;
   margin-bottom: var(--spacing-xs, $spacing-xs);
   padding: 0 var(--spacing-s, $spacing-s);
+}
+
+.textWrapper {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 ph-files {

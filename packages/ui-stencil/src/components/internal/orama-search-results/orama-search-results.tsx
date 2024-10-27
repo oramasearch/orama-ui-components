@@ -116,8 +116,10 @@ export class SearchResults {
                       id={`search-result-${result.id}`}
                       onClick={() => this.handleItemClick(result)}
                     >
-                      <ph-files size="20px" />
-                      <div>
+                      <div style={{ flexShrink: '0' }}>
+                        <ph-files size="20px" />
+                      </div>
+                      <div class="textWrapper">
                         <orama-text as="h3" styledAs="p" class="result-title collapsed">
                           {!this.highlight ? (
                             <span innerHTML={result.title} />
