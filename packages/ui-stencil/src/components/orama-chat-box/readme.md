@@ -16,7 +16,7 @@
 | `linksTarget`    | `links-target`    |             | `string`                                                   | `undefined` |
 | `placeholder`    | `placeholder`     |             | `string`                                                   | `undefined` |
 | `sourceBaseUrl`  | `source-base-url` |             | `string`                                                   | `undefined` |
-| `sourcesMap`     | --                |             | `{ title?: string; description?: string; path?: string; }` | `undefined` |
+| `sourcesMap`     | --                |             | `{ title?: string; path?: string; description?: string; }` | `undefined` |
 | `suggestions`    | --                |             | `string[]`                                                 | `undefined` |
 | `systemPrompts`  | --                |             | `string[]`                                                 | `undefined` |
 
