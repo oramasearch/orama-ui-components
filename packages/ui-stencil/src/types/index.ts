@@ -14,7 +14,11 @@ export type SearchResultBySection = {
   items: SearchResultWithScore[]
 }
 
-export type ResultMap = { [K in keyof Omit<SearchResult, 'id'> | 'section']?: string }
+export type ResultMapKeys = keyof Omit<SearchResult, 'id'> | 'section'
+export type ResultMapRenderFunction = (any) => string
+
+// TODO: callback function should have the type of the schema
+export type ResultMap = { [K in ResultMapKeys]?: string | ResultMapRenderFunction }
 
 export type SourcesMap = { [K in keyof Omit<SearchResult, 'id'>]?: string }
 
