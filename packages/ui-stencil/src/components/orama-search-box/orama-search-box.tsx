@@ -177,9 +177,16 @@ export class SearchBox {
 
   getSearchBox() {
     return (
-      <Fragment>
+      <div
+        class={`${
+          this.windowWidth > 1024
+            ? 'section-active'
+            : globalContext.currentTask === 'search'
+              ? 'section-active'
+              : 'section-inactive'
+        }`}
+      >
         <orama-search
-          class={`${this.windowWidth > 1024 ? 'section-active' : globalContext.currentTask === 'search' ? 'section-active' : 'section-inactive'}`}
           placeholder={this?.searchPlaceholder || 'Search...'}
           focusInput={globalContext.currentTask === 'search'}
           sourceBaseUrl={this.sourceBaseUrl}
@@ -201,7 +208,7 @@ export class SearchBox {
             />
           )}
         </orama-search>
-      </Fragment>
+      </div>
     )
   }
 
