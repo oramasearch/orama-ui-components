@@ -29,6 +29,26 @@ export class OramaSources {
 
   @Event() sourceItemClick: EventEmitter<SearchResult>
 
+  // TODO: Move this to utils
+  private buildUrl(path: string): string {
+    if (!path) {
+      return '#'
+    }
+
+    if (this.sourceBaseURL) {
+      // Remove trailing slashes from the base URL
+      const sanitizedBaseUrl = this.sourceBaseURL.replace(/\/+$/, '')
+
+      // Remove leading slashes from the path
+      const sanitizedPath = path.replace(/^\/+/, '')
+
+      // Concatenate the base URL with the path
+      return `${sanitizedBaseUrl}/${sanitizedPath}`
+    }
+
+    return path
+  }
+
   getNextItemCarousel(container: HTMLElement, items: HTMLCollectionOf<Element>) {
     for (let i = 0; i < items.length; i++) {
       const item = items[i]
@@ -189,8 +209,7 @@ export class OramaSources {
                   }}
                 >
                   <a
-                    // TODO: Use a URL object instead
-                    href={`${this.sourceBaseURL}${source[this.sourcesMap.path]}`}
+                    href={this.buildUrl(source[this.sourcesMap.path])}
                     class="source"
                     target={this.linksTarget}
                     rel={this.linksRel}
