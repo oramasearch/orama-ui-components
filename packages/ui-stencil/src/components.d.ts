@@ -77,12 +77,6 @@ export namespace Components {
     interface OramaChatMessagesContainer {
         "interactions": TChatInteraction[];
     }
-    interface OramaChatSuggestions {
-        "as": 'chips' | 'list';
-        "icon": Node;
-        "suggestionClicked": (suggestion: string) => void;
-        "suggestions": string[];
-    }
     interface OramaChatUserMessage {
         "interaction": TChatInteraction;
     }
@@ -284,12 +278,6 @@ declare global {
         prototype: HTMLOramaChatMessagesContainerElement;
         new (): HTMLOramaChatMessagesContainerElement;
     };
-    interface HTMLOramaChatSuggestionsElement extends Components.OramaChatSuggestions, HTMLStencilElement {
-    }
-    var HTMLOramaChatSuggestionsElement: {
-        prototype: HTMLOramaChatSuggestionsElement;
-        new (): HTMLOramaChatSuggestionsElement;
-    };
     interface HTMLOramaChatUserMessageElement extends Components.OramaChatUserMessage, HTMLStencilElement {
     }
     var HTMLOramaChatUserMessageElement: {
@@ -468,7 +456,6 @@ declare global {
         "orama-chat-box": HTMLOramaChatBoxElement;
         "orama-chat-button": HTMLOramaChatButtonElement;
         "orama-chat-messages-container": HTMLOramaChatMessagesContainerElement;
-        "orama-chat-suggestions": HTMLOramaChatSuggestionsElement;
         "orama-chat-user-message": HTMLOramaChatUserMessageElement;
         "orama-dots-loader": HTMLOramaDotsLoaderElement;
         "orama-embed": HTMLOramaEmbedElement;
@@ -535,12 +522,6 @@ declare namespace LocalJSX {
     }
     interface OramaChatMessagesContainer {
         "interactions"?: TChatInteraction[];
-    }
-    interface OramaChatSuggestions {
-        "as"?: 'chips' | 'list';
-        "icon"?: Node;
-        "suggestionClicked"?: (suggestion: string) => void;
-        "suggestions"?: string[];
     }
     interface OramaChatUserMessage {
         "interaction"?: TChatInteraction;
@@ -699,7 +680,6 @@ declare namespace LocalJSX {
         "orama-chat-box": OramaChatBox;
         "orama-chat-button": OramaChatButton;
         "orama-chat-messages-container": OramaChatMessagesContainer;
-        "orama-chat-suggestions": OramaChatSuggestions;
         "orama-chat-user-message": OramaChatUserMessage;
         "orama-dots-loader": OramaDotsLoader;
         "orama-embed": OramaEmbed;
@@ -731,7 +711,6 @@ declare module "@stencil/core" {
             "orama-chat-box": LocalJSX.OramaChatBox & JSXBase.HTMLAttributes<HTMLOramaChatBoxElement>;
             "orama-chat-button": LocalJSX.OramaChatButton & JSXBase.HTMLAttributes<HTMLOramaChatButtonElement>;
             "orama-chat-messages-container": LocalJSX.OramaChatMessagesContainer & JSXBase.HTMLAttributes<HTMLOramaChatMessagesContainerElement>;
-            "orama-chat-suggestions": LocalJSX.OramaChatSuggestions & JSXBase.HTMLAttributes<HTMLOramaChatSuggestionsElement>;
             "orama-chat-user-message": LocalJSX.OramaChatUserMessage & JSXBase.HTMLAttributes<HTMLOramaChatUserMessageElement>;
             "orama-dots-loader": LocalJSX.OramaDotsLoader & JSXBase.HTMLAttributes<HTMLOramaDotsLoaderElement>;
             "orama-embed": LocalJSX.OramaEmbed & JSXBase.HTMLAttributes<HTMLOramaEmbedElement>;

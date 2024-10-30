@@ -1,6 +1,7 @@
 import { Component, Fragment, Listen, Host, Prop, State, Watch, h } from '@stencil/core'
 import { chatContext, chatStore, TAnswerStatus } from '@/context/chatContext'
 import type { SearchResult, SourcesMap } from '@/types'
+import { OramaChatSuggestions } from '@/components/internal/orama-chat-suggestions/orama-chat-suggestions'
 import '@phosphor-icons/webcomponents/dist/icons/PhPaperPlaneTilt.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhStopCircle.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhArrowDown.mjs'
@@ -284,7 +285,11 @@ export class OramaChat {
                   <slot name="chat-empty-state" />
                   {!!this.suggestions?.length && (
                     <div class="suggestions-wrapper">
-                      <orama-chat-suggestions
+                      {/* <orama-chat-suggestions
+                        suggestions={this.suggestions}
+                        suggestionClicked={this.handleSuggestionClick}
+                      /> */}
+                      <OramaChatSuggestions
                         suggestions={this.suggestions}
                         suggestionClicked={this.handleSuggestionClick}
                       />

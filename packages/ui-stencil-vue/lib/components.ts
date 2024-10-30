@@ -65,14 +65,6 @@ export const OramaChatMessagesContainer = /*@__PURE__*/ defineContainer<JSX.Oram
 ]);
 
 
-export const OramaChatSuggestions = /*@__PURE__*/ defineContainer<JSX.OramaChatSuggestions>('orama-chat-suggestions', undefined, [
-  'suggestions',
-  'as',
-  'icon',
-  'suggestionClicked'
-]);
-
-
 export const OramaChatUserMessage = /*@__PURE__*/ defineContainer<JSX.OramaChatUserMessage>('orama-chat-user-message', undefined, [
   'interaction'
 ]);

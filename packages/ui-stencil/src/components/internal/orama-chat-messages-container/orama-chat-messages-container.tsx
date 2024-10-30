@@ -1,5 +1,6 @@
 import { Component, Host, Prop, h, Element, State } from '@stencil/core'
 import { chatContext, type TChatInteraction } from '@/context/chatContext'
+import { OramaChatSuggestions } from '@/components/internal/orama-chat-suggestions/orama-chat-suggestions'
 
 @Component({
   tag: 'orama-chat-messages-container',
@@ -50,7 +51,11 @@ export class OramaChatMessagesContainer {
               <orama-chat-assistent-message interaction={{ ...interaction }} />
               {interaction.latest && interaction.status === 'done' && !!interaction.relatedQueries?.length && (
                 <div class="suggestions-wrapper">
-                  <orama-chat-suggestions
+                  {/* <orama-chat-suggestions
+                    suggestions={interaction.relatedQueries}
+                    suggestionClicked={this.onSuggestionClick}
+                  /> */}
+                  <OramaChatSuggestions
                     suggestions={interaction.relatedQueries}
                     suggestionClicked={this.onSuggestionClick}
                   />

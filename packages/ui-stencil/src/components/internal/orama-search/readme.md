@@ -39,7 +39,6 @@ graph TD;
   orama-search --> orama-facets
   orama-search --> orama-search-results
   orama-search-results --> orama-text
-  orama-search-results --> orama-chat-suggestions
   orama-search-box --> orama-search
   style orama-search fill:#f9f,stroke:#333,stroke-width:4px
 ```
