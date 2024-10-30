@@ -65,14 +65,6 @@ export const OramaChatMessagesContainer = /*@__PURE__*/ defineContainer<JSX.Oram
 ]);
 
 
-export const OramaChatSuggestions = /*@__PURE__*/ defineContainer<JSX.OramaChatSuggestions>('orama-chat-suggestions', undefined, [
-  'suggestions',
-  'as',
-  'icon',
-  'suggestionClicked'
-]);
-
-
 export const OramaChatUserMessage = /*@__PURE__*/ defineContainer<JSX.OramaChatUserMessage>('orama-chat-user-message', undefined, [
   'interaction'
 ]);
@@ -211,6 +203,14 @@ export const OramaSources = /*@__PURE__*/ defineContainer<JSX.OramaSources>('ora
   'linksRel',
   'sourcesMap',
   'sourceItemClick'
+]);
+
+
+export const OramaSuggestions = /*@__PURE__*/ defineContainer<JSX.OramaSuggestions>('orama-suggestions', undefined, [
+  'suggestions',
+  'as',
+  'icon',
+  'suggestionClicked'
 ]);
 
 

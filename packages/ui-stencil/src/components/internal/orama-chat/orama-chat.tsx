@@ -284,7 +284,7 @@ export class OramaChat {
                   <slot name="chat-empty-state" />
                   {!!this.suggestions?.length && (
                     <div class="suggestions-wrapper">
-                      <orama-chat-suggestions
+                      <orama-suggestions
                         suggestions={this.suggestions}
                         suggestionClicked={this.handleSuggestionClick}
                       />

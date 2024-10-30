@@ -94,10 +94,10 @@ export class SearchResults {
               Suggestions
             </orama-text>
           )}
-          <orama-chat-suggestions
+          <orama-suggestions
             as="list"
-            icon={<Icon name="starFour" size={16} color="var(--text-color-accent, text-color('accent')" />}
             suggestions={this.suggestions}
+            icon={<Icon name="starFour" size={16} color="var(--text-color-accent, text-color('accent')" />}
             suggestionClicked={(term) => {
               this.setChatTerm(term)
             }}
