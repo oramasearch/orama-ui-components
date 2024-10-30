@@ -94,24 +94,8 @@ export class SearchResults {
               Suggestions
             </orama-text>
           )}
-          {/* <orama-chat-suggestions
-            as="list"
-            icon={<Icon name="starFour" size={16} color="var(--text-color-accent, text-color('accent')" />}
-            suggestions={this.suggestions}
-            suggestionClicked={(term) => {
-              this.setChatTerm(term)
-            }}
-          /> */}
-          {/* <OramaChatSuggestions
-            as="list"
-            icon={<Icon name="starFour" size={16} color="var(--text-color-accent, text-color('accent')" />}
-            suggestions={this.suggestions}
-            suggestionClicked={(term) => {
-              this.setChatTerm(term)
-            }}
-          /> */}
           <orama-suggestions
-            as="chips"
+            as="list"
             suggestions={this.suggestions}
             icon={<Icon name="starFour" size={16} color="var(--text-color-accent, text-color('accent')" />}
             suggestionClicked={(term) => {
