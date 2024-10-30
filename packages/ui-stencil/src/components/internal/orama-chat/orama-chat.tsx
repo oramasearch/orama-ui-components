@@ -1,7 +1,6 @@
 import { Component, Fragment, Listen, Host, Prop, State, Watch, h } from '@stencil/core'
 import { chatContext, chatStore, TAnswerStatus } from '@/context/chatContext'
 import type { SearchResult, SourcesMap } from '@/types'
-import { OramaChatSuggestions } from '@/components/internal/orama-chat-suggestions/orama-chat-suggestions'
 import '@phosphor-icons/webcomponents/dist/icons/PhPaperPlaneTilt.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhStopCircle.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhArrowDown.mjs'

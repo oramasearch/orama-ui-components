@@ -1,6 +1,5 @@
 import { Component, Host, Prop, h, Element, State } from '@stencil/core'
 import { chatContext, type TChatInteraction } from '@/context/chatContext'
-import { OramaChatSuggestions } from '@/components/internal/orama-chat-suggestions/orama-chat-suggestions'
 
 @Component({
   tag: 'orama-chat-messages-container',
