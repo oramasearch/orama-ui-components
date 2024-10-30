@@ -183,6 +183,12 @@ export namespace Components {
         "sources": any;
         "sourcesMap"?: SourcesMap;
     }
+    interface OramaSuggestions {
+        "as": 'chips' | 'list';
+        "icon"?: Node;
+        "suggestionClicked": (suggestion: string) => void;
+        "suggestions": string[];
+    }
     interface OramaText {
         /**
           * optionally change text alignment
@@ -431,6 +437,12 @@ declare global {
         prototype: HTMLOramaSourcesElement;
         new (): HTMLOramaSourcesElement;
     };
+    interface HTMLOramaSuggestionsElement extends Components.OramaSuggestions, HTMLStencilElement {
+    }
+    var HTMLOramaSuggestionsElement: {
+        prototype: HTMLOramaSuggestionsElement;
+        new (): HTMLOramaSuggestionsElement;
+    };
     interface HTMLOramaTextElement extends Components.OramaText, HTMLStencilElement {
     }
     var HTMLOramaTextElement: {
@@ -472,6 +484,7 @@ declare global {
         "orama-search-results": HTMLOramaSearchResultsElement;
         "orama-sliding-panel": HTMLOramaSlidingPanelElement;
         "orama-sources": HTMLOramaSourcesElement;
+        "orama-suggestions": HTMLOramaSuggestionsElement;
         "orama-text": HTMLOramaTextElement;
         "orama-textarea": HTMLOramaTextareaElement;
         "orama-toggler": HTMLOramaTogglerElement;
@@ -636,6 +649,12 @@ declare namespace LocalJSX {
         "sources"?: any;
         "sourcesMap"?: SourcesMap;
     }
+    interface OramaSuggestions {
+        "as"?: 'chips' | 'list';
+        "icon"?: Node;
+        "suggestionClicked"?: (suggestion: string) => void;
+        "suggestions"?: string[];
+    }
     interface OramaText {
         /**
           * optionally change text alignment
@@ -696,6 +715,7 @@ declare namespace LocalJSX {
         "orama-search-results": OramaSearchResults;
         "orama-sliding-panel": OramaSlidingPanel;
         "orama-sources": OramaSources;
+        "orama-suggestions": OramaSuggestions;
         "orama-text": OramaText;
         "orama-textarea": OramaTextarea;
         "orama-toggler": OramaToggler;
@@ -727,6 +747,7 @@ declare module "@stencil/core" {
             "orama-search-results": LocalJSX.OramaSearchResults & JSXBase.HTMLAttributes<HTMLOramaSearchResultsElement>;
             "orama-sliding-panel": LocalJSX.OramaSlidingPanel & JSXBase.HTMLAttributes<HTMLOramaSlidingPanelElement>;
             "orama-sources": LocalJSX.OramaSources & JSXBase.HTMLAttributes<HTMLOramaSourcesElement>;
+            "orama-suggestions": LocalJSX.OramaSuggestions & JSXBase.HTMLAttributes<HTMLOramaSuggestionsElement>;
             "orama-text": LocalJSX.OramaText & JSXBase.HTMLAttributes<HTMLOramaTextElement>;
             "orama-textarea": LocalJSX.OramaTextarea & JSXBase.HTMLAttributes<HTMLOramaTextareaElement>;
             "orama-toggler": LocalJSX.OramaToggler & JSXBase.HTMLAttributes<HTMLOramaTogglerElement>;

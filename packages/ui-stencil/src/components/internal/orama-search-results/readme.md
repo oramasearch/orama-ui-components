@@ -36,11 +36,13 @@
 ### Depends on
 
 - [orama-text](../orama-text)
+- [orama-suggestions](../orama-suggestions)
 
 ### Graph
 ```mermaid
 graph TD;
   orama-search-results --> orama-text
+  orama-search-results --> orama-suggestions
   orama-search --> orama-search-results
   style orama-search-results fill:#f9f,stroke:#333,stroke-width:4px
 ```

@@ -289,7 +289,12 @@ export class OramaChat {
                         suggestions={this.suggestions}
                         suggestionClicked={this.handleSuggestionClick}
                       /> */}
-                      <OramaChatSuggestions
+                      {/* <OramaChatSuggestions
+                        suggestions={this.suggestions}
+                        suggestionClicked={this.handleSuggestionClick}
+                      /> */}
+                      <orama-suggestions
+                        as="chips"
                         suggestions={this.suggestions}
                         suggestionClicked={this.handleSuggestionClick}
                       />

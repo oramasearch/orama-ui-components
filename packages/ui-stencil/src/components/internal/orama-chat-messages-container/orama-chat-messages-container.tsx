@@ -55,7 +55,12 @@ export class OramaChatMessagesContainer {
                     suggestions={interaction.relatedQueries}
                     suggestionClicked={this.onSuggestionClick}
                   /> */}
-                  <OramaChatSuggestions
+                  {/* <OramaChatSuggestions
+                    suggestions={interaction.relatedQueries}
+                    suggestionClicked={this.onSuggestionClick}
+                  /> */}
+                  <orama-suggestions
+                    as="chips"
                     suggestions={interaction.relatedQueries}
                     suggestionClicked={this.onSuggestionClick}
                   />

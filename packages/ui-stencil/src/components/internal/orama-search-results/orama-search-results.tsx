@@ -4,7 +4,6 @@ import { Highlight } from '@orama/highlight'
 import type { HighlightOptions } from '@orama/highlight'
 import '@phosphor-icons/webcomponents/dist/icons/PhFiles.mjs'
 import { Icon } from '@/components/internal/icons'
-import { OramaChatSuggestions } from '@/components/internal/orama-chat-suggestions/orama-chat-suggestions'
 
 export type SearchResultsProps = {
   sections: SearchResultBySection[]
@@ -103,10 +102,18 @@ export class SearchResults {
               this.setChatTerm(term)
             }}
           /> */}
-          <OramaChatSuggestions
+          {/* <OramaChatSuggestions
             as="list"
             icon={<Icon name="starFour" size={16} color="var(--text-color-accent, text-color('accent')" />}
             suggestions={this.suggestions}
+            suggestionClicked={(term) => {
+              this.setChatTerm(term)
+            }}
+          /> */}
+          <orama-suggestions
+            as="chips"
+            suggestions={this.suggestions}
+            icon={<Icon name="starFour" size={16} color="var(--text-color-accent, text-color('accent')" />}
             suggestionClicked={(term) => {
               this.setChatTerm(term)
             }}

@@ -206,6 +206,14 @@ export const OramaSources = /*@__PURE__*/ defineContainer<JSX.OramaSources>('ora
 ]);
 
 
+export const OramaSuggestions = /*@__PURE__*/ defineContainer<JSX.OramaSuggestions>('orama-suggestions', undefined, [
+  'suggestions',
+  'as',
+  'icon',
+  'suggestionClicked'
+]);
+
+
 export const OramaText = /*@__PURE__*/ defineContainer<JSX.OramaText>('orama-text', undefined, [
   'as',
   'styledAs',
