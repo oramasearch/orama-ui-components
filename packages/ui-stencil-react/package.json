@@ -3,6 +3,10 @@
   "version": "0.1.11",
   "description": "React components for Orama Cloud",
   "license": "Apache-2.0",
+  "homepage": "https://github.com/oramasearch/orama-ui-components",
+  "bugs": {
+    "url": "https://github.com/oramasearch/orama-ui-components/issues"
+  },
   "author": "",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -12,7 +16,8 @@
     "build": "tsup",
     "build:watch": "tsup --watch",
     "clean": "rm -rf node_modules .turbo",
-    "test": "node ./__tests__/react-library.test.js"
+    "test": "node ./__tests__/react-library.test.js",
+    "check-exports": "attw --pack ."
   },
   "dependencies": {
     "@orama/wc-components": "workspace:*"

@@ -3,13 +3,18 @@
   "version": "0.1.11",
   "description": "Vue components for Orama Cloud",
   "license": "Apache-2.0",
+  "homepage": "https://github.com/oramasearch/orama-ui-components",
+  "bugs": {
+    "url": "https://github.com/oramasearch/orama-ui-components/issues"
+  },
   "author": "",
   "main": "dist/index.js",
   "scripts": {
     "build": "npm run tsc",
     "clean": "rm -rf node_modules .turbo",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "tsc": "tsc -p ."
+    "tsc": "tsc -p .",
+    "check-exports": "attw --pack ."
   },
   "types": "dist/index.d.ts",
   "dependencies": {

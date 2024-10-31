@@ -4,13 +4,18 @@
   "version": "0.1.11",
   "description": "Angular components for Orama Cloud",
   "license": "Apache-2.0",
+  "homepage": "https://github.com/oramasearch/orama-ui-components",
+  "bugs": {
+    "url": "https://github.com/oramasearch/orama-ui-components/issues"
+  },
   "scripts": {
     "build": "npx -p @angular/cli ng build component-library",
     "clean": "rm -rf node_modules .turbo",
     "ng": "ng",
     "start": "ng serve",
     "test": "ng test",
-    "watch": "ng build --watch --configuration development"
+    "watch": "ng build --watch --configuration development",
+    "check-exports": "attw --pack ."
   },
   "dependencies": {
     "@angular/animations": "^18.0.5",

@@ -3,7 +3,7 @@
   "name": "stencil-design-system",
   "version": "0.1.11",
   "scripts": {
-    "build": "pnpm convert-scss-to-js && turbo run build",
+    "build": "pnpm convert-scss-to-js && turbo run build && pnpm check-format && pnpm check-exports",
     "build:storybook": "turbo run build --filter=storybook",
     "clean": "turbo run clean",
     "dev": "turbo run dev --filter=@orama/wc-components --filter=storybook",
@@ -11,10 +11,17 @@
     "dev:demo:react": "turbo run dev --filter=demo-react ",
     "dev:all": "turbo run dev",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "check-format": "prettier --check \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
     "maintenance": "turbo run maintenance",
     "publish:packages": "node scripts/release.mjs",
-    "convert-scss-to-js": "cd packages/ui-stencil && node extract-scss-vars.js"
+    "convert-scss-to-js": "cd packages/ui-stencil && node extract-scss-vars.js",
+    "check-exports:wc-components": "cd packages/ui-stencil && pnpm run check-exports && cd ../..",
+    "check-exports:react-components": "cd packages/ui-stencil-react && pnpm run check-exports && cd ../..",
+    "check-exports:angular-components": "cd packages/ui-stencil-angular && pnpm run check-exports && cd ../..",
+    "check-exports:vue-components": "cd packages/ui-stencil-vue && pnpm run check-exports && cd ../..",
+    "check-exports": "pnpm run check-exports:wc-components && pnpm run check-exports:react-components && pnpm run check-exports:angular-components && pnpm run check-exports:vue-components"
+
   },
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
@@ -23,7 +30,8 @@
     "eslint-config-custom": "workspace:*",
     "eslint-plugin-html": "^8.1.1",
     "prettier": "^3.3.2",
-    "turbo": "^2.0.5"
+    "turbo": "^2.0.5",
+    "@arethetypeswrong/cli": "^0.16.4"
   },
   "engines": {
     "node": ">=20",
