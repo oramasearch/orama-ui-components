@@ -41,8 +41,6 @@ export class ChatBox {
   startChatService() {
     validateCloudIndexConfig(this.el, this.index, this.clientInstance)
     const oramaClient = this.clientInstance || initOramaClient(this.index)
-    // TODO check this, we're initializing Switch in the ChatService constructor
-    // const switchInstance = new Switch(oramaClient)
 
     chatContext.chatService = new ChatService(oramaClient)
   }

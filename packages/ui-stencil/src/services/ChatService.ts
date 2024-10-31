@@ -1,4 +1,4 @@
-import type { AnyOrama, AnswerSession as OSSAnswerSession } from '@orama/orama'
+import type { AnswerSession as OSSAnswerSession } from '@orama/orama'
 import type { AnswerSession as CloudAnswerSession } from '@oramacloud/client'
 import type { OramaSwitchClient } from '@orama/switch'
 import { Switch } from '@orama/switch'
