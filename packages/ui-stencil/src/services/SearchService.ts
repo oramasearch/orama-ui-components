@@ -8,7 +8,7 @@ import type {
   ResultMapKeys,
   ResultMapRenderFunction,
 } from '@/types'
-import type { Switch } from '@orama/switch'
+import { Switch, type OramaSwitchClient } from '@orama/switch'
 
 const LIMIT_RESULTS = 10
 
@@ -18,10 +18,10 @@ type OramaHit = { id: string; score: number; document: any }
 
 export class SearchService {
   private abortController: AbortController
-  private oramaClient: Switch
+  private oramaClient: Switch<OramaSwitchClient>
 
-  constructor(oramaClientSwitch: Switch) {
-    this.oramaClient = oramaClientSwitch
+  constructor(oramaClient: OramaSwitchClient) {
+    this.oramaClient = new Switch(oramaClient)
     this.abortController = new AbortController()
   }
 

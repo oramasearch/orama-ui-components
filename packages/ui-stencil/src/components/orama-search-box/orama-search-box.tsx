@@ -11,7 +11,6 @@ import type { HighlightOptions } from '@orama/highlight'
 import type { OramaClient } from '@oramacloud/client'
 import type { CloudIndexConfig, ColorScheme, ResultMap, SourcesMap } from '@/types'
 import type { TThemeOverrides } from '@/config/theme'
-import { Switch } from '@orama/switch'
 
 // TODO: AI components should be lazyly loaded. In case of Disable AI flag, it should not be loaded at all
 // https://linear.app/oramasearch/issue/ORM-1824/ai-components-should-be-lazyly-loaded-in-case-of-disable-ai-flag-they
@@ -139,10 +138,10 @@ export class SearchBox {
   startServices() {
     validateCloudIndexConfig(this.htmlElement, this.index, this.clientInstance)
     const oramaClient = this.clientInstance ? this.clientInstance : initOramaClient(this.index)
-    const switchInstance = new Switch(oramaClient)
+    // const switchInstance = new Switch(oramaClient)
 
-    searchState.searchService = new SearchService(switchInstance)
-    chatContext.chatService = new ChatService(switchInstance)
+    searchState.searchService = new SearchService(oramaClient)
+    chatContext.chatService = new ChatService(oramaClient)
   }
 
   componentWillLoad() {
