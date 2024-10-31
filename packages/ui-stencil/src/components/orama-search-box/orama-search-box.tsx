@@ -37,7 +37,8 @@ export class SearchBox {
   @Prop() sourcesMap?: SourcesMap
   @Prop() disableChat?: boolean = false
   @Prop() layout?: 'modal' | 'embed' = 'modal'
-  @Prop() highlight?: HighlightOptions | false = false
+  @Prop() highlightTitle?: HighlightOptions | false = false
+  @Prop() highlightDescription?: HighlightOptions | false = false
 
   // TODO: remove it in favor of dictionary
   @Prop() placeholder?: string
@@ -180,21 +181,23 @@ export class SearchBox {
 
   getSearchBox() {
     return (
-      <Fragment>
-        <orama-search
-          class={`${
-            this.windowWidth > 1024
+      <div
+        class={`${
+          this.windowWidth > 1024
+            ? 'section-active'
+            : globalContext.currentTask === 'search'
               ? 'section-active'
-              : globalContext.currentTask === 'search'
-                ? 'section-active'
-                : 'section-inactive'
-          }`}
+              : 'section-inactive'
+        }`}
+      >
+        <orama-search
           placeholder={this?.searchPlaceholder || 'Search...'}
           focusInput={globalContext.currentTask === 'search'}
           sourceBaseUrl={this.sourceBaseUrl}
           linksTarget={this.linksTarget}
           linksRel={this.linksRel}
-          highlight={this.highlight}
+          highlightTitle={this.highlightTitle}
+          highlightDescription={this.highlightDescription}
           disableChat={this.disableChat}
           suggestions={this.suggestions}
         >
@@ -209,7 +212,7 @@ export class SearchBox {
             />
           )}
         </orama-search>
-      </Fragment>
+      </div>
     )
   }
 
@@ -220,7 +223,7 @@ export class SearchBox {
           class={`${globalContext.currentTask === 'chat' ? 'section-active' : 'section-inactive'}`}
           defaultTerm={globalContext.currentTask === 'chat' ? globalContext.currentTerm : ''}
           showClearChat={false}
-          focusInput={globalContext.currentTask === 'chat' || chatContext.interactions.length === 0}
+          focusInput={globalContext.currentTask === 'chat'}
           placeholder={this?.chatPlaceholder || this.placeholder}
           sourceBaseUrl={this.sourceBaseUrl}
           linksTarget={this.linksTarget}

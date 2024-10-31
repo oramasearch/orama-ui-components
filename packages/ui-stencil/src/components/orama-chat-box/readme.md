@@ -32,13 +32,13 @@ graph TD;
   orama-chat-box --> orama-text
   orama-chat-box --> orama-chat
   orama-chat --> orama-chat-messages-container
-  orama-chat --> orama-chat-suggestions
+  orama-chat --> orama-suggestions
   orama-chat --> orama-textarea
   orama-chat --> orama-button
   orama-chat --> orama-text
   orama-chat-messages-container --> orama-chat-user-message
   orama-chat-messages-container --> orama-chat-assistent-message
-  orama-chat-messages-container --> orama-chat-suggestions
+  orama-chat-messages-container --> orama-suggestions
   orama-chat-user-message --> orama-text
   orama-chat-assistent-message --> orama-dots-loader
   orama-chat-assistent-message --> orama-text

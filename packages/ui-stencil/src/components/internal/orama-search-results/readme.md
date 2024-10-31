@@ -5,18 +5,19 @@
 
 ## Properties
 
-| Property        | Attribute         | Description | Type                          | Default                 |
-| --------------- | ----------------- | ----------- | ----------------------------- | ----------------------- |
-| `error`         | `error`           |             | `boolean`                     | `false`                 |
-| `highlight`     | `highlight`       |             | `HighlightOptions \| boolean` | `false`                 |
-| `linksRel`      | `links-rel`       |             | `string`                      | `'noopener noreferrer'` |
-| `linksTarget`   | `links-target`    |             | `string`                      | `'_blank'`              |
-| `loading`       | `loading`         |             | `boolean`                     | `false`                 |
-| `searchTerm`    | `search-term`     |             | `string`                      | `undefined`             |
-| `sections`      | --                |             | `SearchResultBySection[]`     | `[]`                    |
-| `setChatTerm`   | --                |             | `(term: string) => void`      | `undefined`             |
-| `sourceBaseUrl` | `source-base-url` |             | `string`                      | `undefined`             |
-| `suggestions`   | --                |             | `string[]`                    | `[]`                    |
+| Property               | Attribute               | Description | Type                          | Default                 |
+| ---------------------- | ----------------------- | ----------- | ----------------------------- | ----------------------- |
+| `error`                | `error`                 |             | `boolean`                     | `false`                 |
+| `highlightDescription` | `highlight-description` |             | `HighlightOptions \| boolean` | `false`                 |
+| `highlightTitle`       | `highlight-title`       |             | `HighlightOptions \| boolean` | `false`                 |
+| `linksRel`             | `links-rel`             |             | `string`                      | `'noopener noreferrer'` |
+| `linksTarget`          | `links-target`          |             | `string`                      | `'_blank'`              |
+| `loading`              | `loading`               |             | `boolean`                     | `false`                 |
+| `searchTerm`           | `search-term`           |             | `string`                      | `undefined`             |
+| `sections`             | --                      |             | `SearchResultBySection[]`     | `[]`                    |
+| `setChatTerm`          | --                      |             | `(term: string) => void`      | `undefined`             |
+| `sourceBaseUrl`        | `source-base-url`       |             | `string`                      | `undefined`             |
+| `suggestions`          | --                      |             | `string[]`                    | `[]`                    |
 
 
 ## Events
@@ -35,13 +36,13 @@
 ### Depends on
 
 - [orama-text](../orama-text)
-- [orama-chat-suggestions](../orama-chat-suggestions)
+- [orama-suggestions](../orama-suggestions)
 
 ### Graph
 ```mermaid
 graph TD;
   orama-search-results --> orama-text
-  orama-search-results --> orama-chat-suggestions
+  orama-search-results --> orama-suggestions
   orama-search --> orama-search-results
   style orama-search-results fill:#f9f,stroke:#333,stroke-width:4px
 ```

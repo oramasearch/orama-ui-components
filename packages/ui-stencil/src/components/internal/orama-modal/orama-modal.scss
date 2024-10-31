@@ -26,11 +26,11 @@
     border: 1px solid var(--border-color-primary, border-color('primary'));
     width: 80%;
     margin: 0 auto;
-    max-width: pxToRem(615);
-    height: 58vh;
-    max-height: pxToRem(400);
-    top: 50%;
-    transform: translate3d(0, -50%, 0);
+    max-width: pxToRem(720);
+    min-height: pxToRem(200);
+    max-height: 70vh;
+    top: 5vh;
+    bottom: auto;
     border-radius: var(--radius-m, $radius-m);
     padding: 0;
   }

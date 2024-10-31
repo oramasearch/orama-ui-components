@@ -50,7 +50,8 @@ export class OramaChatMessagesContainer {
               <orama-chat-assistent-message interaction={{ ...interaction }} />
               {interaction.latest && interaction.status === 'done' && !!interaction.relatedQueries?.length && (
                 <div class="suggestions-wrapper">
-                  <orama-chat-suggestions
+                  <orama-suggestions
+                    as="chips"
                     suggestions={interaction.relatedQueries}
                     suggestionClicked={this.onSuggestionClick}
                   />

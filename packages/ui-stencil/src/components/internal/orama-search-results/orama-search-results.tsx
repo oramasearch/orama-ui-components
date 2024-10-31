@@ -27,9 +27,30 @@ export class SearchResults {
   @Prop() setChatTerm: (term: string) => void
   @Prop() loading = false
   @Prop() error = false
-  @Prop() highlight?: HighlightOptions | false = false
+  @Prop() highlightTitle?: HighlightOptions | false = false
+  @Prop() highlightDescription?: HighlightOptions | false = false
 
-  private highlighter?: Highlight
+  private highlighterTitle?: Highlight
+  private highlighterDescription?: Highlight
+
+  private buildUrl(path: string): string {
+    if (!path) {
+      return '#'
+    }
+
+    if (this.sourceBaseUrl) {
+      // Remove trailing slashes from the base URL
+      const sanitizedBaseUrl = this.sourceBaseUrl.replace(/\/+$/, '')
+
+      // Remove leading slashes from the path
+      const sanitizedPath = path.replace(/^\/+/, '')
+
+      // Concatenate the base URL with the path
+      return `${sanitizedBaseUrl}/${sanitizedPath}`
+    }
+
+    return path
+  }
 
   handleItemClick = (item: SearchResult) => {
     if (item?.path) {
@@ -46,13 +67,21 @@ export class SearchResults {
     return '#'
   }
 
-  getHighlightedText = (text: string) => {
-    return this.highlighter.highlight(text, this.searchTerm)
+  getHighlightedTitleText = (text: string) => {
+    return this.highlighterTitle.highlight(text, this.searchTerm)
+  }
+
+  getHighlightedDescriptionText = (text: string) => {
+    return this.highlighterDescription.highlight(text, this.searchTerm)
   }
 
   componentDidLoad() {
-    if (this.highlight) {
-      this.highlighter = new Highlight(this.highlight)
+    if (this.highlightTitle) {
+      this.highlighterTitle = new Highlight(this.highlightTitle)
+    }
+
+    if (this.highlightDescription) {
+      this.highlighterDescription = new Highlight(this.highlightDescription)
     }
   }
 
@@ -65,10 +94,10 @@ export class SearchResults {
               Suggestions
             </orama-text>
           )}
-          <orama-chat-suggestions
+          <orama-suggestions
             as="list"
-            icon={<Icon name="starFour" size={16} color="var(--text-color-accent, text-color('accent')" />}
             suggestions={this.suggestions}
+            icon={<Icon name="starFour" size={16} color="var(--text-color-accent, text-color('accent')" />}
             suggestionClicked={(term) => {
               this.setChatTerm(term)
             }}
@@ -109,29 +138,31 @@ export class SearchResults {
                   <li class="list-item" key={result.id}>
                     <a
                       focus-on-arrow-nav
-                      href={`${this.sourceBaseUrl}${result.path}`}
+                      href={this.buildUrl(result.path)}
                       class="list-item-button"
                       target={this.linksTarget}
                       rel={this.linksRel}
                       id={`search-result-${result.id}`}
                       onClick={() => this.handleItemClick(result)}
                     >
-                      <ph-files size="20px" />
-                      <div>
+                      <div style={{ flexShrink: '0' }}>
+                        <ph-files size="20px" />
+                      </div>
+                      <div class="textWrapper">
                         <orama-text as="h3" styledAs="p" class="result-title collapsed">
-                          {!this.highlight ? (
+                          {!this.highlightTitle ? (
                             <span innerHTML={result.title} />
-                          ) : result.title.length > 60 ? (
-                            <span innerHTML={this.getHighlightedText(result.title).trim(60)} />
+                          ) : result.title.length > 200 ? ( // Trim exists here to prevent to render too much data to the DOM
+                            <span innerHTML={this.getHighlightedTitleText(result.title).trim(200)} />
                           ) : (
-                            <span innerHTML={this.getHighlightedText(result.title).HTML} />
+                            <span innerHTML={this.getHighlightedTitleText(result.title).HTML} />
                           )}
                         </orama-text>
                         <orama-text as="p" styledAs="span" class="result-description collapsed" variant="tertiary">
-                          {!this.highlight ? (
+                          {!this.highlightDescription ? (
                             <span innerHTML={result.description} />
                           ) : (
-                            <span innerHTML={this.getHighlightedText(result.description).trim(60)} />
+                            <span innerHTML={this.getHighlightedDescriptionText(result.description).HTML} />
                           )}
                         </orama-text>
                       </div>

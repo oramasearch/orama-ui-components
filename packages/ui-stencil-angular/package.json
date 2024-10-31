@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "@orama/angular-components",
-  "version": "0.1.5",
+  "version": "0.1.11",
   "description": "Angular components for Orama Cloud",
   "license": "Apache-2.0",
   "scripts": {

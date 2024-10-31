@@ -77,12 +77,6 @@ export namespace Components {
     interface OramaChatMessagesContainer {
         "interactions": TChatInteraction[];
     }
-    interface OramaChatSuggestions {
-        "as": 'chips' | 'list';
-        "icon": Node;
-        "suggestionClicked": (suggestion: string) => void;
-        "suggestions": string[];
-    }
     interface OramaChatUserMessage {
         "interaction": TChatInteraction;
     }
@@ -129,7 +123,8 @@ export namespace Components {
     interface OramaSearch {
         "disableChat"?: boolean;
         "focusInput"?: boolean;
-        "highlight"?: HighlightOptions | false;
+        "highlightDescription"?: HighlightOptions | false;
+        "highlightTitle"?: HighlightOptions | false;
         "linksRel"?: string;
         "linksTarget"?: string;
         "placeholder"?: string;
@@ -142,7 +137,8 @@ export namespace Components {
         "colorScheme"?: ColorScheme;
         "disableChat"?: boolean;
         "facetProperty"?: string;
-        "highlight"?: HighlightOptions | false;
+        "highlightDescription"?: HighlightOptions | false;
+        "highlightTitle"?: HighlightOptions | false;
         "index"?: CloudIndexConfig;
         "layout"?: 'modal' | 'embed';
         "linksRel"?: string;
@@ -164,7 +160,8 @@ export namespace Components {
     }
     interface OramaSearchResults {
         "error": boolean;
-        "highlight"?: HighlightOptions | false;
+        "highlightDescription"?: HighlightOptions | false;
+        "highlightTitle"?: HighlightOptions | false;
         "linksRel"?: string;
         "linksTarget"?: string;
         "loading": boolean;
@@ -185,6 +182,12 @@ export namespace Components {
         "sourceBaseURL"?: string;
         "sources": any;
         "sourcesMap"?: SourcesMap;
+    }
+    interface OramaSuggestions {
+        "as": 'chips' | 'list';
+        "icon"?: Node;
+        "suggestionClicked": (suggestion: string) => void;
+        "suggestions": string[];
     }
     interface OramaText {
         /**
@@ -280,12 +283,6 @@ declare global {
     var HTMLOramaChatMessagesContainerElement: {
         prototype: HTMLOramaChatMessagesContainerElement;
         new (): HTMLOramaChatMessagesContainerElement;
-    };
-    interface HTMLOramaChatSuggestionsElement extends Components.OramaChatSuggestions, HTMLStencilElement {
-    }
-    var HTMLOramaChatSuggestionsElement: {
-        prototype: HTMLOramaChatSuggestionsElement;
-        new (): HTMLOramaChatSuggestionsElement;
     };
     interface HTMLOramaChatUserMessageElement extends Components.OramaChatUserMessage, HTMLStencilElement {
     }
@@ -440,6 +437,12 @@ declare global {
         prototype: HTMLOramaSourcesElement;
         new (): HTMLOramaSourcesElement;
     };
+    interface HTMLOramaSuggestionsElement extends Components.OramaSuggestions, HTMLStencilElement {
+    }
+    var HTMLOramaSuggestionsElement: {
+        prototype: HTMLOramaSuggestionsElement;
+        new (): HTMLOramaSuggestionsElement;
+    };
     interface HTMLOramaTextElement extends Components.OramaText, HTMLStencilElement {
     }
     var HTMLOramaTextElement: {
@@ -465,7 +468,6 @@ declare global {
         "orama-chat-box": HTMLOramaChatBoxElement;
         "orama-chat-button": HTMLOramaChatButtonElement;
         "orama-chat-messages-container": HTMLOramaChatMessagesContainerElement;
-        "orama-chat-suggestions": HTMLOramaChatSuggestionsElement;
         "orama-chat-user-message": HTMLOramaChatUserMessageElement;
         "orama-dots-loader": HTMLOramaDotsLoaderElement;
         "orama-embed": HTMLOramaEmbedElement;
@@ -482,6 +484,7 @@ declare global {
         "orama-search-results": HTMLOramaSearchResultsElement;
         "orama-sliding-panel": HTMLOramaSlidingPanelElement;
         "orama-sources": HTMLOramaSourcesElement;
+        "orama-suggestions": HTMLOramaSuggestionsElement;
         "orama-text": HTMLOramaTextElement;
         "orama-textarea": HTMLOramaTextareaElement;
         "orama-toggler": HTMLOramaTogglerElement;
@@ -533,12 +536,6 @@ declare namespace LocalJSX {
     interface OramaChatMessagesContainer {
         "interactions"?: TChatInteraction[];
     }
-    interface OramaChatSuggestions {
-        "as"?: 'chips' | 'list';
-        "icon"?: Node;
-        "suggestionClicked"?: (suggestion: string) => void;
-        "suggestions"?: string[];
-    }
     interface OramaChatUserMessage {
         "interaction"?: TChatInteraction;
     }
@@ -587,7 +584,8 @@ declare namespace LocalJSX {
     interface OramaSearch {
         "disableChat"?: boolean;
         "focusInput"?: boolean;
-        "highlight"?: HighlightOptions | false;
+        "highlightDescription"?: HighlightOptions | false;
+        "highlightTitle"?: HighlightOptions | false;
         "linksRel"?: string;
         "linksTarget"?: string;
         "placeholder"?: string;
@@ -600,7 +598,8 @@ declare namespace LocalJSX {
         "colorScheme"?: ColorScheme;
         "disableChat"?: boolean;
         "facetProperty"?: string;
-        "highlight"?: HighlightOptions | false;
+        "highlightDescription"?: HighlightOptions | false;
+        "highlightTitle"?: HighlightOptions | false;
         "index"?: CloudIndexConfig;
         "layout"?: 'modal' | 'embed';
         "linksRel"?: string;
@@ -625,7 +624,8 @@ declare namespace LocalJSX {
     }
     interface OramaSearchResults {
         "error"?: boolean;
-        "highlight"?: HighlightOptions | false;
+        "highlightDescription"?: HighlightOptions | false;
+        "highlightTitle"?: HighlightOptions | false;
         "linksRel"?: string;
         "linksTarget"?: string;
         "loading"?: boolean;
@@ -648,6 +648,12 @@ declare namespace LocalJSX {
         "sourceBaseURL"?: string;
         "sources"?: any;
         "sourcesMap"?: SourcesMap;
+    }
+    interface OramaSuggestions {
+        "as"?: 'chips' | 'list';
+        "icon"?: Node;
+        "suggestionClicked"?: (suggestion: string) => void;
+        "suggestions"?: string[];
     }
     interface OramaText {
         /**
@@ -693,7 +699,6 @@ declare namespace LocalJSX {
         "orama-chat-box": OramaChatBox;
         "orama-chat-button": OramaChatButton;
         "orama-chat-messages-container": OramaChatMessagesContainer;
-        "orama-chat-suggestions": OramaChatSuggestions;
         "orama-chat-user-message": OramaChatUserMessage;
         "orama-dots-loader": OramaDotsLoader;
         "orama-embed": OramaEmbed;
@@ -710,6 +715,7 @@ declare namespace LocalJSX {
         "orama-search-results": OramaSearchResults;
         "orama-sliding-panel": OramaSlidingPanel;
         "orama-sources": OramaSources;
+        "orama-suggestions": OramaSuggestions;
         "orama-text": OramaText;
         "orama-textarea": OramaTextarea;
         "orama-toggler": OramaToggler;
@@ -725,7 +731,6 @@ declare module "@stencil/core" {
             "orama-chat-box": LocalJSX.OramaChatBox & JSXBase.HTMLAttributes<HTMLOramaChatBoxElement>;
             "orama-chat-button": LocalJSX.OramaChatButton & JSXBase.HTMLAttributes<HTMLOramaChatButtonElement>;
             "orama-chat-messages-container": LocalJSX.OramaChatMessagesContainer & JSXBase.HTMLAttributes<HTMLOramaChatMessagesContainerElement>;
-            "orama-chat-suggestions": LocalJSX.OramaChatSuggestions & JSXBase.HTMLAttributes<HTMLOramaChatSuggestionsElement>;
             "orama-chat-user-message": LocalJSX.OramaChatUserMessage & JSXBase.HTMLAttributes<HTMLOramaChatUserMessageElement>;
             "orama-dots-loader": LocalJSX.OramaDotsLoader & JSXBase.HTMLAttributes<HTMLOramaDotsLoaderElement>;
             "orama-embed": LocalJSX.OramaEmbed & JSXBase.HTMLAttributes<HTMLOramaEmbedElement>;
@@ -742,6 +747,7 @@ declare module "@stencil/core" {
             "orama-search-results": LocalJSX.OramaSearchResults & JSXBase.HTMLAttributes<HTMLOramaSearchResultsElement>;
             "orama-sliding-panel": LocalJSX.OramaSlidingPanel & JSXBase.HTMLAttributes<HTMLOramaSlidingPanelElement>;
             "orama-sources": LocalJSX.OramaSources & JSXBase.HTMLAttributes<HTMLOramaSourcesElement>;
+            "orama-suggestions": LocalJSX.OramaSuggestions & JSXBase.HTMLAttributes<HTMLOramaSuggestionsElement>;
             "orama-text": LocalJSX.OramaText & JSXBase.HTMLAttributes<HTMLOramaTextElement>;
             "orama-textarea": LocalJSX.OramaTextarea & JSXBase.HTMLAttributes<HTMLOramaTextareaElement>;
             "orama-toggler": LocalJSX.OramaToggler & JSXBase.HTMLAttributes<HTMLOramaTogglerElement>;

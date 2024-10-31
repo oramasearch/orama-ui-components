@@ -1,13 +1,8 @@
-:host {
-  display: block;
-}
-
 .suggestions-chips {
   display: flex;
   align-items: center;
   gap: var(--spacing-m, $spacing-m);
   padding: var(--radius-s, $spacing-s) var(--radius-l, $spacing-l);
-
   list-style: none;
   margin: 0;
   overflow-x: auto;
@@ -71,6 +66,7 @@
   column-gap: var(--spacing-s, $spacing-s);
   border: 0;
   background-color: transparent;
+  font-size: var(--font-size-sm, $font-size-sm);
   cursor: pointer;
   padding: var(--spacing-s, $spacing-s) var(--spacing-m, $spacing-m);
   color: var(--text-color-secondary, text-color('secondary'));
@@ -79,6 +75,7 @@
   -webkit-text-fill-color: transparent;
   width: 100%;
   border: 1px solid transparent;
+  font-family: inherit;
 
   &:focus-visible {
     outline: none;

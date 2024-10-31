@@ -1,4 +1,4 @@
-# orama-button
+# orama-suggestions
 
 
 
@@ -26,10 +26,10 @@
 ### Graph
 ```mermaid
 graph TD;
-  orama-chat --> orama-chat-suggestions
-  orama-chat-messages-container --> orama-chat-suggestions
-  orama-search-results --> orama-chat-suggestions
-  style orama-chat-suggestions fill:#f9f,stroke:#333,stroke-width:4px
+  orama-chat --> orama-suggestions
+  orama-chat-messages-container --> orama-suggestions
+  orama-search-results --> orama-suggestions
+  style orama-suggestions fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 ----------------------------------------------
