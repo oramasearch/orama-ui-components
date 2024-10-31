@@ -24,7 +24,7 @@
   "dependencies": {
     "@orama/highlight": "^0.1.6",
     "@orama/orama": "3.0.0",
-    "@orama/switch": "3.0.0",
+    "@orama/switch": "3.0.1",
     "@oramacloud/client": "1.3.17",
     "@phosphor-icons/webcomponents": "^2.1.5",
     "@stencil/core": "^4.19.0",

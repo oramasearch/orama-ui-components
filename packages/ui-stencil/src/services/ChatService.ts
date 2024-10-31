@@ -1,4 +1,4 @@
-import type { AnswerSession as OSSAnswerSession } from '@orama/orama'
+import type { AnyOrama, AnswerSession as OSSAnswerSession } from '@orama/orama'
 import type { AnswerSession as CloudAnswerSession } from '@oramacloud/client'
 import type { OramaSwitchClient } from '@orama/switch'
 import { Switch } from '@orama/switch'
@@ -6,7 +6,7 @@ import { OramaClientNotInitializedError } from '@/erros/OramaClientNotInitialize
 import { chatContext, TAnswerStatus } from '@/context/chatContext'
 
 export class ChatService {
-  oramaClient: Switch
+  oramaClient: Switch<OramaSwitchClient>
   answerSession: CloudAnswerSession | OSSAnswerSession
 
   constructor(oramaClient: OramaSwitchClient) {
