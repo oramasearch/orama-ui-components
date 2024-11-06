@@ -137,7 +137,7 @@ export class SearchBox {
 
   startServices() {
     validateCloudIndexConfig(this.htmlElement, this.index, this.clientInstance)
-    const oramaClient = this.clientInstance ? this.clientInstance : initOramaClient(this.index)
+    const oramaClient = this.clientInstance || initOramaClient(this.index)
 
     searchState.searchService = new SearchService(oramaClient)
     chatContext.chatService = new ChatService(oramaClient)

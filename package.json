@@ -8,7 +8,7 @@
     "clean": "turbo run clean",
     "dev": "turbo run dev --filter=@orama/wc-components --filter=storybook",
     "dev:demo": "turbo run dev --filter=demo-react --filter=demo-vue --filter=demo-angular",
-    "dev:demo:react": "turbo run dev --filter=demo-react ",
+    "dev:demo:react": "turbo run dev --filter=demo-react",
     "dev:all": "turbo run dev",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",

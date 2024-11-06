@@ -22,7 +22,7 @@
   },
   "types": "dist/types/index.d.ts",
   "dependencies": {
-    "@orama/highlight": "^0.1.6",
+    "@orama/highlight": "^0.1.8",
     "@orama/orama": "3.0.0",
     "@orama/switch": "3.0.1",
     "@oramacloud/client": "1.3.17",

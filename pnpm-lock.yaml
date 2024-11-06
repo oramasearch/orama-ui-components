@@ -108,6 +108,9 @@ importers:
 
   apps/demo-react:
     dependencies:
+      '@orama/orama':
+        specifier: 3.0.0
+        version: 3.0.0
       '@orama/react-components':
         specifier: workspace:*
         version: link:../../packages/ui-stencil-react
@@ -279,8 +282,8 @@ importers:
   packages/ui-stencil:
     dependencies:
       '@orama/highlight':
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
       '@orama/orama':
         specifier: 3.0.0
         version: 3.0.0
@@ -2892,8 +2895,8 @@ packages:
     peerDependencies:
       lit: ^2.0.0 || ^3.0.0
 
-  '@orama/highlight@0.1.6':
-    resolution: {integrity: sha512-6Va8paStIoVy5algYDQu1hU0NUCkcrBx7FSt+0Lllp4d2VA1aVi6ACQ7xoINYls8sDZqg6vXf2lj4YDlVamBtw==}
+  '@orama/highlight@0.1.8':
+    resolution: {integrity: sha512-w3TvtWUKYlf/NoujoyEs38nJRi1lkwxdOXntXDYB9cfHzx+s+iPrps70YwFRRJu9TcHW8ffz503b0E6aAfsuvg==}
 
   '@orama/orama@2.0.23':
     resolution: {integrity: sha512-hb99eZAKW0KBaTyf8f7iV1yFIniQtkcs3sV5pooQ7mh33DCjTyeB39qUW8IHyBDFSs2rjLoePjW0CROvhb3rkw==}
@@ -13659,9 +13662,7 @@ snapshots:
     dependencies:
       lit: 3.1.4
 
-  '@orama/highlight@0.1.6':
-    dependencies:
-      '@orama/orama': 2.0.23
+  '@orama/highlight@0.1.8': {}
 
   '@orama/orama@2.0.23': {}
 
