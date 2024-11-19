@@ -291,6 +291,10 @@ export class SearchBox {
   }
 
   render() {
+    if (!globalContext.open) {
+      return null
+    }
+
     if (!searchState.searchService) {
       return <orama-text as="p">Unable to initialize search service</orama-text>
     }
