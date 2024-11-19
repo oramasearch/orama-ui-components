@@ -1,6 +1,6 @@
 {
   "name": "@orama/wc-components",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "UI web components for Orama Cloud",
   "license": "Apache-2.0",
   "repository": {
@@ -10,7 +10,10 @@
   "homepage": "https://docs.orama.com/cloud/ui-components/design-system",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
-  "files": ["dist/", "loader/"],
+  "files": [
+    "dist/",
+    "loader/"
+  ],
   "scripts": {
     "build": "stencil build --docs",
     "clean": "rm -rf node_modules .turbo dist .stencil loader www",
