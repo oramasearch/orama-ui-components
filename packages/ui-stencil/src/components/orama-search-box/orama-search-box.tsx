@@ -291,7 +291,7 @@ export class SearchBox {
   }
 
   render() {
-    if (!globalContext.open) {
+    if (this.layout === 'modal' && !globalContext.open) {
       return null
     }
 
