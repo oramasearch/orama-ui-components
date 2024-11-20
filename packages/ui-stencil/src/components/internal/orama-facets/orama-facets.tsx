@@ -1,7 +1,5 @@
+import type { Facet } from '@/types'
 import { Component, h, Prop } from '@stencil/core'
-
-// TODO: fix type
-export type Facet = { name: string; count: number }
 
 @Component({
   tag: 'orama-facets',

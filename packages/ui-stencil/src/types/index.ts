@@ -1,3 +1,5 @@
+import type { ClientSearchParams } from '@oramacloud/client'
+
 export type SearchResult = {
   id: string
   title: string
@@ -14,6 +16,8 @@ export type SearchResultBySection = {
   items: SearchResultWithScore[]
 }
 
+export type Facet = { name: string; count: number }
+
 export type ResultMapKeys = keyof Omit<SearchResult, 'id'> | 'section'
 export type ResultMapRenderFunction = (any) => string
 
@@ -25,4 +29,9 @@ export type SourcesMap = { [K in keyof Omit<SearchResult, 'id'>]?: string }
 export type CloudIndexConfig = {
   api_key: string
   endpoint: string
+}
+
+export type OnSearchCompletedCallbackProps = {
+  clientSearchParams: ClientSearchParams
+  result: { results: SearchResultBySection[]; resultsCount: number; facets: Facet[] }
 }

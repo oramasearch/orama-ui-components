@@ -137,7 +137,8 @@ export const OramaSearch = /*@__PURE__*/ defineContainer<JSX.OramaSearch>('orama
   'linksRel',
   'disableChat',
   'highlightTitle',
-  'highlightDescription'
+  'highlightDescription',
+  'searchCompletedCallback'
 ]);
 
 
@@ -162,7 +163,8 @@ export const OramaSearchBox = /*@__PURE__*/ defineContainer<JSX.OramaSearchBox>(
   'searchPlaceholder',
   'suggestions',
   'searchParams',
-  'searchboxClosed'
+  'searchCompletedCallback',
+  'searchResultClick'
 ]);
 
 
@@ -185,7 +187,7 @@ export const OramaSearchResults = /*@__PURE__*/ defineContainer<JSX.OramaSearchR
   'error',
   'highlightTitle',
   'highlightDescription',
-  'oramaItemClick'
+  'searchResultClick'
 ]);
 
 

@@ -20,6 +20,13 @@
 | `suggestions`          | --                      |             | `string[]`                    | `[]`          |
 
 
+## Events
+
+| Event                     | Description | Type                                                                                                                                             |
+| ------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `searchCompletedCallback` |             | `CustomEvent<{ clientSearchParams: ClientSearchParams; result: { results: SearchResultBySection[]; resultsCount: number; facets: Facet[]; }; }>` |
+
+
 ## Dependencies
 
 ### Used by

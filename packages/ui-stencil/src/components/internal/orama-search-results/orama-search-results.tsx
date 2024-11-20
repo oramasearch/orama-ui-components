@@ -17,7 +17,6 @@ export type SearchResultsProps = {
 })
 export class SearchResults {
   @Element() el: HTMLUListElement
-  @Event() oramaItemClick: EventEmitter<SearchResult>
   @Prop() sourceBaseUrl?: string
   @Prop() linksTarget?: string = '_blank'
   @Prop() linksRel?: string = 'noopener noreferrer'
@@ -29,6 +28,8 @@ export class SearchResults {
   @Prop() error = false
   @Prop() highlightTitle?: HighlightOptions | false = false
   @Prop() highlightDescription?: HighlightOptions | false = false
+
+  @Event({ bubbles: true, composed: true }) searchResultClick: EventEmitter<SearchResult>
 
   private highlighterTitle?: Highlight
   private highlighterDescription?: Highlight
@@ -54,7 +55,7 @@ export class SearchResults {
 
   handleItemClick = (item: SearchResult) => {
     if (item?.path) {
-      this.oramaItemClick.emit(item)
+      this.searchResultClick.emit(item)
     } else {
       throw new Error('No path found')
     }

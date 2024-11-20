@@ -61,11 +61,12 @@ function App() {
             <OramaSearchBox
               open={open}
               colorScheme="system"
-              onSearchboxClosed={() => setOpen(false)}
               index={{
                 api_key: 'LerNlbp6379jVKaPs4wt2nZT4MJZbU1J',
                 endpoint: 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd',
               }}
+              onSearchCompletedCallback={(e) => console.log(e)}
+              onSearchResultClick={(e) => console.log(e)}
             />
           </div>
         </section>

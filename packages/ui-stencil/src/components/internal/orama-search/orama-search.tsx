@@ -1,6 +1,6 @@
-import { Component, Host, Listen, State, Watch, h, Element, Prop } from '@stencil/core'
+import { Component, Host, Listen, State, Watch, h, Element, Prop, type EventEmitter, Event } from '@stencil/core'
 import { searchState } from '@/context/searchContext'
-import type { SearchResult } from '@/types'
+import type { OnSearchCompletedCallbackProps, SearchResult } from '@/types'
 import { globalContext } from '@/context/GlobalContext'
 import { chatContext } from '@/context/chatContext'
 import type { HighlightOptions } from '@orama/highlight'
@@ -26,12 +26,18 @@ export class OramaSearch {
   @State() searchValue = ''
   @State() selectedFacet = ''
 
+  @Event({ bubbles: true, composed: true }) searchCompletedCallback: EventEmitter<OnSearchCompletedCallbackProps>
+
   inputRef!: HTMLOramaInputElement
 
   @Watch('searchValue')
   @Watch('selectedFacet')
   handleSearchValueChange() {
-    searchState.searchService.search(this.searchValue, this.selectedFacet)
+    searchState.searchService.search(this.searchValue, this.selectedFacet, {
+      onSearchCompletedCallback: (onSearchCompletedCallbackProps) => {
+        this.searchCompletedCallback.emit(onSearchCompletedCallbackProps)
+      },
+    })
     globalContext.currentTerm = this.searchValue
   }
 
