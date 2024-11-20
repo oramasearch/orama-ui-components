@@ -27,7 +27,7 @@ export class OramaSources {
   @State() isCarouselScrollAtEnd = false
   @State() isCarouselScrollAtStart = false
 
-  @Event() sourceItemClick: EventEmitter<SearchResult>
+  @Event({ bubbles: true, composed: true }) answerSourceClick: EventEmitter<SearchResult>
 
   // TODO: Move this to utils
   private buildUrl(path: string): string {
@@ -90,6 +90,11 @@ export class OramaSources {
 
   private handleCarouselMove(direction: 'forward' | 'backwards') {
     const carousel = this.carouselSourceRef
+
+    if (!carousel) {
+      return
+    }
+
     const items = carousel.getElementsByClassName('source-inner-wrapper')
 
     if (direction === 'forward') {
@@ -119,7 +124,8 @@ export class OramaSources {
 
   handleItemClick = (item: SearchResult) => {
     if (item?.path) {
-      this.sourceItemClick.emit(item)
+      console.log('clicked')
+      this.answerSourceClick.emit(item)
     } else {
       throw new Error('No path found')
     }
@@ -127,6 +133,11 @@ export class OramaSources {
 
   computeCarouselArrowsVisibility() {
     const carousel = this.carouselSourceRef
+
+    if (!carousel) {
+      return
+    }
+
     const items = carousel.getElementsByClassName('source-inner-wrapper')
 
     this.isCarouselScrollAtEnd = !this.getNextItemCarousel(carousel, items)
@@ -138,7 +149,7 @@ export class OramaSources {
   })
 
   componentDidLoad() {
-    this.carouselSourceRef.addEventListener('scroll', this.handleCarouselScroll)
+    this.carouselSourceRef?.addEventListener('scroll', this.handleCarouselScroll)
     this.computeCarouselArrowsVisibility()
     this.resizeObserver.observe(this.carouselSourceRef)
   }

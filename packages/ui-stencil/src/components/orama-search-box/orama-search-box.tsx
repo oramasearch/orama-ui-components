@@ -13,6 +13,7 @@ import type {
   CloudIndexConfig,
   ColorScheme,
   OnSearchCompletedCallbackProps,
+  OnSearchResultClickCallbackProps,
   ResultMap,
   SearchResult,
   SourcesMap,
@@ -62,7 +63,7 @@ export class SearchBox {
   /**
    * Fired when user clicks on search result
    */
-  @Event() searchResultClick: EventEmitter<SearchResult>
+  @Event() searchResultClick: EventEmitter<OnSearchResultClickCallbackProps>
 
   wrapperRef!: HTMLElement
 

@@ -1,3 +1,4 @@
+import { AnyOrama, SearchParams } from '@orama/orama'
 import type { ClientSearchParams } from '@oramacloud/client'
 
 export type SearchResult = {
@@ -31,7 +32,32 @@ export type CloudIndexConfig = {
   endpoint: string
 }
 
+// TODO: Remove it after upgrading orama-cloud SDK. Currently AskPArams is not exported
+export type AskParams = SearchParams<AnyOrama> & {
+  userData?: unknown
+  related?: {
+    howMany?: 1 | 2 | 3 | 4 | 5
+    format?: 'question' | 'query'
+  }
+}
+
 export type OnSearchCompletedCallbackProps = {
   clientSearchParams: ClientSearchParams
   result: { results: SearchResultBySection[]; resultsCount: number; facets: Facet[] }
 }
+
+export type OnSearchResultClickCallbackProps = {
+  result: SearchResult
+}
+
+export type OnAnswerGeneratedCallbackProps = {
+  // TODO
+  askParams: AskParams
+  query: string
+  sources: any
+  answer: string
+  segment: any // TODO,
+  trigger: any // TODO,
+}
+
+export type OnAnswerSourceClickCallbackProps = { source: SearchResult }

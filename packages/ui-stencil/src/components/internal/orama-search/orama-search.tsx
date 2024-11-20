@@ -27,6 +27,7 @@ export class OramaSearch {
   @State() selectedFacet = ''
 
   @Event({ bubbles: true, composed: true }) searchCompletedCallback: EventEmitter<OnSearchCompletedCallbackProps>
+  @Event({ bubbles: true, composed: true }) answerGeneratedCallback: EventEmitter<OnSearchCompletedCallbackProps>
 
   inputRef!: HTMLOramaInputElement
 
@@ -93,7 +94,11 @@ export class OramaSearch {
             suggestions={!globalContext.currentTerm?.length && !this.disableChat ? this.suggestions : []}
             setChatTerm={(term) => {
               globalContext.currentTask = 'chat'
-              chatContext.chatService?.sendQuestion(term)
+              chatContext.chatService?.sendQuestion(term, undefined, {
+                onAnswerGeneratedCallback(onAnswerGeneratedCallbackProps) {
+                  this.answerGeneratedCallback.emit(onAnswerGeneratedCallbackProps)
+                },
+              })
             }}
             sourceBaseUrl={this.sourceBaseUrl}
             linksTarget={this.linksTarget}

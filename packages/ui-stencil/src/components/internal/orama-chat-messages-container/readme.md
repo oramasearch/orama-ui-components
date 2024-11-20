@@ -12,6 +12,13 @@
 | `interactions` | --        |             | `TChatInteraction[]` | `undefined` |
 
 
+## Events
+
+| Event                     | Description | Type                                                                                                                                             |
+| ------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `answerGeneratedCallback` |             | `CustomEvent<{ clientSearchParams: ClientSearchParams; result: { results: SearchResultBySection[]; resultsCount: number; facets: Facet[]; }; }>` |
+
+
 ## Dependencies
 
 ### Used by

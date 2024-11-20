@@ -34,7 +34,7 @@
 | Event                     | Description                             | Type                                                                                                                                             |
 | ------------------------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `searchCompletedCallback` | Fired when search successfully resolves | `CustomEvent<{ clientSearchParams: ClientSearchParams; result: { results: SearchResultBySection[]; resultsCount: number; facets: Facet[]; }; }>` |
-| `searchResultClick`       | Fired when user clicks on search result | `CustomEvent<{ id: string; title: string; description: string; path: string; }>`                                                                 |
+| `searchResultClick`       | Fired when user clicks on search result | `CustomEvent<{ result: SearchResult; }>`                                                                                                         |
 
 
 ## Dependencies

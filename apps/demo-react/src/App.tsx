@@ -29,6 +29,7 @@ function App() {
                   endpoint: 'https://cloud.orama.run/v1/indexes/recipes-m7w9mm',
                 }}
                 style={{ height: '600px' }}
+                onAnswerSourceClick={(e) => console.log(e)}
               />
             </div>
           </section>

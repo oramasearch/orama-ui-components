@@ -21,6 +21,13 @@
 | `systemPrompts`  | --                |             | `string[]`                                                 | `undefined` |
 
 
+## Events
+
+| Event               | Description                             | Type                                     |
+| ------------------- | --------------------------------------- | ---------------------------------------- |
+| `answerSourceClick` | Fired when user clicks on answer source | `CustomEvent<{ source: SearchResult; }>` |
+
+
 ## Dependencies
 
 ### Depends on

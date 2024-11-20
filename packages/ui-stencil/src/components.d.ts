@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { ButtonProps } from "./components/internal/orama-button/orama-button";
-import { CloudIndexConfig, ColorScheme, Facet, OnSearchCompletedCallbackProps, ResultMap, SearchResult, SearchResultBySection, SourcesMap } from "./types/index";
+import { CloudIndexConfig, ColorScheme, Facet, OnAnswerSourceClickCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, ResultMap, SearchResult, SearchResultBySection, SourcesMap } from "./types/index";
 import { TChatInteraction } from "./context/chatContext";
 import { OramaClient } from "@oramacloud/client";
 import { InputProps } from "./components/internal/orama-input/orama-input";
@@ -18,7 +18,7 @@ import { TThemeOverrides as TThemeOverrides1 } from "./components.d";
 import { SearchResultsProps } from "./components/internal/orama-search-results/orama-search-results";
 import { TextProps } from "./components/internal/orama-text/orama-text";
 export { ButtonProps } from "./components/internal/orama-button/orama-button";
-export { CloudIndexConfig, ColorScheme, Facet, OnSearchCompletedCallbackProps, ResultMap, SearchResult, SearchResultBySection, SourcesMap } from "./types/index";
+export { CloudIndexConfig, ColorScheme, Facet, OnAnswerSourceClickCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, ResultMap, SearchResult, SearchResultBySection, SourcesMap } from "./types/index";
 export { TChatInteraction } from "./context/chatContext";
 export { OramaClient } from "@oramacloud/client";
 export { InputProps } from "./components/internal/orama-input/orama-input";
@@ -225,6 +225,18 @@ export namespace Components {
         "performInitialAnimation": boolean;
     }
 }
+export interface OramaChatCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLOramaChatElement;
+}
+export interface OramaChatBoxCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLOramaChatBoxElement;
+}
+export interface OramaChatMessagesContainerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLOramaChatMessagesContainerElement;
+}
 export interface OramaInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLOramaInputElement;
@@ -256,7 +268,18 @@ declare global {
         prototype: HTMLOramaButtonElement;
         new (): HTMLOramaButtonElement;
     };
+    interface HTMLOramaChatElementEventMap {
+        "answerGeneratedCallback": OnSearchCompletedCallbackProps;
+    }
     interface HTMLOramaChatElement extends Components.OramaChat, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLOramaChatElementEventMap>(type: K, listener: (this: HTMLOramaChatElement, ev: OramaChatCustomEvent<HTMLOramaChatElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLOramaChatElementEventMap>(type: K, listener: (this: HTMLOramaChatElement, ev: OramaChatCustomEvent<HTMLOramaChatElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLOramaChatElement: {
         prototype: HTMLOramaChatElement;
@@ -268,7 +291,18 @@ declare global {
         prototype: HTMLOramaChatAssistentMessageElement;
         new (): HTMLOramaChatAssistentMessageElement;
     };
+    interface HTMLOramaChatBoxElementEventMap {
+        "answerSourceClick": OnAnswerSourceClickCallbackProps;
+    }
     interface HTMLOramaChatBoxElement extends Components.OramaChatBox, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLOramaChatBoxElementEventMap>(type: K, listener: (this: HTMLOramaChatBoxElement, ev: OramaChatBoxCustomEvent<HTMLOramaChatBoxElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLOramaChatBoxElementEventMap>(type: K, listener: (this: HTMLOramaChatBoxElement, ev: OramaChatBoxCustomEvent<HTMLOramaChatBoxElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLOramaChatBoxElement: {
         prototype: HTMLOramaChatBoxElement;
@@ -280,7 +314,18 @@ declare global {
         prototype: HTMLOramaChatButtonElement;
         new (): HTMLOramaChatButtonElement;
     };
+    interface HTMLOramaChatMessagesContainerElementEventMap {
+        "answerGeneratedCallback": OnSearchCompletedCallbackProps;
+    }
     interface HTMLOramaChatMessagesContainerElement extends Components.OramaChatMessagesContainer, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLOramaChatMessagesContainerElementEventMap>(type: K, listener: (this: HTMLOramaChatMessagesContainerElement, ev: OramaChatMessagesContainerCustomEvent<HTMLOramaChatMessagesContainerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLOramaChatMessagesContainerElementEventMap>(type: K, listener: (this: HTMLOramaChatMessagesContainerElement, ev: OramaChatMessagesContainerCustomEvent<HTMLOramaChatMessagesContainerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLOramaChatMessagesContainerElement: {
         prototype: HTMLOramaChatMessagesContainerElement;
@@ -370,6 +415,7 @@ declare global {
     };
     interface HTMLOramaSearchElementEventMap {
         "searchCompletedCallback": OnSearchCompletedCallbackProps;
+        "answerGeneratedCallback": OnSearchCompletedCallbackProps;
     }
     interface HTMLOramaSearchElement extends Components.OramaSearch, HTMLStencilElement {
         addEventListener<K extends keyof HTMLOramaSearchElementEventMap>(type: K, listener: (this: HTMLOramaSearchElement, ev: OramaSearchCustomEvent<HTMLOramaSearchElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -387,7 +433,7 @@ declare global {
     };
     interface HTMLOramaSearchBoxElementEventMap {
         "searchCompletedCallback": OnSearchCompletedCallbackProps;
-        "searchResultClick": SearchResult;
+        "searchResultClick": OnSearchResultClickCallbackProps;
     }
     interface HTMLOramaSearchBoxElement extends Components.OramaSearchBox, HTMLStencilElement {
         addEventListener<K extends keyof HTMLOramaSearchBoxElementEventMap>(type: K, listener: (this: HTMLOramaSearchBoxElement, ev: OramaSearchBoxCustomEvent<HTMLOramaSearchBoxElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -433,7 +479,7 @@ declare global {
         new (): HTMLOramaSlidingPanelElement;
     };
     interface HTMLOramaSourcesElementEventMap {
-        "sourceItemClick": SearchResult;
+        "answerSourceClick": SearchResult;
     }
     interface HTMLOramaSourcesElement extends Components.OramaSources, HTMLStencilElement {
         addEventListener<K extends keyof HTMLOramaSourcesElementEventMap>(type: K, listener: (this: HTMLOramaSourcesElement, ev: OramaSourcesCustomEvent<HTMLOramaSourcesElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -517,6 +563,7 @@ declare namespace LocalJSX {
         "focusInput"?: boolean;
         "linksRel"?: string;
         "linksTarget"?: string;
+        "onAnswerGeneratedCallback"?: (event: OramaChatCustomEvent<OnSearchCompletedCallbackProps>) => void;
         "placeholder"?: string;
         "showClearChat"?: boolean;
         "sourceBaseUrl"?: string;
@@ -533,6 +580,10 @@ declare namespace LocalJSX {
         "index"?: CloudIndexConfig;
         "linksRel"?: string;
         "linksTarget"?: string;
+        /**
+          * Fired when user clicks on answer source
+         */
+        "onAnswerSourceClick"?: (event: OramaChatBoxCustomEvent<OnAnswerSourceClickCallbackProps>) => void;
         "placeholder"?: string;
         "sourceBaseUrl"?: string;
         "sourcesMap"?: SourcesMap;
@@ -547,6 +598,7 @@ declare namespace LocalJSX {
     }
     interface OramaChatMessagesContainer {
         "interactions"?: TChatInteraction[];
+        "onAnswerGeneratedCallback"?: (event: OramaChatMessagesContainerCustomEvent<OnSearchCompletedCallbackProps>) => void;
     }
     interface OramaChatUserMessage {
         "interaction"?: TChatInteraction;
@@ -600,6 +652,7 @@ declare namespace LocalJSX {
         "highlightTitle"?: HighlightOptions | false;
         "linksRel"?: string;
         "linksTarget"?: string;
+        "onAnswerGeneratedCallback"?: (event: OramaSearchCustomEvent<OnSearchCompletedCallbackProps>) => void;
         "onSearchCompletedCallback"?: (event: OramaSearchCustomEvent<OnSearchCompletedCallbackProps>) => void;
         "placeholder"?: string;
         "sourceBaseUrl"?: string;
@@ -624,7 +677,7 @@ declare namespace LocalJSX {
         /**
           * Fired when user clicks on search result
          */
-        "onSearchResultClick"?: (event: OramaSearchBoxCustomEvent<SearchResult>) => void;
+        "onSearchResultClick"?: (event: OramaSearchBoxCustomEvent<OnSearchResultClickCallbackProps>) => void;
         "open"?: boolean;
         "placeholder"?: string;
         "resultMap"?: Partial<ResultMap>;
@@ -662,7 +715,7 @@ declare namespace LocalJSX {
     interface OramaSources {
         "linksRel"?: string;
         "linksTarget"?: string;
-        "onSourceItemClick"?: (event: OramaSourcesCustomEvent<SearchResult>) => void;
+        "onAnswerSourceClick"?: (event: OramaSourcesCustomEvent<SearchResult>) => void;
         "sourceBaseURL"?: string;
         "sources"?: any;
         "sourcesMap"?: SourcesMap;
