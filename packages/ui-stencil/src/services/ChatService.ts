@@ -5,7 +5,7 @@ import type { OnAnswerGeneratedCallbackProps } from '@/types'
 
 export class ChatService {
   oramaClient: OramaClient
-  answerSession: AnswerSession
+  answerSession: AnswerSession<true>
 
   constructor(oramaClient: OramaClient) {
     this.oramaClient = oramaClient

@@ -10,7 +10,7 @@
 | Property         | Attribute         | Description | Type                                                       | Default     |
 | ---------------- | ----------------- | ----------- | ---------------------------------------------------------- | ----------- |
 | `autoFocus`      | `auto-focus`      |             | `boolean`                                                  | `true`      |
-| `clientInstance` | --                |             | `OramaClient`                                              | `undefined` |
+| `clientInstance` | --                |             | `OramaClient<true>`                                        | `undefined` |
 | `index`          | --                |             | `{ api_key: string; endpoint: string; }`                   | `undefined` |
 | `linksRel`       | `links-rel`       |             | `string`                                                   | `undefined` |
 | `linksTarget`    | `links-target`    |             | `string`                                                   | `undefined` |

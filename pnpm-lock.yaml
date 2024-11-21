@@ -285,8 +285,8 @@ importers:
         specifier: ^2.0.23
         version: 2.0.23
       '@oramacloud/client':
-        specifier: 1.3.17
-        version: 1.3.17(encoding@0.1.13)(typescript@5.5.2)
+        specifier: ^2.1.0
+        version: 2.1.0
       '@phosphor-icons/webcomponents':
         specifier: ^2.1.5
         version: 2.1.5
@@ -2889,6 +2889,9 @@ packages:
     peerDependencies:
       lit: ^2.0.0 || ^3.0.0
 
+  '@orama/cuid2@2.2.3':
+    resolution: {integrity: sha512-Lcak3chblMejdlSHgYU2lS2cdOhDpU6vkfIJH4m+YKvqQyLqs1bB8+w6NT1MG5bO12NUK2GFc34Mn2xshMIQ1g==}
+
   '@orama/highlight@0.1.6':
     resolution: {integrity: sha512-6Va8paStIoVy5algYDQu1hU0NUCkcrBx7FSt+0Lllp4d2VA1aVi6ACQ7xoINYls8sDZqg6vXf2lj4YDlVamBtw==}
 
@@ -2896,11 +2899,15 @@ packages:
     resolution: {integrity: sha512-hb99eZAKW0KBaTyf8f7iV1yFIniQtkcs3sV5pooQ7mh33DCjTyeB39qUW8IHyBDFSs2rjLoePjW0CROvhb3rkw==}
     engines: {node: '>= 16.0.0'}
 
+  '@orama/orama@3.0.1':
+    resolution: {integrity: sha512-18hl0MiCLmumODHjrLzSdTb1Ny3Dh8tn44jwgx0LksCdvVAsr3jQvfr+hwrE7bVkap0wPELb/dnuJjvupKxheQ==}
+    engines: {node: '>= 16.0.0'}
+
   '@oramacloud/client@1.3.15':
     resolution: {integrity: sha512-QBgQrK0WA9pPzeVh/E6p44erwL0IJaHB3TrbEAsrduqbj38xY06jjpYsn//2fJt34jEnIBjOwPkjZ3OJEJlR4A==}
 
-  '@oramacloud/client@1.3.17':
-    resolution: {integrity: sha512-6o2NmRwaKwog39/9KEKVait1P3vRL/9sKMviewLBv+GD+av3MJQ+3yC6SPil7Ti354S2DizmFh3xScgon6TyXg==}
+  '@oramacloud/client@2.1.0':
+    resolution: {integrity: sha512-P8vi8E3e/lkt9pVPbHkM7gK9l3/iB5BpQqpio0Ej3LMxNTv5SNsByThM+gMzfPsCsczva6WK6FN2wOtyzqVSfw==}
 
   '@paralleldrive/cuid2@2.2.2':
     resolution: {integrity: sha512-ZOBkgDwEdoYVlSeRbYYXs0S9MejQofiVYoTbKzy/6GQa39/q5tQU2IX46+shYnUkpEl3wc+J6wRlar7r2EK2xA==}
@@ -13646,11 +13653,17 @@ snapshots:
     dependencies:
       lit: 3.1.4
 
+  '@orama/cuid2@2.2.3':
+    dependencies:
+      '@noble/hashes': 1.4.0
+
   '@orama/highlight@0.1.6':
     dependencies:
       '@orama/orama': 2.0.23
 
   '@orama/orama@2.0.23': {}
+
+  '@orama/orama@3.0.1': {}
 
   '@oramacloud/client@1.3.15(encoding@0.1.13)(typescript@5.5.2)':
     dependencies:
@@ -13664,17 +13677,11 @@ snapshots:
       - encoding
       - typescript
 
-  '@oramacloud/client@1.3.17(encoding@0.1.13)(typescript@5.5.2)':
+  '@oramacloud/client@2.1.0':
     dependencies:
-      '@orama/orama': 2.0.23
-      '@paralleldrive/cuid2': 2.2.2
+      '@orama/cuid2': 2.2.3
+      '@orama/orama': 3.0.1
       lodash: 4.17.21
-      openai: 4.52.3(encoding@0.1.13)
-      react: 18.3.1
-      vue: 3.4.30(typescript@5.5.2)
-    transitivePeerDependencies:
-      - encoding
-      - typescript
 
   '@paralleldrive/cuid2@2.2.2':
     dependencies:
@@ -17235,7 +17242,7 @@ snapshots:
       debug: 4.3.5
       enhanced-resolve: 5.17.0
       eslint: 9.5.0
-      eslint-module-utils: 2.8.1(@typescript-eslint/parser@6.21.0(eslint@9.5.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@6.21.0(eslint@9.5.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1)(eslint@9.5.0))(eslint@9.5.0)
+      eslint-module-utils: 2.8.1(@typescript-eslint/parser@6.21.0(eslint@9.5.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1)(eslint@9.5.0)
       eslint-plugin-import: 2.29.1(@typescript-eslint/parser@6.21.0(eslint@9.5.0)(typescript@5.5.2))(eslint-import-resolver-typescript@3.6.1)(eslint@9.5.0)
       fast-glob: 3.3.2
       get-tsconfig: 4.7.5
@@ -17247,7 +17254,7 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-module-utils@2.8.1(@typescript-eslint/parser@6.21.0(eslint@9.5.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@6.21.0(eslint@9.5.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1)(eslint@9.5.0))(eslint@9.5.0):
+  eslint-module-utils@2.8.1(@typescript-eslint/parser@6.21.0(eslint@9.5.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1)(eslint@9.5.0):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
@@ -17272,7 +17279,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.5.0
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.8.1(@typescript-eslint/parser@6.21.0(eslint@9.5.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@6.21.0(eslint@9.5.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1)(eslint@9.5.0))(eslint@9.5.0)
+      eslint-module-utils: 2.8.1(@typescript-eslint/parser@6.21.0(eslint@9.5.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1)(eslint@9.5.0)
       hasown: 2.0.2
       is-core-module: 2.14.0
       is-glob: 4.0.3
