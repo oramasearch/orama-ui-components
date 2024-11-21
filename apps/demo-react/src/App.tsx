@@ -67,7 +67,12 @@ function App() {
                 endpoint: 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd',
               }}
               onSearchCompletedCallback={(e) => console.log(e)}
-              onSearchResultClick={(e) => console.log(e)}
+              onSearchResultClick={(e) => {
+                console.log(e)
+                e.preventDefault()
+
+                console.log('Prevented')
+              }}
             />
           </div>
         </section>
