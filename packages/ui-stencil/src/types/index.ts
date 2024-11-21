@@ -1,4 +1,4 @@
-import { AnyOrama, SearchParams } from '@orama/orama'
+import type { AnyOrama, Results, SearchParams } from '@orama/orama'
 import type { ClientSearchParams } from '@oramacloud/client'
 
 export type SearchResult = {
@@ -54,10 +54,10 @@ export type OnAnswerGeneratedCallbackProps = {
   // TODO
   askParams: AskParams
   query: string
-  sources: any
+  sources: Results<unknown>
   answer: string
-  segment: any // TODO,
-  trigger: any // TODO,
+  segment: string | null
+  trigger: string | null
 }
 
 export type OnAnswerSourceClickCallbackProps = { source: SearchResult }

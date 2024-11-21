@@ -30,7 +30,7 @@ export const OramaChat = /*@__PURE__*/ defineContainer<JSX.OramaChat>('orama-cha
   'focusInput',
   'suggestions',
   'systemPrompts',
-  'answerGeneratedCallback'
+  'answerGenerated'
 ]);
 
 
@@ -50,6 +50,7 @@ export const OramaChatBox = /*@__PURE__*/ defineContainer<JSX.OramaChatBox>('ora
   'suggestions',
   'autoFocus',
   'systemPrompts',
+  'answerGenerated',
   'answerSourceClick'
 ]);
 
@@ -168,7 +169,9 @@ export const OramaSearchBox = /*@__PURE__*/ defineContainer<JSX.OramaSearchBox>(
   'suggestions',
   'searchParams',
   'searchCompletedCallback',
-  'searchResultClick'
+  'searchResultClick',
+  'answerGenerated',
+  'answerSourceClick'
 ]);
 
 

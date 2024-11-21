@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { ButtonProps } from "./components/internal/orama-button/orama-button";
-import { CloudIndexConfig, ColorScheme, Facet, OnAnswerSourceClickCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, ResultMap, SearchResult, SearchResultBySection, SourcesMap } from "./types/index";
+import { CloudIndexConfig, ColorScheme, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, ResultMap, SearchResult, SearchResultBySection, SourcesMap } from "./types/index";
 import { TChatInteraction } from "./context/chatContext";
 import { OramaClient } from "@oramacloud/client";
 import { InputProps } from "./components/internal/orama-input/orama-input";
@@ -18,7 +18,7 @@ import { TThemeOverrides as TThemeOverrides1 } from "./components.d";
 import { SearchResultsProps } from "./components/internal/orama-search-results/orama-search-results";
 import { TextProps } from "./components/internal/orama-text/orama-text";
 export { ButtonProps } from "./components/internal/orama-button/orama-button";
-export { CloudIndexConfig, ColorScheme, Facet, OnAnswerSourceClickCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, ResultMap, SearchResult, SearchResultBySection, SourcesMap } from "./types/index";
+export { CloudIndexConfig, ColorScheme, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, ResultMap, SearchResult, SearchResultBySection, SourcesMap } from "./types/index";
 export { TChatInteraction } from "./context/chatContext";
 export { OramaClient } from "@oramacloud/client";
 export { InputProps } from "./components/internal/orama-input/orama-input";
@@ -269,7 +269,7 @@ declare global {
         new (): HTMLOramaButtonElement;
     };
     interface HTMLOramaChatElementEventMap {
-        "answerGeneratedCallback": OnSearchCompletedCallbackProps;
+        "answerGenerated": OnAnswerGeneratedCallbackProps;
     }
     interface HTMLOramaChatElement extends Components.OramaChat, HTMLStencilElement {
         addEventListener<K extends keyof HTMLOramaChatElementEventMap>(type: K, listener: (this: HTMLOramaChatElement, ev: OramaChatCustomEvent<HTMLOramaChatElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -292,6 +292,7 @@ declare global {
         new (): HTMLOramaChatAssistentMessageElement;
     };
     interface HTMLOramaChatBoxElementEventMap {
+        "answerGenerated": OnAnswerGeneratedCallbackProps;
         "answerSourceClick": OnAnswerSourceClickCallbackProps;
     }
     interface HTMLOramaChatBoxElement extends Components.OramaChatBox, HTMLStencilElement {
@@ -434,6 +435,8 @@ declare global {
     interface HTMLOramaSearchBoxElementEventMap {
         "searchCompletedCallback": OnSearchCompletedCallbackProps;
         "searchResultClick": OnSearchResultClickCallbackProps;
+        "answerGenerated": OnAnswerGeneratedCallbackProps;
+        "answerSourceClick": OnAnswerSourceClickCallbackProps;
     }
     interface HTMLOramaSearchBoxElement extends Components.OramaSearchBox, HTMLStencilElement {
         addEventListener<K extends keyof HTMLOramaSearchBoxElementEventMap>(type: K, listener: (this: HTMLOramaSearchBoxElement, ev: OramaSearchBoxCustomEvent<HTMLOramaSearchBoxElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -563,7 +566,7 @@ declare namespace LocalJSX {
         "focusInput"?: boolean;
         "linksRel"?: string;
         "linksTarget"?: string;
-        "onAnswerGeneratedCallback"?: (event: OramaChatCustomEvent<OnSearchCompletedCallbackProps>) => void;
+        "onAnswerGenerated"?: (event: OramaChatCustomEvent<OnAnswerGeneratedCallbackProps>) => void;
         "placeholder"?: string;
         "showClearChat"?: boolean;
         "sourceBaseUrl"?: string;
@@ -580,6 +583,10 @@ declare namespace LocalJSX {
         "index"?: CloudIndexConfig;
         "linksRel"?: string;
         "linksTarget"?: string;
+        /**
+          * Fired when answer generation is successfully completed
+         */
+        "onAnswerGenerated"?: (event: OramaChatBoxCustomEvent<OnAnswerGeneratedCallbackProps>) => void;
         /**
           * Fired when user clicks on answer source
          */
@@ -670,6 +677,14 @@ declare namespace LocalJSX {
         "layout"?: 'modal' | 'embed';
         "linksRel"?: string;
         "linksTarget"?: string;
+        /**
+          * Fired when answer generation is successfully completed
+         */
+        "onAnswerGenerated"?: (event: OramaSearchBoxCustomEvent<OnAnswerGeneratedCallbackProps>) => void;
+        /**
+          * Fired when user clicks on answer source
+         */
+        "onAnswerSourceClick"?: (event: OramaSearchBoxCustomEvent<OnAnswerSourceClickCallbackProps>) => void;
         /**
           * Fired when search successfully resolves
          */

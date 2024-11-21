@@ -30,6 +30,7 @@ function App() {
                 }}
                 style={{ height: '600px' }}
                 onAnswerSourceClick={(e) => console.log(e)}
+                onAnswerGenerated={(e) => console.log(e)}
               />
             </div>
           </section>

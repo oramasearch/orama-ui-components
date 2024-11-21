@@ -1,6 +1,6 @@
 import { Component, Fragment, Listen, Host, Prop, State, Watch, h, type EventEmitter, Event } from '@stencil/core'
 import { chatContext, chatStore, TAnswerStatus } from '@/context/chatContext'
-import type { OnSearchCompletedCallbackProps, SearchResult, SourcesMap } from '@/types'
+import type { OnAnswerGeneratedCallbackProps, OnSearchCompletedCallbackProps, SearchResult, SourcesMap } from '@/types'
 import '@phosphor-icons/webcomponents/dist/icons/PhPaperPlaneTilt.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhStopCircle.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhArrowDown.mjs'
@@ -23,16 +23,10 @@ export class OramaChat {
   @Prop() suggestions?: string[]
   @Prop() systemPrompts?: string[]
 
-  @Event({ bubbles: true, composed: true }) answerGeneratedCallback: EventEmitter<OnSearchCompletedCallbackProps>
+  @Event({ bubbles: true, composed: true }) answerGenerated: EventEmitter<OnAnswerGeneratedCallbackProps>
 
   @State() inputValue = ''
   @State() showGoToBottomButton = false
-
-  private answerGenerationCallbacks = {
-    onAnswerGeneratedCallback(onAnswerGeneratedCallbackProps) {
-      this.answerGeneratedCallback.emit(onAnswerGeneratedCallbackProps)
-    },
-  }
 
   @Listen('sourceItemClick')
   handleSourceItemClick(event: CustomEvent<SearchResult>) {
@@ -42,7 +36,9 @@ export class OramaChat {
   @Watch('defaultTerm')
   handleDefaultTermChange() {
     if (this.defaultTerm) {
-      chatContext.chatService?.sendQuestion(this.defaultTerm, this.systemPrompts, this.answerGenerationCallbacks)
+      chatContext.chatService?.sendQuestion(this.defaultTerm, this.systemPrompts, {
+        onAnswerGeneratedCallback: (params) => this.answerGenerated.emit(params),
+      })
     }
   }
 
@@ -237,7 +233,9 @@ export class OramaChat {
       throw new Error('Chat Service is not initialized')
     }
 
-    chatContext.chatService.sendQuestion(this.inputValue, this.systemPrompts, this.answerGenerationCallbacks)
+    chatContext.chatService.sendQuestion(this.inputValue, this.systemPrompts, {
+      onAnswerGeneratedCallback: (params) => this.answerGenerated.emit(params),
+    })
     this.inputValue = ''
   }
 
@@ -250,7 +248,9 @@ export class OramaChat {
       throw new Error('Chat Service is not initialized')
     }
 
-    chatContext.chatService.sendQuestion(suggestion, undefined, this.answerGenerationCallbacks)
+    chatContext.chatService.sendQuestion(suggestion, undefined, {
+      onAnswerGeneratedCallback: (params) => this.answerGenerated.emit(params),
+    })
     this.inputValue = ''
   }
 

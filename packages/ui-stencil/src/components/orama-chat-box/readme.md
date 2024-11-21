@@ -23,9 +23,10 @@
 
 ## Events
 
-| Event               | Description                             | Type                                     |
-| ------------------- | --------------------------------------- | ---------------------------------------- |
-| `answerSourceClick` | Fired when user clicks on answer source | `CustomEvent<{ source: SearchResult; }>` |
+| Event               | Description                                            | Type                                                                                                                                 |
+| ------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `answerGenerated`   | Fired when answer generation is successfully completed | `CustomEvent<{ askParams: AskParams; query: string; sources: Results<unknown>; answer: string; segment: string; trigger: string; }>` |
+| `answerSourceClick` | Fired when user clicks on answer source                | `CustomEvent<{ source: SearchResult; }>`                                                                                             |
 
 
 ## Dependencies

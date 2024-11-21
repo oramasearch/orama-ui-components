@@ -12,6 +12,8 @@ import type { OramaClient } from '@oramacloud/client'
 import type {
   CloudIndexConfig,
   ColorScheme,
+  OnAnswerGeneratedCallbackProps,
+  OnAnswerSourceClickCallbackProps,
   OnSearchCompletedCallbackProps,
   OnSearchResultClickCallbackProps,
   ResultMap,
@@ -64,6 +66,14 @@ export class SearchBox {
    * Fired when user clicks on search result
    */
   @Event() searchResultClick: EventEmitter<OnSearchResultClickCallbackProps>
+  /**
+   * Fired when answer generation is successfully completed
+   */
+  @Event() answerGenerated: EventEmitter<OnAnswerGeneratedCallbackProps>
+  /**
+   * Fired when user clicks on answer source
+   */
+  @Event() answerSourceClick: EventEmitter<OnAnswerSourceClickCallbackProps>
 
   wrapperRef!: HTMLElement
 

@@ -1,4 +1,4 @@
-import type { OramaClient, AnswerSession } from '@oramacloud/client'
+import type { OramaClient, AnswerSession, AskParams } from '@oramacloud/client'
 import { OramaClientNotInitializedError } from '@/erros/OramaClientNotInitialized'
 import { chatContext, TAnswerStatus } from '@/context/chatContext'
 import type { OnAnswerGeneratedCallbackProps } from '@/types'
@@ -21,6 +21,8 @@ export class ChatService {
     if (!this.oramaClient) {
       throw new OramaClientNotInitializedError()
     }
+
+    const askParams: AskParams = { term: term, related: { howMany: 3, format: 'question' } }
 
     if (!this.answerSession) {
       this.answerSession = this.oramaClient.createAnswerSession({
@@ -58,7 +60,14 @@ export class ChatService {
               const sources = (interaction.sources as any)?.map((source) => source.document)
 
               if (isLatest && answerStatus === TAnswerStatus.done) {
-                callbacks?.onAnswerGeneratedCallback?.({} as any) // TODO: Waiting for SDK
+                callbacks?.onAnswerGeneratedCallback?.({
+                  askParams: askParams,
+                  query: interaction.query,
+                  sources: interaction.sources,
+                  answer: interaction.response,
+                  segment: interaction.segment,
+                  trigger: interaction.trigger,
+                })
               }
 
               return {
@@ -82,7 +91,7 @@ export class ChatService {
 
     // TODO: ABORT/ERROR/STOP should emmit onStateChange event. Keeping the lines below as a reference
     // TODO: WE may want to reveive ask props as a Service prop instead of enforcing it here
-    return this.answerSession.ask({ term: term, related: { howMany: 3, format: 'question' } }).catch((error) => {
+    return this.answerSession.ask(askParams).catch((error) => {
       chatContext.interactions = chatContext.interactions.map((interaction, index) => {
         if (index === chatContext.interactions.length - 1) {
           return {
