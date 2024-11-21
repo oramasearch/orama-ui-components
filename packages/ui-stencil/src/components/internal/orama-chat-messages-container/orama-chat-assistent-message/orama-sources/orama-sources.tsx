@@ -27,7 +27,7 @@ export class OramaSources {
   @State() isCarouselScrollAtEnd = false
   @State() isCarouselScrollAtStart = false
 
-  @Event({ bubbles: true, composed: true }) answerSourceClick: EventEmitter<SearchResult>
+  @Event({ bubbles: true, composed: true, cancelable: true }) answerSourceClick: EventEmitter<SearchResult>
 
   // TODO: Move this to utils
   private buildUrl(path: string): string {
@@ -122,11 +122,15 @@ export class OramaSources {
     this.computeCarouselArrowsVisibility()
   }
 
-  handleItemClick = (item: SearchResult) => {
-    if (item?.path) {
-      console.log('clicked')
-      this.answerSourceClick.emit(item)
-    } else {
+  handleItemClick = (originalOnClickEvent: MouseEvent, item: SearchResult) => {
+    const answerSourceClick = this.answerSourceClick.emit(item)
+
+    if (answerSourceClick.defaultPrevented) {
+      originalOnClickEvent.preventDefault()
+      return
+    }
+
+    if (!item?.path) {
       throw new Error('No path found')
     }
   }
@@ -225,7 +229,7 @@ export class OramaSources {
                     target={this.linksTarget}
                     rel={this.linksRel}
                     id={`source-${index}`}
-                    onClick={() => this.handleItemClick(source)}
+                    onClick={(onClickEvent) => this.handleItemClick(onClickEvent, source)}
                   >
                     <orama-text as="h3" styledAs="span" class="source-title">
                       {source[this.sourcesMap.title]}
