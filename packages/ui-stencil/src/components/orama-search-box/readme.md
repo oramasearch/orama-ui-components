@@ -31,12 +31,12 @@
 
 ## Events
 
-| Event                     | Description                                            | Type                                                                                                                                             |
-| ------------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `answerGenerated`         | Fired when answer generation is successfully completed | `CustomEvent<{ askParams: AskParams; query: string; sources: Results<unknown>; answer: string; segment: string; trigger: string; }>`             |
-| `answerSourceClick`       | Fired when user clicks on answer source                | `CustomEvent<{ source: SearchResult; }>`                                                                                                         |
-| `searchCompletedCallback` | Fired when search successfully resolves                | `CustomEvent<{ clientSearchParams: ClientSearchParams; result: { results: SearchResultBySection[]; resultsCount: number; facets: Facet[]; }; }>` |
-| `searchResultClick`       | Fired when user clicks on search result                | `CustomEvent<{ result: SearchResult; }>`                                                                                                         |
+| Event               | Description                                            | Type                                                                                                                                             |
+| ------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `answerGenerated`   | Fired when answer generation is successfully completed | `CustomEvent<{ askParams: AskParams; query: string; sources: Results<unknown>; answer: string; segment: string; trigger: string; }>`             |
+| `answerSourceClick` | Fired when user clicks on answer source                | `CustomEvent<{ source: SearchResult; }>`                                                                                                         |
+| `searchCompleted`   | Fired when search successfully resolves                | `CustomEvent<{ clientSearchParams: ClientSearchParams; result: { results: SearchResultBySection[]; resultsCount: number; facets: Facet[]; }; }>` |
+| `searchResultClick` | Fired when user clicks on search result                | `CustomEvent<{ result: SearchResult; }>`                                                                                                         |
 
 
 ## Dependencies

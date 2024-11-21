@@ -22,10 +22,10 @@
 
 ## Events
 
-| Event                     | Description | Type                                                                                                                                             |
-| ------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `answerGeneratedCallback` |             | `CustomEvent<{ clientSearchParams: ClientSearchParams; result: { results: SearchResultBySection[]; resultsCount: number; facets: Facet[]; }; }>` |
-| `searchCompletedCallback` |             | `CustomEvent<{ clientSearchParams: ClientSearchParams; result: { results: SearchResultBySection[]; resultsCount: number; facets: Facet[]; }; }>` |
+| Event             | Description | Type                                                                                                                                             |
+| ----------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `answerGenerated` |             | `CustomEvent<{ clientSearchParams: ClientSearchParams; result: { results: SearchResultBySection[]; resultsCount: number; facets: Facet[]; }; }>` |
+| `searchCompleted` |             | `CustomEvent<{ clientSearchParams: ClientSearchParams; result: { results: SearchResultBySection[]; resultsCount: number; facets: Facet[]; }; }>` |
 
 
 ## Dependencies

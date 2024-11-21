@@ -26,8 +26,8 @@ export class OramaSearch {
   @State() searchValue = ''
   @State() selectedFacet = ''
 
-  @Event({ bubbles: true, composed: true }) searchCompletedCallback: EventEmitter<OnSearchCompletedCallbackProps>
-  @Event({ bubbles: true, composed: true }) answerGeneratedCallback: EventEmitter<OnSearchCompletedCallbackProps>
+  @Event({ bubbles: true, composed: true }) searchCompleted: EventEmitter<OnSearchCompletedCallbackProps>
+  @Event({ bubbles: true, composed: true }) answerGenerated: EventEmitter<OnSearchCompletedCallbackProps>
 
   inputRef!: HTMLOramaInputElement
 
@@ -36,7 +36,7 @@ export class OramaSearch {
   handleSearchValueChange() {
     searchState.searchService.search(this.searchValue, this.selectedFacet, {
       onSearchCompletedCallback: (onSearchCompletedCallbackProps) => {
-        this.searchCompletedCallback.emit(onSearchCompletedCallbackProps)
+        this.searchCompleted.emit(onSearchCompletedCallbackProps)
       },
     })
     globalContext.currentTerm = this.searchValue
@@ -63,7 +63,7 @@ export class OramaSearch {
     }
 
     const chatButton = this.el.querySelector('orama-chat-button') as HTMLElement
-    chatButton.click()
+    chatButton?.click()
   }
 
   render() {
@@ -96,7 +96,7 @@ export class OramaSearch {
               globalContext.currentTask = 'chat'
               chatContext.chatService?.sendQuestion(term, undefined, {
                 onAnswerGeneratedCallback(onAnswerGeneratedCallbackProps) {
-                  this.answerGeneratedCallback.emit(onAnswerGeneratedCallbackProps)
+                  this.answerGenerated.emit(onAnswerGeneratedCallbackProps)
                 },
               })
             }}

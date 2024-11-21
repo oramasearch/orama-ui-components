@@ -155,7 +155,10 @@ export class OramaSources {
   componentDidLoad() {
     this.carouselSourceRef?.addEventListener('scroll', this.handleCarouselScroll)
     this.computeCarouselArrowsVisibility()
-    this.resizeObserver.observe(this.carouselSourceRef)
+
+    if (this.carouselSourceRef) {
+      this.resizeObserver.observe(this.carouselSourceRef)
+    }
   }
 
   disconnectedCallback() {

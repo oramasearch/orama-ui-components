@@ -1,9 +1,7 @@
-import React from 'react'
 import { OramaChatBox, OramaSearchBox, OramaSearchButton } from '@orama/react-components'
 import './App.css'
 
 function App() {
-  const [open, setOpen] = React.useState(false)
   return (
     <>
       <main>
@@ -29,8 +27,8 @@ function App() {
                   endpoint: 'https://cloud.orama.run/v1/indexes/recipes-m7w9mm',
                 }}
                 style={{ height: '600px' }}
-                onAnswerSourceClick={(e) => console.log(e)}
-                onAnswerGenerated={(e) => console.log(e)}
+                onAnswerSourceClick={(e: Event) => console.log(e)}
+                onAnswerGenerated={(e: Event) => console.log(e)}
               />
             </div>
           </section>
@@ -61,18 +59,22 @@ function App() {
         <section>
           <div className="component-row">
             <OramaSearchBox
-              open={open}
               colorScheme="system"
               index={{
                 api_key: 'LerNlbp6379jVKaPs4wt2nZT4MJZbU1J',
                 endpoint: 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd',
               }}
-              onSearchCompletedCallback={(e) => console.log(e)}
-              onSearchResultClick={(e) => {
+              onSearchCompleted={(e: Event) => console.log(e)}
+              onSearchResultClick={(e: Event) => {
                 console.log(e)
                 e.preventDefault()
 
                 console.log('Prevented')
+              }}
+              onAnswerGenerated={(e: Event) => console.log(e)}
+              onAnswerSourceClick={(e: Event) => {
+                console.log(e)
+                e.preventDefault()
               }}
             />
           </div>

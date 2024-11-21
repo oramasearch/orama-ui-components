@@ -316,7 +316,7 @@ declare global {
         new (): HTMLOramaChatButtonElement;
     };
     interface HTMLOramaChatMessagesContainerElementEventMap {
-        "answerGeneratedCallback": OnSearchCompletedCallbackProps;
+        "answerGenerated": OnSearchCompletedCallbackProps;
     }
     interface HTMLOramaChatMessagesContainerElement extends Components.OramaChatMessagesContainer, HTMLStencilElement {
         addEventListener<K extends keyof HTMLOramaChatMessagesContainerElementEventMap>(type: K, listener: (this: HTMLOramaChatMessagesContainerElement, ev: OramaChatMessagesContainerCustomEvent<HTMLOramaChatMessagesContainerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -415,8 +415,8 @@ declare global {
         new (): HTMLOramaNavigationBarElement;
     };
     interface HTMLOramaSearchElementEventMap {
-        "searchCompletedCallback": OnSearchCompletedCallbackProps;
-        "answerGeneratedCallback": OnSearchCompletedCallbackProps;
+        "searchCompleted": OnSearchCompletedCallbackProps;
+        "answerGenerated": OnSearchCompletedCallbackProps;
     }
     interface HTMLOramaSearchElement extends Components.OramaSearch, HTMLStencilElement {
         addEventListener<K extends keyof HTMLOramaSearchElementEventMap>(type: K, listener: (this: HTMLOramaSearchElement, ev: OramaSearchCustomEvent<HTMLOramaSearchElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -433,7 +433,7 @@ declare global {
         new (): HTMLOramaSearchElement;
     };
     interface HTMLOramaSearchBoxElementEventMap {
-        "searchCompletedCallback": OnSearchCompletedCallbackProps;
+        "searchCompleted": OnSearchCompletedCallbackProps;
         "searchResultClick": OnSearchResultClickCallbackProps;
         "answerGenerated": OnAnswerGeneratedCallbackProps;
         "answerSourceClick": OnAnswerSourceClickCallbackProps;
@@ -605,7 +605,7 @@ declare namespace LocalJSX {
     }
     interface OramaChatMessagesContainer {
         "interactions"?: TChatInteraction[];
-        "onAnswerGeneratedCallback"?: (event: OramaChatMessagesContainerCustomEvent<OnSearchCompletedCallbackProps>) => void;
+        "onAnswerGenerated"?: (event: OramaChatMessagesContainerCustomEvent<OnSearchCompletedCallbackProps>) => void;
     }
     interface OramaChatUserMessage {
         "interaction"?: TChatInteraction;
@@ -659,8 +659,8 @@ declare namespace LocalJSX {
         "highlightTitle"?: HighlightOptions | false;
         "linksRel"?: string;
         "linksTarget"?: string;
-        "onAnswerGeneratedCallback"?: (event: OramaSearchCustomEvent<OnSearchCompletedCallbackProps>) => void;
-        "onSearchCompletedCallback"?: (event: OramaSearchCustomEvent<OnSearchCompletedCallbackProps>) => void;
+        "onAnswerGenerated"?: (event: OramaSearchCustomEvent<OnSearchCompletedCallbackProps>) => void;
+        "onSearchCompleted"?: (event: OramaSearchCustomEvent<OnSearchCompletedCallbackProps>) => void;
         "placeholder"?: string;
         "sourceBaseUrl"?: string;
         "suggestions"?: string[];
@@ -688,7 +688,7 @@ declare namespace LocalJSX {
         /**
           * Fired when search successfully resolves
          */
-        "onSearchCompletedCallback"?: (event: OramaSearchBoxCustomEvent<OnSearchCompletedCallbackProps>) => void;
+        "onSearchCompleted"?: (event: OramaSearchBoxCustomEvent<OnSearchCompletedCallbackProps>) => void;
         /**
           * Fired when user clicks on search result
          */

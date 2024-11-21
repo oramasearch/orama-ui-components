@@ -1,6 +1,6 @@
 import { Component, Host, Prop, h, Element, State, type EventEmitter, Event } from '@stencil/core'
 import { chatContext, type TChatInteraction } from '@/context/chatContext'
-import { OnSearchCompletedCallbackProps } from '@/types'
+import type { OnSearchCompletedCallbackProps } from '@/types'
 
 @Component({
   tag: 'orama-chat-messages-container',
@@ -10,7 +10,7 @@ import { OnSearchCompletedCallbackProps } from '@/types'
 export class OramaChatMessagesContainer {
   @Prop() interactions: TChatInteraction[]
 
-  @Event({ bubbles: true, composed: true }) answerGeneratedCallback: EventEmitter<OnSearchCompletedCallbackProps>
+  @Event({ bubbles: true, composed: true }) answerGenerated: EventEmitter<OnSearchCompletedCallbackProps>
 
   @Element() el: HTMLElement
 
@@ -20,7 +20,7 @@ export class OramaChatMessagesContainer {
   onSuggestionClick = (suggestion: string) => {
     chatContext.chatService?.sendQuestion(suggestion, undefined, {
       onAnswerGeneratedCallback(onAnswerGeneratedCallbackProps) {
-        this.answerGeneratedCallback.emit(onAnswerGeneratedCallbackProps)
+        this.answerGenerated.emit(onAnswerGeneratedCallbackProps)
       },
     })
   }

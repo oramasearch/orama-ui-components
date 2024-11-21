@@ -1,6 +1,6 @@
 import { Component, Fragment, Listen, Host, Prop, State, Watch, h, type EventEmitter, Event } from '@stencil/core'
 import { chatContext, chatStore, TAnswerStatus } from '@/context/chatContext'
-import type { OnAnswerGeneratedCallbackProps, OnSearchCompletedCallbackProps, SearchResult, SourcesMap } from '@/types'
+import type { OnAnswerGeneratedCallbackProps, SearchResult, SourcesMap } from '@/types'
 import '@phosphor-icons/webcomponents/dist/icons/PhPaperPlaneTilt.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhStopCircle.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhArrowDown.mjs'

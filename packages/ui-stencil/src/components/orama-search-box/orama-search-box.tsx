@@ -17,7 +17,6 @@ import type {
   OnSearchCompletedCallbackProps,
   OnSearchResultClickCallbackProps,
   ResultMap,
-  SearchResult,
   SourcesMap,
 } from '@/types'
 import type { TThemeOverrides } from '@/config/theme'
@@ -61,7 +60,7 @@ export class SearchBox {
   /**
    * Fired when search successfully resolves
    */
-  @Event() searchCompletedCallback: EventEmitter<OnSearchCompletedCallbackProps>
+  @Event() searchCompleted: EventEmitter<OnSearchCompletedCallbackProps>
   /**
    * Fired when user clicks on search result
    */
