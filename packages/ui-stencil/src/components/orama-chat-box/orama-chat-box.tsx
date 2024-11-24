@@ -1,8 +1,13 @@
-import { Component, Host, h, Prop, Watch, State, Element } from '@stencil/core'
+import { Component, Host, h, Prop, Watch, State, Element, type EventEmitter, Event } from '@stencil/core'
 import { chatContext } from '@/context/chatContext'
 import { ChatService } from '@/services/ChatService'
 import { generateRandomID, initOramaClient, validateCloudIndexConfig } from '@/utils/utils'
-import type { CloudIndexConfig, SourcesMap } from '@/types'
+import type {
+  CloudIndexConfig,
+  OnAnswerGeneratedCallbackProps,
+  OnAnswerSourceClickCallbackProps,
+  SourcesMap,
+} from '@/types'
 import type { OramaClient } from '@oramacloud/client'
 import '@phosphor-icons/webcomponents/dist/icons/PhArrowClockwise.mjs'
 
@@ -26,6 +31,15 @@ export class ChatBox {
 
   @State() oramaClient: OramaClient
   @State() componentID = generateRandomID('chat-box')
+
+  /**
+   * Fired when answer generation is successfully completed
+   */
+  @Event() answerGenerated: EventEmitter<OnAnswerGeneratedCallbackProps>
+  /**
+   * Fired when user clicks on answer source
+   */
+  @Event() answerSourceClick: EventEmitter<OnAnswerSourceClickCallbackProps>
 
   @Watch('index')
   indexChanged() {

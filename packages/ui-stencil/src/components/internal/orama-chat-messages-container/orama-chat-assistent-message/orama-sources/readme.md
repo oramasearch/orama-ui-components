@@ -18,9 +18,9 @@
 
 ## Events
 
-| Event             | Description | Type                                                                             |
-| ----------------- | ----------- | -------------------------------------------------------------------------------- |
-| `sourceItemClick` |             | `CustomEvent<{ id: string; title: string; description: string; path: string; }>` |
+| Event               | Description | Type                                                                             |
+| ------------------- | ----------- | -------------------------------------------------------------------------------- |
+| `answerSourceClick` |             | `CustomEvent<{ id: string; title: string; description: string; path: string; }>` |
 
 
 ## Dependencies

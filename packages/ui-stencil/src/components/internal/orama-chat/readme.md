@@ -21,6 +21,13 @@
 | `systemPrompts` | --                |             | `string[]`                                                 | `undefined`         |
 
 
+## Events
+
+| Event             | Description | Type                                                                                                                                 |
+| ----------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `answerGenerated` |             | `CustomEvent<{ askParams: AskParams; query: string; sources: Results<unknown>; answer: string; segment: string; trigger: string; }>` |
+
+
 ## Dependencies
 
 ### Used by

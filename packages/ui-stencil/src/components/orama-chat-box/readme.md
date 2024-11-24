@@ -10,7 +10,7 @@
 | Property         | Attribute         | Description | Type                                                       | Default     |
 | ---------------- | ----------------- | ----------- | ---------------------------------------------------------- | ----------- |
 | `autoFocus`      | `auto-focus`      |             | `boolean`                                                  | `true`      |
-| `clientInstance` | --                |             | `OramaClient`                                              | `undefined` |
+| `clientInstance` | --                |             | `OramaClient<true>`                                        | `undefined` |
 | `index`          | --                |             | `{ api_key: string; endpoint: string; }`                   | `undefined` |
 | `linksRel`       | `links-rel`       |             | `string`                                                   | `undefined` |
 | `linksTarget`    | `links-target`    |             | `string`                                                   | `undefined` |
@@ -19,6 +19,14 @@
 | `sourcesMap`     | --                |             | `{ title?: string; path?: string; description?: string; }` | `undefined` |
 | `suggestions`    | --                |             | `string[]`                                                 | `undefined` |
 | `systemPrompts`  | --                |             | `string[]`                                                 | `undefined` |
+
+
+## Events
+
+| Event               | Description                                            | Type                                                                                                                                 |
+| ------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `answerGenerated`   | Fired when answer generation is successfully completed | `CustomEvent<{ askParams: AskParams; query: string; sources: Results<unknown>; answer: string; segment: string; trigger: string; }>` |
+| `answerSourceClick` | Fired when user clicks on answer source                | `CustomEvent<{ source: SearchResult; }>`                                                                                             |
 
 
 ## Dependencies

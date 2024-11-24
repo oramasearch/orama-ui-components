@@ -1,3 +1,4 @@
+import type { Facet } from '@/types'
 import type { SearchService } from '@/services/SearchService'
 import { createStore } from '@stencil/store'
 import type { ResultMap, SearchResultBySection } from '@/types'
@@ -6,8 +7,7 @@ import type { OramaClient } from '@oramacloud/client'
 
 const store = createStore({
   count: 0,
-  // TODO: Create a type for facets
-  facets: [] as { name: string; count: number }[],
+  facets: [] as Facet[],
   facetProperty: '', // TODO: consider to move to resultsMap
   results: [] as SearchResultBySection[],
   resultMap: {} as ResultMap,

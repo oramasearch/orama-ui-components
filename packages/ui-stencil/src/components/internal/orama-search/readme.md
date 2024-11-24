@@ -20,6 +20,14 @@
 | `suggestions`          | --                      |             | `string[]`                    | `[]`          |
 
 
+## Events
+
+| Event             | Description | Type                                                                                                                                             |
+| ----------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `answerGenerated` |             | `CustomEvent<{ clientSearchParams: ClientSearchParams; result: { results: SearchResultBySection[]; resultsCount: number; facets: Facet[]; }; }>` |
+| `searchCompleted` |             | `CustomEvent<{ clientSearchParams: ClientSearchParams; result: { results: SearchResultBySection[]; resultsCount: number; facets: Facet[]; }; }>` |
+
+
 ## Dependencies
 
 ### Used by

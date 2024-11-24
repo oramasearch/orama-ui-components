@@ -17,7 +17,6 @@ export type SearchResultsProps = {
 })
 export class SearchResults {
   @Element() el: HTMLUListElement
-  @Event() oramaItemClick: EventEmitter<SearchResult>
   @Prop() sourceBaseUrl?: string
   @Prop() linksTarget?: string = '_blank'
   @Prop() linksRel?: string = 'noopener noreferrer'
@@ -29,6 +28,8 @@ export class SearchResults {
   @Prop() error = false
   @Prop() highlightTitle?: HighlightOptions | false = false
   @Prop() highlightDescription?: HighlightOptions | false = false
+
+  @Event({ bubbles: true, composed: true, cancelable: true }) searchResultClick: EventEmitter<SearchResult>
 
   private highlighterTitle?: Highlight
   private highlighterDescription?: Highlight
@@ -52,10 +53,15 @@ export class SearchResults {
     return path
   }
 
-  handleItemClick = (item: SearchResult) => {
-    if (item?.path) {
-      this.oramaItemClick.emit(item)
-    } else {
+  handleItemClick = (originalOnClickEvent: MouseEvent, item: SearchResult) => {
+    const searchResultClick = this.searchResultClick.emit(item)
+
+    if (searchResultClick.defaultPrevented) {
+      originalOnClickEvent.preventDefault()
+      return
+    }
+
+    if (!item?.path) {
       throw new Error('No path found')
     }
   }
@@ -143,7 +149,7 @@ export class SearchResults {
                       target={this.linksTarget}
                       rel={this.linksRel}
                       id={`search-result-${result.id}`}
-                      onClick={() => this.handleItemClick(result)}
+                      onClick={(onClickEvent) => this.handleItemClick(onClickEvent, result)}
                     >
                       <div style={{ flexShrink: '0' }}>
                         <ph-files size="20px" />

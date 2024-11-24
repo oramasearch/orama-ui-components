@@ -1,6 +1,6 @@
-import { Component, Host, Listen, State, Watch, h, Element, Prop } from '@stencil/core'
+import { Component, Host, Listen, State, Watch, h, Element, Prop, type EventEmitter, Event } from '@stencil/core'
 import { searchState } from '@/context/searchContext'
-import type { SearchResult } from '@/types'
+import type { OnSearchCompletedCallbackProps, SearchResult } from '@/types'
 import { globalContext } from '@/context/GlobalContext'
 import { chatContext } from '@/context/chatContext'
 import type { HighlightOptions } from '@orama/highlight'
@@ -26,12 +26,19 @@ export class OramaSearch {
   @State() searchValue = ''
   @State() selectedFacet = ''
 
+  @Event({ bubbles: true, composed: true }) searchCompleted: EventEmitter<OnSearchCompletedCallbackProps>
+  @Event({ bubbles: true, composed: true }) answerGenerated: EventEmitter<OnSearchCompletedCallbackProps>
+
   inputRef!: HTMLOramaInputElement
 
   @Watch('searchValue')
   @Watch('selectedFacet')
   handleSearchValueChange() {
-    searchState.searchService.search(this.searchValue, this.selectedFacet)
+    searchState.searchService.search(this.searchValue, this.selectedFacet, {
+      onSearchCompletedCallback: (onSearchCompletedCallbackProps) => {
+        this.searchCompleted.emit(onSearchCompletedCallbackProps)
+      },
+    })
     globalContext.currentTerm = this.searchValue
   }
 
@@ -56,7 +63,7 @@ export class OramaSearch {
     }
 
     const chatButton = this.el.querySelector('orama-chat-button') as HTMLElement
-    chatButton.click()
+    chatButton?.click()
   }
 
   render() {
@@ -87,7 +94,11 @@ export class OramaSearch {
             suggestions={!globalContext.currentTerm?.length && !this.disableChat ? this.suggestions : []}
             setChatTerm={(term) => {
               globalContext.currentTask = 'chat'
-              chatContext.chatService?.sendQuestion(term)
+              chatContext.chatService?.sendQuestion(term, undefined, {
+                onAnswerGeneratedCallback(onAnswerGeneratedCallbackProps) {
+                  this.answerGenerated.emit(onAnswerGeneratedCallbackProps)
+                },
+              })
             }}
             sourceBaseUrl={this.sourceBaseUrl}
             linksTarget={this.linksTarget}

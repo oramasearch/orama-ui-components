@@ -29,7 +29,8 @@ export const OramaChat = /*@__PURE__*/ defineContainer<JSX.OramaChat>('orama-cha
   'defaultTerm',
   'focusInput',
   'suggestions',
-  'systemPrompts'
+  'systemPrompts',
+  'answerGenerated'
 ]);
 
 
@@ -48,7 +49,9 @@ export const OramaChatBox = /*@__PURE__*/ defineContainer<JSX.OramaChatBox>('ora
   'sourcesMap',
   'suggestions',
   'autoFocus',
-  'systemPrompts'
+  'systemPrompts',
+  'answerGenerated',
+  'answerSourceClick'
 ]);
 
 
@@ -61,7 +64,8 @@ export const OramaChatButton = /*@__PURE__*/ defineContainer<JSX.OramaChatButton
 
 
 export const OramaChatMessagesContainer = /*@__PURE__*/ defineContainer<JSX.OramaChatMessagesContainer>('orama-chat-messages-container', undefined, [
-  'interactions'
+  'interactions',
+  'answerGenerated'
 ]);
 
 
@@ -137,7 +141,9 @@ export const OramaSearch = /*@__PURE__*/ defineContainer<JSX.OramaSearch>('orama
   'linksRel',
   'disableChat',
   'highlightTitle',
-  'highlightDescription'
+  'highlightDescription',
+  'searchCompleted',
+  'answerGenerated'
 ]);
 
 
@@ -162,7 +168,10 @@ export const OramaSearchBox = /*@__PURE__*/ defineContainer<JSX.OramaSearchBox>(
   'searchPlaceholder',
   'suggestions',
   'searchParams',
-  'searchboxClosed'
+  'searchCompleted',
+  'searchResultClick',
+  'answerGenerated',
+  'answerSourceClick'
 ]);
 
 
@@ -185,7 +194,7 @@ export const OramaSearchResults = /*@__PURE__*/ defineContainer<JSX.OramaSearchR
   'error',
   'highlightTitle',
   'highlightDescription',
-  'oramaItemClick'
+  'searchResultClick'
 ]);
 
 
@@ -202,7 +211,7 @@ export const OramaSources = /*@__PURE__*/ defineContainer<JSX.OramaSources>('ora
   'linksTarget',
   'linksRel',
   'sourcesMap',
-  'sourceItemClick'
+  'answerSourceClick'
 ]);
 
 

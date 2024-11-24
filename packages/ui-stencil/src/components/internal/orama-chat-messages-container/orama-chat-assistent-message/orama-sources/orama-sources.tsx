@@ -27,7 +27,7 @@ export class OramaSources {
   @State() isCarouselScrollAtEnd = false
   @State() isCarouselScrollAtStart = false
 
-  @Event() sourceItemClick: EventEmitter<SearchResult>
+  @Event({ bubbles: true, composed: true, cancelable: true }) answerSourceClick: EventEmitter<SearchResult>
 
   // TODO: Move this to utils
   private buildUrl(path: string): string {
@@ -90,6 +90,11 @@ export class OramaSources {
 
   private handleCarouselMove(direction: 'forward' | 'backwards') {
     const carousel = this.carouselSourceRef
+
+    if (!carousel) {
+      return
+    }
+
     const items = carousel.getElementsByClassName('source-inner-wrapper')
 
     if (direction === 'forward') {
@@ -117,16 +122,26 @@ export class OramaSources {
     this.computeCarouselArrowsVisibility()
   }
 
-  handleItemClick = (item: SearchResult) => {
-    if (item?.path) {
-      this.sourceItemClick.emit(item)
-    } else {
+  handleItemClick = (originalOnClickEvent: MouseEvent, item: SearchResult) => {
+    const answerSourceClick = this.answerSourceClick.emit(item)
+
+    if (answerSourceClick.defaultPrevented) {
+      originalOnClickEvent.preventDefault()
+      return
+    }
+
+    if (!item?.path) {
       throw new Error('No path found')
     }
   }
 
   computeCarouselArrowsVisibility() {
     const carousel = this.carouselSourceRef
+
+    if (!carousel) {
+      return
+    }
+
     const items = carousel.getElementsByClassName('source-inner-wrapper')
 
     this.isCarouselScrollAtEnd = !this.getNextItemCarousel(carousel, items)
@@ -138,9 +153,12 @@ export class OramaSources {
   })
 
   componentDidLoad() {
-    this.carouselSourceRef.addEventListener('scroll', this.handleCarouselScroll)
+    this.carouselSourceRef?.addEventListener('scroll', this.handleCarouselScroll)
     this.computeCarouselArrowsVisibility()
-    this.resizeObserver.observe(this.carouselSourceRef)
+
+    if (this.carouselSourceRef) {
+      this.resizeObserver.observe(this.carouselSourceRef)
+    }
   }
 
   disconnectedCallback() {
@@ -214,7 +232,7 @@ export class OramaSources {
                     target={this.linksTarget}
                     rel={this.linksRel}
                     id={`source-${index}`}
-                    onClick={() => this.handleItemClick(source)}
+                    onClick={(onClickEvent) => this.handleItemClick(onClickEvent, source)}
                   >
                     <orama-text as="h3" styledAs="span" class="source-title">
                       {source[this.sourcesMap.title]}

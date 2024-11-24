@@ -2,6 +2,7 @@ import type { OramaClient, ClientSearchParams } from '@oramacloud/client'
 import { OramaClientNotInitializedError } from '@/erros/OramaClientNotInitialized'
 import { searchState } from '@/context/searchContext'
 import type {
+  OnSearchCompletedCallbackProps,
   ResultMap,
   ResultMapKeys,
   ResultMapRenderFunction,
@@ -23,7 +24,14 @@ export class SearchService {
     this.abortController = new AbortController()
   }
 
-  search = (term: string, selectedFacet?: string) => {
+  search = async (
+    term: string,
+    selectedFacet?: string,
+    callbacks?: {
+      onSearchCompletedCallback?: (onSearchCompletedCallbackProps: OnSearchCompletedCallbackProps) => unknown
+      onSearchErrorCallback?: (error: Error) => unknown
+    },
+  ) => {
     if (!this.oramaClient) {
       throw new OramaClientNotInitializedError()
     }
@@ -44,31 +52,29 @@ export class SearchService {
     const latestAbortController = this.abortController
     const { limit, offset, where, ...restSearchParams } = searchState.searchParams ?? {}
 
-    // TODO: Maybe we would like to have a debounce here (Check with Michele)
-    this.oramaClient
-      .search(
-        {
-          ...restSearchParams,
-          term,
-          limit: limit || LIMIT_RESULTS,
-          ...(where ? { where } : {}),
-          ...(searchState.facetProperty && {
-            facets: {
-              [searchState.facetProperty]: {},
+    const clientSearchParams = {
+      ...restSearchParams,
+      term,
+      limit: limit || LIMIT_RESULTS,
+      ...(where ? { where } : {}),
+      ...(searchState.facetProperty && {
+        facets: {
+          [searchState.facetProperty]: {},
+        },
+        ...(selectedFacet &&
+          selectedFacet !== 'All' && {
+            where: {
+              [searchState.facetProperty]: {
+                eq: selectedFacet,
+              },
+              ...where,
             },
-            ...(selectedFacet &&
-              selectedFacet !== 'All' && {
-                where: {
-                  [searchState.facetProperty]: {
-                    eq: selectedFacet,
-                  },
-                  ...where,
-                },
-              }),
           }),
-        } as ClientSearchParams,
-        { abortController: this.abortController },
-      )
+      }),
+    } as ClientSearchParams
+
+    await this.oramaClient
+      .search(clientSearchParams, { abortController: this.abortController })
       .then((results) => {
         if (latestAbortController.signal.aborted) {
           return
@@ -80,9 +86,20 @@ export class SearchService {
         searchState.highlightedIndex = -1
 
         searchState.loading = false
+
+        callbacks?.onSearchCompletedCallback?.({
+          clientSearchParams,
+          result: {
+            results: searchState.results,
+            resultsCount: searchState.count,
+            facets: searchState.facets,
+          },
+        })
       })
-      .catch(() => {
+      .catch((error) => {
         searchState.loading = false
+
+        callbacks?.onSearchErrorCallback?.(error)
       })
   }
 

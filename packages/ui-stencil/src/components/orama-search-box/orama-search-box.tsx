@@ -9,7 +9,16 @@ import { arrowKeysNavigation, generateRandomID, initOramaClient, validateCloudIn
 import type { AnyOrama, Orama, SearchParams } from '@orama/orama'
 import type { HighlightOptions } from '@orama/highlight'
 import type { OramaClient } from '@oramacloud/client'
-import type { CloudIndexConfig, ColorScheme, ResultMap, SourcesMap } from '@/types'
+import type {
+  CloudIndexConfig,
+  ColorScheme,
+  OnAnswerGeneratedCallbackProps,
+  OnAnswerSourceClickCallbackProps,
+  OnSearchCompletedCallbackProps,
+  OnSearchResultClickCallbackProps,
+  ResultMap,
+  SourcesMap,
+} from '@/types'
 import type { TThemeOverrides } from '@/config/theme'
 
 @Component({
@@ -48,9 +57,22 @@ export class SearchBox {
   @State() systemScheme: Omit<ColorScheme, 'system'> = 'light'
   @State() windowWidth: number
 
-  @Event() searchboxClosed: EventEmitter<{
-    id: HTMLElement
-  }>
+  /**
+   * Fired when search successfully resolves
+   */
+  @Event() searchCompleted: EventEmitter<OnSearchCompletedCallbackProps>
+  /**
+   * Fired when user clicks on search result
+   */
+  @Event() searchResultClick: EventEmitter<OnSearchResultClickCallbackProps>
+  /**
+   * Fired when answer generation is successfully completed
+   */
+  @Event() answerGenerated: EventEmitter<OnAnswerGeneratedCallbackProps>
+  /**
+   * Fired when user clicks on answer source
+   */
+  @Event() answerSourceClick: EventEmitter<OnAnswerSourceClickCallbackProps>
 
   wrapperRef!: HTMLElement
 
