@@ -7,11 +7,12 @@
 
 ## Properties
 
-| Property                | Attribute | Description | Type                                                          | Default     |
-| ----------------------- | --------- | ----------- | ------------------------------------------------------------- | ----------- |
-| `chatMarkdownLinkHref`  | --        |             | `({ text, href }: { text: string; href: string; }) => string` | `undefined` |
-| `chatMarkdownLinkTitle` | --        |             | `({ text, href }: { text: string; href: string; }) => string` | `undefined` |
-| `content`               | `content` |             | `string`                                                      | `undefined` |
+| Property                 | Attribute | Description | Type                                                          | Default     |
+| ------------------------ | --------- | ----------- | ------------------------------------------------------------- | ----------- |
+| `chatMarkdownLinkHref`   | --        |             | `({ text, href }: { text: string; href: string; }) => string` | `undefined` |
+| `chatMarkdownLinkTarget` | --        |             | `({ text, href }: { text: string; href: string; }) => string` | `undefined` |
+| `chatMarkdownLinkTitle`  | --        |             | `({ text, href }: { text: string; href: string; }) => string` | `undefined` |
+| `content`                | `content` |             | `string`                                                      | `undefined` |
 
 
 ## Events

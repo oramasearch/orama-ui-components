@@ -43,6 +43,7 @@ export type AskParams = SearchParams<AnyOrama> & {
 
 export type ChatMarkdownLinkTitle = ({ text, href }: { text: string; href: string }) => string
 export type ChatMarkdownLinkHref = ({ text, href }: { text: string; href: string }) => string
+export type ChatMarkdownLinkTarget = ({ text, href }: { text: string; href: string }) => string
 export type OnChatMarkdownLinkClickedCallbackProps = { text: string; href: string }
 
 export type OnSearchCompletedCallbackProps = {

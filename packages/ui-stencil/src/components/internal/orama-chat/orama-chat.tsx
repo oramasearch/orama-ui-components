@@ -2,6 +2,7 @@ import { Component, Fragment, Listen, Host, Prop, State, Watch, h, type EventEmi
 import { chatContext, chatStore, TAnswerStatus } from '@/context/chatContext'
 import type {
   ChatMarkdownLinkHref,
+  ChatMarkdownLinkTarget,
   ChatMarkdownLinkTitle,
   OnAnswerGeneratedCallbackProps,
   SearchResult,
@@ -31,6 +32,7 @@ export class OramaChat {
 
   @Prop() chatMarkdownLinkTitle?: ChatMarkdownLinkTitle
   @Prop() chatMarkdownLinkHref?: ChatMarkdownLinkHref
+  @Prop() chatMarkdownLinkTarget?: ChatMarkdownLinkTarget
 
   @Event({ bubbles: true, composed: true }) answerGenerated: EventEmitter<OnAnswerGeneratedCallbackProps>
 

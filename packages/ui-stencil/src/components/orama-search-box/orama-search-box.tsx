@@ -11,6 +11,7 @@ import type { HighlightOptions } from '@orama/highlight'
 import type { OramaClient } from '@oramacloud/client'
 import type {
   ChatMarkdownLinkHref,
+  ChatMarkdownLinkTarget,
   ChatMarkdownLinkTitle,
   CloudIndexConfig,
   ColorScheme,
@@ -56,6 +57,7 @@ export class SearchBox {
   @Prop() searchParams?: SearchParams<Orama<AnyOrama | OramaClient>>
   @Prop() chatMarkdownLinkTitle?: ChatMarkdownLinkTitle
   @Prop() chatMarkdownLinkHref?: ChatMarkdownLinkHref
+  @Prop() chatMarkdownLinkTarget?: ChatMarkdownLinkTarget
 
   @State() oramaClient: OramaClient
   @State() componentID = generateRandomID('search-box')

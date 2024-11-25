@@ -3,7 +3,12 @@ import { Component, Element, type EventEmitter, Prop, Watch, h, Event } from '@s
 import DOMPurify from 'dompurify'
 import hljs from 'highlight.js/lib/core'
 import { marked } from 'marked'
-import type { ChatMarkdownLinkHref, ChatMarkdownLinkTitle, OnChatMarkdownLinkClickedCallbackProps } from '@/types'
+import type {
+  ChatMarkdownLinkHref,
+  ChatMarkdownLinkTarget,
+  ChatMarkdownLinkTitle,
+  OnChatMarkdownLinkClickedCallbackProps,
+} from '@/types'
 
 // biome-ignore lint/suspicious/noExplicitAny: Let me be, TypeScript
 ;(window as any).hljs = hljs
@@ -90,6 +95,7 @@ export class OramaMarkdown {
   @Prop() content: string
   @Prop() chatMarkdownLinkTitle?: ChatMarkdownLinkTitle
   @Prop() chatMarkdownLinkHref?: ChatMarkdownLinkHref
+  @Prop() chatMarkdownLinkTarget?: ChatMarkdownLinkTarget
 
   @Event({ bubbles: true, composed: true, cancelable: true })
   chatMarkdownLinkClicked: EventEmitter<OnChatMarkdownLinkClickedCallbackProps>
@@ -110,6 +116,11 @@ export class OramaMarkdown {
           const link = document.createElement('a')
           link.innerHTML = this.chatMarkdownLinkTitle?.({ href: token.href, text: token.text }) ?? token.text
           link.href = this.chatMarkdownLinkHref?.({ href: token.href, text: token.text }) ?? token.href
+
+          if (this.chatMarkdownLinkHref) {
+            link.target = this.chatMarkdownLinkHref?.({ href: token.href, text: token.text })
+          }
+
           link.onclick = (onClickEvent) => {
             const chatMarkdownLinkClicked = this.chatMarkdownLinkClicked.emit({
               text: token.text,

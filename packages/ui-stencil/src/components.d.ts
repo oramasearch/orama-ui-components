@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { ButtonProps } from "./components/internal/orama-button/orama-button";
-import { ChatMarkdownLinkHref, ChatMarkdownLinkTitle, CloudIndexConfig, ColorScheme, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnChatMarkdownLinkClickedCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, ResultMap, SearchResult, SearchResultBySection, SourcesMap } from "./types/index";
+import { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, CloudIndexConfig, ColorScheme, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnChatMarkdownLinkClickedCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, ResultMap, SearchResult, SearchResultBySection, SourcesMap } from "./types/index";
 import { TChatInteraction } from "./context/chatContext";
 import { OramaClient } from "@oramacloud/client";
 import { InputProps } from "./components/internal/orama-input/orama-input";
@@ -18,7 +18,7 @@ import { TThemeOverrides as TThemeOverrides1 } from "./components.d";
 import { SearchResultsProps } from "./components/internal/orama-search-results/orama-search-results";
 import { TextProps } from "./components/internal/orama-text/orama-text";
 export { ButtonProps } from "./components/internal/orama-button/orama-button";
-export { ChatMarkdownLinkHref, ChatMarkdownLinkTitle, CloudIndexConfig, ColorScheme, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnChatMarkdownLinkClickedCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, ResultMap, SearchResult, SearchResultBySection, SourcesMap } from "./types/index";
+export { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, CloudIndexConfig, ColorScheme, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnChatMarkdownLinkClickedCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, ResultMap, SearchResult, SearchResultBySection, SourcesMap } from "./types/index";
 export { TChatInteraction } from "./context/chatContext";
 export { OramaClient } from "@oramacloud/client";
 export { InputProps } from "./components/internal/orama-input/orama-input";
@@ -41,6 +41,7 @@ export namespace Components {
     }
     interface OramaChat {
         "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
+        "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "defaultTerm"?: string;
         "focusInput"?: boolean;
@@ -55,12 +56,14 @@ export namespace Components {
     }
     interface OramaChatAssistentMessage {
         "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
+        "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "interaction": TChatInteraction;
     }
     interface OramaChatBox {
         "autoFocus": boolean;
         "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
+        "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "clientInstance"?: OramaClient;
         "index"?: CloudIndexConfig;
@@ -80,6 +83,7 @@ export namespace Components {
     }
     interface OramaChatMessagesContainer {
         "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
+        "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "interactions": TChatInteraction[];
     }
@@ -114,6 +118,7 @@ export namespace Components {
     }
     interface OramaMarkdown {
         "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
+        "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "content": string;
     }
@@ -141,6 +146,7 @@ export namespace Components {
     }
     interface OramaSearchBox {
         "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
+        "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "chatPlaceholder"?: string;
         "clientInstance"?: OramaClient;
@@ -592,6 +598,7 @@ declare namespace LocalJSX {
     }
     interface OramaChat {
         "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
+        "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "defaultTerm"?: string;
         "focusInput"?: boolean;
@@ -607,12 +614,14 @@ declare namespace LocalJSX {
     }
     interface OramaChatAssistentMessage {
         "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
+        "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "interaction"?: TChatInteraction;
     }
     interface OramaChatBox {
         "autoFocus"?: boolean;
         "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
+        "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "clientInstance"?: OramaClient;
         "index"?: CloudIndexConfig;
@@ -644,6 +653,7 @@ declare namespace LocalJSX {
     }
     interface OramaChatMessagesContainer {
         "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
+        "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "interactions"?: TChatInteraction[];
         "onAnswerGenerated"?: (event: OramaChatMessagesContainerCustomEvent<OnSearchCompletedCallbackProps>) => void;
@@ -680,6 +690,7 @@ declare namespace LocalJSX {
     }
     interface OramaMarkdown {
         "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
+        "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "content"?: string;
         "onChatMarkdownLinkClicked"?: (event: OramaMarkdownCustomEvent<OnChatMarkdownLinkClickedCallbackProps>) => void;
@@ -711,6 +722,7 @@ declare namespace LocalJSX {
     }
     interface OramaSearchBox {
         "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
+        "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "chatPlaceholder"?: string;
         "clientInstance"?: OramaClient;

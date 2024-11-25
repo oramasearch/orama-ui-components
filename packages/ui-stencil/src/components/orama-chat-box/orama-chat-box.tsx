@@ -4,6 +4,7 @@ import { ChatService } from '@/services/ChatService'
 import { generateRandomID, initOramaClient, validateCloudIndexConfig } from '@/utils/utils'
 import type {
   ChatMarkdownLinkHref,
+  ChatMarkdownLinkTarget,
   ChatMarkdownLinkTitle,
   CloudIndexConfig,
   OnAnswerGeneratedCallbackProps,
@@ -33,6 +34,7 @@ export class ChatBox {
   @Prop() systemPrompts?: string[]
   @Prop() chatMarkdownLinkTitle?: ChatMarkdownLinkTitle
   @Prop() chatMarkdownLinkHref?: ChatMarkdownLinkHref
+  @Prop() chatMarkdownLinkTarget?: ChatMarkdownLinkTarget
 
   @State() oramaClient: OramaClient
   @State() componentID = generateRandomID('chat-box')

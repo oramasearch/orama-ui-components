@@ -6,7 +6,7 @@ import '@phosphor-icons/webcomponents/dist/icons/PhThumbsDown.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhWarning.mjs'
 import { chatContext, TAnswerStatus } from '@/context/chatContext'
 import { copyToClipboard } from '@/utils/utils'
-import type { ChatMarkdownLinkHref, ChatMarkdownLinkTitle } from '@/types'
+import type { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle } from '@/types'
 
 @Component({
   tag: 'orama-chat-assistent-message',
@@ -17,6 +17,7 @@ export class OramaChatAssistentMessage {
   @Prop() interaction: TChatInteraction
   @Prop() chatMarkdownLinkTitle?: ChatMarkdownLinkTitle
   @Prop() chatMarkdownLinkHref?: ChatMarkdownLinkHref
+  @Prop() chatMarkdownLinkTarget?: ChatMarkdownLinkTarget
 
   @State() isCopied = false
   handleCopyToClipboard = () => {
