@@ -25,6 +25,9 @@ import type {
 } from '@/types'
 import type { TThemeOverrides } from '@/config/theme'
 
+// TODO: AI components should be lazyly loaded. In case of Disable AI flag, it should not be loaded at all
+// https://linear.app/oramasearch/issue/ORM-1824/ai-components-should-be-lazyly-loaded-in-case-of-disable-ai-flag-they
+
 @Component({
   tag: 'orama-search-box',
   styleUrl: 'orama-search-box.scss',
@@ -36,7 +39,7 @@ export class SearchBox {
   @Prop() themeConfig?: Partial<TThemeOverrides>
   @Prop() colorScheme?: ColorScheme = 'light'
   @Prop() index?: CloudIndexConfig
-  @Prop() clientInstance?: OramaClient
+  @Prop() clientInstance?: OramaClient | AnyOrama
   @Prop({ mutable: true }) open = false
   @Prop() facetProperty?: string
   @Prop() resultMap?: Partial<ResultMap> = {}
@@ -59,7 +62,6 @@ export class SearchBox {
   @Prop() chatMarkdownLinkHref?: ChatMarkdownLinkHref
   @Prop() chatMarkdownLinkTarget?: ChatMarkdownLinkTarget
 
-  @State() oramaClient: OramaClient
   @State() componentID = generateRandomID('search-box')
   @State() systemScheme: Omit<ColorScheme, 'system'> = 'light'
   @State() windowWidth: number
@@ -93,6 +95,7 @@ export class SearchBox {
   schemaQuery: MediaQueryList
 
   @Watch('index')
+  @Watch('clientInstance')
   indexChanged() {
     this.startServices()
   }
@@ -171,10 +174,10 @@ export class SearchBox {
 
   startServices() {
     validateCloudIndexConfig(this.htmlElement, this.index, this.clientInstance)
-    this.oramaClient = this.clientInstance ? this.clientInstance : initOramaClient(this.index)
+    const oramaClient = this.clientInstance ? this.clientInstance : initOramaClient(this.index)
 
-    searchState.searchService = new SearchService(this.oramaClient)
-    chatContext.chatService = new ChatService(this.oramaClient)
+    searchState.searchService = new SearchService(oramaClient)
+    chatContext.chatService = new ChatService(oramaClient)
   }
 
   componentWillLoad() {

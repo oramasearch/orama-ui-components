@@ -14,6 +14,7 @@ import type {
 } from '@/types'
 import type { OramaClient } from '@oramacloud/client'
 import '@phosphor-icons/webcomponents/dist/icons/PhArrowClockwise.mjs'
+import type { AnyOrama, Orama } from "@orama/orama"
 
 @Component({
   tag: 'orama-chat-box',
@@ -23,7 +24,7 @@ import '@phosphor-icons/webcomponents/dist/icons/PhArrowClockwise.mjs'
 export class ChatBox {
   @Element() el: HTMLElement
   @Prop() index?: CloudIndexConfig
-  @Prop() clientInstance?: OramaClient
+  @Prop() clientInstance?: OramaClient | AnyOrama
   @Prop() sourceBaseUrl?: string
   @Prop() linksTarget?: string
   @Prop() linksRel?: string
@@ -36,7 +37,6 @@ export class ChatBox {
   @Prop() chatMarkdownLinkHref?: ChatMarkdownLinkHref
   @Prop() chatMarkdownLinkTarget?: ChatMarkdownLinkTarget
 
-  @State() oramaClient: OramaClient
   @State() componentID = generateRandomID('chat-box')
 
   /**
@@ -66,9 +66,9 @@ export class ChatBox {
 
   startChatService() {
     validateCloudIndexConfig(this.el, this.index, this.clientInstance)
-    this.oramaClient = this.clientInstance || initOramaClient(this.index)
+    const oramaClient = this.clientInstance || initOramaClient(this.index)
 
-    chatContext.chatService = new ChatService(this.oramaClient)
+    chatContext.chatService = new ChatService(oramaClient)
   }
 
   render() {

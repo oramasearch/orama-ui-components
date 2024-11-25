@@ -77,9 +77,9 @@ const Template = ({
   facetProperty,
   themeConfig,
   index,
+  clientInstance,
   sourceBaseUrl,
   sourcesMap,
-  highlight,
   resultMap,
 }) => {
   return html`<div>
@@ -93,6 +93,7 @@ const Template = ({
       .colorScheme=${colorScheme}
       .themeConfig=${themeConfig || preset.themeConfig}
       .index=${index || preset.index}
+      .clientInstance=${clientInstance || preset.clientInstance}
       .instance=${preset.instance}
       .suggestions=${suggestions || preset?.suggestions}
       .sourceBaseUrl=${sourceBaseUrl || preset?.sourceBaseUrl}
@@ -119,6 +120,7 @@ const TemplateAsEmbed = ({
   resultMap,
   themeConfig,
   index,
+  clientInstance,
   sourceBaseURL,
   suggestions,
   sourcesMap,
@@ -132,6 +134,7 @@ const TemplateAsEmbed = ({
       .colorScheme=${colorScheme}
       .themeConfig=${themeConfig || preset.themeConfig}
       .index=${index || preset.index}
+      .clientInstance=${clientInstance || preset.clientInstance}
       .instance=${preset.instance}
       .suggestions=${suggestions || preset?.suggestions}
       .sourceBaseUrl=${sourceBaseURL || preset?.sourceBaseUrl}

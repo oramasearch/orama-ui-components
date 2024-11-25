@@ -1,14 +1,18 @@
-import type { OramaClient, AnswerSession, AskParams } from '@oramacloud/client'
+import type { AskParams } from '@oramacloud/client'
+import type { AnswerSession as OSSAnswerSession } from '@orama/orama'
+import type { AnswerSession as CloudAnswerSession } from '@oramacloud/client'
+import type { OramaSwitchClient } from '@orama/switch'
+import { Switch } from '@orama/switch'
 import { OramaClientNotInitializedError } from '@/erros/OramaClientNotInitialized'
 import { chatContext, TAnswerStatus } from '@/context/chatContext'
 import type { OnAnswerGeneratedCallbackProps } from '@/types'
 
 export class ChatService {
-  oramaClient: OramaClient
-  answerSession: AnswerSession<true>
+  oramaClient: Switch
+  answerSession: CloudAnswerSession<true> | OSSAnswerSession
 
-  constructor(oramaClient: OramaClient) {
-    this.oramaClient = oramaClient
+  constructor(oramaClient: OramaSwitchClient) {
+    this.oramaClient = new Switch(oramaClient)
   }
 
   sendQuestion = (
@@ -45,6 +49,7 @@ export class ChatService {
             chatContext.interactions = normalizedState.map((interaction, index) => {
               const isLatest = state.length - 1 === index
               let answerStatus = TAnswerStatus.loading
+              let sources = []
 
               if (interaction.aborted) {
                 answerStatus = TAnswerStatus.aborted
@@ -57,7 +62,15 @@ export class ChatService {
               }
 
               // biome-ignore lint/suspicious/noExplicitAny: Client should expose this type
-              const sources = (interaction.sources as any)?.map((source) => source.document)
+              /**
+               * we usually expected to receive interaction.sources as an array, but sometimes it comes as an object.
+               * need to check OSS Orama and fix it if it's a bug.
+               **/
+              if (interaction.sources) {
+                sources = Array.isArray(interaction.sources) ?
+                  (interaction.sources as any)?.map((source) => source.document) :
+                  (interaction.sources.hits as any)?.map((source) => source.document)
+              }
 
               if (isLatest && answerStatus === TAnswerStatus.done) {
                 callbacks?.onAnswerGeneratedCallback?.({
@@ -84,8 +97,8 @@ export class ChatService {
         },
       })
 
-      if (systemPrompts) {
-        this.answerSession.setSystemPromptConfiguration({ systemPrompts })
+      if (this.oramaClient.clientType === 'cloud' && systemPrompts) {
+        (this.answerSession as CloudAnswerSession<true>).setSystemPromptConfiguration({ systemPrompts })
       }
     }
 
