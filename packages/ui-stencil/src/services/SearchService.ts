@@ -1,6 +1,7 @@
-import type { OramaClient, ClientSearchParams } from '@oramacloud/client'
+import type { ClientSearchParams } from '@oramacloud/client'
 import { OramaClientNotInitializedError } from '@/erros/OramaClientNotInitialized'
 import { searchState } from '@/context/searchContext'
+import { Switch, type OramaSwitchClient } from '@orama/switch'
 import type {
   OnSearchCompletedCallbackProps,
   ResultMap,
@@ -13,14 +14,15 @@ import type {
 const LIMIT_RESULTS = 10
 
 // TODO: Orama Client should expose Result type
-type OramaHit = { id: string; score: number; document: { title: string; description: string; path: string } }
+// biome-ignore lint/suspicious/noExplicitAny: There is not way to type document as we only know what it is in runtime
+type OramaHit = { id: string; score: number; document: any }
 
 export class SearchService {
   private abortController: AbortController
-  private oramaClient: OramaClient
+  private oramaClient: Switch<OramaSwitchClient>
 
-  constructor(oramaClient: OramaClient) {
-    this.oramaClient = oramaClient
+  constructor(oramaClient: OramaSwitchClient) {
+    this.oramaClient = new Switch(oramaClient)
     this.abortController = new AbortController()
   }
 
