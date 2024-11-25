@@ -4,6 +4,7 @@ import type {
   ChatMarkdownLinkHref,
   ChatMarkdownLinkTarget,
   ChatMarkdownLinkTitle,
+  OnAnswerGeneratedCallbackProps,
   OnSearchCompletedCallbackProps,
 } from '@/types'
 
@@ -18,7 +19,7 @@ export class OramaChatMessagesContainer {
   @Prop() chatMarkdownLinkHref?: ChatMarkdownLinkHref
   @Prop() chatMarkdownLinkTarget?: ChatMarkdownLinkTarget
 
-  @Event({ bubbles: true, composed: true }) answerGenerated: EventEmitter<OnSearchCompletedCallbackProps>
+  @Event({ bubbles: true, composed: true }) answerGenerated: EventEmitter<OnAnswerGeneratedCallbackProps>
 
   @Element() el: HTMLElement
 
@@ -27,9 +28,8 @@ export class OramaChatMessagesContainer {
   // TODO: I'm not sure about having this here as we're breaking our rule of maintain service access only to the very top level component
   onSuggestionClick = (suggestion: string) => {
     chatContext.chatService?.sendQuestion(suggestion, undefined, {
-      onAnswerGeneratedCallback(onAnswerGeneratedCallbackProps) {
-        this.answerGenerated.emit(onAnswerGeneratedCallbackProps)
-      },
+      onAnswerGeneratedCallback: (onAnswerGeneratedCallbackProps) =>
+        this.answerGenerated.emit(onAnswerGeneratedCallbackProps),
     })
   }
 

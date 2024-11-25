@@ -24,7 +24,7 @@
 
 | Event             | Description | Type                                                                                                                                             |
 | ----------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `answerGenerated` |             | `CustomEvent<{ clientSearchParams: ClientSearchParams; result: { results: SearchResultBySection[]; resultsCount: number; facets: Facet[]; }; }>` |
+| `answerGenerated` |             | `CustomEvent<{ askParams: AskParams; query: string; sources: Results<unknown>; answer: string; segment: string; trigger: string; }>`             |
 | `searchCompleted` |             | `CustomEvent<{ clientSearchParams: ClientSearchParams; result: { results: SearchResultBySection[]; resultsCount: number; facets: Facet[]; }; }>` |
 
 

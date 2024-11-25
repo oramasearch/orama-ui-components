@@ -1,6 +1,6 @@
 import { Component, Host, Listen, State, Watch, h, Element, Prop, type EventEmitter, Event } from '@stencil/core'
 import { searchState } from '@/context/searchContext'
-import type { OnSearchCompletedCallbackProps, SearchResult } from '@/types'
+import type { OnAnswerGeneratedCallbackProps, OnSearchCompletedCallbackProps, SearchResult } from '@/types'
 import { globalContext } from '@/context/GlobalContext'
 import { chatContext } from '@/context/chatContext'
 import type { HighlightOptions } from '@orama/highlight'
@@ -27,7 +27,7 @@ export class OramaSearch {
   @State() selectedFacet = ''
 
   @Event({ bubbles: true, composed: true }) searchCompleted: EventEmitter<OnSearchCompletedCallbackProps>
-  @Event({ bubbles: true, composed: true }) answerGenerated: EventEmitter<OnSearchCompletedCallbackProps>
+  @Event({ bubbles: true, composed: true }) answerGenerated: EventEmitter<OnAnswerGeneratedCallbackProps>
 
   inputRef!: HTMLOramaInputElement
 
@@ -95,9 +95,8 @@ export class OramaSearch {
             setChatTerm={(term) => {
               globalContext.currentTask = 'chat'
               chatContext.chatService?.sendQuestion(term, undefined, {
-                onAnswerGeneratedCallback(onAnswerGeneratedCallbackProps) {
-                  this.answerGenerated.emit(onAnswerGeneratedCallbackProps)
-                },
+                onAnswerGeneratedCallback: (onAnswerGeneratedCallbackProps) =>
+                  this.answerGenerated.emit(onAnswerGeneratedCallbackProps),
               })
             }}
             sourceBaseUrl={this.sourceBaseUrl}

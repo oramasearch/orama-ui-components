@@ -17,9 +17,9 @@
 
 ## Events
 
-| Event             | Description | Type                                                                                                                                             |
-| ----------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `answerGenerated` |             | `CustomEvent<{ clientSearchParams: ClientSearchParams; result: { results: SearchResultBySection[]; resultsCount: number; facets: Facet[]; }; }>` |
+| Event             | Description | Type                                                                                                                                 |
+| ----------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `answerGenerated` |             | `CustomEvent<{ askParams: AskParams; query: string; sources: Results<unknown>; answer: string; segment: string; trigger: string; }>` |
 
 
 ## Dependencies

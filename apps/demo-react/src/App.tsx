@@ -23,8 +23,8 @@ function App() {
             <div className="component-row">
               <OramaChatBox
                 index={{
-                  api_key: 'yl2JSnjLNBV6FVfUWEyadpjFr6KzPiDR',
-                  endpoint: 'https://cloud.orama.run/v1/indexes/recipes-m7w9mm',
+                  api_key: 'qopIuAERiWP2EZOpDjvczjws7WV40yrj',
+                  endpoint: 'https://cloud.orama.run/v1/indexes/nodejs-org-dev-hhqrzv',
                 }}
                 style={{ height: '600px' }}
                 onAnswerSourceClick={(e: Event) => console.log(e)}

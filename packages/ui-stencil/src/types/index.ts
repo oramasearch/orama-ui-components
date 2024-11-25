@@ -56,7 +56,6 @@ export type OnSearchResultClickCallbackProps = {
 }
 
 export type OnAnswerGeneratedCallbackProps = {
-  // TODO
   askParams: AskParams
   query: string
   sources: Results<unknown>
