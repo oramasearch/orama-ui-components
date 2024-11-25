@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { ButtonProps } from "./components/internal/orama-button/orama-button";
-import { CloudIndexConfig, ColorScheme, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, ResultMap, SearchResult, SearchResultBySection, SourcesMap } from "./types/index";
+import { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, CloudIndexConfig, ColorScheme, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnChatMarkdownLinkClickedCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, ResultMap, SearchResult, SearchResultBySection, SourcesMap } from "./types/index";
 import { TChatInteraction } from "./context/chatContext";
 import { OramaClient } from "@oramacloud/client";
 import { InputProps } from "./components/internal/orama-input/orama-input";
@@ -18,7 +18,7 @@ import { TThemeOverrides as TThemeOverrides1 } from "./components.d";
 import { SearchResultsProps } from "./components/internal/orama-search-results/orama-search-results";
 import { TextProps } from "./components/internal/orama-text/orama-text";
 export { ButtonProps } from "./components/internal/orama-button/orama-button";
-export { CloudIndexConfig, ColorScheme, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, ResultMap, SearchResult, SearchResultBySection, SourcesMap } from "./types/index";
+export { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, CloudIndexConfig, ColorScheme, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnChatMarkdownLinkClickedCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, ResultMap, SearchResult, SearchResultBySection, SourcesMap } from "./types/index";
 export { TChatInteraction } from "./context/chatContext";
 export { OramaClient } from "@oramacloud/client";
 export { InputProps } from "./components/internal/orama-input/orama-input";
@@ -40,6 +40,9 @@ export namespace Components {
         "withTooltip"?: string;
     }
     interface OramaChat {
+        "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
+        "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
+        "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "defaultTerm"?: string;
         "focusInput"?: boolean;
         "linksRel"?: string;
@@ -52,10 +55,16 @@ export namespace Components {
         "systemPrompts"?: string[];
     }
     interface OramaChatAssistentMessage {
+        "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
+        "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
+        "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "interaction": TChatInteraction;
     }
     interface OramaChatBox {
         "autoFocus": boolean;
+        "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
+        "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
+        "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "clientInstance"?: OramaClient;
         "index"?: CloudIndexConfig;
         "linksRel"?: string;
@@ -73,6 +82,9 @@ export namespace Components {
         "label": string;
     }
     interface OramaChatMessagesContainer {
+        "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
+        "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
+        "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "interactions": TChatInteraction[];
     }
     interface OramaChatUserMessage {
@@ -105,6 +117,9 @@ export namespace Components {
         "size": number;
     }
     interface OramaMarkdown {
+        "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
+        "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
+        "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "content": string;
     }
     interface OramaModal {
@@ -130,6 +145,9 @@ export namespace Components {
         "suggestions"?: string[];
     }
     interface OramaSearchBox {
+        "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
+        "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
+        "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "chatPlaceholder"?: string;
         "clientInstance"?: OramaClient;
         "colorScheme"?: ColorScheme;
@@ -241,6 +259,10 @@ export interface OramaInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLOramaInputElement;
 }
+export interface OramaMarkdownCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLOramaMarkdownElement;
+}
 export interface OramaModalCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLOramaModalElement;
@@ -294,6 +316,7 @@ declare global {
     interface HTMLOramaChatBoxElementEventMap {
         "answerGenerated": OnAnswerGeneratedCallbackProps;
         "answerSourceClick": OnAnswerSourceClickCallbackProps;
+        "chatMarkdownLinkClicked": OnChatMarkdownLinkClickedCallbackProps;
     }
     interface HTMLOramaChatBoxElement extends Components.OramaChatBox, HTMLStencilElement {
         addEventListener<K extends keyof HTMLOramaChatBoxElementEventMap>(type: K, listener: (this: HTMLOramaChatBoxElement, ev: OramaChatBoxCustomEvent<HTMLOramaChatBoxElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -385,7 +408,18 @@ declare global {
         prototype: HTMLOramaLogoIconElement;
         new (): HTMLOramaLogoIconElement;
     };
+    interface HTMLOramaMarkdownElementEventMap {
+        "chatMarkdownLinkClicked": OnChatMarkdownLinkClickedCallbackProps;
+    }
     interface HTMLOramaMarkdownElement extends Components.OramaMarkdown, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLOramaMarkdownElementEventMap>(type: K, listener: (this: HTMLOramaMarkdownElement, ev: OramaMarkdownCustomEvent<HTMLOramaMarkdownElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLOramaMarkdownElementEventMap>(type: K, listener: (this: HTMLOramaMarkdownElement, ev: OramaMarkdownCustomEvent<HTMLOramaMarkdownElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLOramaMarkdownElement: {
         prototype: HTMLOramaMarkdownElement;
@@ -437,6 +471,7 @@ declare global {
         "searchResultClick": OnSearchResultClickCallbackProps;
         "answerGenerated": OnAnswerGeneratedCallbackProps;
         "answerSourceClick": OnAnswerSourceClickCallbackProps;
+        "chatMarkdownLinkClicked": OnChatMarkdownLinkClickedCallbackProps;
     }
     interface HTMLOramaSearchBoxElement extends Components.OramaSearchBox, HTMLStencilElement {
         addEventListener<K extends keyof HTMLOramaSearchBoxElementEventMap>(type: K, listener: (this: HTMLOramaSearchBoxElement, ev: OramaSearchBoxCustomEvent<HTMLOramaSearchBoxElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -562,6 +597,9 @@ declare namespace LocalJSX {
         "withTooltip"?: string;
     }
     interface OramaChat {
+        "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
+        "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
+        "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "defaultTerm"?: string;
         "focusInput"?: boolean;
         "linksRel"?: string;
@@ -575,10 +613,16 @@ declare namespace LocalJSX {
         "systemPrompts"?: string[];
     }
     interface OramaChatAssistentMessage {
+        "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
+        "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
+        "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "interaction"?: TChatInteraction;
     }
     interface OramaChatBox {
         "autoFocus"?: boolean;
+        "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
+        "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
+        "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "clientInstance"?: OramaClient;
         "index"?: CloudIndexConfig;
         "linksRel"?: string;
@@ -591,6 +635,10 @@ declare namespace LocalJSX {
           * Fired when user clicks on answer source
          */
         "onAnswerSourceClick"?: (event: OramaChatBoxCustomEvent<OnAnswerSourceClickCallbackProps>) => void;
+        /**
+          * Fired when user clicks on chat markdown link
+         */
+        "onChatMarkdownLinkClicked"?: (event: OramaChatBoxCustomEvent<OnChatMarkdownLinkClickedCallbackProps>) => void;
         "placeholder"?: string;
         "sourceBaseUrl"?: string;
         "sourcesMap"?: SourcesMap;
@@ -604,6 +652,9 @@ declare namespace LocalJSX {
         "label"?: string;
     }
     interface OramaChatMessagesContainer {
+        "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
+        "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
+        "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "interactions"?: TChatInteraction[];
         "onAnswerGenerated"?: (event: OramaChatMessagesContainerCustomEvent<OnSearchCompletedCallbackProps>) => void;
     }
@@ -638,7 +689,11 @@ declare namespace LocalJSX {
         "size"?: number;
     }
     interface OramaMarkdown {
+        "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
+        "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
+        "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "content"?: string;
+        "onChatMarkdownLinkClicked"?: (event: OramaMarkdownCustomEvent<OnChatMarkdownLinkClickedCallbackProps>) => void;
     }
     interface OramaModal {
         "closeOnEscape"?: boolean;
@@ -666,6 +721,9 @@ declare namespace LocalJSX {
         "suggestions"?: string[];
     }
     interface OramaSearchBox {
+        "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
+        "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
+        "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "chatPlaceholder"?: string;
         "clientInstance"?: OramaClient;
         "colorScheme"?: ColorScheme;
@@ -685,6 +743,10 @@ declare namespace LocalJSX {
           * Fired when user clicks on answer source
          */
         "onAnswerSourceClick"?: (event: OramaSearchBoxCustomEvent<OnAnswerSourceClickCallbackProps>) => void;
+        /**
+          * Fired when user clicks on chat markdown link
+         */
+        "onChatMarkdownLinkClicked"?: (event: OramaSearchBoxCustomEvent<OnChatMarkdownLinkClickedCallbackProps>) => void;
         /**
           * Fired when search successfully resolves
          */

@@ -1,6 +1,11 @@
 import { Component, Host, Prop, h, Element, State, type EventEmitter, Event } from '@stencil/core'
 import { chatContext, type TChatInteraction } from '@/context/chatContext'
-import type { OnSearchCompletedCallbackProps } from '@/types'
+import type {
+  ChatMarkdownLinkHref,
+  ChatMarkdownLinkTarget,
+  ChatMarkdownLinkTitle,
+  OnSearchCompletedCallbackProps,
+} from '@/types'
 
 @Component({
   tag: 'orama-chat-messages-container',
@@ -9,6 +14,9 @@ import type { OnSearchCompletedCallbackProps } from '@/types'
 })
 export class OramaChatMessagesContainer {
   @Prop() interactions: TChatInteraction[]
+  @Prop() chatMarkdownLinkTitle?: ChatMarkdownLinkTitle
+  @Prop() chatMarkdownLinkHref?: ChatMarkdownLinkHref
+  @Prop() chatMarkdownLinkTarget?: ChatMarkdownLinkTarget
 
   @Event({ bubbles: true, composed: true }) answerGenerated: EventEmitter<OnSearchCompletedCallbackProps>
 
@@ -55,7 +63,11 @@ export class OramaChatMessagesContainer {
               }}
             >
               <orama-chat-user-message interaction={{ ...interaction }} />
-              <orama-chat-assistent-message interaction={{ ...interaction }} />
+              <orama-chat-assistent-message
+                interaction={{ ...interaction }}
+                chatMarkdownLinkTitle={this.chatMarkdownLinkTitle}
+                chatMarkdownLinkHref={this.chatMarkdownLinkHref}
+              />
               {interaction.latest && interaction.status === 'done' && !!interaction.relatedQueries?.length && (
                 <div class="suggestions-wrapper">
                   <orama-suggestions

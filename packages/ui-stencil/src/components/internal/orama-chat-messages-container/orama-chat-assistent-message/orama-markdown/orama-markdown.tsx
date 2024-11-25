@@ -1,8 +1,15 @@
 import { SUPPORTED_HLJS_LANGUAGES_ARRAY } from '@/components/internal/SupportedHLJSLanguages'
-import { Component, Element, Prop, Watch, h } from '@stencil/core'
+import { Component, Element, type EventEmitter, Prop, Watch, h, Event } from '@stencil/core'
 import DOMPurify from 'dompurify'
 import hljs from 'highlight.js/lib/core'
 import { marked } from 'marked'
+import type {
+  ChatMarkdownLinkHref,
+  ChatMarkdownLinkTarget,
+  ChatMarkdownLinkTitle,
+  OnChatMarkdownLinkClickedCallbackProps,
+} from '@/types'
+
 // biome-ignore lint/suspicious/noExplicitAny: Let me be, TypeScript
 ;(window as any).hljs = hljs
 
@@ -26,53 +33,6 @@ const SUPPORTED_HLJS_LANGUAGES = Object.fromEntries<{ error: boolean; retries: n
 const LANGUAGES_MAPPING: Record<string, string> = {
   html: 'xml',
 }
-
-marked.use({
-  useNewRenderer: true,
-  renderer: {
-    code: (token) => {
-      const mappedLanguage = LANGUAGES_MAPPING[token.lang] || token.lang
-      // Some "languages" like HTML should be rendererd as XML. Reasons are still unclear.
-      const actualLanguage = SUPPORTED_HLJS_LANGUAGES[mappedLanguage] ? mappedLanguage : 'plaintext'
-
-      const pre = document.createElement('pre')
-      pre.classList.add('orama-markdown-pre')
-      const codeTitle = document.createElement('div')
-      codeTitle.classList.add('orama-markdown-code-title')
-      pre.appendChild(codeTitle)
-
-      const code = document.createElement('code')
-      code.classList.add('orama-markdown-code')
-      code.classList.add(`language-${actualLanguage}`)
-      code.classList.add('hljs')
-
-      pre.appendChild(code)
-
-      const hljsLanguage = hljs.getLanguage(actualLanguage)
-      if (hljsLanguage) {
-        if (actualLanguage === 'plaintext') {
-          codeTitle.innerHTML = ''
-        } else {
-          codeTitle.innerHTML = hljsLanguage.name
-        }
-        code.innerHTML = hljs.highlight(token.text, { language: actualLanguage, ignoreIllegals: true }).value
-        code.dataset.highlighted = 'yes'
-      } else {
-        codeTitle.innerHTML = ' '
-        code.innerHTML = token.text
-      }
-
-      return pre.outerHTML
-    },
-    codespan: (token) => {
-      const code = document.createElement('code')
-      code.classList.add('orama-markdown-inline-code')
-      code.innerHTML = token.text
-
-      return code.outerHTML
-    },
-  },
-})
 
 /**
  *
@@ -133,6 +93,13 @@ async function loadLanguageAndHighlight(language: string): Promise<boolean> {
 })
 export class OramaMarkdown {
   @Prop() content: string
+  @Prop() chatMarkdownLinkTitle?: ChatMarkdownLinkTitle
+  @Prop() chatMarkdownLinkHref?: ChatMarkdownLinkHref
+  @Prop() chatMarkdownLinkTarget?: ChatMarkdownLinkTarget
+
+  @Event({ bubbles: true, composed: true, cancelable: true })
+  chatMarkdownLinkClicked: EventEmitter<OnChatMarkdownLinkClickedCallbackProps>
+
   divElement!: HTMLDivElement
   @Element() markdownElement!: HTMLElement
 
@@ -142,6 +109,75 @@ export class OramaMarkdown {
   }
 
   componentDidLoad() {
+    marked.use({
+      useNewRenderer: true,
+      renderer: {
+        link: (token) => {
+          const link = document.createElement('a')
+          link.innerHTML = this.chatMarkdownLinkTitle?.({ href: token.href, text: token.text }) ?? token.text
+          link.href = this.chatMarkdownLinkHref?.({ href: token.href, text: token.text }) ?? token.href
+
+          if (this.chatMarkdownLinkHref) {
+            link.target = this.chatMarkdownLinkHref?.({ href: token.href, text: token.text })
+          }
+
+          link.onclick = (onClickEvent) => {
+            const chatMarkdownLinkClicked = this.chatMarkdownLinkClicked.emit({
+              text: token.text,
+              href: token.href,
+            })
+
+            if (chatMarkdownLinkClicked?.defaultPrevented) {
+              onClickEvent.preventDefault()
+            }
+          }
+
+          return link.outerHTML
+        },
+        code: (token) => {
+          const mappedLanguage = LANGUAGES_MAPPING[token.lang] || token.lang
+          // Some "languages" like HTML should be rendererd as XML. Reasons are still unclear.
+          const actualLanguage = SUPPORTED_HLJS_LANGUAGES[mappedLanguage] ? mappedLanguage : 'plaintext'
+
+          const pre = document.createElement('pre')
+          pre.classList.add('orama-markdown-pre')
+          const codeTitle = document.createElement('div')
+          codeTitle.classList.add('orama-markdown-code-title')
+          pre.appendChild(codeTitle)
+
+          const code = document.createElement('code')
+          code.classList.add('orama-markdown-code')
+          code.classList.add(`language-${actualLanguage}`)
+          code.classList.add('hljs')
+
+          pre.appendChild(code)
+
+          const hljsLanguage = hljs.getLanguage(actualLanguage)
+          if (hljsLanguage) {
+            if (actualLanguage === 'plaintext') {
+              codeTitle.innerHTML = ''
+            } else {
+              codeTitle.innerHTML = hljsLanguage.name
+            }
+            code.innerHTML = hljs.highlight(token.text, { language: actualLanguage, ignoreIllegals: true }).value
+            code.dataset.highlighted = 'yes'
+          } else {
+            codeTitle.innerHTML = ' '
+            code.innerHTML = token.text
+          }
+
+          return pre.outerHTML
+        },
+        codespan: (token) => {
+          const code = document.createElement('code')
+          code.classList.add('orama-markdown-inline-code')
+          code.innerHTML = token.text
+
+          return code.outerHTML
+        },
+      },
+    })
+
     this.parseMarkdown()
   }
 

@@ -10,10 +10,14 @@ import type { AnyOrama, Orama, SearchParams } from '@orama/orama'
 import type { HighlightOptions } from '@orama/highlight'
 import type { OramaClient } from '@oramacloud/client'
 import type {
+  ChatMarkdownLinkHref,
+  ChatMarkdownLinkTarget,
+  ChatMarkdownLinkTitle,
   CloudIndexConfig,
   ColorScheme,
   OnAnswerGeneratedCallbackProps,
   OnAnswerSourceClickCallbackProps,
+  OnChatMarkdownLinkClickedCallbackProps,
   OnSearchCompletedCallbackProps,
   OnSearchResultClickCallbackProps,
   ResultMap,
@@ -51,6 +55,9 @@ export class SearchBox {
   @Prop() searchPlaceholder?: string
   @Prop() suggestions?: string[]
   @Prop() searchParams?: SearchParams<Orama<AnyOrama | OramaClient>>
+  @Prop() chatMarkdownLinkTitle?: ChatMarkdownLinkTitle
+  @Prop() chatMarkdownLinkHref?: ChatMarkdownLinkHref
+  @Prop() chatMarkdownLinkTarget?: ChatMarkdownLinkTarget
 
   @State() oramaClient: OramaClient
   @State() componentID = generateRandomID('search-box')
@@ -60,19 +67,26 @@ export class SearchBox {
   /**
    * Fired when search successfully resolves
    */
-  @Event() searchCompleted: EventEmitter<OnSearchCompletedCallbackProps>
+  @Event({ bubbles: true, composed: true }) searchCompleted: EventEmitter<OnSearchCompletedCallbackProps>
   /**
    * Fired when user clicks on search result
    */
-  @Event() searchResultClick: EventEmitter<OnSearchResultClickCallbackProps>
+  @Event({ bubbles: true, composed: true, cancelable: true })
+  searchResultClick: EventEmitter<OnSearchResultClickCallbackProps>
   /**
    * Fired when answer generation is successfully completed
    */
-  @Event() answerGenerated: EventEmitter<OnAnswerGeneratedCallbackProps>
+  @Event({ bubbles: true, composed: true }) answerGenerated: EventEmitter<OnAnswerGeneratedCallbackProps>
   /**
    * Fired when user clicks on answer source
    */
-  @Event() answerSourceClick: EventEmitter<OnAnswerSourceClickCallbackProps>
+  @Event({ bubbles: true, composed: true, cancelable: true })
+  answerSourceClick: EventEmitter<OnAnswerSourceClickCallbackProps>
+  /**
+   * Fired when user clicks on chat markdown link
+   */
+  @Event({ bubbles: true, composed: true, cancelable: true })
+  chatMarkdownLinkClicked: EventEmitter<OnChatMarkdownLinkClickedCallbackProps>
 
   wrapperRef!: HTMLElement
 
@@ -248,6 +262,8 @@ export class SearchBox {
           linksRel={this.linksRel}
           sourcesMap={this.sourcesMap}
           suggestions={this.suggestions}
+          chatMarkdownLinkTitle={this.chatMarkdownLinkTitle}
+          chatMarkdownLinkHref={this.chatMarkdownLinkHref}
         />
       </Fragment>
     )
