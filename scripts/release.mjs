@@ -15,7 +15,7 @@ function step(message) {
 }
 
 async function execute(command, args, cwd) {
-  const normalizedArgs = !Array.isArray(args) ? [args] : argss;
+  const normalizedArgs = !Array.isArray(args) ? [args] : args;
 
   let success;
   let fail;
