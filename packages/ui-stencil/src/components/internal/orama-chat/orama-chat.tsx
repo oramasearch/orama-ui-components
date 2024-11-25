@@ -1,6 +1,12 @@
 import { Component, Fragment, Listen, Host, Prop, State, Watch, h, type EventEmitter, Event } from '@stencil/core'
 import { chatContext, chatStore, TAnswerStatus } from '@/context/chatContext'
-import type { OnAnswerGeneratedCallbackProps, SearchResult, SourcesMap } from '@/types'
+import type {
+  ChatMarkdownLinkHref,
+  ChatMarkdownLinkTitle,
+  OnAnswerGeneratedCallbackProps,
+  SearchResult,
+  SourcesMap,
+} from '@/types'
 import '@phosphor-icons/webcomponents/dist/icons/PhPaperPlaneTilt.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhStopCircle.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhArrowDown.mjs'
@@ -22,6 +28,9 @@ export class OramaChat {
   @Prop() focusInput?: boolean = false
   @Prop() suggestions?: string[]
   @Prop() systemPrompts?: string[]
+
+  @Prop() chatMarkdownLinkTitle?: ChatMarkdownLinkTitle
+  @Prop() chatMarkdownLinkHref?: ChatMarkdownLinkHref
 
   @Event({ bubbles: true, composed: true }) answerGenerated: EventEmitter<OnAnswerGeneratedCallbackProps>
 
@@ -284,7 +293,13 @@ export class OramaChat {
             ref={(ref) => (this.messagesContainerRef = ref)}
           >
             <div ref={(ref) => (this.nonScrollableMessagesContainerRef = ref)}>
-              {hasInteractions ? <orama-chat-messages-container interactions={chatContext.interactions} /> : null}
+              {hasInteractions ? (
+                <orama-chat-messages-container
+                  interactions={chatContext.interactions}
+                  chatMarkdownLinkTitle={this.chatMarkdownLinkTitle}
+                  chatMarkdownLinkHref={this.chatMarkdownLinkHref}
+                />
+              ) : null}
 
               {/* TODO: Provide a better animation */}
               {!hasInteractions ? (

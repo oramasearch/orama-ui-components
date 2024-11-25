@@ -30,12 +30,16 @@ export const OramaChat = /*@__PURE__*/ defineContainer<JSX.OramaChat>('orama-cha
   'focusInput',
   'suggestions',
   'systemPrompts',
+  'chatMarkdownLinkTitle',
+  'chatMarkdownLinkHref',
   'answerGenerated'
 ]);
 
 
 export const OramaChatAssistentMessage = /*@__PURE__*/ defineContainer<JSX.OramaChatAssistentMessage>('orama-chat-assistent-message', undefined, [
-  'interaction'
+  'interaction',
+  'chatMarkdownLinkTitle',
+  'chatMarkdownLinkHref'
 ]);
 
 
@@ -50,8 +54,11 @@ export const OramaChatBox = /*@__PURE__*/ defineContainer<JSX.OramaChatBox>('ora
   'suggestions',
   'autoFocus',
   'systemPrompts',
+  'chatMarkdownLinkTitle',
+  'chatMarkdownLinkHref',
   'answerGenerated',
-  'answerSourceClick'
+  'answerSourceClick',
+  'chatMarkdownLinkClicked'
 ]);
 
 
@@ -65,6 +72,8 @@ export const OramaChatButton = /*@__PURE__*/ defineContainer<JSX.OramaChatButton
 
 export const OramaChatMessagesContainer = /*@__PURE__*/ defineContainer<JSX.OramaChatMessagesContainer>('orama-chat-messages-container', undefined, [
   'interactions',
+  'chatMarkdownLinkTitle',
+  'chatMarkdownLinkHref',
   'answerGenerated'
 ]);
 
@@ -112,7 +121,10 @@ export const OramaLogoIcon = /*@__PURE__*/ defineContainer<JSX.OramaLogoIcon>('o
 
 
 export const OramaMarkdown = /*@__PURE__*/ defineContainer<JSX.OramaMarkdown>('orama-markdown', undefined, [
-  'content'
+  'content',
+  'chatMarkdownLinkTitle',
+  'chatMarkdownLinkHref',
+  'chatMarkdownLinkClicked'
 ]);
 
 
@@ -168,10 +180,13 @@ export const OramaSearchBox = /*@__PURE__*/ defineContainer<JSX.OramaSearchBox>(
   'searchPlaceholder',
   'suggestions',
   'searchParams',
+  'chatMarkdownLinkTitle',
+  'chatMarkdownLinkHref',
   'searchCompleted',
   'searchResultClick',
   'answerGenerated',
-  'answerSourceClick'
+  'answerSourceClick',
+  'chatMarkdownLinkClicked'
 ]);
 
 

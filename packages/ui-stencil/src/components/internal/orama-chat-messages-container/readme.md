@@ -7,9 +7,11 @@
 
 ## Properties
 
-| Property       | Attribute | Description | Type                 | Default     |
-| -------------- | --------- | ----------- | -------------------- | ----------- |
-| `interactions` | --        |             | `TChatInteraction[]` | `undefined` |
+| Property                | Attribute | Description | Type                                                          | Default     |
+| ----------------------- | --------- | ----------- | ------------------------------------------------------------- | ----------- |
+| `chatMarkdownLinkHref`  | --        |             | `({ text, href }: { text: string; href: string; }) => string` | `undefined` |
+| `chatMarkdownLinkTitle` | --        |             | `({ text, href }: { text: string; href: string; }) => string` | `undefined` |
+| `interactions`          | --        |             | `TChatInteraction[]`                                          | `undefined` |
 
 
 ## Events

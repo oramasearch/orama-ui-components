@@ -3,9 +3,12 @@ import { chatContext } from '@/context/chatContext'
 import { ChatService } from '@/services/ChatService'
 import { generateRandomID, initOramaClient, validateCloudIndexConfig } from '@/utils/utils'
 import type {
+  ChatMarkdownLinkHref,
+  ChatMarkdownLinkTitle,
   CloudIndexConfig,
   OnAnswerGeneratedCallbackProps,
   OnAnswerSourceClickCallbackProps,
+  OnChatMarkdownLinkClickedCallbackProps,
   SourcesMap,
 } from '@/types'
 import type { OramaClient } from '@oramacloud/client'
@@ -28,6 +31,8 @@ export class ChatBox {
   @Prop() suggestions?: string[]
   @Prop() autoFocus = true
   @Prop() systemPrompts?: string[]
+  @Prop() chatMarkdownLinkTitle?: ChatMarkdownLinkTitle
+  @Prop() chatMarkdownLinkHref?: ChatMarkdownLinkHref
 
   @State() oramaClient: OramaClient
   @State() componentID = generateRandomID('chat-box')
@@ -35,11 +40,17 @@ export class ChatBox {
   /**
    * Fired when answer generation is successfully completed
    */
-  @Event() answerGenerated: EventEmitter<OnAnswerGeneratedCallbackProps>
+  @Event({ bubbles: true, composed: true }) answerGenerated: EventEmitter<OnAnswerGeneratedCallbackProps>
   /**
    * Fired when user clicks on answer source
    */
-  @Event() answerSourceClick: EventEmitter<OnAnswerSourceClickCallbackProps>
+  @Event({ bubbles: true, composed: true, cancelable: true })
+  answerSourceClick: EventEmitter<OnAnswerSourceClickCallbackProps>
+  /**
+   * Fired when user clicks on chat markdown link
+   */
+  @Event({ bubbles: true, composed: true, cancelable: true })
+  chatMarkdownLinkClicked: EventEmitter<OnChatMarkdownLinkClickedCallbackProps>
 
   @Watch('index')
   indexChanged() {
@@ -73,6 +84,8 @@ export class ChatBox {
           suggestions={this.suggestions}
           focusInput={this.autoFocus}
           systemPrompts={this.systemPrompts}
+          chatMarkdownLinkTitle={this.chatMarkdownLinkTitle}
+          chatMarkdownLinkHref={this.chatMarkdownLinkHref}
         >
           <div slot="chat-empty-state">
             <slot name="empty-state" />

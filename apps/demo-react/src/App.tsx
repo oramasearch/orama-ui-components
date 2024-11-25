@@ -29,6 +29,12 @@ function App() {
                 style={{ height: '600px' }}
                 onAnswerSourceClick={(e: Event) => console.log(e)}
                 onAnswerGenerated={(e: Event) => console.log(e)}
+                chatMarkdownLinkTitle={({ text }) => text?.toUpperCase()}
+                chatMarkdownLinkHref={({ href }) => href}
+                onChatMarkdownLinkClicked={(e: Event) => {
+                  console.log(e)
+                  e.preventDefault()
+                }}
               />
             </div>
           </section>
@@ -73,6 +79,12 @@ function App() {
               }}
               onAnswerGenerated={(e: Event) => console.log(e)}
               onAnswerSourceClick={(e: Event) => {
+                console.log(e)
+                e.preventDefault()
+              }}
+              chatMarkdownLinkTitle={({ text }) => text?.toUpperCase()}
+              chatMarkdownLinkHref={({ href }) => href}
+              onChatMarkdownLinkClicked={(e: Event) => {
                 console.log(e)
                 e.preventDefault()
               }}

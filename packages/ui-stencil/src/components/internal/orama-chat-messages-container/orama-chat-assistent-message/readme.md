@@ -7,9 +7,11 @@
 
 ## Properties
 
-| Property      | Attribute | Description | Type                                                                                                                                               | Default     |
-| ------------- | --------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `interaction` | --        |             | `{ query: string; response?: string; sources?: any; latest?: boolean; status: TAnswerStatus; interactionId?: string; relatedQueries?: string[]; }` | `undefined` |
+| Property                | Attribute | Description | Type                                                                                                                                               | Default     |
+| ----------------------- | --------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `chatMarkdownLinkHref`  | --        |             | `({ text, href }: { text: string; href: string; }) => string`                                                                                      | `undefined` |
+| `chatMarkdownLinkTitle` | --        |             | `({ text, href }: { text: string; href: string; }) => string`                                                                                      | `undefined` |
+| `interaction`           | --        |             | `{ query: string; response?: string; sources?: any; latest?: boolean; status: TAnswerStatus; interactionId?: string; relatedQueries?: string[]; }` | `undefined` |
 
 
 ## Dependencies
