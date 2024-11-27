@@ -1,4 +1,4 @@
-import type { SourcesMap, SearchResult } from '@/types'
+import type { SourcesMap, SearchResult, OnAnswerSourceClickCallbackProps } from '@/types'
 import { Component, Event, Prop, State, h, type EventEmitter } from '@stencil/core'
 import '@phosphor-icons/webcomponents/dist/icons/PhCaretLeft.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhCaretRight.mjs'
@@ -27,7 +27,8 @@ export class OramaSources {
   @State() isCarouselScrollAtEnd = false
   @State() isCarouselScrollAtStart = false
 
-  @Event({ bubbles: true, composed: true, cancelable: true }) answerSourceClick: EventEmitter<SearchResult>
+  @Event({ bubbles: true, composed: true, cancelable: true })
+  answerSourceClick: EventEmitter<OnAnswerSourceClickCallbackProps>
 
   // TODO: Move this to utils
   private buildUrl(path: string): string {
@@ -123,7 +124,7 @@ export class OramaSources {
   }
 
   handleItemClick = (originalOnClickEvent: MouseEvent, item: SearchResult) => {
-    const answerSourceClick = this.answerSourceClick.emit(item)
+    const answerSourceClick = this.answerSourceClick.emit({ source: item })
 
     if (answerSourceClick.defaultPrevented) {
       originalOnClickEvent.preventDefault()

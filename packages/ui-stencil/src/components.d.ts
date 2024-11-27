@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { ButtonProps } from "./components/internal/orama-button/orama-button";
-import { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, CloudIndexConfig, ColorScheme, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnChatMarkdownLinkClickedCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, ResultMap, SearchResult, SearchResultBySection, SourcesMap } from "./types/index";
+import { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, CloudIndexConfig, ColorScheme, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnChatMarkdownLinkClickedCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, ResultMap, SearchResultBySection, SourcesMap } from "./types/index";
 import { TChatInteraction } from "./context/chatContext";
 import { OramaClient } from "@oramacloud/client";
 import { AnyOrama, Orama, SearchParams } from "@orama/orama";
@@ -18,7 +18,7 @@ import { TThemeOverrides as TThemeOverrides1 } from "./components.d";
 import { SearchResultsProps } from "./components/internal/orama-search-results/orama-search-results";
 import { TextProps } from "./components/internal/orama-text/orama-text";
 export { ButtonProps } from "./components/internal/orama-button/orama-button";
-export { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, CloudIndexConfig, ColorScheme, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnChatMarkdownLinkClickedCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, ResultMap, SearchResult, SearchResultBySection, SourcesMap } from "./types/index";
+export { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, CloudIndexConfig, ColorScheme, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnChatMarkdownLinkClickedCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, ResultMap, SearchResultBySection, SourcesMap } from "./types/index";
 export { TChatInteraction } from "./context/chatContext";
 export { OramaClient } from "@oramacloud/client";
 export { AnyOrama, Orama, SearchParams } from "@orama/orama";
@@ -517,7 +517,7 @@ declare global {
         new (): HTMLOramaSlidingPanelElement;
     };
     interface HTMLOramaSourcesElementEventMap {
-        "answerSourceClick": SearchResult;
+        "answerSourceClick": OnAnswerSourceClickCallbackProps;
     }
     interface HTMLOramaSourcesElement extends Components.OramaSources, HTMLStencilElement {
         addEventListener<K extends keyof HTMLOramaSourcesElementEventMap>(type: K, listener: (this: HTMLOramaSourcesElement, ev: OramaSourcesCustomEvent<HTMLOramaSourcesElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -792,7 +792,7 @@ declare namespace LocalJSX {
     interface OramaSources {
         "linksRel"?: string;
         "linksTarget"?: string;
-        "onAnswerSourceClick"?: (event: OramaSourcesCustomEvent<SearchResult>) => void;
+        "onAnswerSourceClick"?: (event: OramaSourcesCustomEvent<OnAnswerSourceClickCallbackProps>) => void;
         "sourceBaseURL"?: string;
         "sources"?: any;
         "sourcesMap"?: SourcesMap;
