@@ -198,7 +198,20 @@ export class SearchBox {
 
     globalStore.onChange('open', () => {
       this.open = globalContext.open
-      globalContext.currentTerm = ''
+
+      if (!globalContext.open) {
+        globalContext.currentTerm = ''
+
+        // TODO: We should be reseting the context, but we do not want to lose params definitions.
+        // We may want to handle params in a different way.
+        searchState.count = 0
+        searchState.results = []
+        searchState.highlightedIndex = -1
+        searchState.loading = false
+        searchState.error = false
+
+        chatContext.interactions = []
+      }
     })
 
     this.htmlElement.id = this.componentID
