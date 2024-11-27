@@ -198,6 +198,7 @@ export class SearchBox {
 
     globalStore.onChange('open', () => {
       this.open = globalContext.open
+      globalContext.currentTerm = ''
     })
 
     this.htmlElement.id = this.componentID
