@@ -1,0 +1,10 @@
+nav {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+}
+nav > * {
+  background-color: lightgray;
+  padding: 0.5rem 1rem;
+
+}

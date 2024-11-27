@@ -1,7 +1,33 @@
 import { OramaChatBox, OramaSearchBox, OramaSearchButton } from '@orama/react-components'
 import './App.css'
 
+import { BrowserRouter, Routes, Route, NavLink, useNavigate } from 'react-router'
+
+const API_KEY = 'LerNlbp6379jVKaPs4wt2nZT4MJZbU1J'
+const ENDPOINT = 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd'
+
 function App() {
+  return (
+    <BrowserRouter>
+      <div>
+        <nav>
+          <NavLink to="/" end>
+            ChatBox
+          </NavLink>
+          <NavLink to="/chat" end>
+            SearchBox
+          </NavLink>
+        </nav>
+        <Routes>
+          <Route path="/" element={<ChatBoxPage />} />
+          <Route path="/chat" element={<SearchBoxPage />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
+  )
+}
+
+const ChatBoxPage = () => {
   return (
     <>
       <main>
@@ -23,8 +49,8 @@ function App() {
             <div className="component-row">
               <OramaChatBox
                 index={{
-                  api_key: 'qopIuAERiWP2EZOpDjvczjws7WV40yrj',
-                  endpoint: 'https://cloud.orama.run/v1/indexes/nodejs-org-dev-hhqrzv',
+                  api_key: API_KEY,
+                  endpoint: ENDPOINT,
                 }}
                 style={{ height: '600px' }}
                 onAnswerSourceClick={(e: Event) => console.log(e)}
@@ -38,43 +64,32 @@ function App() {
               />
             </div>
           </section>
-          <h2>Another section</h2>
-          <OramaSearchButton colorScheme="system">Search</OramaSearchButton>
-          <p>
-            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti
-            atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique
-            sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum
-            facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil
-            impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor
-            repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et
-            voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus,
-            ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
-          </p>
-          <p>
-            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti
-            atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique
-            sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum
-            facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil
-            impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor
-            repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et
-            voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus,
-            ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
-          </p>
         </section>
+      </main>
+    </>
+  )
+}
 
+const SearchBoxPage = () => {
+  const navigate = useNavigate()
+  return (
+    <>
+      <main>
         <section>
           <div className="component-row">
+            <OramaSearchButton colorScheme="system">Search</OramaSearchButton>
             <OramaSearchBox
               colorScheme="system"
               index={{
-                api_key: 'LerNlbp6379jVKaPs4wt2nZT4MJZbU1J',
-                endpoint: 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd',
+                api_key: API_KEY,
+                endpoint: ENDPOINT,
               }}
+              suggestions={['Suggestion 1', 'Suggestion 2', 'Suggestion 3']}
               onSearchCompleted={(e: Event) => console.log(e)}
               onSearchResultClick={(e) => {
-                alert("You've clicked on a search result!")
-                console.log(e.detail.result.path)
                 e.preventDefault()
+                alert('Moving back to home page')
+                navigate('/')
               }}
               onAnswerGenerated={(e: Event) => console.log(e)}
               onAnswerSourceClick={(e: Event) => {
@@ -84,7 +99,7 @@ function App() {
               chatMarkdownLinkTitle={({ text }) => text?.toUpperCase()}
               chatMarkdownLinkHref={({ href }) => href}
               onChatMarkdownLinkClicked={(e) => {
-                alert('ON REACT SIDE')
+                alert('Callback on client side')
                 e.preventDefault()
               }}
             />
