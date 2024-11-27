@@ -102,6 +102,10 @@ export class OramaModal {
     }
   }
 
+  disconnectedCallback() {
+    this.modalIsOpen = false
+  }
+
   private closeModal() {
     this.modalIsOpen = false
   }
