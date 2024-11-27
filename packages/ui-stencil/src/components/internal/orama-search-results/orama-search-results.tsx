@@ -1,5 +1,5 @@
 import { Component, Host, h, Element, Prop, Event, type EventEmitter } from '@stencil/core'
-import type { SearchResult, SearchResultBySection } from '@/types'
+import type { OnSearchResultClickCallbackProps, SearchResult, SearchResultBySection } from '@/types'
 import { Highlight } from '@orama/highlight'
 import type { HighlightOptions } from '@orama/highlight'
 import '@phosphor-icons/webcomponents/dist/icons/PhFiles.mjs'
@@ -29,7 +29,8 @@ export class SearchResults {
   @Prop() highlightTitle?: HighlightOptions | false = false
   @Prop() highlightDescription?: HighlightOptions | false = false
 
-  @Event({ bubbles: true, composed: true, cancelable: true }) searchResultClick: EventEmitter<SearchResult>
+  @Event({ bubbles: true, composed: true, cancelable: true })
+  searchResultClick: EventEmitter<OnSearchResultClickCallbackProps>
 
   private highlighterTitle?: Highlight
   private highlighterDescription?: Highlight
@@ -54,7 +55,7 @@ export class SearchResults {
   }
 
   handleItemClick = (originalOnClickEvent: MouseEvent, item: SearchResult) => {
-    const searchResultClick = this.searchResultClick.emit(item)
+    const searchResultClick = this.searchResultClick.emit({ result: item })
 
     if (searchResultClick.defaultPrevented) {
       originalOnClickEvent.preventDefault()

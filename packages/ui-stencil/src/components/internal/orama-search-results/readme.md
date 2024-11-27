@@ -22,9 +22,9 @@
 
 ## Events
 
-| Event               | Description | Type                                                                             |
-| ------------------- | ----------- | -------------------------------------------------------------------------------- |
-| `searchResultClick` |             | `CustomEvent<{ id: string; title: string; description: string; path: string; }>` |
+| Event               | Description | Type                                     |
+| ------------------- | ----------- | ---------------------------------------- |
+| `searchResultClick` |             | `CustomEvent<{ result: SearchResult; }>` |
 
 
 ## Dependencies

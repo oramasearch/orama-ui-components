@@ -71,11 +71,10 @@ function App() {
                 endpoint: 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd',
               }}
               onSearchCompleted={(e: Event) => console.log(e)}
-              onSearchResultClick={(e: Event) => {
-                console.log(e)
+              onSearchResultClick={(e) => {
+                alert("You've clicked on a search result!")
+                console.log(e.detail.result.path)
                 e.preventDefault()
-
-                console.log('Prevented')
               }}
               onAnswerGenerated={(e: Event) => console.log(e)}
               onAnswerSourceClick={(e: Event) => {
@@ -84,8 +83,8 @@ function App() {
               }}
               chatMarkdownLinkTitle={({ text }) => text?.toUpperCase()}
               chatMarkdownLinkHref={({ href }) => href}
-              onChatMarkdownLinkClicked={(e: Event) => {
-                console.log(e)
+              onChatMarkdownLinkClicked={(e) => {
+                alert('ON REACT SIDE')
                 e.preventDefault()
               }}
             />

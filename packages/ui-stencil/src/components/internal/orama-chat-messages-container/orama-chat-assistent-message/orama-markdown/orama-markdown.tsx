@@ -108,6 +108,19 @@ export class OramaMarkdown {
     this.parseMarkdown()
   }
 
+  handleMarkdownLinkClicked(originalOnClickEvent: MouseEvent) {
+    const htmlElement = originalOnClickEvent.target as HTMLLinkElement
+    const chatMarkdownLinkClicked = this.chatMarkdownLinkClicked.emit({
+      text: htmlElement.innerText,
+      href: htmlElement.href,
+    })
+
+    if (chatMarkdownLinkClicked.defaultPrevented) {
+      originalOnClickEvent.preventDefault()
+      return
+    }
+  }
+
   componentDidLoad() {
     marked.use({
       useNewRenderer: true,
@@ -117,19 +130,8 @@ export class OramaMarkdown {
           link.innerHTML = this.chatMarkdownLinkTitle?.({ href: token.href, text: token.text }) ?? token.text
           link.href = this.chatMarkdownLinkHref?.({ href: token.href, text: token.text }) ?? token.href
 
-          if (this.chatMarkdownLinkHref) {
-            link.target = this.chatMarkdownLinkHref?.({ href: token.href, text: token.text })
-          }
-
-          link.onclick = (onClickEvent) => {
-            const chatMarkdownLinkClicked = this.chatMarkdownLinkClicked.emit({
-              text: token.text,
-              href: token.href,
-            })
-
-            if (chatMarkdownLinkClicked?.defaultPrevented) {
-              onClickEvent.preventDefault()
-            }
+          if (this.chatMarkdownLinkTarget) {
+            link.target = this.chatMarkdownLinkTarget?.({ href: token.href, text: token.text })
           }
 
           return link.outerHTML
@@ -225,10 +227,18 @@ export class OramaMarkdown {
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.10.0/build/styles/atom-one-dark.min.css"
         />
+        {/* biome-ignore lint/a11y/useKeyWithClickEvents: TODO: fix usability issue */}
         <div
           class="orama-markdown-wrapper"
           ref={(ref) => {
             this.divElement = ref
+          }}
+          onClick={(event) => {
+            const htmlEvent = event.target as HTMLElement
+            // Needs to be here because renderer function only outputs text. There is not a way to set a onclick there
+            if (htmlEvent.tagName === 'A') {
+              this.handleMarkdownLinkClicked(event)
+            }
           }}
         />
       </host>

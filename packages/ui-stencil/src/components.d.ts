@@ -494,7 +494,7 @@ declare global {
         new (): HTMLOramaSearchButtonElement;
     };
     interface HTMLOramaSearchResultsElementEventMap {
-        "searchResultClick": SearchResult;
+        "searchResultClick": OnSearchResultClickCallbackProps;
     }
     interface HTMLOramaSearchResultsElement extends Components.OramaSearchResults, HTMLStencilElement {
         addEventListener<K extends keyof HTMLOramaSearchResultsElementEventMap>(type: K, listener: (this: HTMLOramaSearchResultsElement, ev: OramaSearchResultsCustomEvent<HTMLOramaSearchResultsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -777,7 +777,7 @@ declare namespace LocalJSX {
         "linksRel"?: string;
         "linksTarget"?: string;
         "loading"?: boolean;
-        "onSearchResultClick"?: (event: OramaSearchResultsCustomEvent<SearchResult>) => void;
+        "onSearchResultClick"?: (event: OramaSearchResultsCustomEvent<OnSearchResultClickCallbackProps>) => void;
         "searchTerm"?: SearchResultsProps['searchTerm'];
         "sections"?: SearchResultBySection[];
         "setChatTerm"?: (term: string) => void;
