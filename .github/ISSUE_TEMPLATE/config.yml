@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Orama Documentation
+    url: https://docs.orama.com
+    about: Check our documentation before creating an issue
+  - name: Orama Community Support
+    url: https://discord.gg/orama
+    about: Please ask and answer questions here
