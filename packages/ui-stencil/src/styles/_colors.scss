@@ -43,7 +43,6 @@ $semanticColors: (
     accent: $purple300,
     inactive: $gray500,
     reverse: white,
-    accent: $purple500,
   ),
   background: (
     primary: $gray50,
@@ -51,19 +50,19 @@ $semanticColors: (
     tertiary: $purple200,
     fourth: $gray100,
     reverse: black,
+    accent: $purple700,
   ),
   border: (
     primary: $gray200,
     secondary: $gray100,
     tertiary: $gray900,
-    accent: $purple300,
+    accent: $purple700,
   ),
   icon: (
     primary: $gray900,
     secondary: $gray200,
     tertiary: $gray600,
     inactive: $gray500,
-    accent: $purple500,
   ),
   shadow: (
     primary: white,
@@ -117,7 +116,6 @@ $semanticColorsDark: (
     accent: $purple300,
     inactive: $gray500,
     reverse: black,
-    accent: $purple700,
   ),
   background: (
     primary: $gray950,
@@ -125,6 +123,7 @@ $semanticColorsDark: (
     tertiary: $gray800,
     fourth: $gray700,
     reverse: white,
+    accent: $purple500,
   ),
   border: (
     primary: $gray700,
