@@ -3,7 +3,7 @@
 
 ## Type of Change
 <!-- Mark the relevant option(s) with 'x' -->
-- [ ]�� Breaking Change
+- [ ] 💥 Breaking Change
 - [ ] ✨ New Feature
 - [ ] 🐛 Bug Fix
 - [ ] 📝 Documentation Update
