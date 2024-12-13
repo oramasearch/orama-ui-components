@@ -63,6 +63,7 @@ $semanticColors: (
     secondary: $gray200,
     tertiary: $gray600,
     inactive: $gray500,
+    reverse: $gray50,
   ),
   shadow: (
     primary: white,
@@ -71,19 +72,15 @@ $semanticColors: (
 
 $elementColors: (
   'button-text': (
-    // TODO: example of how to use the color functions with semantic colors
-    // primary: color.adjust(text-color('primary', $semanticColors), $lightness: 10%),
-    primary: icon-color('primary', $semanticColors),
+    primary: icon-color('reverse', $semanticColors),
     secondary: text-color('secondary', $semanticColors),
     inactive: $gray500,
-    // todo: value to check with Angela
   ),
   'button-background': (
     primary: background-color('accent', $semanticColors),
     secondary: background-color('secondary', $semanticColors),
     'secondary-hover': background-color('tertiary', $semanticColors),
     inactive: $gray100,
-    // todo: value to check with Angela
   ),
   'button-border': (
     secondary: border-color('primary', $semanticColors),
@@ -136,6 +133,7 @@ $semanticColorsDark: (
     secondary: $gray200,
     tertiary: $gray600,
     inactive: $gray500,
+    reverse: $gray950,
   ),
   shadow: (
     primary: black,
