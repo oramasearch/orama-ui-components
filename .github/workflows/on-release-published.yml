@@ -1,0 +1,50 @@
+name: On Release Published
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+jobs:
+  tag_bump_publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Check if the release is not a pre-release
+        id: check_prerelease
+        run: |
+          if [[ "${{ github.event.release.prerelease }}" == "true" ]]; then
+            echo "This is a pre-release. Exiting."
+            exit 0
+          fi
+
+      - uses: pnpm/action-setup@v4
+
+      - name: Configure npm with token
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
+      - name: Publish all packages
+        run: |
+          # Loop through all package.json files in the packages directory
+          for package_json in packages/*/package.json; do
+            package_dir=$(dirname "$package_json")
+            echo "Publishing package in $package_dir..."
+
+            # Check if the package is private, skip if true
+            if jq -e '.private == true' "$package_json" > /dev/null; then
+              echo "Skipping private package in $package_dir"
+              continue
+            fi
+
+            cd "$package_dir"
+            # Publish the package
+            npm publish --access public
+            cd ../../
+          done
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
