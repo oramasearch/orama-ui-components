@@ -50,19 +50,20 @@ $semanticColors: (
     tertiary: $purple200,
     fourth: $gray100,
     reverse: black,
+    accent: $purple700,
   ),
   border: (
     primary: $gray200,
     secondary: $gray100,
     tertiary: $gray900,
-    accent: $purple300,
+    accent: $purple700,
   ),
   icon: (
     primary: $gray900,
     secondary: $gray200,
     tertiary: $gray600,
     inactive: $gray500,
-    accent: $purple500,
+    reverse: $gray50,
   ),
   shadow: (
     primary: white,
@@ -71,37 +72,31 @@ $semanticColors: (
 
 $elementColors: (
   'button-text': (
-    // TODO: example of how to use the color functions with semantic colors
-    // primary: color.adjust(text-color('primary', $semanticColors), $lightness: 10%),
-    primary: $purple100,
+    primary: icon-color('reverse', $semanticColors),
     secondary: text-color('secondary', $semanticColors),
-    inactive: $gray500,
-    // todo: value to check with Angela
   ),
   'button-background': (
-    primary: $purple500,
+    primary: background-color('accent', $semanticColors),
     secondary: background-color('secondary', $semanticColors),
     'secondary-hover': background-color('tertiary', $semanticColors),
-    inactive: $gray100,
-    // todo: value to check with Angela
   ),
   'button-border': (
     secondary: border-color('primary', $semanticColors),
   ),
   'backdrop-background': (
-    primary: rgba(black, 0.7),
+    primary: color.adjust(background-color('primary', $semanticColors), $alpha: -0.3),
   ),
   'chat-button-border': (
-    gradientOne: $purple200,
-    gradientTwo: $purple200,
-    gradientThree: $purple300,
-    gradientFour: $purple300,
-    gradientFive: $purple200,
-    gradientSix: $purple200,
+    gradientOne: transparent,
+    gradientTwo: transparent,
+    gradientThree: border-color('accent', $semanticColors),
+    gradientFour: border-color('accent', $semanticColors),
+    gradientFive: transparent,
+    gradientSix: transparent,
   ),
   'chat-button-background': (
-    gradientOne: $purple300,
-    gradientTwo: rgba(255, 255, 255, 0),
+    gradientOne: background-color('accent', $semanticColors),
+    gradientTwo: transparent,
   ),
 );
 
@@ -123,6 +118,7 @@ $semanticColorsDark: (
     tertiary: $gray800,
     fourth: $gray700,
     reverse: white,
+    accent: $purple500,
   ),
   border: (
     primary: $gray700,
@@ -135,7 +131,7 @@ $semanticColorsDark: (
     secondary: $gray200,
     tertiary: $gray600,
     inactive: $gray500,
-    accent: $purple500,
+    reverse: $gray950,
   ),
   shadow: (
     primary: black,
@@ -144,11 +140,11 @@ $semanticColorsDark: (
 
 $elementColorsDark: (
   'button-text': (
-    primary: $gray100,
+    primary: icon-color('primary', $semanticColorsDark),
     secondary: text-color('inactive', $semanticColorsDark),
   ),
   'button-background': (
-    primary: $purple700,
+    primary: background-color('accent', $semanticColorsDark),
     secondary: background-color('secondary', $semanticColorsDark),
     'secondary-hover': background-color('tertiary', $semanticColorsDark),
   ),
@@ -156,19 +152,19 @@ $elementColorsDark: (
     secondary: border-color('primary', $semanticColorsDark),
   ),
   'backdrop-background': (
-    primary: rgba(black, 0.7),
+    primary: color.adjust(background-color('primary', $semanticColorsDark), $alpha: -0.3),
   ),
   'chat-button-border': (
-    gradientOne: $gray800,
-    gradientTwo: $gray800,
-    gradientThree: $purple300,
-    gradientFour: $purple500,
-    gradientFive: $gray800,
-    gradientSix: $gray800,
+    gradientOne: transparent,
+    gradientTwo: transparent,
+    gradientThree: border-color('accent', $semanticColorsDark),
+    gradientFour: border-color('accent', $semanticColorsDark),
+    gradientFive: transparent,
+    gradientSix: transparent,
   ),
   'chat-button-background': (
-    gradientOne: $purple600,
-    gradientTwo: rgba(106, 75, 178, 0),
+    gradientOne: background-color('accent', $semanticColorsDark),
+    gradientTwo: transparent,
   ),
 );
 
