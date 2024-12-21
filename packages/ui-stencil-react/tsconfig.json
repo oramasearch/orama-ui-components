@@ -7,7 +7,7 @@
     "experimentalDecorators": true,
     "sourceMap": true,
     "lib": ["dom", "es2015"],
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "target": "es5",
     "skipLibCheck": true,
     "jsx": "react",

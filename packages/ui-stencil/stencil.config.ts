@@ -27,6 +27,7 @@ export const config: Config = {
     },
     {
       type: 'dist-custom-elements',
+      externalRuntime: false,
     },
     {
       type: 'docs-readme',
@@ -36,9 +37,7 @@ export const config: Config = {
       serviceWorker: null, // disable service workers
     },
     reactOutputTarget({
-      componentCorePackage,
-      proxiesFile: '../ui-stencil-react/src/components/stencil-generated/index.ts',
-      includeDefineCustomElements: true,
+      outDir: '../ui-stencil-react/src/components/stencil-generated/',
     }),
     angularOutputTarget({
       componentCorePackage,
