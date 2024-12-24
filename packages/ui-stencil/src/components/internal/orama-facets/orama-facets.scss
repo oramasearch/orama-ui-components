@@ -18,7 +18,7 @@
   }
 
   @media (--md-min) {
-    padding: var(--radius-l, $spacing-l) 0 var(--radius-s, $spacing-s);
+    padding: var(--radius-l, $spacing-l) var(--radius-xs, $spacing-xs) var(--radius-s, $spacing-s);
   }
 }
 
@@ -38,15 +38,15 @@
   width: max-content;
 
   &--selected {
-    border-color: var(--border-color-tertiary, border-color('tertiary'));
+    border-color: var(--border-color-accent, border-color('accent'));
   }
 
   @media (--md-min) {
     padding: var(--spacing-xs, $spacing-xs) var(--spacing-m, $spacing-m);
   }
 
-  &:focus-visible {
-    outline: none;
+  &:focus {
+    outline: 1px solid var(--border-color-accent, border-color('accent'));
     border-color: var(--border-color-accent, border-color('accent'));
   }
 }
