@@ -1,5 +1,5 @@
 import type { Facet } from '@/types'
-import { Component, h, Prop } from '@stencil/core'
+import { Component, h, Listen, Prop, Watch } from '@stencil/core'
 
 @Component({
   tag: 'orama-facets',
@@ -13,10 +13,57 @@ import { Component, h, Prop } from '@stencil/core'
 export class OramaFacets {
   @Prop() facets: Facet[]
   @Prop() selectedFacet: string
-  @Prop() facetClicked: (facetName: string) => void
+  @Prop() selecedFacetChanged: (facetName: string) => void
+
+  private facetListRef!: HTMLUListElement
 
   handleClick(facet: Facet) {
-    this.facetClicked(facet.name)
+    this.selecedFacetChanged(facet.name)
+  }
+
+  getFacetButtonElementId(facetName: string) {
+    return `${facetName}-facet-button`
+  }
+
+  setFocusToFacetElement(facetName: string) {
+    const buttonList = this.facetListRef.getElementsByTagName('button')
+
+    for (let i = 0; i < buttonList.length; i++) {
+      if (buttonList.item(i).id === this.getFacetButtonElementId(facetName)) {
+        buttonList.item(i).focus()
+        return
+      }
+    }
+  }
+
+  @Watch('selectedFacet')
+  handleSelectedFacetChange() {
+    this.setFocusToFacetElement(this.selectedFacet?.length ? this.selectedFacet : 'All')
+  }
+
+  @Listen('keydown')
+  handleKeyDown(ev: KeyboardEvent) {
+    if (['ArrowLeft', 'ArrowRight'].includes(ev.key)) {
+      const index = this.selectedFacet ? this.facets.findIndex((facet) => facet.name === this.selectedFacet) : 0
+
+      if (ev.key === 'ArrowRight') {
+        if (index < this.facets.length - 1) {
+          this.selecedFacetChanged(this.facets[index + 1].name)
+        } else {
+          this.selecedFacetChanged('')
+        }
+      }
+
+      if (ev.key === 'ArrowLeft') {
+        if (index > 1) {
+          this.selecedFacetChanged(this.facets[index - 1].name)
+        } else if (index - 1 === 0) {
+          this.selecedFacetChanged('')
+        } else {
+          this.selecedFacetChanged(this.facets[this.facets.length - 1].name)
+        }
+      }
+    }
   }
 
   render() {
@@ -25,7 +72,7 @@ export class OramaFacets {
     }
 
     return (
-      <ul class="facets-list">
+      <ul class="facets-list" ref={(el) => (this.facetListRef = el as HTMLUListElement)}>
         {this.facets?.map((facet) => {
           if (facet?.count === 0) {
             return
@@ -34,6 +81,7 @@ export class OramaFacets {
           return (
             <li key={facet.name} class="facet">
               <button
+                id={this.getFacetButtonElementId(facet.name)}
                 type="button"
                 class={{
                   'facet-button': true,

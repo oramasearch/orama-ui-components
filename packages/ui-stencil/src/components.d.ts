@@ -95,8 +95,8 @@ export namespace Components {
     interface OramaEmbed {
     }
     interface OramaFacets {
-        "facetClicked": (facetName: string) => void;
         "facets": Facet[];
+        "selecedFacetChanged": (facetName: string) => void;
         "selectedFacet": string;
     }
     interface OramaFooter {
@@ -666,8 +666,8 @@ declare namespace LocalJSX {
     interface OramaEmbed {
     }
     interface OramaFacets {
-        "facetClicked"?: (facetName: string) => void;
         "facets"?: Facet[];
+        "selecedFacetChanged"?: (facetName: string) => void;
         "selectedFacet"?: string;
     }
     interface OramaFooter {

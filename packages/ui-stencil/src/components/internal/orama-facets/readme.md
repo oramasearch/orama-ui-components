@@ -7,11 +7,11 @@
 
 ## Properties
 
-| Property        | Attribute        | Description | Type                          | Default     |
-| --------------- | ---------------- | ----------- | ----------------------------- | ----------- |
-| `facetClicked`  | --               |             | `(facetName: string) => void` | `undefined` |
-| `facets`        | --               |             | `Facet[]`                     | `undefined` |
-| `selectedFacet` | `selected-facet` |             | `string`                      | `undefined` |
+| Property              | Attribute        | Description | Type                          | Default     |
+| --------------------- | ---------------- | ----------- | ----------------------------- | ----------- |
+| `facets`              | --               |             | `Facet[]`                     | `undefined` |
+| `selecedFacetChanged` | --               |             | `(facetName: string) => void` | `undefined` |
+| `selectedFacet`       | `selected-facet` |             | `string`                      | `undefined` |
 
 
 ## Dependencies
