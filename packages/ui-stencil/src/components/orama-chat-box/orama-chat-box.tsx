@@ -22,7 +22,6 @@ import type { AnyOrama, Orama } from "@orama/orama"
   shadow: true,
 })
 export class ChatBox {
-
   @Element() el: HTMLElement
   @Prop() index?: CloudIndexConfig
   @Prop() clientInstance?: OramaClient | AnyOrama
