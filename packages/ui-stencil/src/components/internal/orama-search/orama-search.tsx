@@ -47,7 +47,7 @@ export class OramaSearch {
     // console.log(`Item clicked: ${event.detail.title}`, event.detail)
   }
 
-  onFacetClickHandler = (facetName: string) => {
+  onSelectedFacetChangedHandler = (facetName: string) => {
     this.selectedFacet = facetName
   }
 
@@ -88,7 +88,7 @@ export class OramaSearch {
           <orama-facets
             facets={searchState.facets}
             selectedFacet={this.selectedFacet}
-            facetClicked={this.onFacetClickHandler}
+            selecedFacetChanged={this.onSelectedFacetChangedHandler}
           />
           <orama-search-results
             suggestions={!globalContext.currentTerm?.length && !this.disableChat ? this.suggestions : []}
