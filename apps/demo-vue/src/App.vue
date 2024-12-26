@@ -7,32 +7,14 @@
     <section>
       <h2>Stencil Components</h2>
       <div class="component-row">
-        <orama-chat-box 
-          :index="indexConfig"
-          :placeholder="'Type your message here...'"
-        />
+        <orama-chat-box .index="{
+          api_key: 'yl2JSnjLNBV6FVfUWEyadpjFr6KzPiDR',
+          endpoint: 'https://cloud.orama.run/v1/indexes/recipes-m7w9mm',
+      }" />
       </div>
     </section>
   </main>
 </template>
-
-<script>
-
-export default {
-  data() {
-    return {
-      indexConfig: null
-    }
-  },
-  async mounted() {
-    await this.$nextTick()
-    this.indexConfig = {
-      api_key: 'yl2JSnjLNBV6FVfUWEyadpjFr6KzPiDR',
-      endpoint: 'https://cloud.orama.run/v1/indexes/recipes-m7w9mm'
-    }
-  }
-}
-</script>
 
 <style scoped>
 .logo {

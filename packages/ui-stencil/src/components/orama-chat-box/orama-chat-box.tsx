@@ -22,8 +22,6 @@ import type { AnyOrama, Orama } from "@orama/orama"
   shadow: true,
 })
 export class ChatBox {
-  private initializationAttempts = 0;
-  private readonly MAX_ATTEMPTS = 3;
 
   @Element() el: HTMLElement
   @Prop() index?: CloudIndexConfig
@@ -41,7 +39,6 @@ export class ChatBox {
   @Prop() chatMarkdownLinkTarget?: ChatMarkdownLinkTarget
 
   @State() componentID = generateRandomID('chat-box')
-  @State() private isServiceReady = false;
 
   /**
    * Fired when answer generation is successfully completed
@@ -59,54 +56,23 @@ export class ChatBox {
   chatMarkdownLinkClicked: EventEmitter<OnChatMarkdownLinkClickedCallbackProps>
 
   @Watch('index')
-  async indexChanged(newValue: CloudIndexConfig) {
-    if (newValue) {
-      await this.startChatService();
-    }
+  indexChanged() {
+    this.startChatService()
   }
 
-  async componentWillLoad() {
-    this.el.id = this.componentID;
-    if (this.index || this.clientInstance) {
-      await this.startChatService();
-    }
+  componentWillLoad() {
+    this.el.id = this.componentID
+    this.startChatService()
   }
 
-  async componentDidLoad() {
-    if (!chatContext.chatService && (this.index || this.clientInstance)) {
-      await this.startChatService();
-    }
-  }
+  startChatService() {
+    validateCloudIndexConfig(this.el, this.index, this.clientInstance)
+    const oramaClient = this.clientInstance || initOramaClient(this.index)
 
-
-  async startChatService() {
-    if (this.initializationAttempts >= this.MAX_ATTEMPTS) {
-      return;
-    }
-
-    try {
-      if (!this.index && !this.clientInstance) {
-        return;
-      }
-
-      validateCloudIndexConfig(this.el, this.index, this.clientInstance);
-      const oramaClient = this.clientInstance || await initOramaClient(this.index);
-      chatContext.chatService = new ChatService(oramaClient);
-      this.isServiceReady = true;
-
-      this.el.dispatchEvent(new CustomEvent('chatServiceReady'));
-    } catch (error) {
-      this.initializationAttempts++;
-      console.error('Failed to initialize chat service:', error);
-      this.el.dispatchEvent(new CustomEvent('chatServiceError', { detail: error }));
-    }
+    chatContext.chatService = new ChatService(oramaClient)
   }
 
   render() {
-    if (!this.isServiceReady) {
-      return <orama-text as="p">Initializing chat service...</orama-text>;
-    }
-
     if (!chatContext.chatService) {
       return <orama-text as="p">Unable to initialize chat service</orama-text>
     }
