@@ -88,7 +88,7 @@ export class OramaSearch {
           <orama-facets
             facets={searchState.facets}
             selectedFacet={this.selectedFacet}
-            selecedFacetChanged={this.onSelectedFacetChangedHandler}
+            selectedFacetChanged={this.onSelectedFacetChangedHandler}
           />
           <orama-search-results
             suggestions={!globalContext.currentTerm?.length && !this.disableChat ? this.suggestions : []}

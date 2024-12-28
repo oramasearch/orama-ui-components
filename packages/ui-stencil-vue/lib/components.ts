@@ -96,7 +96,7 @@ export const OramaEmbed = /*@__PURE__*/ defineContainer<JSX.OramaEmbed>('orama-e
 export const OramaFacets = /*@__PURE__*/ defineContainer<JSX.OramaFacets>('orama-facets', undefined, [
   'facets',
   'selectedFacet',
-  'selecedFacetChanged'
+  'selectedFacetChanged'
 ]);
 
 

@@ -1,17 +1,15 @@
 # orama-button
 
-
-
 <!-- Auto Generated Below -->
 
 
 ## Properties
 
-| Property              | Attribute        | Description | Type                          | Default     |
-| --------------------- | ---------------- | ----------- | ----------------------------- | ----------- |
-| `facets`              | --               |             | `Facet[]`                     | `undefined` |
-| `selecedFacetChanged` | --               |             | `(facetName: string) => void` | `undefined` |
-| `selectedFacet`       | `selected-facet` |             | `string`                      | `undefined` |
+| Property               | Attribute        | Description | Type                          | Default     |
+| ---------------------- | ---------------- | ----------- | ----------------------------- | ----------- |
+| `facets`               | --               |             | `Facet[]`                     | `undefined` |
+| `selectedFacet`        | `selected-facet` |             | `string`                      | `undefined` |
+| `selectedFacetChanged` | --               |             | `(facetName: string) => void` | `undefined` |
 
 
 ## Dependencies

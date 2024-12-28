@@ -13,12 +13,12 @@ import { Component, h, Listen, Prop, Watch } from '@stencil/core'
 export class OramaFacets {
   @Prop() facets: Facet[]
   @Prop() selectedFacet: string
-  @Prop() selecedFacetChanged: (facetName: string) => void
+  @Prop() selectedFacetChanged: (facetName: string) => void
 
   private facetListRef!: HTMLUListElement
 
   handleClick(facet: Facet) {
-    this.selecedFacetChanged(facet.name)
+    this.selectedFacetChanged(facet.name)
   }
 
   getFacetButtonElementId(facetName: string) {
@@ -48,19 +48,19 @@ export class OramaFacets {
 
       if (ev.key === 'ArrowRight') {
         if (index < this.facets.length - 1) {
-          this.selecedFacetChanged(this.facets[index + 1].name)
+          this.selectedFacetChanged(this.facets[index + 1].name)
         } else {
-          this.selecedFacetChanged('')
+          this.selectedFacetChanged('')
         }
       }
 
       if (ev.key === 'ArrowLeft') {
         if (index > 1) {
-          this.selecedFacetChanged(this.facets[index - 1].name)
+          this.selectedFacetChanged(this.facets[index - 1].name)
         } else if (index - 1 === 0) {
-          this.selecedFacetChanged('')
+          this.selectedFacetChanged('')
         } else {
-          this.selecedFacetChanged(this.facets[this.facets.length - 1].name)
+          this.selectedFacetChanged(this.facets[this.facets.length - 1].name)
         }
       }
     }
