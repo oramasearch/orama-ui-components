@@ -5,6 +5,13 @@ const postcssScss = require('postcss-scss')
 
 const scssFilePath = './src/styles/_tempColors.scss'
 
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1, 3), 16)
+  const g = parseInt(hex.slice(3, 5), 16)
+  const b = parseInt(hex.slice(5, 7), 16)
+  return { r, g, b }
+}
+
 function createTempColorsFile() {
   const colorsContent = fs.readFileSync('./src/styles/_colors.scss', 'utf-8')
   const primitiveColors = colorsContent.match(/(\$[a-zA-Z0-9-]+:.*;)/g).join('\n')
@@ -53,17 +60,43 @@ function compileScss(filePath) {
             return new sass.SassString(currentValue)
           }
         }
+        return new sass.SassString('transparent')
       },
       'background-color($arg1, $arg2)': (args) => {
-        const colorKey = args[0].assertString('arg1')
-        const palette = args[1].assertMap('arg2')
-        let currentValue = ''
-        for (const [key, value] of palette.contents.entrySeq()) {
-          const currentKey = key.toString()
-          if (currentKey === 'background') {
-            currentValue = value.get(colorKey).toString()
-            return new sass.SassString(currentValue)
+        try {
+          const colorKey = args[0].assertString('arg1').text;
+          const palette = args[1].assertMap('arg2');
+
+          // Find color value in background section
+          let colorValue = null;
+          palette.contents.forEach((value, key) => {
+            if (key.text === 'background') {
+              value.contents.forEach((val, k) => {
+                if (k.text === colorKey) colorValue = val;
+              });
+            }
+          });
+
+          if (!colorValue) return new sass.SassColor({ r: 0, g: 0, b: 0, a: 1 });
+          if (colorValue instanceof sass.SassColor) return colorValue;
+
+          const colorStr = colorValue.toString();
+
+          // Handle named colors
+          if (colorStr === 'white') return new sass.SassColor({ r: 255, g: 255, b: 255, a: 1 });
+          if (colorStr === 'black') return new sass.SassColor({ r: 0, g: 0, b: 0, a: 1 });
+          if (colorStr === 'transparent') return new sass.SassColor({ r: 0, g: 0, b: 0, a: 0 });
+
+          // Handle hex colors
+          if (colorStr.startsWith('#')) {
+            const rgb = hexToRgb(colorStr);
+            return new sass.SassColor({ ...rgb, a: 1 });
           }
+
+          // Default fallback
+          return new sass.SassColor({ r: 0, g: 0, b: 0, a: 1 });
+        } catch (error) {
+          return new sass.SassColor({ r: 0, g: 0, b: 0, a: 1 });
         }
       },
       'border-color($arg1, $arg2)': (args) => {
@@ -77,7 +110,38 @@ function compileScss(filePath) {
             return new sass.SassString(currentValue)
           }
         }
+        return new sass.SassString('transparent')
       },
+      'icon-color($arg1, $arg2)': (args) => {
+        const colorKey = args[0].assertString('arg1')
+        const palette = args[1].assertMap('arg2')
+        let currentValue = ''
+        for (const [key, value] of palette.contents.entrySeq()) {
+          const currentKey = key.toString()
+          if (currentKey === 'icon') {
+            currentValue = value.get(colorKey).toString()
+            return new sass.SassString(currentValue)
+          }
+        }
+        return new sass.SassString('transparent')
+      },
+      'adjust($color, $kwargs)': (args) => {
+        try {
+          const color = args[0].assertColor('color');
+          const kwargs = args[1].assertMap('kwargs');
+          const alphaAdjust = kwargs.get('alpha')?.assertNumber('alpha')?.value || 0;
+          
+          return new sass.SassColor({
+            r: color.red,
+            g: color.green,
+            b: color.blue,
+            a: Math.max(0, Math.min(1, color.alpha + alphaAdjust))
+          });
+        } catch (error) {
+          console.error('Error in adjust:', error);
+          return new sass.SassColor({ r: 0, g: 0, b: 0, a: 1 });
+        }
+      }
     },
   })
   return result.css.toString()
@@ -141,7 +205,7 @@ async function extractExportVariables(css) {
 
     // Write the JavaScript file
     fs.writeFileSync('./src/config/colors.ts', `${comment}\n${jsContent}`, 'utf-8')
-    // remove the temporary file
+        // remove the temporary file
     fs.unlinkSync(scssFilePath)
     console.log('SCSS :export variables have been extracted to _colors.js')
   } catch (error) {
