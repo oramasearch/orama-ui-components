@@ -78,6 +78,18 @@ function compileScss(filePath) {
           }
         }
       },
+      'icon-color($arg1, $arg2)': (args) => {
+        const colorKey = args[0].assertString('arg1')
+        const palette = args[1].assertMap('arg2')
+        let currentValue = ''
+        for (const [key, value] of palette.contents.entrySeq()) {
+          const currentKey = key.toString()
+          if (currentKey === 'icon') {
+            currentValue = value.get(colorKey).toString()
+            return new sass.SassString(currentValue)
+          }
+        }
+      },
     },
   })
   return result.css.toString()
