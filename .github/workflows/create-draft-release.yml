@@ -22,6 +22,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Read Node.js version from .nvmrc
+        id: node_version
+        run: echo "NODE_VERSION=$(cat .nvmrc)" >> $GITHUB_ENV
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
       # Fetch tags to determine the latest version
       - name: Fetch all tags
         run: git fetch --tags
