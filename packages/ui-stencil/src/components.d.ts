@@ -145,28 +145,94 @@ export namespace Components {
         "suggestions"?: string[];
     }
     interface OramaSearchBox {
+        /**
+          * Callback function used on every AI Chat link
+         */
         "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
+        /**
+          * Callback function used on every AI Chat link target
+         */
         "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
+        /**
+          * Callback function used on every AI Chat link title
+         */
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
+        /**
+          * Placeholder for chat input
+         */
         "chatPlaceholder"?: string;
+        /**
+          * Orama Instance
+         */
         "clientInstance"?: OramaClient | AnyOrama;
+        /**
+          * Component color schema
+         */
         "colorScheme"?: ColorScheme;
+        /**
+          * Disables chat capabilities
+         */
         "disableChat"?: boolean;
+        /**
+          * Index result property to
+         */
         "facetProperty"?: string;
+        /**
+          * Options for highlights of Search Result descriptions
+         */
         "highlightDescription"?: HighlightOptions | false;
+        /**
+          * Options for highlights of Search Result titles
+         */
         "highlightTitle"?: HighlightOptions | false;
+        /**
+          * Orama Index configuration  note: It will be overrided by clientInstance property
+         */
         "index"?: CloudIndexConfig;
+        /**
+          * This component can behave either as Modal or a Embed component. For Modal, a new absolute panel will be displayed on top. For Embed, Orama Search Box will be displayed as a inline component.
+         */
         "layout"?: 'modal' | 'embed';
+        /**
+          * Used to provide linkRel to search result links
+         */
         "linksRel"?: string;
+        /**
+          * Used to provide linkRel to search result links
+         */
         "linksTarget"?: string;
         "open": boolean;
+        /**
+          * @deprecated it will be removed on next releases Placeholder for chat input
+         */
         "placeholder"?: string;
+        /**
+          * Used to map dataset result properties to the expected SearchBox properties
+         */
         "resultMap"?: Partial<ResultMap>;
+        /**
+          * Parameters forwarded to Orama Client.
+         */
         "searchParams"?: SearchParams<Orama<AnyOrama | OramaClient>>;
+        /**
+          * Placeholder for search input
+         */
         "searchPlaceholder"?: string;
+        /**
+          * Used to provide source base URL for the Search Results
+         */
         "sourceBaseUrl"?: string;
+        /**
+          * Used to map Chat result sources to expected Orama Chat properties
+         */
         "sourcesMap"?: SourcesMap;
+        /**
+          * List of initial questions for Orama Chat
+         */
         "suggestions"?: string[];
+        /**
+          * Component theme customization
+         */
         "themeConfig"?: Partial<TThemeOverrides>;
     }
     interface OramaSearchButton {
@@ -721,19 +787,61 @@ declare namespace LocalJSX {
         "suggestions"?: string[];
     }
     interface OramaSearchBox {
+        /**
+          * Callback function used on every AI Chat link
+         */
         "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
+        /**
+          * Callback function used on every AI Chat link target
+         */
         "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
+        /**
+          * Callback function used on every AI Chat link title
+         */
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
+        /**
+          * Placeholder for chat input
+         */
         "chatPlaceholder"?: string;
+        /**
+          * Orama Instance
+         */
         "clientInstance"?: OramaClient | AnyOrama;
+        /**
+          * Component color schema
+         */
         "colorScheme"?: ColorScheme;
+        /**
+          * Disables chat capabilities
+         */
         "disableChat"?: boolean;
+        /**
+          * Index result property to
+         */
         "facetProperty"?: string;
+        /**
+          * Options for highlights of Search Result descriptions
+         */
         "highlightDescription"?: HighlightOptions | false;
+        /**
+          * Options for highlights of Search Result titles
+         */
         "highlightTitle"?: HighlightOptions | false;
+        /**
+          * Orama Index configuration  note: It will be overrided by clientInstance property
+         */
         "index"?: CloudIndexConfig;
+        /**
+          * This component can behave either as Modal or a Embed component. For Modal, a new absolute panel will be displayed on top. For Embed, Orama Search Box will be displayed as a inline component.
+         */
         "layout"?: 'modal' | 'embed';
+        /**
+          * Used to provide linkRel to search result links
+         */
         "linksRel"?: string;
+        /**
+          * Used to provide linkRel to search result links
+         */
         "linksTarget"?: string;
         /**
           * Fired when answer generation is successfully completed
@@ -756,13 +864,37 @@ declare namespace LocalJSX {
          */
         "onSearchResultClick"?: (event: OramaSearchBoxCustomEvent<OnSearchResultClickCallbackProps>) => void;
         "open"?: boolean;
+        /**
+          * @deprecated it will be removed on next releases Placeholder for chat input
+         */
         "placeholder"?: string;
+        /**
+          * Used to map dataset result properties to the expected SearchBox properties
+         */
         "resultMap"?: Partial<ResultMap>;
+        /**
+          * Parameters forwarded to Orama Client.
+         */
         "searchParams"?: SearchParams<Orama<AnyOrama | OramaClient>>;
+        /**
+          * Placeholder for search input
+         */
         "searchPlaceholder"?: string;
+        /**
+          * Used to provide source base URL for the Search Results
+         */
         "sourceBaseUrl"?: string;
+        /**
+          * Used to map Chat result sources to expected Orama Chat properties
+         */
         "sourcesMap"?: SourcesMap;
+        /**
+          * List of initial questions for Orama Chat
+         */
         "suggestions"?: string[];
+        /**
+          * Component theme customization
+         */
         "themeConfig"?: Partial<TThemeOverrides>;
     }
     interface OramaSearchButton {
