@@ -26,6 +26,9 @@ importers:
       postcss:
         specifier: ^8.4.39
         version: 8.4.41
+      postcss-import:
+        specifier: ^16.1.0
+        version: 16.1.0(postcss@8.4.41)
       postcss-scss:
         specifier: ^4.0.9
         version: 4.0.9(postcss@8.4.41)
@@ -83,7 +86,7 @@ importers:
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^18.0.6
-        version: 18.0.6(@angular/compiler-cli@18.0.5(@angular/compiler@18.0.5(@angular/core@18.0.5(rxjs@7.8.1)(zone.js@0.14.7)))(typescript@5.4.5))(@swc/core@1.6.5(@swc/helpers@0.5.5))(@types/node@20.14.9)(chokidar@3.6.0)(html-webpack-plugin@5.6.0(webpack@5.91.0(@swc/core@1.6.5(@swc/helpers@0.5.5))(esbuild@0.21.3)))(jest@29.7.0(@types/node@20.14.9)(ts-node@10.9.2(@swc/core@1.6.5(@swc/helpers@0.5.5))(@types/node@20.14.9)(typescript@5.4.5)))(karma@6.4.3)(lightningcss@1.26.0)(ng-packagr@18.0.0(@angular/compiler-cli@18.0.5(@angular/compiler@18.0.5(@angular/core@18.0.5(rxjs@7.8.1)(zone.js@0.14.7)))(typescript@5.4.5))(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.6.5(@swc/helpers@0.5.5))(@types/node@20.14.9)(typescript@5.4.5)))(tslib@2.6.3)(typescript@5.4.5))(sass-embedded@1.77.8)(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.6.5(@swc/helpers@0.5.5))(@types/node@20.14.9)(typescript@5.4.5)))(typescript@5.4.5)
+        version: 18.0.6(@angular/compiler-cli@18.0.5(@angular/compiler@18.0.5(@angular/core@18.0.5(rxjs@7.8.1)(zone.js@0.14.7)))(typescript@5.4.5))(@swc/core@1.6.5(@swc/helpers@0.5.5))(@types/node@20.14.9)(chokidar@3.6.0)(html-webpack-plugin@5.6.0(webpack@5.92.1(@swc/core@1.6.5(@swc/helpers@0.5.5))))(jest@29.7.0(@types/node@20.14.9)(ts-node@10.9.2(@swc/core@1.6.5(@swc/helpers@0.5.5))(@types/node@20.14.9)(typescript@5.4.5)))(karma@6.4.3)(lightningcss@1.26.0)(ng-packagr@18.0.0(@angular/compiler-cli@18.0.5(@angular/compiler@18.0.5(@angular/core@18.0.5(rxjs@7.8.1)(zone.js@0.14.7)))(typescript@5.4.5))(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.6.5(@swc/helpers@0.5.5))(@types/node@20.14.9)(typescript@5.4.5)))(tslib@2.6.3)(typescript@5.4.5))(sass-embedded@1.77.8)(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.6.5(@swc/helpers@0.5.5))(@types/node@20.14.9)(typescript@5.4.5)))(typescript@5.4.5)
       '@angular/cli':
         specifier: ~18.0.6
         version: 18.0.6(chokidar@3.6.0)
@@ -438,7 +441,7 @@ importers:
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^18.0.6
-        version: 18.0.6(@angular/compiler-cli@18.0.5(@angular/compiler@18.0.5(@angular/core@18.0.5(rxjs@7.8.1)(zone.js@0.14.7)))(typescript@5.4.5))(@swc/core@1.6.5(@swc/helpers@0.5.5))(@types/node@20.14.9)(chokidar@3.6.0)(html-webpack-plugin@5.6.0(webpack@5.92.1(@swc/core@1.6.5(@swc/helpers@0.5.5))))(jest@29.7.0(@types/node@20.14.9)(ts-node@10.9.2(@swc/core@1.6.5(@swc/helpers@0.5.5))(@types/node@20.14.9)(typescript@5.4.5)))(karma@6.4.3)(lightningcss@1.26.0)(ng-packagr@18.0.0(@angular/compiler-cli@18.0.5(@angular/compiler@18.0.5(@angular/core@18.0.5(rxjs@7.8.1)(zone.js@0.14.7)))(typescript@5.4.5))(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.6.5(@swc/helpers@0.5.5))(@types/node@20.14.9)(typescript@5.4.5)))(tslib@2.6.3)(typescript@5.4.5))(sass-embedded@1.77.8)(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.6.5(@swc/helpers@0.5.5))(@types/node@20.14.9)(typescript@5.4.5)))(typescript@5.4.5)
+        version: 18.0.6(@angular/compiler-cli@18.0.5(@angular/compiler@18.0.5(@angular/core@18.0.5(rxjs@7.8.1)(zone.js@0.14.7)))(typescript@5.4.5))(@swc/core@1.6.5(@swc/helpers@0.5.5))(@types/node@20.14.9)(chokidar@3.6.0)(html-webpack-plugin@5.6.0(webpack@5.91.0(@swc/core@1.6.5(@swc/helpers@0.5.5))(esbuild@0.21.3)))(jest@29.7.0(@types/node@20.14.9)(ts-node@10.9.2(@swc/core@1.6.5(@swc/helpers@0.5.5))(@types/node@20.14.9)(typescript@5.4.5)))(karma@6.4.3)(lightningcss@1.26.0)(ng-packagr@18.0.0(@angular/compiler-cli@18.0.5(@angular/compiler@18.0.5(@angular/core@18.0.5(rxjs@7.8.1)(zone.js@0.14.7)))(typescript@5.4.5))(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.6.5(@swc/helpers@0.5.5))(@types/node@20.14.9)(typescript@5.4.5)))(tslib@2.6.3)(typescript@5.4.5))(sass-embedded@1.77.8)(tailwindcss@3.4.10(ts-node@10.9.2(@swc/core@1.6.5(@swc/helpers@0.5.5))(@types/node@20.14.9)(typescript@5.4.5)))(typescript@5.4.5)
       '@angular/cli':
         specifier: ~18.0.6
         version: 18.0.6(chokidar@3.6.0)
@@ -8250,6 +8253,12 @@ packages:
   postcss-import@15.1.0:
     resolution: {integrity: sha512-hpr+J05B2FVYUAXHeK1YyI267J/dDDhMU6B6civm8hSY1jYJnBXxzKDKDswzJmtLHryrjhnDjqqp/49t8FALew==}
     engines: {node: '>=14.0.0'}
+    peerDependencies:
+      postcss: ^8.0.0
+
+  postcss-import@16.1.0:
+    resolution: {integrity: sha512-7hsAZ4xGXl4MW+OKEWCnF6T5jqBw80/EE9aXg1r2yyn1RsVEU8EtKXbijEODa+rg7iih4bKf7vlvTGYR4CnPNg==}
+    engines: {node: '>=18.0.0'}
     peerDependencies:
       postcss: ^8.0.0
 
@@ -20338,8 +20347,7 @@ snapshots:
 
   picomatch@4.0.2: {}
 
-  pify@2.3.0:
-    optional: true
+  pify@2.3.0: {}
 
   pify@4.0.1: {}
 
@@ -20563,6 +20571,13 @@ snapshots:
       read-cache: 1.0.0
       resolve: 1.22.8
     optional: true
+
+  postcss-import@16.1.0(postcss@8.4.41):
+    dependencies:
+      postcss: 8.4.41
+      postcss-value-parser: 4.2.0
+      read-cache: 1.0.0
+      resolve: 1.22.8
 
   postcss-input-style@1.0.0:
     dependencies:
@@ -21196,7 +21211,6 @@ snapshots:
   read-cache@1.0.0:
     dependencies:
       pify: 2.3.0
-    optional: true
 
   read-file-stdin@0.2.1:
     dependencies:
