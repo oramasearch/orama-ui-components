@@ -57,12 +57,16 @@ function compileScss(filePath) {
       'background-color($arg1, $arg2)': (args) => {
         const colorKey = args[0].assertString('arg1')
         const palette = args[1].assertMap('arg2')
-        let currentValue = ''
         for (const [key, value] of palette.contents.entrySeq()) {
-          const currentKey = key.toString()
-          if (currentKey === 'background') {
-            currentValue = value.get(colorKey).toString()
-            return new sass.SassString(currentValue)
+          if (key.toString() === 'background') {
+            const colorValue = value.get(colorKey).toString()
+            return new sass.SassColor({
+              r: parseInt(colorValue.slice(1,3), 16),
+              g: parseInt(colorValue.slice(3,5), 16),
+              b: parseInt(colorValue.slice(5,7), 16),
+              a: 1,
+              space: 'rgb'
+            })
           }
         }
       },
@@ -89,6 +93,19 @@ function compileScss(filePath) {
             return new sass.SassString(currentValue)
           }
         }
+      },
+    'adjust($color, $kwargs)': (args) => {
+        const color = args[0]
+        const kwargs = args[1].assertMap('kwargs')
+        const alpha = kwargs.get('alpha').assertNumber('alpha')
+        
+        return new sass.SassColor({
+          r: color.red,
+          g: color.green,
+          b: color.blue,
+          a: color.alpha + alpha.value,
+          space: 'rgb'
+        })
       },
     },
   })
