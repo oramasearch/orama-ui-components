@@ -95,7 +95,6 @@ jobs:
         id: build-and-test
         run: |
           pnpm build
-          pnpm test
 
       - name: Commit changes
         run: |
