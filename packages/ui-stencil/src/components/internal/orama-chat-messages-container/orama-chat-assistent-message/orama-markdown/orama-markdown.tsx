@@ -212,7 +212,8 @@ export class OramaMarkdown {
 
     for (const pendingLanguage of Object.keys(pedningBlocksByLanguage)) {
       loadLanguageAndHighlight(pendingLanguage).then(() => {
-        const parsedContent = marked.parse(noZeroWidthCharsContent)
+        // We know for sure that nothing is async right now
+        const parsedContent = marked.parse(noZeroWidthCharsContent) as string
         this.divElement.innerHTML = DOMPurify.sanitize(parsedContent)
       })
     }
