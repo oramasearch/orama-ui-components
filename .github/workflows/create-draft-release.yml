@@ -11,6 +11,10 @@ on:
           - minor
           - major
         required: true
+
+permissions:
+  contents: write
+
 jobs:
   build:
     if: ${{ github.actor != 'dependabot'}}
