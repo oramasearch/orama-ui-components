@@ -20,6 +20,11 @@
     "dev": {
       "cache": false,
       "persistent": true
+    },
+    "demo-react#dev": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["@orama/react-components#build"]
     }
   }
 }
