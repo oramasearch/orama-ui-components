@@ -22,22 +22,13 @@ jobs:
     outputs:
       release: ${{ steps.prerelease.outputs.release }}
     steps:
-      # Checkout the repository
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v3
-
-      - name: Read Node.js version from .nvmrc
-        id: node_version
-        run: echo "NODE_VERSION=$(cat .nvmrc)" >> $GITHUB_ENV
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          fetch-depth: 0
 
-      # Fetch tags to determine the latest version
-      - name: Fetch all tags
-        run: git fetch --tags
+      - name: Setup Environment
+        uses: ./.github/actions/setup
 
       - name: Calculate next version
         id: next_version
@@ -89,11 +80,6 @@ jobs:
               echo "No package.json found in $package_json"
             fi
           done
-
-      - uses: pnpm/action-setup@v4
-
-      - name: Install dependencies
-        run: pnpm install
 
       - name: Build And Test
         id: build-and-test
