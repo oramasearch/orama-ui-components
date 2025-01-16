@@ -136,6 +136,10 @@ export class OramaModal {
   }
 
   render() {
+    if(!this.modalIsOpen) {
+      return null
+    }
+
     return (
       <div
         class={`modal ${this.modalIsOpen ? 'open' : ''}`}
