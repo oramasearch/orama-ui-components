@@ -32,17 +32,17 @@ Or import it directly in a browser module:
 </div>
 <script>
   let open = false;
-  Object.assign(document.querySelector("orama-search-box"), {
+  Object.assign(document.querySelector('orama-search-box'), {
     open: open,
     index: {
-      endpoint: "https://cloud.orama.run/v1/indexes/orama-docs-bzo330",
-      api_key: "NKiqTJnwnKsQCdxN7RyOBJgeoW5hJ594",
+      endpoint: 'https://cloud.orama.run/v1/indexes/orama-docs-bzo330',
+      api_key: 'NKiqTJnwnKsQCdxN7RyOBJgeoW5hJ594',
     },
     facetProperty: 'category',
-    sourceBaseUrl: "https://docs.orama.com",
+    sourceBaseUrl: 'https://docs.orama.com',
     sourcesMap: {
       title: 'title',
-      description: 'content'
+      description: 'content',
     },
     resultMap: {
       title: 'title',
@@ -50,12 +50,14 @@ Or import it directly in a browser module:
       section: 'category',
     },
     searchPlaceholder: 'Search something...',
-    chatPlaceholder: "What do you want to learn about Orama?",
-    suggestions: [
-      'What is Orama?',
-      'Does Orama integrate with Shopify?',
-      'How do I create an answer session?'
-    ]
+    chatPlaceholder: 'What do you want to learn about Orama?',
+    suggestions: ['What is Orama?', 'Does Orama integrate with Shopify?', 'How do I create an answer session?'],
   });
 </script>
 ```
+
+## Components API Documentation
+
+[Orama Search Box](src/components/orama-search-box/README.md)
+[Orama Chat Box](src/components/orama-chat-box/README.md)
+[Orama Search Button](src/components/orama-search-button/README.md)

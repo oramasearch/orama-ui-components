@@ -36,30 +36,99 @@ import type { TThemeOverrides } from '@/config/theme'
 export class SearchBox {
   @Element() htmlElement!: HTMLElement
 
+  /**
+   * Component theme customization
+   */
   @Prop() themeConfig?: Partial<TThemeOverrides>
+  /**
+   * Component color schema
+   */
   @Prop() colorScheme?: ColorScheme = 'light'
+  /**
+   * Orama Index configuration
+   *
+   * note: It will be overrided by clientInstance property
+   */
   @Prop() index?: CloudIndexConfig
+  /**
+   * Orama Instance
+   */
   @Prop() clientInstance?: OramaClient | AnyOrama
   @Prop({ mutable: true }) open = false
+  /**
+   * Index result property to
+   */
   @Prop() facetProperty?: string
+  /**
+   * Used to map dataset result properties to the expected SearchBox properties
+   */
   @Prop() resultMap?: Partial<ResultMap> = {}
+  /**
+   * Used to provide source base URL for the Search Results
+   */
   @Prop() sourceBaseUrl?: string
+  /**
+   * Used to provide linkRel to search result links
+   */
   @Prop() linksTarget?: string
+  /**
+   * Used to provide linkRel to search result links
+   */
   @Prop() linksRel?: string
+  /**
+   * Used to map Chat result sources to expected Orama Chat properties
+   */
   @Prop() sourcesMap?: SourcesMap
+  /**
+   * Disables chat capabilities
+   */
   @Prop() disableChat?: boolean = false
+  /**
+   * This component can behave either as Modal or a Embed component.
+   * For Modal, a new absolute panel will be displayed on top.
+   * For Embed, Orama Search Box will be displayed as a inline component.
+   */
   @Prop() layout?: 'modal' | 'embed' = 'modal'
+  /**
+   * Options for highlights of Search Result titles
+   */
   @Prop() highlightTitle?: HighlightOptions | false = false
+  /**
+   * Options for highlights of Search Result descriptions
+   */
   @Prop() highlightDescription?: HighlightOptions | false = false
-
-  // TODO: remove it in favor of dictionary
+  /**
+   * @deprecated it will be removed on next releases
+   * Placeholder for chat input
+   */
   @Prop() placeholder?: string
+  /**
+   * Placeholder for chat input
+   */
   @Prop() chatPlaceholder?: string
+  /**
+   * Placeholder for search input
+   */
   @Prop() searchPlaceholder?: string
+  /**
+   * List of initial questions for Orama Chat
+   */
   @Prop() suggestions?: string[]
+  /**
+   * Parameters forwarded to Orama Client.
+   */
   @Prop() searchParams?: SearchParams<Orama<AnyOrama | OramaClient>>
+  /**
+   * Callback function used on every AI Chat link title
+   */
   @Prop() chatMarkdownLinkTitle?: ChatMarkdownLinkTitle
+  /**
+   * Callback function used on every AI Chat link
+   */
   @Prop() chatMarkdownLinkHref?: ChatMarkdownLinkHref
+  /**
+   * Callback function used on every AI Chat link target
+   */
   @Prop() chatMarkdownLinkTarget?: ChatMarkdownLinkTarget
 
   @State() componentID = generateRandomID('search-box')
