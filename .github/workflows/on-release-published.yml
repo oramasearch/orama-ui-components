@@ -22,7 +22,13 @@ jobs:
             exit 0
           fi
 
-      - uses: pnpm/action-setup@v4
+      - name: Setup Environment
+        uses: ./.github/actions/setup
+
+      - name: Test & Build
+        id: test-and-build
+        run: |
+          pnpm build
 
       - name: Configure npm with token
         run: |
