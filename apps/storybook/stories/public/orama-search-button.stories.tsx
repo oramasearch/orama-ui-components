@@ -53,7 +53,12 @@ const Template = (label: string) => (args) => {
       </div>
       <orama-search-box
         .colorScheme=${args.colorScheme}
-        .index=${demoIndexes.orama.index}
+        .index=${
+          {
+            api_key: 'LerNlbp6379jVKaPs4wt2nZT4MJZbU1J',
+            endpoint: 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd'
+          }
+        }
         .chatPlaceholder=${demoIndexes.orama.placeholder}
         .facetProperty=${demoIndexes.orama.facetProperty}
         .resultMap=${demoIndexes.orama.resultMap}
