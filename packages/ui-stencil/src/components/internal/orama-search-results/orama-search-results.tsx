@@ -152,8 +152,12 @@ export class SearchResults {
                       id={`search-result-${result.id}`}
                       onClick={(onClickEvent) => this.handleItemClick(onClickEvent, result)}
                     >
-                      <div style={{ flexShrink: '0' }}>
-                        <ph-files size="20px" />
+                      <div class="result-item-icon-wrapper">
+                        {result.icon ? (
+                          <img alt="" class="custom-result-item-icon" src={result.icon} />
+                        ) : (
+                          <ph-files size="20px" />
+                        )}
                       </div>
                       <div class="textWrapper">
                         <orama-text as="h3" styledAs="p" class="result-title collapsed">

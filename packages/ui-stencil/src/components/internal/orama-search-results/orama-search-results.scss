@@ -107,3 +107,18 @@
 ph-files {
   color: var(--icon-color-primary, icon-color('primary'));
 }
+
+.result-item-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+
+.custom-result-item-icon {
+  max-height: 20px;
+  max-width: 20px;
+  object-fit: contain;
+}
