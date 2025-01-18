@@ -14,9 +14,6 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "nursery": {
-        "noConsole": "off"
-      },
       "recommended": true,
       "a11y": { "noAutofocus": "off" },
       "security": { "noDangerouslySetInnerHtml": "off" },
