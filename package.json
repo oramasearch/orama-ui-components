@@ -11,6 +11,7 @@
     "dev:demo:react": "turbo watch demo-react#dev",
     "dev:all": "turbo run dev",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "biome": "biome check . ",
     "lint": "turbo run lint",
     "maintenance": "turbo run maintenance",
     "publish:packages": "node scripts/release.mjs",
