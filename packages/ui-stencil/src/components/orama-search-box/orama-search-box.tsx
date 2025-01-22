@@ -20,6 +20,7 @@ import type {
   OnChatMarkdownLinkClickedCallbackProps,
   OnSearchCompletedCallbackProps,
   OnSearchResultClickCallbackProps,
+  ResultItemRenderFunction,
   ResultMap,
   SourcesMap,
 } from '@/types'
@@ -63,6 +64,10 @@ export class SearchBox {
    * Used to map dataset result properties to the expected SearchBox properties
    */
   @Prop() resultMap?: Partial<ResultMap> = {}
+  /**
+   * Used to render a custom icom per result. It should return a local asset path.
+   */
+  @Prop() resultItemRender?: ResultItemRenderFunction
   /**
    * Used to provide source base URL for the Search Results
    */

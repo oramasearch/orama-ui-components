@@ -11,19 +11,23 @@ export type SearchResult = {
 export type ColorScheme = 'dark' | 'light' | 'system'
 
 export type SearchResultWithScore = SearchResult & { score: number }
+export type SearchResultWithIcon = SearchResult & { icon: string }
 
 export type SearchResultBySection = {
   section: string | undefined
-  items: SearchResultWithScore[]
+  items: SearchResultWithIcon[]
 }
 
 export type Facet = { name: string; count: number }
 
 export type ResultMapKeys = keyof Omit<SearchResult, 'id'> | 'section'
 export type ResultMapRenderFunction = (any) => string
+export type ResultItemRenderFunction = (any) => string | null | undefined
 
 // TODO: callback function should have the type of the schema
-export type ResultMap = { [K in ResultMapKeys]?: string | ResultMapRenderFunction }
+export type ResultMap = { [K in ResultMapKeys]?: string | ResultMapRenderFunction } & {
+  icon?: string | ResultItemRenderFunction
+}
 
 export type SourcesMap = { [K in keyof Omit<SearchResult, 'id'>]?: string }
 

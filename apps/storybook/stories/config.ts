@@ -63,4 +63,16 @@ const demoIndexes: DemoIndexConfig = {
   },
 }
 
+demoIndexes.oramaWithCustomIcons = {
+  ...demoIndexes.orama,
+  resultMap: {
+    ...demoIndexes.orama,
+    icon: (result) => {
+      return result.category === 'Open Source'
+        ? 'https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f680.svg'
+        : null
+    },
+  },
+}
+
 export default demoIndexes

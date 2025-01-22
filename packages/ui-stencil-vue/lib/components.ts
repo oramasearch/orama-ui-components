@@ -172,6 +172,7 @@ export const OramaSearchBox = /*@__PURE__*/ defineContainer<JSX.OramaSearchBox>(
   'open',
   'facetProperty',
   'resultMap',
+  'resultItemRender',
   'sourceBaseUrl',
   'linksTarget',
   'linksRel',

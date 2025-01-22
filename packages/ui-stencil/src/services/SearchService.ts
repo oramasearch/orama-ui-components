@@ -4,11 +4,12 @@ import { searchState } from '@/context/searchContext'
 import { Switch, type OramaSwitchClient } from '@orama/switch'
 import type {
   OnSearchCompletedCallbackProps,
+  ResultItemRenderFunction,
   ResultMap,
   ResultMapKeys,
   ResultMapRenderFunction,
   SearchResultBySection,
-  SearchResultWithScore,
+  SearchResultWithIcon,
 } from '@/types'
 
 const LIMIT_RESULTS = 10
@@ -143,7 +144,7 @@ export class SearchService {
     return perSectionResults
   }
 
-  private hitToSearchResultParser = (hit: OramaHit, resultMap: ResultMap): SearchResultWithScore => {
+  private hitToSearchResultParser = (hit: OramaHit, resultMap: ResultMap): SearchResultWithIcon => {
     function getResultMapValue(resultMapKey: ResultMapKeys): string {
       const resultMapFunctionOrString = resultMap[resultMapKey]
 
@@ -160,12 +161,29 @@ export class SearchService {
       return hit.document[resultMapString]
     }
 
+    function getIcon(): string | null {
+      const iconStringOrFunction = resultMap.icon
+
+      if (!iconStringOrFunction) {
+        return null
+      }
+
+      if (typeof iconStringOrFunction === 'function') {
+        const iconFunctionRender = iconStringOrFunction as ResultItemRenderFunction
+        const iconFunctionRenderResult = iconFunctionRender(hit.document)
+
+        return iconFunctionRenderResult ?? null
+      }
+
+      return resultMap.icon as string
+    }
+
     return {
       id: hit.id,
-      score: hit.score,
       title: getResultMapValue('title'),
       description: getResultMapValue('description'),
       path: getResultMapValue('path'),
+      icon: getIcon(),
     }
   }
 
