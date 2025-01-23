@@ -90,21 +90,6 @@ export function validateCloudIndexConfig(
     )
   }
 
-  if (instance && !index) {
-    const oramaInstance = new Switch(instance)
-
-    // TODO: maybe add a validate method to the client?
-    oramaInstance
-      .search({
-        term: 'test',
-      })
-      .catch(() => {
-        throw new Error(
-          `Invalid cloud instance configuration. Please provide a valid api_key and endpoint ${componentDetails}`,
-        )
-      })
-  }
-
   if (index && !instance) {
     if (!index.api_key || !index.endpoint) {
       throw new Error(
