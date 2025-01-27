@@ -50,7 +50,7 @@ export class SearchBox {
    *
    * note: It will be overrided by clientInstance property
    */
-  @Prop() index?: CloudIndexConfig
+  @Prop() index?: CloudIndexConfig | CloudIndexConfig[]
   /**
    * Orama Instance
    */

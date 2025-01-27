@@ -66,7 +66,7 @@ export namespace Components {
         "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "clientInstance"?: OramaClient | AnyOrama;
-        "index"?: CloudIndexConfig;
+        "index"?: CloudIndexConfig | CloudIndexConfig[];
         "linksRel"?: string;
         "linksTarget"?: string;
         "placeholder"?: string;
@@ -188,7 +188,7 @@ export namespace Components {
         /**
           * Orama Index configuration  note: It will be overrided by clientInstance property
          */
-        "index"?: CloudIndexConfig;
+        "index"?: CloudIndexConfig | CloudIndexConfig[];
         /**
           * This component can behave either as Modal or a Embed component. For Modal, a new absolute panel will be displayed on top. For Embed, Orama Search Box will be displayed as a inline component.
          */
@@ -694,7 +694,7 @@ declare namespace LocalJSX {
         "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "clientInstance"?: OramaClient | AnyOrama;
-        "index"?: CloudIndexConfig;
+        "index"?: CloudIndexConfig | CloudIndexConfig[];
         "linksRel"?: string;
         "linksTarget"?: string;
         /**
@@ -834,7 +834,7 @@ declare namespace LocalJSX {
         /**
           * Orama Index configuration  note: It will be overrided by clientInstance property
          */
-        "index"?: CloudIndexConfig;
+        "index"?: CloudIndexConfig | CloudIndexConfig[];
         /**
           * This component can behave either as Modal or a Embed component. For Modal, a new absolute panel will be displayed on top. For Embed, Orama Search Box will be displayed as a inline component.
          */

@@ -83,6 +83,12 @@ export class SearchService {
           return
         }
 
+        if (results && !results.hits) {
+          throw new Error(
+            'This search was made by a OramaClient with property mergeResult set to false. Orama Search Service requires mergeResult to be true.',
+          )
+        }
+
         searchState.results = this.parserResults(results?.hits, searchState.resultMap)
         searchState.count = results?.count || 0
         searchState.facets = this.parseFacets(results?.facets, searchState.facetProperty)
