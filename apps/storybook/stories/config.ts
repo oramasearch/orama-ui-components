@@ -75,4 +75,24 @@ demoIndexes.oramaWithCustomIcons = {
   },
 }
 
+demoIndexes.multipleIndexes = {
+  open: true,
+  resultMap: {
+    description: (doc) => {
+      return doc.description || doc.content
+    },
+    section: (doc) => {
+      return doc.genres?.[0] || doc.section
+    },
+  },
+  index: [
+    {
+      api_key: 'hdRgZI3j8Z38pImkqYWbAw7SwnrJk8Nt',
+      endpoint: 'https://cloud.orama.run/v1/indexes/videogames-nb9lk0',
+    },
+    { api_key: 'LerNlbp6379jVKaPs4wt2nZT4MJZbU1J', endpoint: 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd' },
+  ],
+  suggestions: ['How to get started?'],
+}
+
 export default demoIndexes
