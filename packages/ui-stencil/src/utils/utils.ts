@@ -76,7 +76,7 @@ export function getNonExplicitAttributes(element: HTMLElement, explicitProps: st
 
 export function validateCloudIndexConfig(
   el: HTMLElement,
-  index?: CloudIndexConfig,
+  indexOrIndexes?: CloudIndexConfig | CloudIndexConfig[],
   instance?: OramaClient | AnyOrama,
 ): void {
   const componentDetails = `
@@ -84,27 +84,36 @@ export function validateCloudIndexConfig(
     Id: ${el.id}
   `
 
-  if (!index && !instance) {
+  if (!indexOrIndexes && !instance) {
     throw new Error(
       `Invalid component configuration. Please provide a valid index or instance prop. ${componentDetails}`,
     )
   }
 
-  if (index && !instance) {
-    if (!index.api_key || !index.endpoint) {
+  if (indexOrIndexes) {
+    const indexes = Array.isArray(indexOrIndexes) ? indexOrIndexes : [indexOrIndexes]
+    if (indexes.some((index) => !index.api_key || !index.endpoint)) {
       throw new Error(
         `Invalid cloud index configuration. Please provide a valid api_key and endpoint ${componentDetails}`,
       )
     }
-    return
   }
 
-  if (index && instance) {
+  if (indexOrIndexes && instance) {
     console.warn(`Both index and instance props are provided. Instance prop will be used. ${componentDetails}`)
   }
 }
 
-export function initOramaClient(index: CloudIndexConfig): OramaClient | null {
+export function initOramaClient(indexOrIndexes: CloudIndexConfig | CloudIndexConfig[]): OramaClient | null {
+  if (Array.isArray(indexOrIndexes)) {
+    const indexes = indexOrIndexes as CloudIndexConfig[]
+    return new OramaClient({
+      mergeResults: true,
+      indexes: indexes,
+    })
+  }
+
+  const index = indexOrIndexes as CloudIndexConfig
   return new OramaClient({
     api_key: index.api_key,
     endpoint: index.endpoint,

@@ -1,7 +1,11 @@
 import { Component, Host, h, Prop, Watch, State, Element, type EventEmitter, Event } from '@stencil/core'
 import { chatContext } from '@/context/chatContext'
 import { ChatService } from '@/services/ChatService'
-import { generateRandomID, initOramaClient, validateCloudIndexConfig } from '@/utils/utils'
+import {
+  generateRandomID,
+  initOramaClient,
+  validateCloudIndexConfig as validateCloudIndexOrInstance,
+} from '@/utils/utils'
 import type {
   ChatMarkdownLinkHref,
   ChatMarkdownLinkTarget,
@@ -14,7 +18,7 @@ import type {
 } from '@/types'
 import type { OramaClient } from '@oramacloud/client'
 import '@phosphor-icons/webcomponents/dist/icons/PhArrowClockwise.mjs'
-import type { AnyOrama, Orama } from "@orama/orama"
+import type { AnyOrama, Orama } from '@orama/orama'
 
 @Component({
   tag: 'orama-chat-box',
@@ -23,7 +27,7 @@ import type { AnyOrama, Orama } from "@orama/orama"
 })
 export class ChatBox {
   @Element() el: HTMLElement
-  @Prop() index?: CloudIndexConfig
+  @Prop() index?: CloudIndexConfig | CloudIndexConfig[]
   @Prop() clientInstance?: OramaClient | AnyOrama
   @Prop() sourceBaseUrl?: string
   @Prop() linksTarget?: string
@@ -65,7 +69,7 @@ export class ChatBox {
   }
 
   startChatService() {
-    validateCloudIndexConfig(this.el, this.index, this.clientInstance)
+    validateCloudIndexOrInstance(this.el, this.index, this.clientInstance)
     const oramaClient = this.clientInstance || initOramaClient(this.index)
 
     chatContext.chatService = new ChatService(oramaClient)
