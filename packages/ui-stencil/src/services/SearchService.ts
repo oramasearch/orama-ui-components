@@ -126,8 +126,8 @@ export class SearchService {
 
     for (const hit of hits) {
       const searchResultWithScore = this.hitToSearchResultParser(hit, resultMap)
-      const sectionKey = typeof resultMap.section === 'function' ? resultMap.section(hit.document) : resultMap.section
-      const documentSectionValue = hit.document[sectionKey]
+      const documentSectionValue =
+        typeof resultMap.section === 'function' ? resultMap.section(hit.document) : hit.document[resultMap.section]
 
       if (arraySectionMap[documentSectionValue] === undefined) {
         perSectionResults.push({
