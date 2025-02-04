@@ -73,6 +73,8 @@ const Template = ({ preset }) => {
       .sourcesMap=${preset?.sourcesMap}
       .suggestions=${preset?.suggestions}
       .systemPrompts=${preset?.systemPrompts}
+      .clearChatOnDisconnect=${preset?.clearChatOnDisconnect}
+      prompt=${preset?.prompt}
     ></orama-chat-box>
   `
 }

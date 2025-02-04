@@ -43,11 +43,13 @@ export namespace Components {
         "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
         "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
+        "clearChatOnDisconnect"?: boolean;
         "defaultTerm"?: string;
         "focusInput"?: boolean;
         "linksRel"?: string;
         "linksTarget"?: string;
         "placeholder"?: string;
+        "prompt"?: string;
         "showClearChat"?: boolean;
         "sourceBaseUrl"?: string;
         "sourcesMap"?: SourcesMap;
@@ -65,11 +67,13 @@ export namespace Components {
         "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
         "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
+        "clearChatOnDisconnect": boolean;
         "clientInstance"?: OramaClient | AnyOrama;
         "index"?: CloudIndexConfig | CloudIndexConfig[];
         "linksRel"?: string;
         "linksTarget"?: string;
         "placeholder"?: string;
+        "prompt"?: string;
         "sourceBaseUrl"?: string;
         "sourcesMap"?: SourcesMap;
         "suggestions"?: string[];
@@ -670,12 +674,14 @@ declare namespace LocalJSX {
         "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
         "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
+        "clearChatOnDisconnect"?: boolean;
         "defaultTerm"?: string;
         "focusInput"?: boolean;
         "linksRel"?: string;
         "linksTarget"?: string;
         "onAnswerGenerated"?: (event: OramaChatCustomEvent<OnAnswerGeneratedCallbackProps>) => void;
         "placeholder"?: string;
+        "prompt"?: string;
         "showClearChat"?: boolean;
         "sourceBaseUrl"?: string;
         "sourcesMap"?: SourcesMap;
@@ -693,6 +699,7 @@ declare namespace LocalJSX {
         "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
         "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
+        "clearChatOnDisconnect"?: boolean;
         "clientInstance"?: OramaClient | AnyOrama;
         "index"?: CloudIndexConfig | CloudIndexConfig[];
         "linksRel"?: string;
@@ -710,6 +717,7 @@ declare namespace LocalJSX {
          */
         "onChatMarkdownLinkClicked"?: (event: OramaChatBoxCustomEvent<OnChatMarkdownLinkClickedCallbackProps>) => void;
         "placeholder"?: string;
+        "prompt"?: string;
         "sourceBaseUrl"?: string;
         "sourcesMap"?: SourcesMap;
         "suggestions"?: string[];

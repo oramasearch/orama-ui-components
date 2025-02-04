@@ -67,9 +67,9 @@ export class ChatService {
                * need to check OSS Orama and fix it if it's a bug.
                **/
               if (interaction.sources) {
-                sources = Array.isArray(interaction.sources) ?
-                  (interaction.sources as any)?.map((source) => source.document) :
-                  (interaction.sources.hits as any)?.map((source) => source.document)
+                sources = Array.isArray(interaction.sources)
+                  ? (interaction.sources as any)?.map((source) => source.document)
+                  : (interaction.sources.hits as any)?.map((source) => source.document)
               }
 
               if (isLatest && answerStatus === TAnswerStatus.done) {
@@ -98,7 +98,7 @@ export class ChatService {
       })
 
       if (this.oramaClient.clientType === 'cloud' && systemPrompts) {
-        (this.answerSession as CloudAnswerSession<true>).setSystemPromptConfiguration({ systemPrompts })
+        ;(this.answerSession as CloudAnswerSession<true>).setSystemPromptConfiguration({ systemPrompts })
       }
     }
 

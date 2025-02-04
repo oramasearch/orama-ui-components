@@ -18,7 +18,7 @@ import type {
 } from '@/types'
 import type { OramaClient } from '@oramacloud/client'
 import '@phosphor-icons/webcomponents/dist/icons/PhArrowClockwise.mjs'
-import type { AnyOrama, Orama } from '@orama/orama'
+import type { AnyOrama } from '@orama/orama'
 
 @Component({
   tag: 'orama-chat-box',
@@ -37,6 +37,8 @@ export class ChatBox {
   @Prop() suggestions?: string[]
   @Prop() autoFocus = true
   @Prop() systemPrompts?: string[]
+  @Prop() prompt?: string
+  @Prop() clearChatOnDisconnect = true
   @Prop() chatMarkdownLinkTitle?: ChatMarkdownLinkTitle
   @Prop() chatMarkdownLinkHref?: ChatMarkdownLinkHref
   @Prop() chatMarkdownLinkTarget?: ChatMarkdownLinkTarget
@@ -72,6 +74,7 @@ export class ChatBox {
     validateCloudIndexOrInstance(this.el, this.index, this.clientInstance)
     const oramaClient = this.clientInstance || initOramaClient(this.index)
 
+    if (chatContext.chatService) return
     chatContext.chatService = new ChatService(oramaClient)
   }
 
@@ -90,12 +93,16 @@ export class ChatBox {
           suggestions={this.suggestions}
           focusInput={this.autoFocus}
           systemPrompts={this.systemPrompts}
+          prompt={this.prompt}
+          clearChatOnDisconnect={this.clearChatOnDisconnect}
           chatMarkdownLinkTitle={this.chatMarkdownLinkTitle}
           chatMarkdownLinkHref={this.chatMarkdownLinkHref}
         >
-          <div slot="chat-empty-state">
-            <slot name="empty-state" />
-          </div>
+          {!!chatContext?.interactions?.length && (
+            <div slot="chat-empty-state">
+              <slot name="empty-state" />
+            </div>
+          )}
         </orama-chat>
       </Host>
     )

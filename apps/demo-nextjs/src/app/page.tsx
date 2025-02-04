@@ -1,15 +1,14 @@
 'use client'
+import dynamic from 'next/dynamic'
 
-import { OramaSearchBox, OramaSearchButton } from '@orama/react-components';
-import dynamic from 'next/dynamic';
-
-const Orama = dynamic(() => import("./Orama"), {
-  ssr: false
+const Orama = dynamic(() => import('./Orama'), {
+  ssr: false,
 })
 
-
 export default function Home() {
-  return <div>
-    <Orama />
-  </div>
+  return (
+    <div>
+      <Orama />
+    </div>
+  )
 }

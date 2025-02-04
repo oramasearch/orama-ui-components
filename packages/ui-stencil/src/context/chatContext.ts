@@ -42,6 +42,7 @@ const { state: chatContext, ...chatStore } = createStore({
   sourceBaseURL: '' as string,
   linksTarget: '_blank' as string,
   linksRel: 'noopener noreferrer' as string,
+  prompt: '',
   sourcesMap: {
     title: 'title',
     description: 'description',

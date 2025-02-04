@@ -28,7 +28,9 @@ export class OramaChat {
   @Prop() defaultTerm?: string
   @Prop() focusInput?: boolean = false
   @Prop() suggestions?: string[]
+  @Prop() prompt?: string
   @Prop() systemPrompts?: string[]
+  @Prop() clearChatOnDisconnect?: boolean
 
   @Prop() chatMarkdownLinkTitle?: ChatMarkdownLinkTitle
   @Prop() chatMarkdownLinkHref?: ChatMarkdownLinkHref
@@ -38,6 +40,7 @@ export class OramaChat {
 
   @State() inputValue = ''
   @State() showGoToBottomButton = false
+  private hasInitialized = false
 
   @Listen('sourceItemClick')
   handleSourceItemClick(event: CustomEvent<SearchResult>) {
@@ -56,6 +59,24 @@ export class OramaChat {
   @Watch('focusInput')
   focusInputWatcher() {
     this.handleFocus()
+  }
+
+  @Watch('prompt')
+  promptWatcher(newValue: string, oldValue: string) {
+    if (newValue !== oldValue) {
+      this.triggerSendQuestion(newValue)
+      chatContext.prompt = newValue
+    }
+  }
+
+  triggerSendQuestion = (question: string) => {
+    if (chatContext.chatService === null) {
+      throw new Error('Chat Service is not initialized')
+    }
+
+    chatContext.chatService.sendQuestion(question, this.systemPrompts, {
+      onAnswerGeneratedCallback: (params) => this.answerGenerated.emit(params),
+    })
   }
 
   messagesContainerRef!: HTMLElement
@@ -179,9 +200,15 @@ export class OramaChat {
   }
 
   componentDidLoad() {
+    console.log('Component has been rendered', this.prompt)
     this.messagesContainerRef.addEventListener('wheel', this.handleWheel)
     this.setSources()
     this.handleFocus()
+
+    if (this.prompt && chatContext.prompt !== this.prompt) {
+      this.triggerSendQuestion(this.prompt)
+      chatContext.prompt = this.prompt
+    }
 
     this.scrollableContainerResizeObserver = new ResizeObserver(() => {
       this.recalculateGoBoToBottomButton()
@@ -218,6 +245,7 @@ export class OramaChat {
   }
 
   connectedCallback() {
+    console.log('Component has been added to the DOM', this.prompt)
     chatStore.on('set', (prop, newInteractions, oldInteractions) => {
       if (prop !== 'interactions') {
         return
@@ -234,7 +262,10 @@ export class OramaChat {
     this.messagesContainerRef.removeEventListener('wheel', this.handleWheel)
     this.scrollableContainerResizeObserver.disconnect()
     this.nonScrollableContainerResizeObserver.disconnect()
-    chatContext.interactions = []
+
+    if (this.clearChatOnDisconnect) {
+      chatContext.interactions = []
+    }
   }
 
   handleSubmit = (e: Event) => {
