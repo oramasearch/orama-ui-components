@@ -1,4 +1,5 @@
 'use client'
+import React from 'react'
 import { Tabs } from 'radix-ui'
 import { OramaChatBox, OramaSearchBox, OramaSearchButton } from '@orama/react-components'
 
@@ -6,6 +7,8 @@ const API_KEY = 'LerNlbp6379jVKaPs4wt2nZT4MJZbU1J'
 const ENDPOINT = 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd'
 
 const Orama = () => {
+  const [initialPrompt, setInitialPrompt] = React.useState('')
+
   return (
     <div>
       <OramaSearchButton style={{ marginBottom: '24px' }} />
@@ -28,10 +31,31 @@ const Orama = () => {
             <OramaChatBox
               index={{ api_key: API_KEY, endpoint: ENDPOINT }}
               clearChatOnDisconnect={false}
-              prompt="what is orama?"
+              prompt={initialPrompt}
               style={{ height: '100%' }}
             />
           </div>
+          <p>
+            <b>Chat suggestions</b>
+          </p>
+          <button
+            type="button"
+            onClick={(e) => {
+              const text = (e.target as HTMLButtonElement).innerText
+              setInitialPrompt(text)
+            }}
+          >
+            What is Orama?
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              const text = (e.target as HTMLButtonElement).innerText
+              setInitialPrompt(text)
+            }}
+          >
+            Does Orama have an integration with Strapi?
+          </button>
         </Tabs.Content>
       </Tabs.Root>
     </div>

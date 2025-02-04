@@ -40,7 +40,6 @@ export class OramaChat {
 
   @State() inputValue = ''
   @State() showGoToBottomButton = false
-  private hasInitialized = false
 
   @Listen('sourceItemClick')
   handleSourceItemClick(event: CustomEvent<SearchResult>) {
@@ -64,6 +63,7 @@ export class OramaChat {
   @Watch('prompt')
   promptWatcher(newValue: string, oldValue: string) {
     if (newValue !== oldValue) {
+      console.log('running watcher', chatContext.prompt, chatContext.interactions)
       this.triggerSendQuestion(newValue)
       chatContext.prompt = newValue
     }
@@ -200,12 +200,12 @@ export class OramaChat {
   }
 
   componentDidLoad() {
-    console.log('Component has been rendered', this.prompt)
     this.messagesContainerRef.addEventListener('wheel', this.handleWheel)
     this.setSources()
     this.handleFocus()
 
     if (this.prompt && chatContext.prompt !== this.prompt) {
+      console.log('running component did load', this.prompt, chatContext.prompt, chatContext.interactions)
       this.triggerSendQuestion(this.prompt)
       chatContext.prompt = this.prompt
     }
@@ -245,7 +245,6 @@ export class OramaChat {
   }
 
   connectedCallback() {
-    console.log('Component has been added to the DOM', this.prompt)
     chatStore.on('set', (prop, newInteractions, oldInteractions) => {
       if (prop !== 'interactions') {
         return
@@ -278,6 +277,8 @@ export class OramaChat {
     chatContext.chatService.sendQuestion(this.inputValue, this.systemPrompts, {
       onAnswerGeneratedCallback: (params) => this.answerGenerated.emit(params),
     })
+
+    chatContext.prompt = this.inputValue
     this.inputValue = ''
   }
 

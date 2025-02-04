@@ -29,6 +29,7 @@ export class ChatService {
     const askParams: AskParams = { term: term, related: { howMany: 3, format: 'question' } }
 
     if (!this.answerSession) {
+      console.log('Creating new answer session')
       this.answerSession = this.oramaClient.createAnswerSession({
         events: {
           onStateChange: (state) => {
@@ -102,6 +103,7 @@ export class ChatService {
       }
     }
 
+    console.log('using answer session', this.answerSession)
     // TODO: ABORT/ERROR/STOP should emmit onStateChange event. Keeping the lines below as a reference
     // TODO: WE may want to reveive ask props as a Service prop instead of enforcing it here
     return this.answerSession.ask(askParams).catch((error) => {

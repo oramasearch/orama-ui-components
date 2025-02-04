@@ -74,6 +74,7 @@ export class ChatBox {
     validateCloudIndexOrInstance(this.el, this.index, this.clientInstance)
     const oramaClient = this.clientInstance || initOramaClient(this.index)
 
+    console.log('Creating new chat service *****', chatContext.chatService)
     if (chatContext.chatService) return
     chatContext.chatService = new ChatService(oramaClient)
   }
