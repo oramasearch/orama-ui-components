@@ -49,7 +49,6 @@ export class ChatService {
             //   return;
             // }
 
-            // NOTE: if chatContext.interactions is not empty, we should keep the previous interactions and update the last one
             chatContext.interactions = [
               ...(existingInteractions || []),
               ...normalizedState.map((interaction, index) => {
