@@ -5,17 +5,21 @@ import {
   generateRandomID,
   initOramaClient,
   validateCloudIndexConfig as validateCloudIndexOrInstance,
+  updateCssVariables,
+  updateThemeClasses,
 } from '@/utils/utils'
 import type {
   ChatMarkdownLinkHref,
   ChatMarkdownLinkTarget,
   ChatMarkdownLinkTitle,
   CloudIndexConfig,
+  ColorScheme,
   OnAnswerGeneratedCallbackProps,
   OnAnswerSourceClickCallbackProps,
   OnChatMarkdownLinkClickedCallbackProps,
   SourcesMap,
 } from '@/types'
+import type { TThemeOverrides } from '@/config/theme'
 import type { OramaClient } from '@oramacloud/client'
 import '@phosphor-icons/webcomponents/dist/icons/PhArrowClockwise.mjs'
 import type { AnyOrama, Orama } from '@orama/orama'
@@ -41,7 +45,19 @@ export class ChatBox {
   @Prop() chatMarkdownLinkHref?: ChatMarkdownLinkHref
   @Prop() chatMarkdownLinkTarget?: ChatMarkdownLinkTarget
 
+  /**
+   * Component theme customization
+   */
+  @Prop() themeConfig?: Partial<TThemeOverrides>
+  /**
+   * Component color schema
+   */
+  @Prop() colorScheme?: ColorScheme = 'light'
+
   @State() componentID = generateRandomID('chat-box')
+  @State() systemScheme: Omit<ColorScheme, 'system'> = 'light'
+
+  schemaQuery!: MediaQueryList
 
   /**
    * Fired when answer generation is successfully completed
@@ -59,11 +75,24 @@ export class ChatBox {
   chatMarkdownLinkClicked: EventEmitter<OnChatMarkdownLinkClickedCallbackProps>
 
   @Watch('index')
-  indexChanged() {
+  @Watch('themeConfig')
+  @Watch('colorScheme')
+  watchHandler() {
     this.startChatService()
+    this.updateTheme()
   }
 
   componentWillLoad() {
+    this.el.id = this.componentID
+    this.schemaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+    this.systemScheme = this.schemaQuery.matches ? 'dark' : 'light'
+    this.updateTheme()
+
+    this.schemaQuery.addEventListener('change', this.onPrefersColorSchemeChange)
+    this.startChatService()
+  }
+
+  componentDidLoad() {
     this.el.id = this.componentID
     this.startChatService()
   }
@@ -75,14 +104,40 @@ export class ChatBox {
     chatContext.chatService = new ChatService(oramaClient)
   }
 
+  updateTheme() {
+    const scheme = updateThemeClasses(
+      this.el,
+      this.colorScheme,
+      this.systemScheme
+    )
+
+    updateCssVariables(
+      this.el,
+      scheme as ColorScheme,
+      this.themeConfig
+    )
+  }
+
+  private onPrefersColorSchemeChange = (event) => {
+    this.systemScheme = event.matches ? 'dark' : 'light'
+    this.updateTheme()
+  }
+
+  disconnectedCallback() {
+    this.schemaQuery?.removeEventListener('change', this.onPrefersColorSchemeChange)
+  }
+
   render() {
     if (!chatContext.chatService) {
       return <orama-text as="p">Unable to initialize chat service</orama-text>
     }
 
+    // Maintain backwards compatibility with dark theme default
+    const defaultTheme = 'dark'
+    const currentScheme = this.colorScheme === 'system' ? this.systemScheme : this.colorScheme || defaultTheme
+
     return (
-      // * Note: only dark theme supported at the moment
-      <Host class="theme-dark">
+      <Host class={`theme-${currentScheme}`}>
         <orama-chat
           placeholder={this.placeholder}
           sourceBaseUrl={this.sourceBaseUrl}

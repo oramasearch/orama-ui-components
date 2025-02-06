@@ -17,6 +17,21 @@ const meta: Meta<
       mapping: demoIndexes,
       control: { type: 'select' },
     },
+    colorScheme: {
+      options: ['light', 'dark', 'system'],
+      table: {
+        defaultValue: { summary: 'dark' }, // default to dark for backwards compatibility
+      },
+      control: { type: 'radio' },
+    },
+    themeConfig: {
+      control: false,
+      table: {
+        type: {
+          summary: 'Partial<TThemeOverrides>',
+        },
+      },
+    },
     index: {
       control: { type: 'object' },
       table: {

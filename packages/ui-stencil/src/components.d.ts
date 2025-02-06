@@ -10,10 +10,10 @@ import { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, Cl
 import { TChatInteraction } from "./context/chatContext";
 import { OramaClient } from "@oramacloud/client";
 import { AnyOrama, Orama, SearchParams } from "@orama/orama";
+import { TThemeOverrides } from "./config/theme";
 import { InputProps } from "./components/internal/orama-input/orama-input";
 import { ModalStatus } from "./components/internal/orama-modal/orama-modal";
 import { HighlightOptions } from "@orama/highlight";
-import { TThemeOverrides } from "./config/theme";
 import { TThemeOverrides as TThemeOverrides1 } from "./components.d";
 import { SearchResultsProps } from "./components/internal/orama-search-results/orama-search-results";
 import { TextProps } from "./components/internal/orama-text/orama-text";
@@ -22,10 +22,10 @@ export { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, Cl
 export { TChatInteraction } from "./context/chatContext";
 export { OramaClient } from "@oramacloud/client";
 export { AnyOrama, Orama, SearchParams } from "@orama/orama";
+export { TThemeOverrides } from "./config/theme";
 export { InputProps } from "./components/internal/orama-input/orama-input";
 export { ModalStatus } from "./components/internal/orama-modal/orama-modal";
 export { HighlightOptions } from "@orama/highlight";
-export { TThemeOverrides } from "./config/theme";
 export { TThemeOverrides as TThemeOverrides1 } from "./components.d";
 export { SearchResultsProps } from "./components/internal/orama-search-results/orama-search-results";
 export { TextProps } from "./components/internal/orama-text/orama-text";
@@ -66,6 +66,10 @@ export namespace Components {
         "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "clientInstance"?: OramaClient | AnyOrama;
+        /**
+          * Component color schema
+         */
+        "colorScheme"?: ColorScheme;
         "index"?: CloudIndexConfig | CloudIndexConfig[];
         "linksRel"?: string;
         "linksTarget"?: string;
@@ -74,6 +78,10 @@ export namespace Components {
         "sourcesMap"?: SourcesMap;
         "suggestions"?: string[];
         "systemPrompts"?: string[];
+        /**
+          * Component theme customization
+         */
+        "themeConfig"?: Partial<TThemeOverrides>;
     }
     interface OramaChatButton {
         "active"?: boolean;
@@ -694,6 +702,10 @@ declare namespace LocalJSX {
         "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "clientInstance"?: OramaClient | AnyOrama;
+        /**
+          * Component color schema
+         */
+        "colorScheme"?: ColorScheme;
         "index"?: CloudIndexConfig | CloudIndexConfig[];
         "linksRel"?: string;
         "linksTarget"?: string;
@@ -714,6 +726,10 @@ declare namespace LocalJSX {
         "sourcesMap"?: SourcesMap;
         "suggestions"?: string[];
         "systemPrompts"?: string[];
+        /**
+          * Component theme customization
+         */
+        "themeConfig"?: Partial<TThemeOverrides>;
     }
     interface OramaChatButton {
         "active"?: boolean;
