@@ -5,7 +5,7 @@ import { globalContext, globalStore } from '@/context/GlobalContext'
 import { ChatService } from '@/services/ChatService'
 import { SearchService } from '@/services/SearchService'
 import { windowWidthListener } from '@/services/WindowService'
-import { arrowKeysNavigation, generateRandomID, initOramaClient, validateCloudIndexConfig } from '@/utils/utils'
+import { arrowKeysNavigation, generateRandomID, initOramaClient, updateCssVariables, updateThemeClasses, validateCloudIndexConfig } from '@/utils/utils'
 import type { AnyOrama, Orama, SearchParams } from '@orama/orama'
 import type { HighlightOptions } from '@orama/highlight'
 import type { OramaClient } from '@oramacloud/client'
@@ -217,33 +217,17 @@ export class SearchBox {
   }
 
   updateTheme() {
-    const scheme = this.colorScheme === 'system' ? this.systemScheme : this.colorScheme
-    const uiElement = this.htmlElement
+    const scheme = updateThemeClasses(
+      this.htmlElement,
+      this.colorScheme,
+      this.systemScheme
+    )
 
-    if (uiElement && scheme) {
-      uiElement.classList.remove('theme-light', 'theme-dark')
-      uiElement.classList.add(`theme-${scheme}`)
-    }
-
-    this.updateCssVariables(scheme as ColorScheme)
-  }
-
-  updateCssVariables(scheme: ColorScheme) {
-    const config = this.themeConfig
-    const root = this.htmlElement as HTMLElement
-
-    if (root && config && scheme) {
-      if (config.colors?.[scheme]) {
-        for (const key of Object.keys(config.colors[scheme])) {
-          root.style.setProperty(`${key}`, config.colors[scheme][key])
-        }
-      }
-      if (config.typography) {
-        for (const key of Object.keys(config.typography)) {
-          root.style.setProperty(`${key}`, config.typography[key])
-        }
-      }
-    }
+    updateCssVariables(
+        this.htmlElement,
+        scheme as ColorScheme,
+        this.themeConfig
+    )
   }
 
   startServices() {

@@ -2,7 +2,7 @@ import { Component, Watch, Prop, h, State, Element, Listen, Host } from '@stenci
 import type { ColorScheme } from '@/types'
 import '@phosphor-icons/webcomponents/dist/icons/PhMagnifyingGlass.mjs'
 import type { TThemeOverrides } from '@/components'
-import { generateRandomID } from '@/utils/utils'
+import { generateRandomID, updateCssVariables, updateThemeClasses } from '@/utils/utils'
 import { globalContext } from '@/context/GlobalContext'
 
 export type ButtonClick = {
@@ -52,33 +52,17 @@ export class OramaSearchButton {
   }
 
   updateTheme() {
-    const scheme = this.colorScheme === 'system' ? this.systemScheme : this.colorScheme
-    const uiElement = this.htmlElement
+    const scheme = updateThemeClasses(
+      this.htmlElement,
+      this.colorScheme,
+      this.systemScheme
+    )
 
-    if (uiElement && scheme) {
-      uiElement.classList.remove('theme-light', 'theme-dark')
-      uiElement.classList.add(`theme-${scheme}`)
-    }
-
-    this.updateCssVariables(scheme as ColorScheme)
-  }
-
-  updateCssVariables(scheme: ColorScheme) {
-    const config = this.themeConfig
-    const root = this.htmlElement
-
-    if (root && config && scheme) {
-      if (config.colors?.[scheme]) {
-        for (const key of Object.keys(config.colors[scheme])) {
-          root.style.setProperty(`${key}`, config.colors[scheme][key])
-        }
-      }
-      if (config.typography) {
-        for (const key of Object.keys(config.typography)) {
-          root.style.setProperty(`${key}`, config.typography[key])
-        }
-      }
-    }
+    updateCssVariables(
+        this.htmlElement,
+        scheme as ColorScheme,
+        this.themeConfig
+    )
   }
 
   private handleShortcutLabel() {

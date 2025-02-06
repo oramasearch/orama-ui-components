@@ -1,7 +1,8 @@
 import type { CloudIndexConfig } from '@/types'
 import type { AnyOrama, Orama } from '@orama/orama'
-import { Switch } from '@orama/switch'
 import { OramaClient } from '@oramacloud/client'
+import type { ColorScheme } from '@/types'
+import { TThemeOverrides } from '@/components'
 
 /**
  * Arrow keys navigation for focusable elements within a container
@@ -123,4 +124,39 @@ export function initOramaClient(indexOrIndexes: CloudIndexConfig | CloudIndexCon
 export function generateRandomID(componentName: string): string {
   const prefix = `orama-ui-${componentName}`
   return `${prefix}-${Math.random().toString(36).substring(2, 15)}`
+}
+
+export function updateThemeClasses(
+  element: HTMLElement,
+  colorScheme: ColorScheme,
+  systemScheme: Omit<ColorScheme, 'system'>
+) {
+  const scheme = colorScheme === 'system' ? systemScheme : colorScheme
+
+  if (element && scheme) {
+    element.classList.remove('theme-light', 'theme-dark')
+    element.classList.add(`theme-${scheme}`)
+  }
+
+  return scheme
+}
+
+export function updateCssVariables(
+  element: HTMLElement,
+  scheme: ColorScheme,
+  themeConfig?: Partial<TThemeOverrides>
+) {
+  if (!element || !themeConfig || !scheme) return
+
+  if (themeConfig.colors?.[scheme]) {
+    for (const key of Object.keys(themeConfig.colors[scheme])) {
+      element.style.setProperty(`${key}`, themeConfig.colors[scheme][key])
+    }
+  }
+
+  if (themeConfig.typography) {
+    for (const key of Object.keys(themeConfig.typography)) {
+      element.style.setProperty(`${key}`, themeConfig.typography[key])
+    }
+  }
 }
