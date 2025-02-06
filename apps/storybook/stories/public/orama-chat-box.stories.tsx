@@ -78,7 +78,7 @@ const meta: Meta<
 
 export default meta
 
-const Template = ({ preset, colorScheme, themeConfig }) => {
+const Template = ({ preset, colorScheme }) => {
   return html`
     <orama-chat-box
       .index=${preset?.index}
@@ -88,8 +88,8 @@ const Template = ({ preset, colorScheme, themeConfig }) => {
       .sourcesMap=${preset?.sourcesMap}
       .suggestions=${preset?.suggestions}
       .systemPrompts=${preset?.systemPrompts}
-      .colorScheme=${colorScheme}
-      .themeConfig=${themeConfig}
+      .colorScheme=${colorScheme || preset?.colorScheme}
+      .themeConfig=${preset?.themeConfig}
     ></orama-chat-box>
   `
 }
