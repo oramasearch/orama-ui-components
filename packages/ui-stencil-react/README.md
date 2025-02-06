@@ -16,3 +16,9 @@ You can install Orama React Components using npm, yarn, pnpm, bun:
 ```
 npm i @orama/react-components
 ```
+
+## Components API Documentation
+
+- [Orama Search Box](src/components/orama-search-box/readme.md)
+- [Orama Chat Box](src/components/orama-chat-box/readme.md)
+- [Orama Search Button](src/components/orama-search-button/readme.md)
