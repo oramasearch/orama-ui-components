@@ -20,7 +20,7 @@ const meta: Meta<
     colorScheme: {
       options: ['light', 'dark', 'system'],
       table: {
-        defaultValue: { summary: 'dark' }, // default to dark for backwards compatibility
+        defaultValue: { summary: 'dark' },
       },
       control: { type: 'radio' },
     },
@@ -78,16 +78,18 @@ const meta: Meta<
 
 export default meta
 
-const Template = ({ preset }) => {
+const Template = ({ preset, colorScheme, themeConfig }) => {
   return html`
     <orama-chat-box
       .index=${preset?.index}
       .instance=${preset?.instance}
-      placeholder=${preset?.placeholder}
-      sourceBaseUrl=${preset?.sourceBaseUrl}
+      .placeholder=${preset?.placeholder}
+      .sourceBaseUrl=${preset?.sourceBaseUrl}
       .sourcesMap=${preset?.sourcesMap}
       .suggestions=${preset?.suggestions}
       .systemPrompts=${preset?.systemPrompts}
+      .colorScheme=${colorScheme}
+      .themeConfig=${themeConfig}
     ></orama-chat-box>
   `
 }
@@ -95,8 +97,9 @@ const Template = ({ preset }) => {
 type Story = StoryObj<Components.OramaChatBox & { preset: keyof DemoIndexConfig }>
 
 export const ChatBox: Story = {
-  render: Template,
+  render: Template as any,
   args: {
     preset: 'orama',
+    colorScheme: 'dark',
   },
 }
