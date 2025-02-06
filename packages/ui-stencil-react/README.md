@@ -20,8 +20,8 @@ npm i @orama/react-components
 ## Components API Documentation
 
 - [Orama Search Box](../ui-stencil/src/components/orama-search-box/readme.md)
-- [Orama Chat Box](../ui-stencil/src/components/src/components/orama-chat-box/readme.md)
-- [Orama Search Button](../ui-stencil/src/components/src/components/orama-search-button/readme.md)
+- [Orama Chat Box](../ui-stencil/src/components/orama-chat-box/readme.md)
+- [Orama Search Button](../ui-stencil/src/components/orama-search-button/readme.md)
 
 > [!NOTE]
 > The component documentation refers to **Web Components**.  
