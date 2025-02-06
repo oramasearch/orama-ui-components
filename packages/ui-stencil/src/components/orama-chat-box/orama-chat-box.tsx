@@ -14,6 +14,7 @@ import type {
   OnAnswerGeneratedCallbackProps,
   OnAnswerSourceClickCallbackProps,
   OnChatMarkdownLinkClickedCallbackProps,
+  onStartConversationCallbackProps,
   SourcesMap,
 } from '@/types'
 import type { OramaClient } from '@oramacloud/client'
@@ -49,6 +50,17 @@ export class ChatBox {
    * Fired when answer generation is successfully completed
    */
   @Event({ bubbles: true, composed: true }) answerGenerated: EventEmitter<OnAnswerGeneratedCallbackProps>
+
+  /**
+   * Fired when the chat is cleared
+   */
+  @Event({ bubbles: true, composed: true }) clearChat: EventEmitter<void>
+
+  /**
+   * Fired as soon as the conversation is started
+   */
+  @Event({ bubbles: true, composed: true }) startConversation: EventEmitter<onStartConversationCallbackProps>
+
   /**
    * Fired when user clicks on answer source
    */
@@ -71,11 +83,10 @@ export class ChatBox {
   }
 
   startChatService() {
+    if (chatContext.chatService) return
     validateCloudIndexOrInstance(this.el, this.index, this.clientInstance)
     const oramaClient = this.clientInstance || initOramaClient(this.index)
 
-    console.log('Creating new chat service *****', chatContext.chatService)
-    if (chatContext.chatService) return
     chatContext.chatService = new ChatService(oramaClient)
   }
 

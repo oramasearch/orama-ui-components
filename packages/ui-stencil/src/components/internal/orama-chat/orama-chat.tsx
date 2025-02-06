@@ -5,6 +5,7 @@ import type {
   ChatMarkdownLinkTarget,
   ChatMarkdownLinkTitle,
   OnAnswerGeneratedCallbackProps,
+  onStartConversationCallbackProps,
   SearchResult,
   SourcesMap,
 } from '@/types'
@@ -37,6 +38,8 @@ export class OramaChat {
   @Prop() chatMarkdownLinkTarget?: ChatMarkdownLinkTarget
 
   @Event({ bubbles: true, composed: true }) answerGenerated: EventEmitter<OnAnswerGeneratedCallbackProps>
+  @Event({ bubbles: true, composed: true }) clearChat: EventEmitter<void>
+  @Event({ bubbles: true, composed: true }) startConversation: EventEmitter<onStartConversationCallbackProps>
 
   @State() inputValue = ''
   @State() showGoToBottomButton = false
@@ -63,7 +66,6 @@ export class OramaChat {
   @Watch('prompt')
   promptWatcher(newValue: string, oldValue: string) {
     if (newValue !== oldValue) {
-      console.log('running watcher', chatContext.prompt, chatContext.interactions)
       this.triggerSendQuestion(newValue)
       chatContext.prompt = newValue
     }
@@ -204,8 +206,7 @@ export class OramaChat {
     this.setSources()
     this.handleFocus()
 
-    if (this.prompt && chatContext.prompt !== this.prompt) {
-      console.log('running component did load', this.prompt, chatContext.prompt, chatContext.interactions)
+    if (this.prompt && chatContext?.prompt !== this.prompt) {
       this.triggerSendQuestion(this.prompt)
       chatContext.prompt = this.prompt
     }
@@ -274,6 +275,8 @@ export class OramaChat {
       throw new Error('Chat Service is not initialized')
     }
 
+    this.startConversation.emit({ userPrompt: this.inputValue, systemPrompts: this.systemPrompts })
+
     chatContext.chatService.sendQuestion(this.inputValue, this.systemPrompts, {
       onAnswerGeneratedCallback: (params) => this.answerGenerated.emit(params),
     })
@@ -297,6 +300,11 @@ export class OramaChat {
     this.inputValue = ''
   }
 
+  handleClearChat = () => {
+    chatContext.chatService.resetChat()
+    this.clearChat.emit()
+  }
+
   calculateIsContainerOverflowing = () => {
     if (!this.messagesContainerRef) {
       return false
@@ -315,7 +323,7 @@ export class OramaChat {
       <Host>
         {this.showClearChat && hasInteractions && (
           <div class="header">
-            <button type="button" onClick={() => chatContext.chatService.resetChat()}>
+            <button type="button" onClick={this.handleClearChat}>
               <ph-arrow-clockwise weight="fill" size="14" /> Clear chat
             </button>
           </div>

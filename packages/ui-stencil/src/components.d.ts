@@ -366,6 +366,7 @@ declare global {
     };
     interface HTMLOramaChatElementEventMap {
         "answerGenerated": OnAnswerGeneratedCallbackProps;
+        "clearChat": void;
     }
     interface HTMLOramaChatElement extends Components.OramaChat, HTMLStencilElement {
         addEventListener<K extends keyof HTMLOramaChatElementEventMap>(type: K, listener: (this: HTMLOramaChatElement, ev: OramaChatCustomEvent<HTMLOramaChatElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -389,6 +390,7 @@ declare global {
     };
     interface HTMLOramaChatBoxElementEventMap {
         "answerGenerated": OnAnswerGeneratedCallbackProps;
+        "clearChat": void;
         "answerSourceClick": OnAnswerSourceClickCallbackProps;
         "chatMarkdownLinkClicked": OnChatMarkdownLinkClickedCallbackProps;
     }
@@ -680,6 +682,7 @@ declare namespace LocalJSX {
         "linksRel"?: string;
         "linksTarget"?: string;
         "onAnswerGenerated"?: (event: OramaChatCustomEvent<OnAnswerGeneratedCallbackProps>) => void;
+        "onClearChat"?: (event: OramaChatCustomEvent<void>) => void;
         "placeholder"?: string;
         "prompt"?: string;
         "showClearChat"?: boolean;
@@ -716,6 +719,10 @@ declare namespace LocalJSX {
           * Fired when user clicks on chat markdown link
          */
         "onChatMarkdownLinkClicked"?: (event: OramaChatBoxCustomEvent<OnChatMarkdownLinkClickedCallbackProps>) => void;
+        /**
+          * Fired when the chat is cleared
+         */
+        "onClearChat"?: (event: OramaChatBoxCustomEvent<void>) => void;
         "placeholder"?: string;
         "prompt"?: string;
         "sourceBaseUrl"?: string;

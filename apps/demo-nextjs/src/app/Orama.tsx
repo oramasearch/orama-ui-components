@@ -27,10 +27,11 @@ const Orama = () => {
         </Tabs.Content>
         <Tabs.Content className="TabsContent" value="tab2">
           <p className="Text">Tab with chatbox here</p>
-          <div style={{ height: '600px' }}>
+          <div style={{ height: '400px' }}>
             <OramaChatBox
               index={{ api_key: API_KEY, endpoint: ENDPOINT }}
               clearChatOnDisconnect={false}
+              onClearChat={() => setInitialPrompt('')}
               prompt={initialPrompt}
               style={{ height: '100%' }}
             />
