@@ -76,6 +76,8 @@ export class OramaChat {
       throw new Error('Chat Service is not initialized')
     }
 
+    this.startConversation.emit({ userPrompt: question, systemPrompts: this.systemPrompts })
+
     chatContext.chatService.sendQuestion(question, this.systemPrompts, {
       onAnswerGeneratedCallback: (params) => this.answerGenerated.emit(params),
     })
@@ -293,6 +295,8 @@ export class OramaChat {
     if (chatContext.chatService === null) {
       throw new Error('Chat Service is not initialized')
     }
+
+    this.startConversation.emit({ userPrompt: suggestion, systemPrompts: this.systemPrompts })
 
     chatContext.chatService.sendQuestion(suggestion, undefined, {
       onAnswerGeneratedCallback: (params) => this.answerGenerated.emit(params),

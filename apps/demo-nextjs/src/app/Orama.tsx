@@ -32,6 +32,7 @@ const Orama = () => {
               index={{ api_key: API_KEY, endpoint: ENDPOINT }}
               clearChatOnDisconnect={false}
               onClearChat={() => setInitialPrompt('')}
+              onStartConversation={(e: Event) => console.log('onStartConversation', e)}
               prompt={initialPrompt}
               style={{ height: '100%' }}
             />

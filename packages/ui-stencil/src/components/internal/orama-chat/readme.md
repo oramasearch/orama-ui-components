@@ -28,10 +28,11 @@
 
 ## Events
 
-| Event             | Description | Type                                                                                                                                 |
-| ----------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `answerGenerated` |             | `CustomEvent<{ askParams: AskParams; query: string; sources: Results<unknown>; answer: string; segment: string; trigger: string; }>` |
-| `clearChat`       |             | `CustomEvent<void>`                                                                                                                  |
+| Event               | Description | Type                                                                                                                                 |
+| ------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `answerGenerated`   |             | `CustomEvent<{ askParams: AskParams; query: string; sources: Results<unknown>; answer: string; segment: string; trigger: string; }>` |
+| `clearChat`         |             | `CustomEvent<void>`                                                                                                                  |
+| `startConversation` |             | `CustomEvent<{ userPrompt: string; systemPrompts: string[]; }>`                                                                      |
 
 
 ## Dependencies

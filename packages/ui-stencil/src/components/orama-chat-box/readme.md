@@ -32,6 +32,7 @@
 | `answerSourceClick`       | Fired when user clicks on answer source                | `CustomEvent<{ source: SearchResult; }>`                                                                                             |
 | `chatMarkdownLinkClicked` | Fired when user clicks on chat markdown link           | `CustomEvent<{ text: string; href: string; }>`                                                                                       |
 | `clearChat`               | Fired when the chat is cleared                         | `CustomEvent<void>`                                                                                                                  |
+| `startConversation`       | Fired as soon as the conversation is started           | `CustomEvent<{ userPrompt: string; systemPrompts: string[]; }>`                                                                      |
 
 
 ## Dependencies

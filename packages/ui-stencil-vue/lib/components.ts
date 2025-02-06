@@ -36,7 +36,8 @@ export const OramaChat = /*@__PURE__*/ defineContainer<JSX.OramaChat>('orama-cha
   'chatMarkdownLinkHref',
   'chatMarkdownLinkTarget',
   'answerGenerated',
-  'clearChat'
+  'clearChat',
+  'startConversation'
 ]);
 
 
@@ -66,6 +67,7 @@ export const OramaChatBox = /*@__PURE__*/ defineContainer<JSX.OramaChatBox>('ora
   'chatMarkdownLinkTarget',
   'answerGenerated',
   'clearChat',
+  'startConversation',
   'answerSourceClick',
   'chatMarkdownLinkClicked'
 ]);
