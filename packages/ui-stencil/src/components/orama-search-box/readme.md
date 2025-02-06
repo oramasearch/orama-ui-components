@@ -40,8 +40,10 @@
 | `answerGenerated`         | Fired when answer generation is successfully completed | `CustomEvent<{ askParams: AskParams; query: string; sources: Results<unknown>; answer: string; segment: string; trigger: string; }>`             |
 | `answerSourceClick`       | Fired when user clicks on answer source                | `CustomEvent<{ source: SearchResult; }>`                                                                                                         |
 | `chatMarkdownLinkClicked` | Fired when user clicks on chat markdown link           | `CustomEvent<{ text: string; href: string; }>`                                                                                                   |
+| `clearChat`               | Fired when the chat is cleared                         | `CustomEvent<void>`                                                                                                                              |
 | `searchCompleted`         | Fired when search successfully resolves                | `CustomEvent<{ clientSearchParams: ClientSearchParams; result: { results: SearchResultBySection[]; resultsCount: number; facets: Facet[]; }; }>` |
 | `searchResultClick`       | Fired when user clicks on search result                | `CustomEvent<{ result: SearchResult; }>`                                                                                                         |
+| `startConversation`       | Fired as soon as the conversation is started           | `CustomEvent<{ userPrompt: string; systemPrompts: string[]; }>`                                                                                  |
 
 
 ## Dependencies
