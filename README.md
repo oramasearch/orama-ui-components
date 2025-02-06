@@ -22,7 +22,7 @@ This library provides a set of ready to use UI components for easily implementin
 
 ## Getting Started
 
-Orama UI Components are built using StencilJS as Web Components. They can be used in any project, no matter the framework or library you are using. 
+Orama UI Components are built using StencilJS as Web Components. They can be used in any project, no matter the framework or library you are using.
 
 ### Create your first index
 
@@ -36,7 +36,7 @@ Since most of our components require you to have a Orama Cloud index already dep
 
 Orama UI Components provide a **Web Components** library that can be used in any project, no matter the framework or library you are using. We also provide **React**, **Angular**, and **Vue** wrappers for easier integration. **Properties and Events** are the same across all wrappers, but the syntax is slightly different for each one, so please check the documentation for each wrapper for examples.
 
-- [Web Components](./packages/ui-stencil/)
+- [Web Components](./packages/ui-stencil)
 - [React Components](./packages/ui-stencil-react/)
 - [Angular Components](./packages/ui-stencil-angular/)
 - [Vue Components](./packages/ui-stencil-vue/)

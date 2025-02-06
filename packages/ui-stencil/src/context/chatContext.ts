@@ -38,10 +38,11 @@ export type TChatInteraction = {
 
 const { state: chatContext, ...chatStore } = createStore({
   chatService: null as ChatService | null,
-  interactions: [] as TChatInteraction[],
+  interactions: [] as TChatInteraction[] | null,
   sourceBaseURL: '' as string,
   linksTarget: '_blank' as string,
   linksRel: 'noopener noreferrer' as string,
+  prompt: '',
   sourcesMap: {
     title: 'title',
     description: 'description',

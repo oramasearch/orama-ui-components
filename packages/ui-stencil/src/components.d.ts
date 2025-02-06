@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { ButtonProps } from "./components/internal/orama-button/orama-button";
-import { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, CloudIndexConfig, ColorScheme, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnChatMarkdownLinkClickedCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, ResultItemRenderFunction, ResultMap, SearchResultBySection, SourcesMap } from "./types/index";
+import { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, CloudIndexConfig, ColorScheme, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnChatMarkdownLinkClickedCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, onStartConversationCallbackProps, ResultItemRenderFunction, ResultMap, SearchResultBySection, SourcesMap } from "./types/index";
 import { TChatInteraction } from "./context/chatContext";
 import { OramaClient } from "@oramacloud/client";
 import { AnyOrama, Orama, SearchParams } from "@orama/orama";
@@ -18,7 +18,7 @@ import { TThemeOverrides as TThemeOverrides1 } from "./components.d";
 import { SearchResultsProps } from "./components/internal/orama-search-results/orama-search-results";
 import { TextProps } from "./components/internal/orama-text/orama-text";
 export { ButtonProps } from "./components/internal/orama-button/orama-button";
-export { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, CloudIndexConfig, ColorScheme, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnChatMarkdownLinkClickedCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, ResultItemRenderFunction, ResultMap, SearchResultBySection, SourcesMap } from "./types/index";
+export { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, CloudIndexConfig, ColorScheme, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnChatMarkdownLinkClickedCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, onStartConversationCallbackProps, ResultItemRenderFunction, ResultMap, SearchResultBySection, SourcesMap } from "./types/index";
 export { TChatInteraction } from "./context/chatContext";
 export { OramaClient } from "@oramacloud/client";
 export { AnyOrama, Orama, SearchParams } from "@orama/orama";
@@ -43,11 +43,13 @@ export namespace Components {
         "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
         "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
+        "clearChatOnDisconnect"?: boolean;
         "defaultTerm"?: string;
         "focusInput"?: boolean;
         "linksRel"?: string;
         "linksTarget"?: string;
         "placeholder"?: string;
+        "prompt"?: string;
         "showClearChat"?: boolean;
         "sourceBaseUrl"?: string;
         "sourcesMap"?: SourcesMap;
@@ -65,11 +67,13 @@ export namespace Components {
         "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
         "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
+        "clearChatOnDisconnect": boolean;
         "clientInstance"?: OramaClient | AnyOrama;
         "index"?: CloudIndexConfig | CloudIndexConfig[];
         "linksRel"?: string;
         "linksTarget"?: string;
         "placeholder"?: string;
+        "prompt"?: string;
         "sourceBaseUrl"?: string;
         "sourcesMap"?: SourcesMap;
         "suggestions"?: string[];
@@ -362,6 +366,8 @@ declare global {
     };
     interface HTMLOramaChatElementEventMap {
         "answerGenerated": OnAnswerGeneratedCallbackProps;
+        "clearChat": void;
+        "startConversation": onStartConversationCallbackProps;
     }
     interface HTMLOramaChatElement extends Components.OramaChat, HTMLStencilElement {
         addEventListener<K extends keyof HTMLOramaChatElementEventMap>(type: K, listener: (this: HTMLOramaChatElement, ev: OramaChatCustomEvent<HTMLOramaChatElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -385,6 +391,8 @@ declare global {
     };
     interface HTMLOramaChatBoxElementEventMap {
         "answerGenerated": OnAnswerGeneratedCallbackProps;
+        "clearChat": void;
+        "startConversation": onStartConversationCallbackProps;
         "answerSourceClick": OnAnswerSourceClickCallbackProps;
         "chatMarkdownLinkClicked": OnChatMarkdownLinkClickedCallbackProps;
     }
@@ -670,12 +678,16 @@ declare namespace LocalJSX {
         "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
         "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
+        "clearChatOnDisconnect"?: boolean;
         "defaultTerm"?: string;
         "focusInput"?: boolean;
         "linksRel"?: string;
         "linksTarget"?: string;
         "onAnswerGenerated"?: (event: OramaChatCustomEvent<OnAnswerGeneratedCallbackProps>) => void;
+        "onClearChat"?: (event: OramaChatCustomEvent<void>) => void;
+        "onStartConversation"?: (event: OramaChatCustomEvent<onStartConversationCallbackProps>) => void;
         "placeholder"?: string;
+        "prompt"?: string;
         "showClearChat"?: boolean;
         "sourceBaseUrl"?: string;
         "sourcesMap"?: SourcesMap;
@@ -693,6 +705,7 @@ declare namespace LocalJSX {
         "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
         "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
+        "clearChatOnDisconnect"?: boolean;
         "clientInstance"?: OramaClient | AnyOrama;
         "index"?: CloudIndexConfig | CloudIndexConfig[];
         "linksRel"?: string;
@@ -709,7 +722,16 @@ declare namespace LocalJSX {
           * Fired when user clicks on chat markdown link
          */
         "onChatMarkdownLinkClicked"?: (event: OramaChatBoxCustomEvent<OnChatMarkdownLinkClickedCallbackProps>) => void;
+        /**
+          * Fired when the chat is cleared
+         */
+        "onClearChat"?: (event: OramaChatBoxCustomEvent<void>) => void;
+        /**
+          * Fired as soon as the conversation is started
+         */
+        "onStartConversation"?: (event: OramaChatBoxCustomEvent<onStartConversationCallbackProps>) => void;
         "placeholder"?: string;
+        "prompt"?: string;
         "sourceBaseUrl"?: string;
         "sourcesMap"?: SourcesMap;
         "suggestions"?: string[];

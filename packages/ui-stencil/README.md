@@ -58,6 +58,6 @@ Or import it directly in a browser module:
 
 ## Components API Documentation
 
-[Orama Search Box](src/components/orama-search-box/README.md)
-[Orama Chat Box](src/components/orama-chat-box/README.md)
-[Orama Search Button](src/components/orama-search-button/README.md)
+- [Orama Search Box](src/components/orama-search-box/readme.md)
+- [Orama Chat Box](src/components/orama-chat-box/readme.md)
+- [Orama Search Button](src/components/orama-search-button/readme.md)

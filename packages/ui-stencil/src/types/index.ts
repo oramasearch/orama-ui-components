@@ -68,4 +68,9 @@ export type OnAnswerGeneratedCallbackProps = {
   trigger: string | null
 }
 
+export type onStartConversationCallbackProps = {
+  userPrompt: string
+  systemPrompts: string[]
+}
+
 export type OnAnswerSourceClickCallbackProps = { source: SearchResult }
