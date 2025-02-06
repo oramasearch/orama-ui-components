@@ -20,6 +20,7 @@ import type {
   OnChatMarkdownLinkClickedCallbackProps,
   OnSearchCompletedCallbackProps,
   OnSearchResultClickCallbackProps,
+  onStartConversationCallbackProps,
   ResultItemRenderFunction,
   ResultMap,
   SourcesMap,
@@ -149,6 +150,14 @@ export class SearchBox {
    */
   @Event({ bubbles: true, composed: true, cancelable: true })
   searchResultClick: EventEmitter<OnSearchResultClickCallbackProps>
+  /**
+   * Fired when the chat is cleared
+   */
+  @Event({ bubbles: true, composed: true }) clearChat: EventEmitter<void>
+  /**
+   * Fired as soon as the conversation is started
+   */
+  @Event({ bubbles: true, composed: true }) startConversation: EventEmitter<onStartConversationCallbackProps>
   /**
    * Fired when answer generation is successfully completed
    */

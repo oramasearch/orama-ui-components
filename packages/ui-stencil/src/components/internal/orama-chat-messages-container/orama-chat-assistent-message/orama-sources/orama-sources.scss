@@ -75,7 +75,6 @@
   padding: var(--spacing-m, $spacing-m);
   border-radius: var(--radius-s, $radius-s);
   background: var(--background-color-secondary, background-color('secondary'));
-  transition: background 0.2s ease-in-out;
 
   .source-title,
   .source-subtitle {
@@ -87,6 +86,7 @@
   @media (hover: hover) {
     &:hover {
       background: var(--background-color-tertiary, background-color('tertiary'));
+      transition: background 0.2s ease-in-out;
     }
   }
 }

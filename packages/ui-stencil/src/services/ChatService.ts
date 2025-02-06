@@ -4,7 +4,7 @@ import type { AnswerSession as CloudAnswerSession } from '@oramacloud/client'
 import type { OramaSwitchClient } from '@orama/switch'
 import { Switch } from '@orama/switch'
 import { OramaClientNotInitializedError } from '@/erros/OramaClientNotInitialized'
-import { chatContext, TAnswerStatus } from '@/context/chatContext'
+import { chatContext, chatStore, TAnswerStatus } from '@/context/chatContext'
 import type { OnAnswerGeneratedCallbackProps } from '@/types'
 
 export class ChatService {
@@ -29,6 +29,8 @@ export class ChatService {
     const askParams: AskParams = { term: term, related: { howMany: 3, format: 'question' } }
 
     if (!this.answerSession) {
+      const existingInteractions = chatContext.interactions
+
       this.answerSession = this.oramaClient.createAnswerSession({
         events: {
           onStateChange: (state) => {
@@ -46,59 +48,63 @@ export class ChatService {
             //   });
             //   return;
             // }
-            chatContext.interactions = normalizedState.map((interaction, index) => {
-              const isLatest = state.length - 1 === index
-              let answerStatus = TAnswerStatus.loading
-              let sources = []
 
-              if (interaction.aborted) {
-                answerStatus = TAnswerStatus.aborted
-              } else if (interaction.loading && interaction.sources) {
-                answerStatus = TAnswerStatus.rendering
-              } else if (interaction.loading && interaction.response) {
-                answerStatus = TAnswerStatus.streaming
-              } else if (!interaction.loading && interaction.response) {
-                answerStatus = TAnswerStatus.done
-              }
+            chatContext.interactions = [
+              ...(existingInteractions || []),
+              ...normalizedState.map((interaction, index) => {
+                const isLatest = state.length - 1 === index
+                let answerStatus = TAnswerStatus.loading
+                let sources = []
 
-              // biome-ignore lint/suspicious/noExplicitAny: Client should expose this type
-              /**
-               * we usually expected to receive interaction.sources as an array, but sometimes it comes as an object.
-               * need to check OSS Orama and fix it if it's a bug.
-               **/
-              if (interaction.sources) {
-                sources = Array.isArray(interaction.sources) ?
-                  (interaction.sources as any)?.map((source) => source.document) :
-                  (interaction.sources.hits as any)?.map((source) => source.document)
-              }
+                if (interaction.aborted) {
+                  answerStatus = TAnswerStatus.aborted
+                } else if (interaction.loading && interaction.sources) {
+                  answerStatus = TAnswerStatus.rendering
+                } else if (interaction.loading && interaction.response) {
+                  answerStatus = TAnswerStatus.streaming
+                } else if (!interaction.loading && interaction.response) {
+                  answerStatus = TAnswerStatus.done
+                }
 
-              if (isLatest && answerStatus === TAnswerStatus.done) {
-                callbacks?.onAnswerGeneratedCallback?.({
-                  askParams: askParams,
+                // biome-ignore lint/suspicious/noExplicitAny: Client should expose this type
+                /**
+                 * we usually expected to receive interaction.sources as an array, but sometimes it comes as an object.
+                 * need to check OSS Orama and fix it if it's a bug.
+                 **/
+                if (interaction.sources) {
+                  sources = Array.isArray(interaction.sources)
+                    ? (interaction.sources as any)?.map((source) => source.document)
+                    : (interaction.sources.hits as any)?.map((source) => source.document)
+                }
+
+                if (isLatest && answerStatus === TAnswerStatus.done) {
+                  callbacks?.onAnswerGeneratedCallback?.({
+                    askParams: askParams,
+                    query: interaction.query,
+                    sources: interaction.sources,
+                    answer: interaction.response,
+                    segment: interaction.segment,
+                    trigger: interaction.trigger,
+                  })
+                }
+
+                return {
                   query: interaction.query,
-                  sources: interaction.sources,
-                  answer: interaction.response,
-                  segment: interaction.segment,
-                  trigger: interaction.trigger,
-                })
-              }
-
-              return {
-                query: interaction.query,
-                interactionId: interaction.interactionId,
-                response: interaction.response,
-                relatedQueries: interaction.relatedQueries,
-                status: answerStatus,
-                latest: isLatest,
-                sources,
-              }
-            })
+                  interactionId: interaction.interactionId,
+                  response: interaction.response,
+                  relatedQueries: interaction.relatedQueries,
+                  status: answerStatus,
+                  latest: isLatest,
+                  sources,
+                }
+              }),
+            ]
           },
         },
       })
 
       if (this.oramaClient.clientType === 'cloud' && systemPrompts) {
-        (this.answerSession as CloudAnswerSession<true>).setSystemPromptConfiguration({ systemPrompts })
+        ;(this.answerSession as CloudAnswerSession<true>).setSystemPromptConfiguration({ systemPrompts })
       }
     }
 
@@ -153,5 +159,6 @@ export class ChatService {
     }
 
     this.answerSession.clearSession()
+    chatContext.interactions = []
   }
 }

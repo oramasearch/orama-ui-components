@@ -17,12 +17,13 @@ import type {
   OnAnswerGeneratedCallbackProps,
   OnAnswerSourceClickCallbackProps,
   OnChatMarkdownLinkClickedCallbackProps,
+  onStartConversationCallbackProps,
   SourcesMap,
 } from '@/types'
 import type { TThemeOverrides } from '@/config/theme'
 import type { OramaClient } from '@oramacloud/client'
 import '@phosphor-icons/webcomponents/dist/icons/PhArrowClockwise.mjs'
-import type { AnyOrama, Orama } from '@orama/orama'
+import type { AnyOrama } from '@orama/orama'
 
 @Component({
   tag: 'orama-chat-box',
@@ -41,6 +42,8 @@ export class ChatBox {
   @Prop() suggestions?: string[]
   @Prop() autoFocus = true
   @Prop() systemPrompts?: string[]
+  @Prop() prompt?: string
+  @Prop() clearChatOnDisconnect = true
   @Prop() chatMarkdownLinkTitle?: ChatMarkdownLinkTitle
   @Prop() chatMarkdownLinkHref?: ChatMarkdownLinkHref
   @Prop() chatMarkdownLinkTarget?: ChatMarkdownLinkTarget
@@ -63,6 +66,17 @@ export class ChatBox {
    * Fired when answer generation is successfully completed
    */
   @Event({ bubbles: true, composed: true }) answerGenerated: EventEmitter<OnAnswerGeneratedCallbackProps>
+
+  /**
+   * Fired when the chat is cleared
+   */
+  @Event({ bubbles: true, composed: true }) clearChat: EventEmitter<void>
+
+  /**
+   * Fired as soon as the conversation is started
+   */
+  @Event({ bubbles: true, composed: true }) startConversation: EventEmitter<onStartConversationCallbackProps>
+
   /**
    * Fired when user clicks on answer source
    */
@@ -98,6 +112,7 @@ export class ChatBox {
   }
 
   startChatService() {
+    if (chatContext.chatService) return
     validateCloudIndexOrInstance(this.el, this.index, this.clientInstance)
     const oramaClient = this.clientInstance || initOramaClient(this.index)
 
@@ -145,12 +160,16 @@ export class ChatBox {
           suggestions={this.suggestions}
           focusInput={this.autoFocus}
           systemPrompts={this.systemPrompts}
+          prompt={this.prompt}
+          clearChatOnDisconnect={this.clearChatOnDisconnect}
           chatMarkdownLinkTitle={this.chatMarkdownLinkTitle}
           chatMarkdownLinkHref={this.chatMarkdownLinkHref}
         >
-          <div slot="chat-empty-state">
-            <slot name="empty-state" />
-          </div>
+          {!!chatContext?.interactions?.length && (
+            <div slot="chat-empty-state">
+              <slot name="empty-state" />
+            </div>
+          )}
         </orama-chat>
       </Host>
     )

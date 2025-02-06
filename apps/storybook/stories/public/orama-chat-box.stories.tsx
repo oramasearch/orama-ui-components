@@ -90,6 +90,8 @@ const Template = ({ preset, colorScheme }) => {
       .systemPrompts=${preset?.systemPrompts}
       .colorScheme=${colorScheme || preset?.colorScheme}
       .themeConfig=${preset?.themeConfig}
+      .clearChatOnDisconnect=${preset?.clearChatOnDisconnect}
+      prompt=${preset?.prompt}
     ></orama-chat-box>
   `
 }
