@@ -10,10 +10,10 @@ import { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, Cl
 import { TChatInteraction } from "./context/chatContext";
 import { OramaClient } from "@oramacloud/client";
 import { AnyOrama, Orama, SearchParams } from "@orama/orama";
+import { TThemeOverrides } from "./config/theme";
 import { InputProps } from "./components/internal/orama-input/orama-input";
 import { ModalStatus } from "./components/internal/orama-modal/orama-modal";
 import { HighlightOptions } from "@orama/highlight";
-import { TThemeOverrides } from "./config/theme";
 import { TThemeOverrides as TThemeOverrides1 } from "./components.d";
 import { SearchResultsProps } from "./components/internal/orama-search-results/orama-search-results";
 import { TextProps } from "./components/internal/orama-text/orama-text";
@@ -22,10 +22,10 @@ export { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, Cl
 export { TChatInteraction } from "./context/chatContext";
 export { OramaClient } from "@oramacloud/client";
 export { AnyOrama, Orama, SearchParams } from "@orama/orama";
+export { TThemeOverrides } from "./config/theme";
 export { InputProps } from "./components/internal/orama-input/orama-input";
 export { ModalStatus } from "./components/internal/orama-modal/orama-modal";
 export { HighlightOptions } from "@orama/highlight";
-export { TThemeOverrides } from "./config/theme";
 export { TThemeOverrides as TThemeOverrides1 } from "./components.d";
 export { SearchResultsProps } from "./components/internal/orama-search-results/orama-search-results";
 export { TextProps } from "./components/internal/orama-text/orama-text";
@@ -69,6 +69,10 @@ export namespace Components {
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "clearChatOnDisconnect": boolean;
         "clientInstance"?: OramaClient | AnyOrama;
+        /**
+          * Component color schema
+         */
+        "colorScheme"?: ColorScheme;
         "index"?: CloudIndexConfig | CloudIndexConfig[];
         "linksRel"?: string;
         "linksTarget"?: string;
@@ -78,6 +82,10 @@ export namespace Components {
         "sourcesMap"?: SourcesMap;
         "suggestions"?: string[];
         "systemPrompts"?: string[];
+        /**
+          * Component theme customization
+         */
+        "themeConfig"?: Partial<TThemeOverrides>;
     }
     interface OramaChatButton {
         "active"?: boolean;
@@ -547,6 +555,8 @@ declare global {
     interface HTMLOramaSearchBoxElementEventMap {
         "searchCompleted": OnSearchCompletedCallbackProps;
         "searchResultClick": OnSearchResultClickCallbackProps;
+        "clearChat": void;
+        "startConversation": onStartConversationCallbackProps;
         "answerGenerated": OnAnswerGeneratedCallbackProps;
         "answerSourceClick": OnAnswerSourceClickCallbackProps;
         "chatMarkdownLinkClicked": OnChatMarkdownLinkClickedCallbackProps;
@@ -707,6 +717,10 @@ declare namespace LocalJSX {
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "clearChatOnDisconnect"?: boolean;
         "clientInstance"?: OramaClient | AnyOrama;
+        /**
+          * Component color schema
+         */
+        "colorScheme"?: ColorScheme;
         "index"?: CloudIndexConfig | CloudIndexConfig[];
         "linksRel"?: string;
         "linksTarget"?: string;
@@ -736,6 +750,10 @@ declare namespace LocalJSX {
         "sourcesMap"?: SourcesMap;
         "suggestions"?: string[];
         "systemPrompts"?: string[];
+        /**
+          * Component theme customization
+         */
+        "themeConfig"?: Partial<TThemeOverrides>;
     }
     interface OramaChatButton {
         "active"?: boolean;
@@ -882,6 +900,10 @@ declare namespace LocalJSX {
          */
         "onChatMarkdownLinkClicked"?: (event: OramaSearchBoxCustomEvent<OnChatMarkdownLinkClickedCallbackProps>) => void;
         /**
+          * Fired when the chat is cleared
+         */
+        "onClearChat"?: (event: OramaSearchBoxCustomEvent<void>) => void;
+        /**
           * Fired when search successfully resolves
          */
         "onSearchCompleted"?: (event: OramaSearchBoxCustomEvent<OnSearchCompletedCallbackProps>) => void;
@@ -889,6 +911,10 @@ declare namespace LocalJSX {
           * Fired when user clicks on search result
          */
         "onSearchResultClick"?: (event: OramaSearchBoxCustomEvent<OnSearchResultClickCallbackProps>) => void;
+        /**
+          * Fired as soon as the conversation is started
+         */
+        "onStartConversation"?: (event: OramaSearchBoxCustomEvent<onStartConversationCallbackProps>) => void;
         "open"?: boolean;
         /**
           * @deprecated it will be removed on next releases Placeholder for chat input

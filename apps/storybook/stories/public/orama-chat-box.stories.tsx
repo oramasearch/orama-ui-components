@@ -17,6 +17,21 @@ const meta: Meta<
       mapping: demoIndexes,
       control: { type: 'select' },
     },
+    colorScheme: {
+      options: ['light', 'dark', 'system'],
+      table: {
+        defaultValue: { summary: 'dark' },
+      },
+      control: { type: 'radio' },
+    },
+    themeConfig: {
+      control: false,
+      table: {
+        type: {
+          summary: 'Partial<TThemeOverrides>',
+        },
+      },
+    },
     index: {
       control: { type: 'object' },
       table: {
@@ -63,16 +78,18 @@ const meta: Meta<
 
 export default meta
 
-const Template = ({ preset }) => {
+const Template = ({ preset, colorScheme }) => {
   return html`
     <orama-chat-box
       .index=${preset?.index}
       .instance=${preset?.instance}
-      placeholder=${preset?.placeholder}
-      sourceBaseUrl=${preset?.sourceBaseUrl}
+      .placeholder=${preset?.placeholder}
+      .sourceBaseUrl=${preset?.sourceBaseUrl}
       .sourcesMap=${preset?.sourcesMap}
       .suggestions=${preset?.suggestions}
       .systemPrompts=${preset?.systemPrompts}
+      .colorScheme=${colorScheme || preset?.colorScheme}
+      .themeConfig=${preset?.themeConfig}
       .clearChatOnDisconnect=${preset?.clearChatOnDisconnect}
       prompt=${preset?.prompt}
     ></orama-chat-box>
@@ -82,8 +99,9 @@ const Template = ({ preset }) => {
 type Story = StoryObj<Components.OramaChatBox & { preset: keyof DemoIndexConfig }>
 
 export const ChatBox: Story = {
-  render: Template,
+  render: Template as any,
   args: {
     preset: 'orama',
+    colorScheme: 'dark',
   },
 }
