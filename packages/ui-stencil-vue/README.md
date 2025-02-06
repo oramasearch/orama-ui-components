@@ -19,6 +19,6 @@ npm i @orama/vue-components
 
 ## Components API Documentation
 
-- [Orama Search Box](src/components/orama-search-box/readme.md)
-- [Orama Chat Box](src/components/orama-chat-box/readme.md)
-- [Orama Search Button](src/components/orama-search-button/readme.md)
+- [Orama Search Box](../ui-stencil/src/components/orama-search-box/readme.md)
+- [Orama Chat Box](../ui-stencil/src/components/src/components/orama-chat-box/readme.md)
+- [Orama Search Button](../ui-stencil/src/components/src/components/orama-search-button/readme.md)
