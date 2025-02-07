@@ -1,9 +1,11 @@
 import colors from './colors'
 import typography from './typography'
+import chatbox from './chatbox'
 
 const theme = {
   typography,
   colors,
+  chatbox,
 }
 
 type TTheme = typeof theme

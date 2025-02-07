@@ -13,6 +13,9 @@
   @include mapToCustomProperties($theme-radius);
   @include mapToCustomProperties($theme-spacing);
 
+  // component specific
+  @include mapToCustomProperties($theme-textarea);
+
   *,
   *:before,
   *:after {

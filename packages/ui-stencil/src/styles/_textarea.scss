@@ -1,0 +1,6 @@
+@import 'radius';
+
+$theme-textarea: (
+  '--textarea-border-radius': var(--radius-l, $radius-l),
+  '--textarea-box-shadow': 0px 4px 24px 0px var(--shadow-color-primary, shadow-color('primary')),
+);

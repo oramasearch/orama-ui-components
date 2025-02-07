@@ -159,4 +159,10 @@ export function updateCssVariables(
       element.style.setProperty(`${key}`, themeConfig.typography[key])
     }
   }
+
+  if (themeConfig.chatbox) {
+    for (const key of Object.keys(themeConfig.chatbox)) {
+      element.style.setProperty(`${key}`, themeConfig.chatbox[key])
+    }
+  }
 }
