@@ -178,6 +178,10 @@ export namespace Components {
          */
         "clientInstance"?: OramaClient | AnyOrama;
         /**
+          * Closes SearchBox modal
+         */
+        "closeModal": () => Promise<void>;
+        /**
           * Component color schema
          */
         "colorScheme"?: ColorScheme;
@@ -214,6 +218,10 @@ export namespace Components {
          */
         "linksTarget"?: string;
         "open": boolean;
+        /**
+          * Opens SearchBox modal
+         */
+        "openModal": () => Promise<void>;
         /**
           * @deprecated it will be removed on next releases Placeholder for chat input
          */
