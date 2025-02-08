@@ -1,11 +1,30 @@
-import { Component, Prop, Watch, h, Listen, Element, State, Fragment, Event, type EventEmitter } from '@stencil/core'
+import {
+  Component,
+  Prop,
+  Watch,
+  h,
+  Listen,
+  Element,
+  State,
+  Fragment,
+  Event,
+  type EventEmitter,
+  Method,
+} from '@stencil/core'
 import { searchState } from '@/context/searchContext'
 import { chatContext } from '@/context/chatContext'
 import { globalContext, globalStore } from '@/context/GlobalContext'
 import { ChatService } from '@/services/ChatService'
 import { SearchService } from '@/services/SearchService'
 import { windowWidthListener } from '@/services/WindowService'
-import { arrowKeysNavigation, generateRandomID, initOramaClient, updateCssVariables, updateThemeClasses, validateCloudIndexConfig } from '@/utils/utils'
+import {
+  arrowKeysNavigation,
+  generateRandomID,
+  initOramaClient,
+  updateCssVariables,
+  updateThemeClasses,
+  validateCloudIndexConfig,
+} from '@/utils/utils'
 import type { AnyOrama, Orama, SearchParams } from '@orama/orama'
 import type { HighlightOptions } from '@orama/highlight'
 import type { OramaClient } from '@oramacloud/client'
@@ -56,7 +75,7 @@ export class SearchBox {
    * Orama Instance
    */
   @Prop() clientInstance?: OramaClient | AnyOrama
-  @Prop({ mutable: true }) open = false
+  @Prop({ mutable: true, reflect: true }) open = false
   /**
    * Index result property to
    */
@@ -173,6 +192,22 @@ export class SearchBox {
   @Event({ bubbles: true, composed: true, cancelable: true })
   chatMarkdownLinkClicked: EventEmitter<OnChatMarkdownLinkClickedCallbackProps>
 
+  /**
+   * Opens SearchBox modal
+   */
+  @Method()
+  openModal() {
+    this.open = true
+  }
+
+  /**
+   * Closes SearchBox modal
+   */
+  @Method()
+  closeModal() {
+    this.open = false
+  }
+
   wrapperRef!: HTMLElement
 
   schemaQuery: MediaQueryList
@@ -226,17 +261,9 @@ export class SearchBox {
   }
 
   updateTheme() {
-    const scheme = updateThemeClasses(
-      this.htmlElement,
-      this.colorScheme,
-      this.systemScheme
-    )
+    const scheme = updateThemeClasses(this.htmlElement, this.colorScheme, this.systemScheme)
 
-    updateCssVariables(
-        this.htmlElement,
-        scheme as ColorScheme,
-        this.themeConfig
-    )
+    updateCssVariables(this.htmlElement, scheme as ColorScheme, this.themeConfig)
   }
 
   startServices() {
