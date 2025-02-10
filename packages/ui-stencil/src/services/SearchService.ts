@@ -1,6 +1,5 @@
 import type { ClientSearchParams } from '@oramacloud/client'
 import { OramaClientNotInitializedError } from '@/erros/OramaClientNotInitialized'
-import { searchState } from '@/context/searchContext'
 import { Switch, type OramaSwitchClient } from '@orama/switch'
 import type {
   OnSearchCompletedCallbackProps,
@@ -11,6 +10,7 @@ import type {
   SearchResultBySection,
   SearchResultWithIcon,
 } from '@/types'
+import type { SearchStoreType } from '@/context/Context'
 
 const LIMIT_RESULTS = 10
 
@@ -21,10 +21,12 @@ type OramaHit = { id: string; score: number; document: any }
 export class SearchService {
   private abortController: AbortController
   private oramaClient: Switch<OramaSwitchClient>
+  private searchStore: SearchStoreType
 
-  constructor(oramaClient: OramaSwitchClient) {
+  constructor(oramaClient: OramaSwitchClient, searchStore: SearchStoreType) {
     this.oramaClient = new Switch(oramaClient)
     this.abortController = new AbortController()
+    this.searchStore = searchStore
   }
 
   search = async (
@@ -42,32 +44,32 @@ export class SearchService {
     this.abortSearch()
 
     if (!term) {
-      searchState.results = []
-      searchState.count = 0
-      searchState.facets = []
-      searchState.highlightedIndex = -1
+      this.searchStore.state.results = []
+      this.searchStore.state.count = 0
+      this.searchStore.state.facets = []
+      this.searchStore.state.highlightedIndex = -1
 
       return
     }
 
-    searchState.loading = true
+    this.searchStore.state.loading = true
 
     const latestAbortController = this.abortController
-    const { limit, offset, where, ...restSearchParams } = searchState.searchParams ?? {}
+    const { limit, offset, where, ...restSearchParams } = this.searchStore.state.searchParams ?? {}
 
     const clientSearchParams = {
       ...restSearchParams,
       term,
       limit: limit || LIMIT_RESULTS,
       ...(where ? { where } : {}),
-      ...(searchState.facetProperty && {
+      ...(this.searchStore.state.facetProperty && {
         facets: {
-          [searchState.facetProperty]: {},
+          [this.searchStore.state.facetProperty]: {},
         },
         ...(selectedFacet &&
           selectedFacet !== 'All' && {
             where: {
-              [searchState.facetProperty]: {
+              [this.searchStore.state.facetProperty]: {
                 eq: selectedFacet,
               },
               ...where,
@@ -89,24 +91,24 @@ export class SearchService {
           )
         }
 
-        searchState.results = this.parserResults(results?.hits, searchState.resultMap)
-        searchState.count = results?.count || 0
-        searchState.facets = this.parseFacets(results?.facets, searchState.facetProperty)
-        searchState.highlightedIndex = -1
+        this.searchStore.state.results = this.parserResults(results?.hits, this.searchStore.state.resultMap)
+        this.searchStore.state.count = results?.count || 0
+        this.searchStore.state.facets = this.parseFacets(results?.facets, this.searchStore.state.facetProperty)
+        this.searchStore.state.highlightedIndex = -1
 
-        searchState.loading = false
+        this.searchStore.state.loading = false
 
         callbacks?.onSearchCompletedCallback?.({
           clientSearchParams,
           result: {
-            results: searchState.results,
-            resultsCount: searchState.count,
-            facets: searchState.facets,
+            results: this.searchStore.state.results,
+            resultsCount: this.searchStore.state.count,
+            facets: this.searchStore.state.facets,
           },
         })
       })
       .catch((error) => {
-        searchState.loading = false
+        this.searchStore.state.loading = false
 
         callbacks?.onSearchErrorCallback?.(error)
       })

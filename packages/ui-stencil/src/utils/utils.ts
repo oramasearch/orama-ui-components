@@ -2,7 +2,7 @@ import type { CloudIndexConfig } from '@/types'
 import type { AnyOrama, Orama } from '@orama/orama'
 import { OramaClient } from '@oramacloud/client'
 import type { ColorScheme } from '@/types'
-import { TThemeOverrides } from '@/components'
+import type { TThemeOverrides } from '@/components'
 
 /**
  * Arrow keys navigation for focusable elements within a container
@@ -129,7 +129,7 @@ export function generateRandomID(componentName: string): string {
 export function updateThemeClasses(
   element: HTMLElement,
   colorScheme: ColorScheme,
-  systemScheme: Omit<ColorScheme, 'system'>
+  systemScheme: Omit<ColorScheme, 'system'>,
 ) {
   const scheme = colorScheme === 'system' ? systemScheme : colorScheme
 
@@ -141,11 +141,7 @@ export function updateThemeClasses(
   return scheme
 }
 
-export function updateCssVariables(
-  element: HTMLElement,
-  scheme: ColorScheme,
-  themeConfig?: Partial<TThemeOverrides>
-) {
+export function updateCssVariables(element: HTMLElement, scheme: ColorScheme, themeConfig?: Partial<TThemeOverrides>) {
   if (!element || !themeConfig || !scheme) return
 
   if (themeConfig.colors?.[scheme]) {
@@ -159,4 +155,46 @@ export function updateCssVariables(
       element.style.setProperty(`${key}`, themeConfig.typography[key])
     }
   }
+}
+
+const EXTERNAL_COMPONENT_TAG_LIST = ['orama-search-box', 'orama-chat-box']
+
+export function getExternalComponentHTMLElement(element: HTMLElement): HTMLElement | null {
+  let currentNode: ShadowRoot | HTMLElement | null = element
+
+  currentNode.parentNode
+  while (true) {
+    if (!currentNode) {
+      return null
+    }
+
+    if (currentNode instanceof ShadowRoot) {
+      const host = currentNode.host as HTMLElement
+      if (EXTERNAL_COMPONENT_TAG_LIST.includes(host.tagName.toLowerCase())) {
+        return host
+      }
+      currentNode = host
+    } else {
+      currentNode = (currentNode.parentNode as HTMLElement) ?? null
+    }
+  }
+}
+
+export function getStore(storeName: 'global' | 'search' | 'chat', element: HTMLElement) {
+  const storePropMap = {
+    global: 'globalStore',
+    search: 'searchStore',
+    chat: 'chatStore',
+  }
+
+  if (!storePropMap[storeName]) {
+    throw new Error('Invalid store name')
+  }
+
+  const externalComponent = getExternalComponentHTMLElement(element)
+  if (!externalComponent || !externalComponent[storePropMap[storeName]]) {
+    throw new Error('Failed to get store')
+  }
+
+  return externalComponent[storePropMap[storeName]]
 }

@@ -1,5 +1,5 @@
+import type { TChatInteraction } from '@/types'
 import { Component, Host, Prop, h } from '@stencil/core'
-import type { TChatInteraction } from '@/context/chatContext'
 
 @Component({
   tag: 'orama-chat-user-message',

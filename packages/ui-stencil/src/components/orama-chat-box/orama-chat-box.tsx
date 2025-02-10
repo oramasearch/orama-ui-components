@@ -1,5 +1,4 @@
 import { Component, Host, h, Prop, Watch, State, Element, type EventEmitter, Event } from '@stencil/core'
-import { chatContext } from '@/context/chatContext'
 import { ChatService } from '@/services/ChatService'
 import {
   generateRandomID,
@@ -24,6 +23,7 @@ import type { TThemeOverrides } from '@/config/theme'
 import type { OramaClient } from '@oramacloud/client'
 import '@phosphor-icons/webcomponents/dist/icons/PhArrowClockwise.mjs'
 import type { AnyOrama } from '@orama/orama'
+import { type ChatStoreType, initChatStore } from '@/context/Context'
 
 @Component({
   tag: 'orama-chat-box',
@@ -92,11 +92,20 @@ export class ChatBox {
   @Watch('themeConfig')
   @Watch('colorScheme')
   watchHandler() {
+    // This is a naive way to check if it is safe to eval this method (after componentWillLoad)
+    if (!this.chatStore) {
+      return
+    }
+
     this.startChatService()
     this.updateTheme()
   }
 
+  @Prop({ mutable: true }) chatStore: ChatStoreType
+
   componentWillLoad() {
+    this.chatStore = initChatStore()
+
     this.el.id = this.componentID
     this.schemaQuery = window.matchMedia('(prefers-color-scheme: dark)')
     this.systemScheme = this.schemaQuery.matches ? 'dark' : 'light'
@@ -112,25 +121,17 @@ export class ChatBox {
   }
 
   startChatService() {
-    if (chatContext.chatService) return
+    if (this.chatStore.state.chatService) return
     validateCloudIndexOrInstance(this.el, this.index, this.clientInstance)
     const oramaClient = this.clientInstance || initOramaClient(this.index)
 
-    chatContext.chatService = new ChatService(oramaClient)
+    this.chatStore.state.chatService = new ChatService(oramaClient, this.chatStore)
   }
 
   updateTheme() {
-    const scheme = updateThemeClasses(
-      this.el,
-      this.colorScheme,
-      this.systemScheme
-    )
+    const scheme = updateThemeClasses(this.el, this.colorScheme, this.systemScheme)
 
-    updateCssVariables(
-      this.el,
-      scheme as ColorScheme,
-      this.themeConfig
-    )
+    updateCssVariables(this.el, scheme as ColorScheme, this.themeConfig)
   }
 
   private onPrefersColorSchemeChange = (event) => {
@@ -143,7 +144,7 @@ export class ChatBox {
   }
 
   render() {
-    if (!chatContext.chatService) {
+    if (!this.chatStore.state.chatService) {
       return <orama-text as="p">Unable to initialize chat service</orama-text>
     }
 
@@ -165,7 +166,7 @@ export class ChatBox {
           chatMarkdownLinkTitle={this.chatMarkdownLinkTitle}
           chatMarkdownLinkHref={this.chatMarkdownLinkHref}
         >
-          {!!chatContext?.interactions?.length && (
+          {!!this.chatStore.state?.interactions?.length && (
             <div slot="chat-empty-state">
               <slot name="empty-state" />
             </div>

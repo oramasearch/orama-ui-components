@@ -1,12 +1,17 @@
-import { Component, Host, Prop, State, h } from '@stencil/core'
-import type { TChatInteraction } from '@/context/chatContext'
+import { Component, Host, Prop, State, Element, h } from '@stencil/core'
 import '@phosphor-icons/webcomponents/dist/icons/PhCopy.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhArrowsClockwise.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhThumbsDown.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhWarning.mjs'
-import { chatContext, TAnswerStatus } from '@/context/chatContext'
-import { copyToClipboard } from '@/utils/utils'
-import type { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle } from '@/types'
+import { copyToClipboard, getStore } from '@/utils/utils'
+import {
+  TAnswerStatus,
+  type TChatInteraction,
+  type ChatMarkdownLinkHref,
+  type ChatMarkdownLinkTarget,
+  type ChatMarkdownLinkTitle,
+} from '@/types'
+import type { ChatStoreType } from '@/context/Context'
 
 @Component({
   tag: 'orama-chat-assistent-message',
@@ -14,6 +19,7 @@ import type { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitl
   scoped: true,
 })
 export class OramaChatAssistentMessage {
+  @Element() htmlElement
   @Prop() interaction: TChatInteraction
   @Prop() chatMarkdownLinkTitle?: ChatMarkdownLinkTitle
   @Prop() chatMarkdownLinkHref?: ChatMarkdownLinkHref
@@ -32,8 +38,14 @@ export class OramaChatAssistentMessage {
     this.isDisliked = !this.isDisliked
   }
 
+  private chatStore: ChatStoreType
+
+  componentWillLoad() {
+    this.chatStore = getStore('chat', this.htmlElement)
+  }
+
   private handleRetryMessage = () => {
-    chatContext.chatService?.regenerateLatest()
+    this.chatStore.state.chatService?.regenerateLatest()
   }
 
   render() {
@@ -59,10 +71,10 @@ export class OramaChatAssistentMessage {
       <Host>
         <orama-sources
           sources={this.interaction.sources}
-          sourceBaseURL={chatContext.sourceBaseURL}
-          sourcesMap={chatContext.sourcesMap}
-          linksRel={chatContext.linksRel}
-          linksTarget={chatContext.linksTarget}
+          sourceBaseURL={this.chatStore.state.sourceBaseURL}
+          sourcesMap={this.chatStore.state.sourcesMap}
+          linksRel={this.chatStore.state.linksRel}
+          linksTarget={this.chatStore.state.linksTarget}
         />
         <div class="message-wrapper">
           {!this.interaction.response ? (
