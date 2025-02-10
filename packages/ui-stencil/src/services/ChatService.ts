@@ -4,15 +4,17 @@ import type { AnswerSession as CloudAnswerSession } from '@oramacloud/client'
 import type { OramaSwitchClient } from '@orama/switch'
 import { Switch } from '@orama/switch'
 import { OramaClientNotInitializedError } from '@/erros/OramaClientNotInitialized'
-import { chatContext, chatStore, TAnswerStatus } from '@/context/chatContext'
-import type { OnAnswerGeneratedCallbackProps } from '@/types'
+import { TAnswerStatus, type OnAnswerGeneratedCallbackProps } from '@/types'
+import type { ChatStoreType } from '@/context/Context'
 
 export class ChatService {
   oramaClient: Switch
   answerSession: CloudAnswerSession<true> | OSSAnswerSession
+  private chatStore: ChatStoreType
 
-  constructor(oramaClient: OramaSwitchClient) {
+  constructor(oramaClient: OramaSwitchClient, chatStore: ChatStoreType) {
     this.oramaClient = new Switch(oramaClient)
+    this.chatStore = chatStore
   }
 
   sendQuestion = (
@@ -29,7 +31,7 @@ export class ChatService {
     const askParams: AskParams = { term: term, related: { howMany: 3, format: 'question' } }
 
     if (!this.answerSession) {
-      const existingInteractions = chatContext.interactions
+      const existingInteractions = this.chatStore.state.interactions
 
       this.answerSession = this.oramaClient.createAnswerSession({
         events: {
@@ -37,8 +39,8 @@ export class ChatService {
             // TODO: Remove: this is a quick and dirty fix for odd behavior of the SDK. When we abort, it generates a new interaction with empty query and empty anwer.
             const normalizedState = state.filter((stateItem) => !!stateItem.query)
             // if (normalizedState[normalizedState.length - 1].aborted) {
-            //   chatContext.interactions = chatContext.interactions.map((interaction, index) => {
-            //     if (index === chatContext.interactions.length - 1) {
+            //   this.chatStore.state.interactions = this.chatStore.state.interactions.map((interaction, index) => {
+            //     if (index === this.chatStore.state.interactions.length - 1) {
             //       return {
             //         ...interaction,
             //         status: TAnswerStatus.aborted,
@@ -49,7 +51,7 @@ export class ChatService {
             //   return;
             // }
 
-            chatContext.interactions = [
+            this.chatStore.state.interactions = [
               ...(existingInteractions || []),
               ...normalizedState.map((interaction, index) => {
                 const isLatest = state.length - 1 === index
@@ -111,8 +113,8 @@ export class ChatService {
     // TODO: ABORT/ERROR/STOP should emmit onStateChange event. Keeping the lines below as a reference
     // TODO: WE may want to reveive ask props as a Service prop instead of enforcing it here
     return this.answerSession.ask(askParams).catch((error) => {
-      chatContext.interactions = chatContext.interactions.map((interaction, index) => {
-        if (index === chatContext.interactions.length - 1) {
+      this.chatStore.state.interactions = this.chatStore.state.interactions.map((interaction, index) => {
+        if (index === this.chatStore.state.interactions.length - 1) {
           return {
             ...interaction,
             status: TAnswerStatus.error,
@@ -145,20 +147,20 @@ export class ChatService {
       throw new OramaClientNotInitializedError()
     }
 
-    if (chatContext.interactions.length < 1) {
+    if (this.chatStore.state.interactions.length < 1) {
       return
     }
 
     // TODO: SDK should abort any streaming before cleaning the sessions. It is not doing that today
     if (
       ['loading', 'rendering', 'streaming'].includes(
-        chatContext.interactions[chatContext.interactions.length - 1].status,
+        this.chatStore.state.interactions[this.chatStore.state.interactions.length - 1].status,
       )
     ) {
       this.answerSession.abortAnswer()
     }
 
     this.answerSession.clearSession()
-    chatContext.interactions = []
+    this.chatStore.state.interactions = []
   }
 }

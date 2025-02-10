@@ -102,9 +102,11 @@ export class OramaSearchButton {
             }
 
             if (searchBoxList.length > 1) {
-              console.warn(
+              console.error(
                 'Multiple instances of OramaSearchBox (orama-search-box) found. Considere to assign an ID to OramaSearchBox, implement onClick on OramaSearchButton and select desired OramaSearchBox on onClick method',
               )
+
+              return
             }
 
             searchBoxList[0].open = true

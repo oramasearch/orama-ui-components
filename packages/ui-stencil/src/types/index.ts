@@ -74,3 +74,30 @@ export type onStartConversationCallbackProps = {
 }
 
 export type OnAnswerSourceClickCallbackProps = { source: SearchResult }
+
+// TODO: this type should be imported from orama-client
+export enum TAnswerStatus {
+  idle = 'idle',
+  loading = 'loading', // waiting for sources to be fetched
+  rendering = 'rendering', // rendering interaction sources
+  streaming = 'streaming', // streaming interaction answer
+  error = 'error',
+  aborted = 'aborted',
+  done = 'done',
+}
+
+export type TSource = {
+  title: string
+  description?: string
+  path: string
+}
+
+export type TChatInteraction = {
+  query: string
+  response?: string
+  sources?: any // should be Results<any> from orama-client
+  latest?: boolean
+  status: TAnswerStatus
+  interactionId?: string
+  relatedQueries?: string[]
+}

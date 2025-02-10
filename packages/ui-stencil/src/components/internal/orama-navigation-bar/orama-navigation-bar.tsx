@@ -1,8 +1,9 @@
-import { Component, Fragment, Host, Prop, h } from '@stencil/core'
+import { Component, Fragment, Host, Prop, Element, h } from '@stencil/core'
 import '@phosphor-icons/webcomponents/dist/icons/PhClock.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhPlus.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhCaretLeft.mjs'
-import { chatContext } from '@/context/chatContext'
+import { getStore } from '@/utils/utils'
+import type { ChatStoreType } from '@/context/Context'
 
 @Component({
   tag: 'orama-navigation-bar',
@@ -10,13 +11,20 @@ import { chatContext } from '@/context/chatContext'
   scoped: true,
 })
 export class OramaNavigationBar {
+  @Element() htmlElement: HTMLElement
   @Prop() handleClose: () => void
   @Prop() showBackButton = true
   @Prop() showChatActions = false
 
+  private chatStore: ChatStoreType
+
+  componentWillLoad() {
+    this.chatStore = getStore('chat', this.htmlElement)
+  }
+
   // TODO: maybe better to make this component context agnostic
   private handleStartNewChat = () => {
-    chatContext.chatService?.resetChat()
+    this.chatStore.state.chatService?.resetChat()
   }
 
   render() {
