@@ -65,6 +65,8 @@ export class OramaChatAssistentMessage {
       )
     }
 
+    console.log(this.interaction)
+
     return (
       <Host>
         <orama-sources

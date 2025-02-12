@@ -63,8 +63,6 @@ export class OramaCoreChatService {
                 let answerStatus = TAnswerStatus.loading
                 let sources = []
 
-                console.log({interaction, isLatest})
-
                 if (interaction.aborted) {
                   answerStatus = TAnswerStatus.aborted
                 } else if (interaction.loading && interaction.sources) {
