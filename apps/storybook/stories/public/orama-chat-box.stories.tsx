@@ -103,5 +103,13 @@ export const ChatBox: Story = {
   args: {
     preset: 'orama',
     colorScheme: 'dark',
+    themeConfig: {
+      radius: {
+        // "--textarea-radius": '0px'
+      },
+      shadow: {
+        // "--textarea-shadow": '0px 4px 24px 0px white'
+      },
+    },
   },
 }

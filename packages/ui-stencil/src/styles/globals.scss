@@ -12,9 +12,7 @@
   @include mapToCustomProperties($theme-typography);
   @include mapToCustomProperties($theme-radius);
   @include mapToCustomProperties($theme-spacing);
-
-  // component specific
-  @include mapToCustomProperties($theme-textarea);
+  @include mapToCustomProperties($theme-shadow);
 
   *,
   *:before,

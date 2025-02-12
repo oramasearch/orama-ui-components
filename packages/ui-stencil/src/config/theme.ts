@@ -1,11 +1,13 @@
 import colors from './colors'
 import typography from './typography'
-import chatbox from './chatbox'
+import radius from './radius'
+import shadow from './shadow'
 
 const theme = {
   typography,
   colors,
-  chatbox,
+  radius,
+  shadow,
 }
 
 type TTheme = typeof theme

@@ -2,10 +2,10 @@
   position: relative;
   display: flex;
   align-items: center;
-  border-radius: var(--textarea-border-radius, var(--radius-l, $radius-l));
+  border-radius: var(--textarea-radius, var(--radius-l, $radius-l));
   border: 1px solid var(--border-color-primary, border-color('primary'));
   background: var(--background-color-secondary, background-color('secondary'));
-  box-shadow: var(--textarea-box-shadow, var(--shadow-color-primary, shadow-color('primary')));
+  box-shadow: var(--textarea-shadow, var(--shadow-color-primary, shadow-color('primary')));
   padding: var(--spacing-xs, $spacing-xs) var(--spacing-xs, $spacing-xs) var(--spacing-xs, $spacing-xs) var(--spacing-m, $spacing-m);
 }
 
