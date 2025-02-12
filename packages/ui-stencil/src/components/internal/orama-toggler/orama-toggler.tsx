@@ -1,8 +1,8 @@
-import { Component, Host, Prop, Element, h } from '@stencil/core'
+import { Component, Host, Prop, h } from '@stencil/core'
 import '@phosphor-icons/webcomponents/dist/icons/PhMagnifyingGlass.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhSparkle.mjs'
-import { getStore } from '@/utils/utils'
 import type { GlobalStoreType } from '@/context/Context'
+import { Store } from '@/StoreDecorator'
 
 @Component({
   tag: 'orama-toggler',
@@ -10,15 +10,13 @@ import type { GlobalStoreType } from '@/context/Context'
   scoped: true,
 })
 export class OramaToggler {
-  @Element() elementHTML
   @Prop() performInitialAnimation = false
   private firstRender = true
 
+  @Store('global')
   private globalStore: GlobalStoreType
 
   componentWillLoad() {
-    this.globalStore = getStore('global', this.elementHTML)
-
     if (this.performInitialAnimation) {
       this.firstRender = false
     }

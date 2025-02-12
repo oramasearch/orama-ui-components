@@ -174,7 +174,6 @@ export namespace Components {
           * Placeholder for chat input
          */
         "chatPlaceholder"?: string;
-        "chatStore": any;
         /**
           * Orama Instance
          */
@@ -191,7 +190,6 @@ export namespace Components {
           * Index result property to
          */
         "facetProperty"?: string;
-        "globalStore": any;
         /**
           * Options for highlights of Search Result descriptions
          */
@@ -237,7 +235,6 @@ export namespace Components {
           * Placeholder for search input
          */
         "searchPlaceholder"?: string;
-        "searchStore": any;
         /**
           * Used to provide source base URL for the Search Results
          */
@@ -852,7 +849,6 @@ declare namespace LocalJSX {
           * Placeholder for chat input
          */
         "chatPlaceholder"?: string;
-        "chatStore"?: any;
         /**
           * Orama Instance
          */
@@ -869,7 +865,6 @@ declare namespace LocalJSX {
           * Index result property to
          */
         "facetProperty"?: string;
-        "globalStore"?: any;
         /**
           * Options for highlights of Search Result descriptions
          */
@@ -943,7 +938,6 @@ declare namespace LocalJSX {
           * Placeholder for search input
          */
         "searchPlaceholder"?: string;
-        "searchStore"?: any;
         /**
           * Used to provide source base URL for the Search Results
          */

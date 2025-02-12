@@ -2,7 +2,7 @@ import { Component, Host, Listen, State, Watch, h, Element, Prop, type EventEmit
 import type { OnAnswerGeneratedCallbackProps, OnSearchCompletedCallbackProps, SearchResult } from '@/types'
 import type { HighlightOptions } from '@orama/highlight'
 import type { ChatStoreType, GlobalStoreType, SearchStoreType } from '@/context/Context'
-import { getStore } from '@/utils/utils'
+import { Store } from '@/StoreDecorator'
 
 @Component({
   tag: 'orama-search',
@@ -30,15 +30,12 @@ export class OramaSearch {
 
   inputRef!: HTMLOramaInputElement
 
+  @Store('search')
   private searchStore: SearchStoreType
+  @Store('global')
   private globalStore: GlobalStoreType
+  @Store('chat')
   private chatStore: ChatStoreType
-
-  componentWillLoad() {
-    this.globalStore = getStore('global', this.el)
-    this.searchStore = getStore('search', this.el)
-    this.chatStore = getStore('chat', this.el)
-  }
 
   @Watch('searchValue')
   @Watch('selectedFacet')

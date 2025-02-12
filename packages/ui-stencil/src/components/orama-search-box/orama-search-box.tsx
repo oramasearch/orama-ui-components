@@ -42,7 +42,8 @@ import type {
   SourcesMap,
 } from '@/types'
 import type { TThemeOverrides } from '@/config/theme'
-import { initChatStore, initGlobalStore, initSearchStore } from '@/context/Context'
+import { type ChatStoreType, type GlobalStoreType, initStore, type SearchStoreType } from '@/context/Context'
+import { Store } from '@/StoreDecorator'
 
 // TODO: AI components should be lazyly loaded. In case of Disable AI flag, it should not be loaded at all
 // https://linear.app/oramasearch/issue/ORM-1824/ai-components-should-be-lazyly-loaded-in-case-of-disable-ai-flag-they
@@ -158,9 +159,9 @@ export class SearchBox {
   @State() systemScheme: Omit<ColorScheme, 'system'> = 'light'
   @State() windowWidth: number
 
-  @Prop({ mutable: true }) searchStore = null
-  @Prop({ mutable: true }) chatStore = null
-  @Prop({ mutable: true }) globalStore = null
+  private searchStore: SearchStoreType
+  private chatStore: ChatStoreType
+  private globalStore: GlobalStoreType
 
   /**
    * Fired when search successfully resolves
@@ -266,9 +267,9 @@ export class SearchBox {
   }
 
   componentWillLoad() {
-    this.searchStore = initSearchStore()
-    this.chatStore = initChatStore()
-    this.globalStore = initGlobalStore()
+    this.chatStore = initStore('chat', this.componentID)
+    this.searchStore = initStore('search', this.componentID)
+    this.globalStore = initStore('global', this.componentID)
 
     // TODO: We probable want to keep these props below whithin the respective service
     // instance property. I seems to make sense to pass it as initialization prop.

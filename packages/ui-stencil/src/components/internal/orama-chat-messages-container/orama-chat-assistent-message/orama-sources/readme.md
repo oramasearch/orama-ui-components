@@ -13,7 +13,7 @@
 | `linksTarget`   | `links-target`      |             | `string`                                                   | `'_blank'`                                                                    |
 | `sourceBaseURL` | `source-base-u-r-l` |             | `string`                                                   | `''`                                                                          |
 | `sources`       | `sources`           |             | `any`                                                      | `undefined`                                                                   |
-| `sourcesMap`    | --                  |             | `{ title?: string; path?: string; description?: string; }` | `{     title: 'title',     description: 'description',     path: 'path',   }` |
+| `sourcesMap`    | --                  |             | `{ title?: string; description?: string; path?: string; }` | `{     title: 'title',     description: 'description',     path: 'path',   }` |
 
 
 ## Events

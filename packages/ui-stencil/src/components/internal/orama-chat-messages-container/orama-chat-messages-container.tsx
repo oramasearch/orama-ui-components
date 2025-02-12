@@ -7,8 +7,8 @@ import type {
   OnSearchCompletedCallbackProps,
   TChatInteraction,
 } from '@/types'
-import { getStore } from '@/utils/utils'
 import type { ChatStoreType } from '@/context/Context'
+import { Store } from '@/StoreDecorator'
 
 @Component({
   tag: 'orama-chat-messages-container',
@@ -27,11 +27,8 @@ export class OramaChatMessagesContainer {
 
   @State() latestInteractionMinHeight = 0
 
+  @Store('chat')
   private chatStore: ChatStoreType
-
-  componentWillLoad() {
-    this.chatStore = getStore('chat', this.el)
-  }
 
   // TODO: I'm not sure about having this here as we're breaking our rule of maintain service access only to the very top level component
   onSuggestionClick = (suggestion: string) => {

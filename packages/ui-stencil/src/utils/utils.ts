@@ -1,8 +1,7 @@
-import type { CloudIndexConfig } from '@/types'
-import type { AnyOrama, Orama } from '@orama/orama'
-import { OramaClient } from '@oramacloud/client'
-import type { ColorScheme } from '@/types'
 import type { TThemeOverrides } from '@/components'
+import type { CloudIndexConfig, ColorScheme } from '@/types'
+import type { AnyOrama } from '@orama/orama'
+import { OramaClient } from '@oramacloud/client'
 
 /**
  * Arrow keys navigation for focusable elements within a container
@@ -178,23 +177,4 @@ export function getExternalComponentHTMLElement(element: HTMLElement): HTMLEleme
       currentNode = (currentNode.parentNode as HTMLElement) ?? null
     }
   }
-}
-
-export function getStore(storeName: 'global' | 'search' | 'chat', element: HTMLElement) {
-  const storePropMap = {
-    global: 'globalStore',
-    search: 'searchStore',
-    chat: 'chatStore',
-  }
-
-  if (!storePropMap[storeName]) {
-    throw new Error('Invalid store name')
-  }
-
-  const externalComponent = getExternalComponentHTMLElement(element)
-  if (!externalComponent || !externalComponent[storePropMap[storeName]]) {
-    throw new Error('Failed to get store')
-  }
-
-  return externalComponent[storePropMap[storeName]]
 }

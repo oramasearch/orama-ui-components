@@ -1,16 +1,4 @@
-import {
-  Component,
-  Fragment,
-  Listen,
-  Host,
-  Prop,
-  State,
-  Watch,
-  Element,
-  h,
-  type EventEmitter,
-  Event,
-} from '@stencil/core'
+import { Component, Fragment, Listen, Host, Prop, State, Watch, h, type EventEmitter, Event } from '@stencil/core'
 import {
   TAnswerStatus,
   type ChatMarkdownLinkHref,
@@ -24,8 +12,8 @@ import {
 import '@phosphor-icons/webcomponents/dist/icons/PhPaperPlaneTilt.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhStopCircle.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhArrowDown.mjs'
-import type { ChatStoreType } from '@/context/Context'
-import { getStore } from '@/utils/utils'
+import { Store } from '@/StoreDecorator'
+import type { ChatStoreType } from '@/components'
 
 const BOTTOM_THRESHOLD = 1
 
@@ -34,7 +22,6 @@ const BOTTOM_THRESHOLD = 1
   styleUrl: 'orama-chat.scss',
 })
 export class OramaChat {
-  @Element() htmlElement
   @Prop() placeholder?: string = 'Ask me anything'
   @Prop() sourceBaseUrl?: string = ''
   @Prop() linksTarget?: string
@@ -112,11 +99,10 @@ export class OramaChat {
 
   lockScrollOnBottom = false
 
+  @Store('chat')
   private chatStore: ChatStoreType
 
   componentWillLoad() {
-    this.chatStore = getStore('chat', this.htmlElement)
-
     this.chatStore.on('set', (prop, newInteractions, oldInteractions) => {
       if (prop !== 'interactions') {
         return
