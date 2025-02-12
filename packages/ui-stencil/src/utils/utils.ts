@@ -129,7 +129,7 @@ export function generateRandomID(componentName: string): string {
 export function updateThemeClasses(
   element: HTMLElement,
   colorScheme: ColorScheme,
-  systemScheme: Omit<ColorScheme, 'system'>
+  systemScheme: Omit<ColorScheme, 'system'>,
 ) {
   const scheme = colorScheme === 'system' ? systemScheme : colorScheme
 
@@ -141,11 +141,7 @@ export function updateThemeClasses(
   return scheme
 }
 
-export function updateCssVariables(
-  element: HTMLElement,
-  scheme: ColorScheme,
-  themeConfig?: Partial<TThemeOverrides>
-) {
+export function updateCssVariables(element: HTMLElement, scheme: ColorScheme, themeConfig?: Partial<TThemeOverrides>) {
   if (!element || !themeConfig || !scheme) return
 
   for (const base of Object.keys(themeConfig)) {
