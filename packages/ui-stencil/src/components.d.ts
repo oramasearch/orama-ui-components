@@ -10,7 +10,6 @@ import { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, Cl
 import { OramaClient } from "@oramacloud/client";
 import { AnyOrama, Orama, SearchParams } from "@orama/orama";
 import { TThemeOverrides } from "./config/theme";
-import { ChatStoreType } from "./context/Context";
 import { InputProps } from "./components/internal/orama-input/orama-input";
 import { ModalStatus } from "./components/internal/orama-modal/orama-modal";
 import { HighlightOptions } from "@orama/highlight";
@@ -22,7 +21,6 @@ export { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, Cl
 export { OramaClient } from "@oramacloud/client";
 export { AnyOrama, Orama, SearchParams } from "@orama/orama";
 export { TThemeOverrides } from "./config/theme";
-export { ChatStoreType } from "./context/Context";
 export { InputProps } from "./components/internal/orama-input/orama-input";
 export { ModalStatus } from "./components/internal/orama-modal/orama-modal";
 export { HighlightOptions } from "@orama/highlight";
@@ -67,7 +65,6 @@ export namespace Components {
         "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
         "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
-        "chatStore": ChatStoreType;
         "clearChatOnDisconnect": boolean;
         "clientInstance"?: OramaClient | AnyOrama;
         /**
@@ -174,7 +171,6 @@ export namespace Components {
           * Placeholder for chat input
          */
         "chatPlaceholder"?: string;
-        "chatStore": any;
         /**
           * Orama Instance
          */
@@ -191,7 +187,6 @@ export namespace Components {
           * Index result property to
          */
         "facetProperty"?: string;
-        "globalStore": any;
         /**
           * Options for highlights of Search Result descriptions
          */
@@ -237,7 +232,6 @@ export namespace Components {
           * Placeholder for search input
          */
         "searchPlaceholder"?: string;
-        "searchStore": any;
         /**
           * Used to provide source base URL for the Search Results
          */
@@ -719,7 +713,6 @@ declare namespace LocalJSX {
         "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
         "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
-        "chatStore"?: ChatStoreType;
         "clearChatOnDisconnect"?: boolean;
         "clientInstance"?: OramaClient | AnyOrama;
         /**
@@ -852,7 +845,6 @@ declare namespace LocalJSX {
           * Placeholder for chat input
          */
         "chatPlaceholder"?: string;
-        "chatStore"?: any;
         /**
           * Orama Instance
          */
@@ -869,7 +861,6 @@ declare namespace LocalJSX {
           * Index result property to
          */
         "facetProperty"?: string;
-        "globalStore"?: any;
         /**
           * Options for highlights of Search Result descriptions
          */
@@ -943,7 +934,6 @@ declare namespace LocalJSX {
           * Placeholder for search input
          */
         "searchPlaceholder"?: string;
-        "searchStore"?: any;
         /**
           * Used to provide source base URL for the Search Results
          */

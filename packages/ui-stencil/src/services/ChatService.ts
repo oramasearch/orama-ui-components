@@ -5,7 +5,7 @@ import type { OramaSwitchClient } from '@orama/switch'
 import { Switch } from '@orama/switch'
 import { OramaClientNotInitializedError } from '@/erros/OramaClientNotInitialized'
 import { TAnswerStatus, type OnAnswerGeneratedCallbackProps } from '@/types'
-import type { ChatStoreType } from '@/context/Context'
+import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
 
 export class ChatService {
   oramaClient: Switch

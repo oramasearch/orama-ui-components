@@ -23,7 +23,9 @@ import type { TThemeOverrides } from '@/config/theme'
 import type { OramaClient } from '@oramacloud/client'
 import '@phosphor-icons/webcomponents/dist/icons/PhArrowClockwise.mjs'
 import type { AnyOrama } from '@orama/orama'
-import { type ChatStoreType, initChatStore } from '@/context/Context'
+import { initStore, removeAllStores } from '@/ParentComponentStore/ParentComponentStoreManager'
+import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
+import { Store } from '@/StoreDecorator'
 
 @Component({
   tag: 'orama-chat-box',
@@ -101,11 +103,9 @@ export class ChatBox {
     this.updateTheme()
   }
 
-  @Prop({ mutable: true }) chatStore: ChatStoreType
+  private chatStore: ChatStoreType
 
   componentWillLoad() {
-    this.chatStore = initChatStore()
-
     this.el.id = this.componentID
     this.schemaQuery = window.matchMedia('(prefers-color-scheme: dark)')
     this.systemScheme = this.schemaQuery.matches ? 'dark' : 'light'
@@ -139,7 +139,13 @@ export class ChatBox {
     this.updateTheme()
   }
 
+  connectedCallback() {
+    this.chatStore = initStore('chat', this.componentID)
+  }
+
   disconnectedCallback() {
+    removeAllStores(this.componentID)
+
     this.schemaQuery?.removeEventListener('change', this.onPrefersColorSchemeChange)
   }
 

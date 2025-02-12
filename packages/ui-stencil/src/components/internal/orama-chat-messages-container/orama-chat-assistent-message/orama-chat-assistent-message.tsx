@@ -3,7 +3,7 @@ import '@phosphor-icons/webcomponents/dist/icons/PhCopy.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhArrowsClockwise.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhThumbsDown.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhWarning.mjs'
-import { copyToClipboard, getStore } from '@/utils/utils'
+import { copyToClipboard } from '@/utils/utils'
 import {
   TAnswerStatus,
   type TChatInteraction,
@@ -11,7 +11,8 @@ import {
   type ChatMarkdownLinkTarget,
   type ChatMarkdownLinkTitle,
 } from '@/types'
-import type { ChatStoreType } from '@/context/Context'
+import { Store } from '@/StoreDecorator'
+import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
 
 @Component({
   tag: 'orama-chat-assistent-message',
@@ -38,11 +39,8 @@ export class OramaChatAssistentMessage {
     this.isDisliked = !this.isDisliked
   }
 
+  @Store('chat')
   private chatStore: ChatStoreType
-
-  componentWillLoad() {
-    this.chatStore = getStore('chat', this.htmlElement)
-  }
 
   private handleRetryMessage = () => {
     this.chatStore.state.chatService?.regenerateLatest()
