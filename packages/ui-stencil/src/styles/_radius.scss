@@ -5,6 +5,7 @@ $radius-s: pxToRem($base);
 $radius-m: pxToRem($base * 1.5);
 $radius-l: pxToRem($base * 2);
 $radius-3xl: pxToRem($base * 5);
+$textarea-radius: $radius-l;
 
 $base-radius: (
   '--radius-xs': $radius-xs,
@@ -15,7 +16,7 @@ $base-radius: (
 );
 
 $element-radius: (
-  '--textarea-radius': $radius-l,
+  '--textarea-radius': $textarea-radius,
 );
 
 $theme-radius: map-merge($base-radius, $element-radius);
