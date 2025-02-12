@@ -74,6 +74,20 @@ export class OramaChatAssistentMessage {
           linksRel={this.chatStore.state.linksRel}
           linksTarget={this.chatStore.state.linksTarget}
         />
+
+        {/* Show plan messages if they exist */}
+        {this.interaction.plan?.map((planStep, index) => (
+          <div class="message-wrapper plan-message" key={index}>
+            <orama-text styledAs="span" bold>
+              Step {index + 1}: {planStep.step}
+            </orama-text>
+            <orama-text styledAs="span">
+              {planStep.description}
+            </orama-text>
+          </div>
+        ))}
+
+        {/* Show response message */}
         <div class="message-wrapper">
           {!this.interaction.response ? (
             <orama-dots-loader />

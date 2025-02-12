@@ -6,6 +6,7 @@ import {
   validateCloudIndexConfig as validateCloudIndexOrInstance,
   updateCssVariables,
   updateThemeClasses,
+  initOramaCoreClient,
 } from '@/utils/utils'
 import type {
   ChatMarkdownLinkHref,
@@ -24,8 +25,10 @@ import type { OramaClient } from '@oramacloud/client'
 import '@phosphor-icons/webcomponents/dist/icons/PhArrowClockwise.mjs'
 import type { AnyOrama } from '@orama/orama'
 import { initStore, removeAllStores } from '@/ParentComponentStore/ParentComponentStoreManager'
-import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
 import { Store } from '@/StoreDecorator'
+import { CollectionManager } from '@orama/core'
+import { ChatStoreType } from '@/ParentComponentStore/ChatStore'
+import { OramaCoreChatService } from '@/services/OramaCoreChatService'
 
 @Component({
   tag: 'orama-chat-box',
@@ -35,7 +38,7 @@ import { Store } from '@/StoreDecorator'
 export class ChatBox {
   @Element() el: HTMLElement
   @Prop() index?: CloudIndexConfig | CloudIndexConfig[]
-  @Prop() clientInstance?: OramaClient | AnyOrama
+  @Prop() clientInstance?: OramaClient | CollectionManager | AnyOrama
   @Prop() sourceBaseUrl?: string
   @Prop() linksTarget?: string
   @Prop() linksRel?: string
@@ -122,10 +125,11 @@ export class ChatBox {
 
   startChatService() {
     if (this.chatStore.state.chatService) return
-    validateCloudIndexOrInstance(this.el, this.index, this.clientInstance)
-    const oramaClient = this.clientInstance || initOramaClient(this.index)
+    // validateCloudIndexOrInstance(this.el, this.index, this.clientInstance)
+    // const oramaClient = this.clientInstance || initOramaClient(this.index)
+    const oramaClient = this.clientInstance || initOramaCoreClient()
 
-    this.chatStore.state.chatService = new ChatService(oramaClient, this.chatStore)
+    this.chatStore.state.chatService = new OramaCoreChatService(oramaClient as CollectionManager, this.chatStore)
   }
 
   updateTheme() {

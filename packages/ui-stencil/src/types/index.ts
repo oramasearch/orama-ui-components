@@ -92,12 +92,18 @@ export type TSource = {
   path: string
 }
 
+export type TPlanStep = {
+  step: string
+  description: string
+}
+
 export type TChatInteraction = {
+  interactionId?: string
   query: string
   response?: string
   sources?: any // should be Results<any> from orama-client
   latest?: boolean
   status: TAnswerStatus
-  interactionId?: string
+  plan?: TPlanStep[]
   relatedQueries?: string[]
 }

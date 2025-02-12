@@ -48,3 +48,17 @@
     transform: rotate(360deg);
   }
 }
+
+.plan-message {
+  margin-bottom: var(--spacing-s, $spacing-s);
+  background: var(--background-color-tertiary, background-color('tertiary'));
+
+  orama-text {
+    display: block;
+
+    &:last-child {
+      margin-top: var(--spacing-xs, $spacing-xs);
+      color: var(--text-color-secondary, text-color('secondary'));
+    }
+  }
+}

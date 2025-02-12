@@ -2,6 +2,7 @@ import type { TThemeOverrides } from '@/components'
 import type { CloudIndexConfig, ColorScheme } from '@/types'
 import type { AnyOrama } from '@orama/orama'
 import { OramaClient } from '@oramacloud/client'
+import { CollectionManager, OramaCoreManager } from '@orama/core'
 
 /**
  * Arrow keys navigation for focusable elements within a container
@@ -118,6 +119,24 @@ export function initOramaClient(indexOrIndexes: CloudIndexConfig | CloudIndexCon
     api_key: index.api_key,
     endpoint: index.endpoint,
   })
+}
+
+export function initOramaCoreClient() {
+  const oramaManager = new OramaCoreManager({
+    url: 'http://104.198.3.215:8080/',
+    masterAPIKey: 'my-master-api-key',
+  })
+
+  const collectionName = "ag-new-collection-13"
+
+  const collectionManager = new CollectionManager({
+    url: "http://104.198.3.215:8080/",
+    collectionID: collectionName,
+    readAPIKey: "test",
+    writeAPIKey: "test",
+  });
+
+  return collectionManager
 }
 
 export function generateRandomID(componentName: string): string {

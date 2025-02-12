@@ -8,6 +8,7 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { ButtonProps } from "./components/internal/orama-button/orama-button";
 import { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, CloudIndexConfig, ColorScheme, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnChatMarkdownLinkClickedCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, onStartConversationCallbackProps, ResultItemRenderFunction, ResultMap, SearchResultBySection, SourcesMap, TChatInteraction } from "./types/index";
 import { OramaClient } from "@oramacloud/client";
+import { CollectionManager } from "@orama/core";
 import { AnyOrama, Orama, SearchParams } from "@orama/orama";
 import { TThemeOverrides } from "./config/theme";
 import { InputProps } from "./components/internal/orama-input/orama-input";
@@ -19,6 +20,7 @@ import { TextProps } from "./components/internal/orama-text/orama-text";
 export { ButtonProps } from "./components/internal/orama-button/orama-button";
 export { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, CloudIndexConfig, ColorScheme, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnChatMarkdownLinkClickedCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, onStartConversationCallbackProps, ResultItemRenderFunction, ResultMap, SearchResultBySection, SourcesMap, TChatInteraction } from "./types/index";
 export { OramaClient } from "@oramacloud/client";
+export { CollectionManager } from "@orama/core";
 export { AnyOrama, Orama, SearchParams } from "@orama/orama";
 export { TThemeOverrides } from "./config/theme";
 export { InputProps } from "./components/internal/orama-input/orama-input";
@@ -66,7 +68,7 @@ export namespace Components {
         "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "clearChatOnDisconnect": boolean;
-        "clientInstance"?: OramaClient | AnyOrama;
+        "clientInstance"?: OramaClient | CollectionManager | AnyOrama;
         /**
           * Component color schema
          */
@@ -714,7 +716,7 @@ declare namespace LocalJSX {
         "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "clearChatOnDisconnect"?: boolean;
-        "clientInstance"?: OramaClient | AnyOrama;
+        "clientInstance"?: OramaClient | CollectionManager | AnyOrama;
         /**
           * Component color schema
          */
