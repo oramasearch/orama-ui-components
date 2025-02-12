@@ -67,7 +67,6 @@ export const OramaChatBox = /*@__PURE__*/ defineContainer<JSX.OramaChatBox>('ora
   'chatMarkdownLinkTarget',
   'themeConfig',
   'colorScheme',
-  'chatStore',
   'answerGenerated',
   'clearChat',
   'startConversation',

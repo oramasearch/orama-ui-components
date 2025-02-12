@@ -1,4 +1,4 @@
-import { getStore, type StoresMapType, type StoresMapKeys } from '@/context/Context'
+import { getStore, type StoresMapKeys } from '@/ParentComponentStore/ParentComponentStoreManager'
 import { type ComponentInterface, getElement } from '@stencil/core/internal'
 
 // Define unique symbols for internal metadata
@@ -7,7 +7,7 @@ const STORE_WILL_LOAD_PATCHED = Symbol('storeWillLoadPatched')
 
 /**
  * A decorator that:
- * - Patches `componentWillLoad` to initialize a store.
+ * - Patches `componentWillLoad` to initialize a Component Store.
  */
 export function Store<S extends StoresMapKeys>(storeName: S): PropertyDecorator {
   return (targetClass: ComponentInterface, propKey: string) => {

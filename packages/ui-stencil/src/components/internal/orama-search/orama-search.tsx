@@ -1,8 +1,10 @@
 import { Component, Host, Listen, State, Watch, h, Element, Prop, type EventEmitter, Event } from '@stencil/core'
 import type { OnAnswerGeneratedCallbackProps, OnSearchCompletedCallbackProps, SearchResult } from '@/types'
 import type { HighlightOptions } from '@orama/highlight'
-import type { ChatStoreType, GlobalStoreType, SearchStoreType } from '@/context/Context'
 import { Store } from '@/StoreDecorator'
+import type { SearchStoreType } from '@/ParentComponentStore/SearchStore'
+import type { GlobalStoreType } from '@/ParentComponentStore/GlobalStore'
+import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
 
 @Component({
   tag: 'orama-search',

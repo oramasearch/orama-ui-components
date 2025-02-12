@@ -13,7 +13,7 @@ import '@phosphor-icons/webcomponents/dist/icons/PhPaperPlaneTilt.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhStopCircle.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhArrowDown.mjs'
 import { Store } from '@/StoreDecorator'
-import type { ChatStoreType } from '@/components'
+import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
 
 const BOTTOM_THRESHOLD = 1
 

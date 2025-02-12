@@ -1,8 +1,8 @@
 import { Component, Host, Prop, h } from '@stencil/core'
 import '@phosphor-icons/webcomponents/dist/icons/PhMagnifyingGlass.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhSparkle.mjs'
-import type { GlobalStoreType } from '@/context/Context'
 import { Store } from '@/StoreDecorator'
+import type { GlobalStoreType } from '@/ParentComponentStore/GlobalStore'
 
 @Component({
   tag: 'orama-toggler',

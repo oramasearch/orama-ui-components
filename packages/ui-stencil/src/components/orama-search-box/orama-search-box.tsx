@@ -42,8 +42,10 @@ import type {
   SourcesMap,
 } from '@/types'
 import type { TThemeOverrides } from '@/config/theme'
-import { type ChatStoreType, type GlobalStoreType, initStore, type SearchStoreType } from '@/context/Context'
-import { Store } from '@/StoreDecorator'
+import { initStore, removeAllStores } from '@/ParentComponentStore/ParentComponentStoreManager'
+import type { SearchStoreType } from '@/ParentComponentStore/SearchStore'
+import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
+import type { GlobalStoreType } from '@/ParentComponentStore/GlobalStore'
 
 // TODO: AI components should be lazyly loaded. In case of Disable AI flag, it should not be loaded at all
 // https://linear.app/oramasearch/issue/ORM-1824/ai-components-should-be-lazyly-loaded-in-case-of-disable-ai-flag-they
@@ -267,10 +269,6 @@ export class SearchBox {
   }
 
   componentWillLoad() {
-    this.chatStore = initStore('chat', this.componentID)
-    this.searchStore = initStore('search', this.componentID)
-    this.globalStore = initStore('global', this.componentID)
-
     // TODO: We probable want to keep these props below whithin the respective service
     // instance property. I seems to make sense to pass it as initialization prop.
     // Same goes for any other Chat init prop. Lets talk about it as well, please.
@@ -280,6 +278,8 @@ export class SearchBox {
 
     this.htmlElement.id = this.componentID
     this.startServices()
+
+    this.globalStore.state.open = this.open
 
     this.globalStore.onChange('open', () => {
       if (!this.globalStore) {
@@ -313,10 +313,16 @@ export class SearchBox {
   }
 
   connectedCallback() {
+    this.chatStore = initStore('chat', this.componentID)
+    this.searchStore = initStore('search', this.componentID)
+    this.globalStore = initStore('global', this.componentID)
+
     this.windowWidth = windowWidthListener.width
   }
 
   disconnectedCallback() {
+    removeAllStores(this.componentID)
+
     windowWidthListener.removeEventListener('widthChange', this.updateWindowWidth)
     this.schemaQuery?.removeEventListener('change', this.onPrefersColorSchemeChange)
   }

@@ -10,7 +10,7 @@ import type {
   SearchResultBySection,
   SearchResultWithIcon,
 } from '@/types'
-import type { SearchStoreType } from '@/context/Context'
+import type { SearchStoreType } from '@/ParentComponentStore/SearchStore'
 
 const LIMIT_RESULTS = 10
 

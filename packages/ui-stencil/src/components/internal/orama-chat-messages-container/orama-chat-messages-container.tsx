@@ -7,8 +7,8 @@ import type {
   OnSearchCompletedCallbackProps,
   TChatInteraction,
 } from '@/types'
-import type { ChatStoreType } from '@/context/Context'
 import { Store } from '@/StoreDecorator'
+import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
 
 @Component({
   tag: 'orama-chat-messages-container',
