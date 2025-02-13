@@ -11,6 +11,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@orama/orama": "^3.0.0",
+    "@orama/plugin-secure-proxy": "^3.0.6",
     "@orama/react-components": "workspace:*",
     "@oramacloud/client": "^2.1.4",
     "react": "^19",
