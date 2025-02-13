@@ -136,14 +136,13 @@ export class OramaModal {
   }
 
   render() {
-    if(!this.modalIsOpen) {
+    if (!this.modalIsOpen) {
       return null
     }
 
     return (
-      <div
+      <dialog
         class={`modal ${this.modalIsOpen ? 'open' : ''}`}
-        role="dialog"
         aria-modal="true"
         aria-labelledby="modalTitle"
         aria-describedby="modalContent"
@@ -159,7 +158,7 @@ export class OramaModal {
             Close
           </button>
         </div>
-      </div>
+      </dialog>
     )
   }
 }

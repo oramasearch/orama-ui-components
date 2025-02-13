@@ -93,6 +93,9 @@ const SearchBoxPage = () => {
         <div className="component-row">
           <OramaSearchButton colorScheme="system">Search</OramaSearchButton>
           <OramaSearchBox
+            onModalClosed={() => {
+              console.log('closed')
+            }}
             colorScheme="system"
             index={{
               api_key: API_KEY,
