@@ -6,8 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { ButtonProps } from "./components/internal/orama-button/orama-button";
-import { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, CloudIndexConfig, ColorScheme, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnChatMarkdownLinkClickedCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, onStartConversationCallbackProps, ResultItemRenderFunction, ResultMap, SearchResultBySection, SourcesMap } from "./types/index";
-import { TChatInteraction } from "./context/chatContext";
+import { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, CloudIndexConfig, ColorScheme, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnChatMarkdownLinkClickedCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, onStartConversationCallbackProps, ResultItemRenderFunction, ResultMap, SearchResultBySection, SourcesMap, TChatInteraction } from "./types/index";
 import { OramaClient } from "@oramacloud/client";
 import { AnyOrama, Orama, SearchParams } from "@orama/orama";
 import { TThemeOverrides } from "./config/theme";
@@ -18,8 +17,7 @@ import { TThemeOverrides as TThemeOverrides1 } from "./components.d";
 import { SearchResultsProps } from "./components/internal/orama-search-results/orama-search-results";
 import { TextProps } from "./components/internal/orama-text/orama-text";
 export { ButtonProps } from "./components/internal/orama-button/orama-button";
-export { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, CloudIndexConfig, ColorScheme, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnChatMarkdownLinkClickedCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, onStartConversationCallbackProps, ResultItemRenderFunction, ResultMap, SearchResultBySection, SourcesMap } from "./types/index";
-export { TChatInteraction } from "./context/chatContext";
+export { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, CloudIndexConfig, ColorScheme, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnChatMarkdownLinkClickedCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, onStartConversationCallbackProps, ResultItemRenderFunction, ResultMap, SearchResultBySection, SourcesMap, TChatInteraction } from "./types/index";
 export { OramaClient } from "@oramacloud/client";
 export { AnyOrama, Orama, SearchParams } from "@orama/orama";
 export { TThemeOverrides } from "./config/theme";

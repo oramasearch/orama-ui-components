@@ -3,7 +3,6 @@ import type { ColorScheme } from '@/types'
 import '@phosphor-icons/webcomponents/dist/icons/PhMagnifyingGlass.mjs'
 import type { TThemeOverrides } from '@/components'
 import { generateRandomID, updateCssVariables, updateThemeClasses } from '@/utils/utils'
-import { globalContext } from '@/context/GlobalContext'
 
 export type ButtonClick = {
   id: HTMLElement
@@ -52,17 +51,9 @@ export class OramaSearchButton {
   }
 
   updateTheme() {
-    const scheme = updateThemeClasses(
-      this.htmlElement,
-      this.colorScheme,
-      this.systemScheme
-    )
+    const scheme = updateThemeClasses(this.htmlElement, this.colorScheme, this.systemScheme)
 
-    updateCssVariables(
-        this.htmlElement,
-        scheme as ColorScheme,
-        this.themeConfig
-    )
+    updateCssVariables(this.htmlElement, scheme as ColorScheme, this.themeConfig)
   }
 
   private handleShortcutLabel() {
@@ -94,14 +85,31 @@ export class OramaSearchButton {
   render() {
     return (
       <Host>
-        {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
+        {/* biome-ignore lint/a11y/useKeyWithClickEvents: TODO we need to address it. I do not have time now */}
         <orama-button
           type="button"
           variant="secondary"
           ref={(el) => (this.buttonRef = el)}
           size={this.size}
           onClick={() => {
-            globalContext.open = true
+            const searchBoxList = document.getElementsByTagName(
+              'orama-search-box',
+            ) as unknown as HTMLOramaSearchBoxElement[]
+
+            if (!searchBoxList.length) {
+              console.error('No OramaSearchBox found')
+              return
+            }
+
+            if (searchBoxList.length > 1) {
+              console.error(
+                'Multiple instances of OramaSearchBox (orama-search-box) found. Considere to assign an ID to OramaSearchBox, implement onClick on OramaSearchButton and select desired OramaSearchBox on onClick method',
+              )
+
+              return
+            }
+
+            searchBoxList[0].open = true
           }}
         >
           <span slot="adorment-start">

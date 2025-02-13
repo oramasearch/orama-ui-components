@@ -1,7 +1,8 @@
 import { Component, Host, Prop, h } from '@stencil/core'
-import { globalContext } from '@/context/GlobalContext'
 import '@phosphor-icons/webcomponents/dist/icons/PhMagnifyingGlass.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhSparkle.mjs'
+import { Store } from '@/StoreDecorator'
+import type { GlobalStoreType } from '@/ParentComponentStore/GlobalStore'
 
 @Component({
   tag: 'orama-toggler',
@@ -11,6 +12,9 @@ import '@phosphor-icons/webcomponents/dist/icons/PhSparkle.mjs'
 export class OramaToggler {
   @Prop() performInitialAnimation = false
   private firstRender = true
+
+  @Store('global')
+  private globalStore: GlobalStoreType
 
   componentWillLoad() {
     if (this.performInitialAnimation) {
@@ -30,10 +34,10 @@ export class OramaToggler {
         <button
           type="button"
           class={{
-            selected: globalContext.currentTask === 'search',
+            selected: this.globalStore.state.currentTask === 'search',
             animate: !this.firstRender || this.performInitialAnimation,
           }}
-          onClick={() => (globalContext.currentTask = 'search')}
+          onClick={() => (this.globalStore.state.currentTask = 'search')}
         >
           <span>Search</span>
           <ph-magnifying-glass size={16} />
@@ -41,10 +45,10 @@ export class OramaToggler {
         <button
           type="button"
           class={{
-            selected: globalContext.currentTask === 'chat',
+            selected: this.globalStore.state.currentTask === 'chat',
             animate: !this.firstRender || this.performInitialAnimation,
           }}
-          onClick={() => (globalContext.currentTask = 'chat')}
+          onClick={() => (this.globalStore.state.currentTask = 'chat')}
         >
           <ph-sparkle size={16} />
           <span>Ask AI</span>

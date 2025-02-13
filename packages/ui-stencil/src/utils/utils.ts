@@ -1,8 +1,7 @@
-import type { CloudIndexConfig } from '@/types'
-import type { AnyOrama, Orama } from '@orama/orama'
+import type { TThemeOverrides } from '@/components'
+import type { CloudIndexConfig, ColorScheme } from '@/types'
+import type { AnyOrama } from '@orama/orama'
 import { OramaClient } from '@oramacloud/client'
-import type { ColorScheme } from '@/types'
-import { TThemeOverrides } from '@/components'
 
 /**
  * Arrow keys navigation for focusable elements within a container
@@ -155,6 +154,29 @@ export function updateCssVariables(element: HTMLElement, scheme: ColorScheme, th
       for (const key of Object.keys(themeConfig[base])) {
         element.style.setProperty(`${key}`, themeConfig[base][key])
       }
+    }
+  }
+}
+
+const EXTERNAL_COMPONENT_TAG_LIST = ['orama-search-box', 'orama-chat-box']
+
+export function getExternalComponentHTMLElement(element: HTMLElement): HTMLElement | null {
+  let currentNode: ShadowRoot | HTMLElement | null = element
+
+  currentNode.parentNode
+  while (true) {
+    if (!currentNode) {
+      return null
+    }
+
+    if (currentNode instanceof ShadowRoot) {
+      const host = currentNode.host as HTMLElement
+      if (EXTERNAL_COMPONENT_TAG_LIST.includes(host.tagName.toLowerCase())) {
+        return host
+      }
+      currentNode = host
+    } else {
+      currentNode = (currentNode.parentNode as HTMLElement) ?? null
     }
   }
 }

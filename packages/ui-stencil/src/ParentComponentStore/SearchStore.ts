@@ -1,11 +1,10 @@
-import type { Facet } from '@/types'
 import type { SearchService } from '@/services/SearchService'
-import { createStore } from '@stencil/store'
-import type { ResultMap, SearchResultBySection } from '@/types'
+import type { Facet, ResultMap, SearchResultBySection } from '@/types'
 import type { AnyOrama, Orama, SearchParams } from '@orama/orama'
 import type { OramaClient } from '@oramacloud/client'
+import type { ObservableMap } from '@stencil/store'
 
-const store = createStore({
+export const SearchStoreInitialProps = {
   count: 0,
   facets: [] as Facet[],
   facetProperty: '', // TODO: consider to move to resultsMap
@@ -18,8 +17,6 @@ const store = createStore({
   // Lets queckly dicudd about this again.
   searchService: null as SearchService | null,
   searchParams: null as SearchParams<Orama<AnyOrama | OramaClient>>,
-})
+}
 
-const { state: searchState, ...searchStore } = store
-
-export { searchState, searchStore }
+export type SearchStoreType = ObservableMap<typeof SearchStoreInitialProps>

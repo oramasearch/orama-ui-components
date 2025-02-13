@@ -1,11 +1,27 @@
-import { Component, Prop, Watch, h, Listen, Element, State, Fragment, Event, type EventEmitter } from '@stencil/core'
-import { searchState } from '@/context/searchContext'
-import { chatContext } from '@/context/chatContext'
-import { globalContext, globalStore } from '@/context/GlobalContext'
+import {
+  Component,
+  Prop,
+  Watch,
+  h,
+  Listen,
+  Element,
+  State,
+  Fragment,
+  Event,
+  type EventEmitter,
+  Method,
+} from '@stencil/core'
 import { ChatService } from '@/services/ChatService'
 import { SearchService } from '@/services/SearchService'
 import { windowWidthListener } from '@/services/WindowService'
-import { arrowKeysNavigation, generateRandomID, initOramaClient, updateCssVariables, updateThemeClasses, validateCloudIndexConfig } from '@/utils/utils'
+import {
+  arrowKeysNavigation,
+  generateRandomID,
+  initOramaClient,
+  updateCssVariables,
+  updateThemeClasses,
+  validateCloudIndexConfig,
+} from '@/utils/utils'
 import type { AnyOrama, Orama, SearchParams } from '@orama/orama'
 import type { HighlightOptions } from '@orama/highlight'
 import type { OramaClient } from '@oramacloud/client'
@@ -26,6 +42,10 @@ import type {
   SourcesMap,
 } from '@/types'
 import type { TThemeOverrides } from '@/config/theme'
+import { initStore, removeAllStores } from '@/ParentComponentStore/ParentComponentStoreManager'
+import type { SearchStoreType } from '@/ParentComponentStore/SearchStore'
+import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
+import type { GlobalStoreType } from '@/ParentComponentStore/GlobalStore'
 
 // TODO: AI components should be lazyly loaded. In case of Disable AI flag, it should not be loaded at all
 // https://linear.app/oramasearch/issue/ORM-1824/ai-components-should-be-lazyly-loaded-in-case-of-disable-ai-flag-they
@@ -56,7 +76,7 @@ export class SearchBox {
    * Orama Instance
    */
   @Prop() clientInstance?: OramaClient | AnyOrama
-  @Prop({ mutable: true }) open = false
+  @Prop({ mutable: true, reflect: true }) open = false
   /**
    * Index result property to
    */
@@ -141,6 +161,10 @@ export class SearchBox {
   @State() systemScheme: Omit<ColorScheme, 'system'> = 'light'
   @State() windowWidth: number
 
+  private searchStore: SearchStoreType
+  private chatStore: ChatStoreType
+  private globalStore: GlobalStoreType
+
   /**
    * Fired when search successfully resolves
    */
@@ -180,6 +204,11 @@ export class SearchBox {
   @Watch('index')
   @Watch('clientInstance')
   indexChanged() {
+    // This is a naive way to check if it is safe to eval this method (after componentWillLoad)
+    if (!this.searchStore) {
+      return
+    }
+
     this.startServices()
   }
 
@@ -191,24 +220,24 @@ export class SearchBox {
 
   @Watch('open')
   handleOpenPropChange(newValue: boolean) {
-    globalContext.open = newValue
+    this.globalStore.state.open = newValue
   }
 
   @Watch('facetProperty')
   handleFacetPropertyChange(newValue: string) {
-    searchState.facetProperty = newValue
+    this.searchStore.state.facetProperty = newValue
   }
 
   @Watch('searchParams')
   handleSearchParamsChange(newValue: SearchParams<Orama<AnyOrama | OramaClient>>) {
-    searchState.searchParams = newValue
+    this.searchStore.state.searchParams = newValue
   }
 
   @Listen('modalStatusChanged')
   modalStatusChangedHandler(event: CustomEvent<{ open: boolean; id: HTMLElement }>) {
     if (event.detail.id === this.wrapperRef) {
       if (!event.detail.open) {
-        globalContext.open = false
+        this.globalStore.state.open = false
         this.open = false
       }
     }
@@ -217,7 +246,7 @@ export class SearchBox {
   @Listen('keydown', { target: 'document' })
   handleKeyDown(ev: KeyboardEvent) {
     if (
-      globalContext.currentTask === 'search' &&
+      this.globalStore?.state.currentTask === 'search' &&
       ((this.layout === 'modal' && this.open) || this.layout === 'embed') &&
       ['ArrowDown', 'ArrowUp'].includes(ev.key)
     ) {
@@ -226,63 +255,55 @@ export class SearchBox {
   }
 
   updateTheme() {
-    const scheme = updateThemeClasses(
-      this.htmlElement,
-      this.colorScheme,
-      this.systemScheme
-    )
+    const scheme = updateThemeClasses(this.htmlElement, this.colorScheme, this.systemScheme)
 
-    updateCssVariables(
-        this.htmlElement,
-        scheme as ColorScheme,
-        this.themeConfig
-    )
+    updateCssVariables(this.htmlElement, scheme as ColorScheme, this.themeConfig)
   }
 
   startServices() {
     validateCloudIndexConfig(this.htmlElement, this.index, this.clientInstance)
     const oramaClient = this.clientInstance ? this.clientInstance : initOramaClient(this.index)
 
-    searchState.searchService = new SearchService(oramaClient)
-    chatContext.chatService = new ChatService(oramaClient)
+    this.searchStore.state.searchService = new SearchService(oramaClient, this.searchStore)
+    this.chatStore.state.chatService = new ChatService(oramaClient, this.chatStore)
   }
 
   componentWillLoad() {
     // TODO: We probable want to keep these props below whithin the respective service
     // instance property. I seems to make sense to pass it as initialization prop.
     // Same goes for any other Chat init prop. Lets talk about it as well, please.
-    searchState.facetProperty = this.facetProperty
-    searchState.resultMap = this.resultMap
-    searchState.searchParams = this.searchParams
+    this.searchStore.state.facetProperty = this.facetProperty
+    this.searchStore.state.resultMap = this.resultMap
+    this.searchStore.state.searchParams = this.searchParams
 
     this.htmlElement.id = this.componentID
     this.startServices()
-  }
 
-  connectedCallback() {
-    this.windowWidth = windowWidthListener.width
-    globalContext.open = this.open
+    this.globalStore.state.open = this.open
 
-    globalStore.onChange('open', () => {
-      this.open = globalContext.open
+    this.globalStore.onChange('open', () => {
+      if (!this.globalStore) {
+        return
+      }
 
-      if (!globalContext.open) {
-        globalContext.currentTerm = ''
+      this.open = this.globalStore.state.open
+
+      if (!this.globalStore.state.open) {
+        this.globalStore.state.currentTerm = ''
 
         // TODO: We should be reseting the context, but we do not want to lose params definitions.
         // We may want to handle params in a different way.
-        searchState.facets = []
-        searchState.count = 0
-        searchState.results = []
-        searchState.highlightedIndex = -1
-        searchState.loading = false
-        searchState.error = false
+        this.searchStore.state.facets = []
+        this.searchStore.state.count = 0
+        this.searchStore.state.results = []
+        this.searchStore.state.highlightedIndex = -1
+        this.searchStore.state.loading = false
+        this.searchStore.state.error = false
 
-        chatContext.interactions = []
+        this.chatStore.state.interactions = []
       }
     })
 
-    this.htmlElement.id = this.componentID
     this.schemaQuery = window.matchMedia('(prefers-color-scheme: dark)')
     this.systemScheme = this.schemaQuery.matches ? 'dark' : 'light'
     this.updateTheme()
@@ -291,7 +312,17 @@ export class SearchBox {
     windowWidthListener.addEventListener('widthChange', this.updateWindowWidth)
   }
 
+  connectedCallback() {
+    this.chatStore = initStore('chat', this.componentID)
+    this.searchStore = initStore('search', this.componentID)
+    this.globalStore = initStore('global', this.componentID)
+
+    this.windowWidth = windowWidthListener.width
+  }
+
   disconnectedCallback() {
+    removeAllStores(this.componentID)
+
     windowWidthListener.removeEventListener('widthChange', this.updateWindowWidth)
     this.schemaQuery?.removeEventListener('change', this.onPrefersColorSchemeChange)
   }
@@ -302,14 +333,14 @@ export class SearchBox {
         class={`${
           this.windowWidth > 1024
             ? 'section-active'
-            : globalContext.currentTask === 'search'
+            : this.globalStore.state.currentTask === 'search'
               ? 'section-active'
               : 'section-inactive'
         }`}
       >
         <orama-search
           placeholder={this?.searchPlaceholder || 'Search...'}
-          focusInput={globalContext.currentTask === 'search'}
+          focusInput={this.globalStore.state.currentTask === 'search'}
           sourceBaseUrl={this.sourceBaseUrl}
           linksTarget={this.linksTarget}
           linksRel={this.linksRel}
@@ -322,8 +353,8 @@ export class SearchBox {
             <orama-chat-button
               slot="summary"
               focus-on-arrow-nav
-              active={!!globalContext.currentTerm}
-              label={`${globalContext.currentTerm ? `${globalContext.currentTerm} - ` : ''}Get a summary`}
+              active={!!this.globalStore.state.currentTerm}
+              label={`${this.globalStore.state.currentTerm ? `${this.globalStore.state.currentTerm} - ` : ''}Get a summary`}
               onClick={this.onChatButtonClick}
               onKeyPress={this.onChatButtonClick}
             />
@@ -337,10 +368,10 @@ export class SearchBox {
     return (
       <Fragment>
         <orama-chat
-          class={`${globalContext.currentTask === 'chat' ? 'section-active' : 'section-inactive'}`}
-          defaultTerm={globalContext.currentTask === 'chat' ? globalContext.currentTerm : ''}
+          class={`${this.globalStore.state.currentTask === 'chat' ? 'section-active' : 'section-inactive'}`}
+          defaultTerm={this.globalStore.state.currentTask === 'chat' ? this.globalStore.state.currentTerm : ''}
           showClearChat={false}
-          focusInput={globalContext.currentTask === 'chat'}
+          focusInput={this.globalStore.state.currentTask === 'chat'}
           placeholder={this?.chatPlaceholder || this.placeholder}
           sourceBaseUrl={this.sourceBaseUrl}
           linksTarget={this.linksTarget}
@@ -361,7 +392,7 @@ export class SearchBox {
           <orama-navigation-bar
             handleClose={this.closeSearchbox}
             showBackButton={this.layout !== 'embed'}
-            showChatActions={globalContext.currentTask === 'chat'}
+            showChatActions={this.globalStore.state.currentTask === 'chat'}
           />
         )}
         <div class="main">
@@ -376,10 +407,10 @@ export class SearchBox {
   getOuterContent() {
     return this.windowWidth > 1024 ? (
       <orama-sliding-panel
-        open={globalContext.currentTask === 'chat'}
+        open={this.globalStore.state.currentTask === 'chat'}
         backdrop={this.layout === 'embed'}
         closed={() => {
-          globalContext.currentTask = 'search'
+          this.globalStore.state.currentTask = 'search'
         }}
       >
         {this.getChatBox()}
@@ -392,10 +423,10 @@ export class SearchBox {
       <Fragment>
         <orama-modal
           ref={(el) => (this.wrapperRef = el)}
-          open={globalContext.open}
+          open={this.globalStore.state.open}
           class="modal"
           mainTitle="Start your search"
-          closeOnEscape={globalContext.currentTask === 'search' || this.windowWidth <= 1024}
+          closeOnEscape={this.globalStore.state.currentTask === 'search' || this.windowWidth <= 1024}
         >
           {this.getInnerContent()}
         </orama-modal>
@@ -414,15 +445,15 @@ export class SearchBox {
   }
 
   render() {
-    if (this.layout === 'modal' && !globalContext.open) {
+    if (this.layout === 'modal' && !this.globalStore.state.open) {
       return null
     }
 
-    if (!searchState.searchService) {
+    if (!this.searchStore.state.searchService) {
       return <orama-text as="p">Unable to initialize search service</orama-text>
     }
 
-    if (!chatContext.chatService) {
+    if (!this.chatStore.state.chatService) {
       return <orama-text as="p">Unable to initialize chat service</orama-text>
     }
 
@@ -430,12 +461,12 @@ export class SearchBox {
   }
 
   private closeSearchbox = () => {
-    globalContext.open = false
+    this.globalStore.state.open = false
     this.open = false
   }
 
   private onChatButtonClick = () => {
-    globalContext.currentTask = 'chat'
+    this.globalStore.state.currentTask = 'chat'
   }
 
   private onPrefersColorSchemeChange = (event) => {

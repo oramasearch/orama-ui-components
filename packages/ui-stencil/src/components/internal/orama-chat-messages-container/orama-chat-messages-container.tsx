@@ -1,12 +1,14 @@
 import { Component, Host, Prop, h, Element, State, type EventEmitter, Event } from '@stencil/core'
-import { chatContext, type TChatInteraction } from '@/context/chatContext'
 import type {
   ChatMarkdownLinkHref,
   ChatMarkdownLinkTarget,
   ChatMarkdownLinkTitle,
   OnAnswerGeneratedCallbackProps,
   OnSearchCompletedCallbackProps,
+  TChatInteraction,
 } from '@/types'
+import { Store } from '@/StoreDecorator'
+import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
 
 @Component({
   tag: 'orama-chat-messages-container',
@@ -25,9 +27,12 @@ export class OramaChatMessagesContainer {
 
   @State() latestInteractionMinHeight = 0
 
+  @Store('chat')
+  private chatStore: ChatStoreType
+
   // TODO: I'm not sure about having this here as we're breaking our rule of maintain service access only to the very top level component
   onSuggestionClick = (suggestion: string) => {
-    chatContext.chatService?.sendQuestion(suggestion, undefined, {
+    this.chatStore.state.chatService?.sendQuestion(suggestion, undefined, {
       onAnswerGeneratedCallback: (onAnswerGeneratedCallbackProps) =>
         this.answerGenerated.emit(onAnswerGeneratedCallbackProps),
     })

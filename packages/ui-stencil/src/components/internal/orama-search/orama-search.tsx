@@ -1,9 +1,10 @@
 import { Component, Host, Listen, State, Watch, h, Element, Prop, type EventEmitter, Event } from '@stencil/core'
-import { searchState } from '@/context/searchContext'
 import type { OnAnswerGeneratedCallbackProps, OnSearchCompletedCallbackProps, SearchResult } from '@/types'
-import { globalContext } from '@/context/GlobalContext'
-import { chatContext } from '@/context/chatContext'
 import type { HighlightOptions } from '@orama/highlight'
+import { Store } from '@/StoreDecorator'
+import type { SearchStoreType } from '@/ParentComponentStore/SearchStore'
+import type { GlobalStoreType } from '@/ParentComponentStore/GlobalStore'
+import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
 
 @Component({
   tag: 'orama-search',
@@ -31,15 +32,22 @@ export class OramaSearch {
 
   inputRef!: HTMLOramaInputElement
 
+  @Store('search')
+  private searchStore: SearchStoreType
+  @Store('global')
+  private globalStore: GlobalStoreType
+  @Store('chat')
+  private chatStore: ChatStoreType
+
   @Watch('searchValue')
   @Watch('selectedFacet')
   handleSearchValueChange() {
-    searchState.searchService.search(this.searchValue, this.selectedFacet, {
+    this.searchStore.state.searchService.search(this.searchValue, this.selectedFacet, {
       onSearchCompletedCallback: (onSearchCompletedCallbackProps) => {
         this.searchCompleted.emit(onSearchCompletedCallbackProps)
       },
     })
-    globalContext.currentTerm = this.searchValue
+    this.globalStore.state.currentTerm = this.searchValue
   }
 
   @Listen('oramaItemClick')
@@ -86,15 +94,15 @@ export class OramaSearch {
         </form>
         <div class="result-wrapper">
           <orama-facets
-            facets={searchState.facets}
+            facets={this.searchStore.state.facets}
             selectedFacet={this.selectedFacet}
             selectedFacetChanged={this.onSelectedFacetChangedHandler}
           />
           <orama-search-results
-            suggestions={!globalContext.currentTerm?.length && !this.disableChat ? this.suggestions : []}
+            suggestions={!this.globalStore.state.currentTerm?.length && !this.disableChat ? this.suggestions : []}
             setChatTerm={(term) => {
-              globalContext.currentTask = 'chat'
-              chatContext.chatService?.sendQuestion(term, undefined, {
+              this.globalStore.state.currentTask = 'chat'
+              this.chatStore.state.chatService?.sendQuestion(term, undefined, {
                 onAnswerGeneratedCallback: (onAnswerGeneratedCallbackProps) =>
                   this.answerGenerated.emit(onAnswerGeneratedCallbackProps),
               })
@@ -102,12 +110,12 @@ export class OramaSearch {
             sourceBaseUrl={this.sourceBaseUrl}
             linksTarget={this.linksTarget}
             linksRel={this.linksRel}
-            sections={searchState.results}
+            sections={this.searchStore.state.results}
             searchTerm={this.searchValue}
             highlightTitle={this.highlightTitle}
             highlightDescription={this.highlightDescription}
-            loading={searchState.loading}
-            error={searchState.error}
+            loading={this.searchStore.state.loading}
+            error={this.searchStore.state.error}
           />
         </div>
       </Host>

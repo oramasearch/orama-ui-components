@@ -1,17 +1,19 @@
 import { Component, Fragment, Listen, Host, Prop, State, Watch, h, type EventEmitter, Event } from '@stencil/core'
-import { chatContext, chatStore, TAnswerStatus } from '@/context/chatContext'
-import type {
-  ChatMarkdownLinkHref,
-  ChatMarkdownLinkTarget,
-  ChatMarkdownLinkTitle,
-  OnAnswerGeneratedCallbackProps,
-  onStartConversationCallbackProps,
-  SearchResult,
-  SourcesMap,
+import {
+  TAnswerStatus,
+  type ChatMarkdownLinkHref,
+  type ChatMarkdownLinkTarget,
+  type ChatMarkdownLinkTitle,
+  type OnAnswerGeneratedCallbackProps,
+  type onStartConversationCallbackProps,
+  type SearchResult,
+  type SourcesMap,
 } from '@/types'
 import '@phosphor-icons/webcomponents/dist/icons/PhPaperPlaneTilt.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhStopCircle.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhArrowDown.mjs'
+import { Store } from '@/StoreDecorator'
+import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
 
 const BOTTOM_THRESHOLD = 1
 
@@ -52,7 +54,7 @@ export class OramaChat {
   @Watch('defaultTerm')
   handleDefaultTermChange() {
     if (this.defaultTerm) {
-      chatContext.chatService?.sendQuestion(this.defaultTerm, this.systemPrompts, {
+      this.chatStore.state.chatService?.sendQuestion(this.defaultTerm, this.systemPrompts, {
         onAnswerGeneratedCallback: (params) => this.answerGenerated.emit(params),
       })
     }
@@ -67,18 +69,18 @@ export class OramaChat {
   promptWatcher(newValue: string, oldValue: string) {
     if (newValue !== oldValue) {
       this.triggerSendQuestion(newValue)
-      chatContext.prompt = newValue
+      this.chatStore.state.prompt = newValue
     }
   }
 
   triggerSendQuestion = (question: string) => {
-    if (chatContext.chatService === null) {
+    if (this.chatStore.state.chatService === null) {
       throw new Error('Chat Service is not initialized')
     }
 
     this.startConversation.emit({ userPrompt: question, systemPrompts: this.systemPrompts })
 
-    chatContext.chatService.sendQuestion(question, this.systemPrompts, {
+    this.chatStore.state.chatService.sendQuestion(question, this.systemPrompts, {
       onAnswerGeneratedCallback: (params) => this.answerGenerated.emit(params),
     })
   }
@@ -96,6 +98,22 @@ export class OramaChat {
   nonScrollableContainerResizeObserver: ResizeObserver
 
   lockScrollOnBottom = false
+
+  @Store('chat')
+  private chatStore: ChatStoreType
+
+  componentWillLoad() {
+    this.chatStore.on('set', (prop, newInteractions, oldInteractions) => {
+      if (prop !== 'interactions') {
+        return
+      }
+
+      if (oldInteractions?.length < newInteractions?.length) {
+        this.lockScrollOnBottom = false
+        this.pendingNewInteractionSideEffects = true
+      }
+    })
+  }
 
   handleFocus = () => {
     if (this.focusInput) {
@@ -194,13 +212,13 @@ export class OramaChat {
   }
 
   setSources = () => {
-    chatContext.sourceBaseURL = this.sourceBaseUrl
-    chatContext.sourcesMap = {
-      ...chatContext.sourcesMap,
+    this.chatStore.state.sourceBaseURL = this.sourceBaseUrl
+    this.chatStore.state.sourcesMap = {
+      ...this.chatStore.state.sourcesMap,
       ...this.sourcesMap,
     }
-    chatContext.linksTarget = this.linksTarget
-    chatContext.linksRel = this.linksRel
+    this.chatStore.state.linksTarget = this.linksTarget
+    this.chatStore.state.linksRel = this.linksRel
   }
 
   componentDidLoad() {
@@ -208,9 +226,9 @@ export class OramaChat {
     this.setSources()
     this.handleFocus()
 
-    if (this.prompt && chatContext?.prompt !== this.prompt) {
+    if (this.prompt && this.chatStore.state?.prompt !== this.prompt) {
       this.triggerSendQuestion(this.prompt)
-      chatContext.prompt = this.prompt
+      this.chatStore.state.prompt = this.prompt
     }
 
     this.scrollableContainerResizeObserver = new ResizeObserver(() => {
@@ -247,65 +265,52 @@ export class OramaChat {
     this.nonScrollableContainerResizeObserver.observe(this.nonScrollableMessagesContainerRef)
   }
 
-  connectedCallback() {
-    chatStore.on('set', (prop, newInteractions, oldInteractions) => {
-      if (prop !== 'interactions') {
-        return
-      }
-
-      if (oldInteractions?.length < newInteractions?.length) {
-        this.lockScrollOnBottom = false
-        this.pendingNewInteractionSideEffects = true
-      }
-    })
-  }
-
   disconnectedCallback() {
     this.messagesContainerRef.removeEventListener('wheel', this.handleWheel)
     this.scrollableContainerResizeObserver.disconnect()
     this.nonScrollableContainerResizeObserver.disconnect()
 
     if (this.clearChatOnDisconnect) {
-      chatContext.interactions = []
+      this.chatStore.state.interactions = []
     }
   }
 
   handleSubmit = (e: Event) => {
     e.preventDefault()
 
-    if (chatContext.chatService === null) {
+    if (this.chatStore.state.chatService === null) {
       throw new Error('Chat Service is not initialized')
     }
 
     this.startConversation.emit({ userPrompt: this.inputValue, systemPrompts: this.systemPrompts })
 
-    chatContext.chatService.sendQuestion(this.inputValue, this.systemPrompts, {
+    this.chatStore.state.chatService.sendQuestion(this.inputValue, this.systemPrompts, {
       onAnswerGeneratedCallback: (params) => this.answerGenerated.emit(params),
     })
 
-    chatContext.prompt = this.inputValue
+    this.chatStore.state.prompt = this.inputValue
     this.inputValue = ''
   }
 
   handleAbortAnswerClick = () => {
-    chatContext.chatService.abortAnswer()
+    this.chatStore.state.chatService.abortAnswer()
   }
 
   handleSuggestionClick = (suggestion: string) => {
-    if (chatContext.chatService === null) {
+    if (this.chatStore.state.chatService === null) {
       throw new Error('Chat Service is not initialized')
     }
 
     this.startConversation.emit({ userPrompt: suggestion, systemPrompts: this.systemPrompts })
 
-    chatContext.chatService.sendQuestion(suggestion, undefined, {
+    this.chatStore.state.chatService.sendQuestion(suggestion, undefined, {
       onAnswerGeneratedCallback: (params) => this.answerGenerated.emit(params),
     })
     this.inputValue = ''
   }
 
   handleClearChat = () => {
-    chatContext.chatService.resetChat()
+    this.chatStore.state.chatService.resetChat()
     this.clearChat.emit()
   }
 
@@ -318,9 +323,9 @@ export class OramaChat {
   }
 
   render() {
-    const lastInteraction = chatContext.interactions?.[chatContext.interactions.length - 1]
+    const lastInteraction = this.chatStore.state.interactions?.[this.chatStore.state.interactions.length - 1]
     const lastInteractionStatus = lastInteraction?.status
-    const hasInteractions = chatContext.interactions?.length > 0
+    const hasInteractions = this.chatStore.state.interactions?.length > 0
 
     // ? Question: Maybe should be a orama-button variant?
     return (
@@ -341,7 +346,7 @@ export class OramaChat {
             <div ref={(ref) => (this.nonScrollableMessagesContainerRef = ref)}>
               {hasInteractions ? (
                 <orama-chat-messages-container
-                  interactions={chatContext.interactions}
+                  interactions={this.chatStore.state.interactions}
                   chatMarkdownLinkTitle={this.chatMarkdownLinkTitle}
                   chatMarkdownLinkHref={this.chatMarkdownLinkHref}
                 />
