@@ -558,6 +558,7 @@ declare global {
         "answerGenerated": OnAnswerGeneratedCallbackProps;
         "answerSourceClick": OnAnswerSourceClickCallbackProps;
         "chatMarkdownLinkClicked": OnChatMarkdownLinkClickedCallbackProps;
+        "modalClosed": any;
     }
     interface HTMLOramaSearchBoxElement extends Components.OramaSearchBox, HTMLStencilElement {
         addEventListener<K extends keyof HTMLOramaSearchBoxElementEventMap>(type: K, listener: (this: HTMLOramaSearchBoxElement, ev: OramaSearchBoxCustomEvent<HTMLOramaSearchBoxElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -901,6 +902,10 @@ declare namespace LocalJSX {
           * Fired when the chat is cleared
          */
         "onClearChat"?: (event: OramaSearchBoxCustomEvent<void>) => void;
+        /**
+          * Fired when modal is closed
+         */
+        "onModalClosed"?: (event: OramaSearchBoxCustomEvent<any>) => void;
         /**
           * Fired when search successfully resolves
          */
