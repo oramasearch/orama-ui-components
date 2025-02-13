@@ -54,6 +54,12 @@ const demoIndexes: DemoIndexConfig = {
           '--backdrop-background-color-primary': 'rgba(20, 3, 3, 0.7)',
         },
       },
+      radius: {
+        '--textarea-radius': '0.5rem',
+      },
+      shadow: {
+        '--textarea-shadow': 'none',
+      },
     },
     facetProperty: 'category',
     resultMap: {

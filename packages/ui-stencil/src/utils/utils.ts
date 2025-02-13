@@ -129,7 +129,7 @@ export function generateRandomID(componentName: string): string {
 export function updateThemeClasses(
   element: HTMLElement,
   colorScheme: ColorScheme,
-  systemScheme: Omit<ColorScheme, 'system'>
+  systemScheme: Omit<ColorScheme, 'system'>,
 ) {
   const scheme = colorScheme === 'system' ? systemScheme : colorScheme
 
@@ -141,22 +141,20 @@ export function updateThemeClasses(
   return scheme
 }
 
-export function updateCssVariables(
-  element: HTMLElement,
-  scheme: ColorScheme,
-  themeConfig?: Partial<TThemeOverrides>
-) {
+export function updateCssVariables(element: HTMLElement, scheme: ColorScheme, themeConfig?: Partial<TThemeOverrides>) {
   if (!element || !themeConfig || !scheme) return
 
-  if (themeConfig.colors?.[scheme]) {
-    for (const key of Object.keys(themeConfig.colors[scheme])) {
-      element.style.setProperty(`${key}`, themeConfig.colors[scheme][key])
-    }
-  }
-
-  if (themeConfig.typography) {
-    for (const key of Object.keys(themeConfig.typography)) {
-      element.style.setProperty(`${key}`, themeConfig.typography[key])
+  for (const base of Object.keys(themeConfig)) {
+    if (base === 'colors') {
+      if (themeConfig[base]?.[scheme]) {
+        for (const key of Object.keys(themeConfig[base][scheme])) {
+          element.style.setProperty(`${key}`, themeConfig[base][scheme][key])
+        }
+      }
+    } else {
+      for (const key of Object.keys(themeConfig[base])) {
+        element.style.setProperty(`${key}`, themeConfig[base][key])
+      }
     }
   }
 }

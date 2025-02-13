@@ -1,9 +1,13 @@
 import colors from './colors'
 import typography from './typography'
+import radius from './radius'
+import shadow from './shadow'
 
 const theme = {
   typography,
   colors,
+  radius,
+  shadow,
 }
 
 type TTheme = typeof theme
