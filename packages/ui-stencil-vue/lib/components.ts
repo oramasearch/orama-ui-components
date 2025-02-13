@@ -205,7 +205,8 @@ export const OramaSearchBox = /*@__PURE__*/ defineContainer<JSX.OramaSearchBox>(
   'startConversation',
   'answerGenerated',
   'answerSourceClick',
-  'chatMarkdownLinkClicked'
+  'chatMarkdownLinkClicked',
+  'modalClosed'
 ]);
 
 

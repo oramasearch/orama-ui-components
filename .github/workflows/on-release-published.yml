@@ -41,16 +41,13 @@ jobs:
             package_dir=$(dirname "$package_json")
             echo "Publishing package in $package_dir..."
 
-            # Check if the package is private, skip if true
+            # Check if the package is private; skip if true
             if jq -e '.private == true' "$package_json" > /dev/null; then
               echo "Skipping private package in $package_dir"
               continue
             fi
 
-            cd "$package_dir"
-            # Publish the package
-            npm publish --access public
-            cd ../../
+            pnpm publish --no-git-checks --access public "$package_dir"
           done
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

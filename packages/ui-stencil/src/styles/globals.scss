@@ -12,6 +12,7 @@
   @include mapToCustomProperties($theme-typography);
   @include mapToCustomProperties($theme-radius);
   @include mapToCustomProperties($theme-spacing);
+  @include mapToCustomProperties($theme-shadow);
 
   *,
   *:before,

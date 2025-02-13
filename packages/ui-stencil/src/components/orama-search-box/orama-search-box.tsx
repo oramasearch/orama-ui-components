@@ -197,6 +197,12 @@ export class SearchBox {
   @Event({ bubbles: true, composed: true, cancelable: true })
   chatMarkdownLinkClicked: EventEmitter<OnChatMarkdownLinkClickedCallbackProps>
 
+  /**
+   * Fired when modal is closed
+   */
+  @Event({ bubbles: true, composed: true })
+  modalClosed: EventEmitter
+
   wrapperRef!: HTMLElement
 
   schemaQuery: MediaQueryList
@@ -239,6 +245,8 @@ export class SearchBox {
       if (!event.detail.open) {
         this.globalStore.state.open = false
         this.open = false
+
+        this.modalClosed.emit()
       }
     }
   }
