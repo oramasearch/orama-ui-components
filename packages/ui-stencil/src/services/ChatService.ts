@@ -1,7 +1,8 @@
 import type { AskParams } from '@oramacloud/client'
-import type { AnswerSession as OSSAnswerSession } from '@orama/orama'
+import {AnswerSession as OSSAnswerSession, AnyOrama} from '@orama/orama'
 import type { AnswerSession as CloudAnswerSession } from '@oramacloud/client'
 import type { OramaSwitchClient } from '@orama/switch'
+import { search } from '@orama/orama'
 import { Switch } from '@orama/switch'
 import { OramaClientNotInitializedError } from '@/erros/OramaClientNotInitialized'
 import { TAnswerStatus, type OnAnswerGeneratedCallbackProps } from '@/types'
@@ -9,11 +10,13 @@ import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
 
 export class ChatService {
   oramaClient: Switch
+  originalOramaClient: OramaSwitchClient
   answerSession: CloudAnswerSession<true> | OSSAnswerSession
   private chatStore: ChatStoreType
 
   constructor(oramaClient: OramaSwitchClient, chatStore: ChatStoreType) {
     this.oramaClient = new Switch(oramaClient)
+    this.originalOramaClient = oramaClient
     this.chatStore = chatStore
   }
 
@@ -28,7 +31,26 @@ export class ChatService {
       throw new OramaClientNotInitializedError()
     }
 
-    const askParams: AskParams = { term: term, related: { howMany: 3, format: 'question' } }
+    let askParams: AskParams
+
+    if(this.oramaClient.isOSS) {
+      console.log("===DEBUG===", this.originalOramaClient)
+
+      const searchResults = search(this.originalOramaClient as AnyOrama, {
+        mode: "vector",
+        term: term,
+      });
+
+      console.log("===DEBUG===", searchResults)
+
+      /*askParams = { term: `### Context: \n\n${JSON.stringify(
+          searchResults?.hits
+        )}\n\n### Prompt:\n\n${term}`, related: { howMany: 3, format: 'question' } }*/
+
+      askParams = { term: term, related: { howMany: 3, format: 'question' } }
+    } else {
+      askParams = { term: term, related: { howMany: 3, format: 'question' } }
+    }
 
     if (!this.answerSession) {
       const existingInteractions = this.chatStore.state.interactions
