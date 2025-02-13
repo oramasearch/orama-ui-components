@@ -1,45 +1,45 @@
 /* eslint-disable */
-import { create, insertMultiple } from "@orama/orama";
-import { pluginSecureProxy } from "@orama/plugin-secure-proxy";
+import {AnyOrama, AnySchema, create, insertMultiple} from "@orama/orama";
+import {pluginSecureProxy} from "@orama/plugin-secure-proxy";
 
-export const createOSSInstance = () => {
-	try {
-		const db = create({
-			schema: {
-				title: "string",
-				description: "string",
-				embeddings: "vector[384]",
-			},
-			plugins: [
-				pluginSecureProxy({
-					apiKey: "uir4ywya-ufD86TQr6RpEp6zFeux_79N",
-					embeddings: {
-						defaultProperty: "embeddings",
-						model: "orama/gte-small",
-						onInsert: {
-							generate: true,
-							properties: ["title", "description"],
-							verbose: false,
-						},
+const DOCS_PRESET_SCHEMA: AnySchema = {
+	title: 'string',
+	content: 'string',
+	path: 'string',
+	section: 'string',
+	category: 'enum',
+	version: 'enum'
+}
+
+export const createOSSInstance = async () => {
+	const response = await fetch('./orama-search-index-current.json.gz')
+	const buffer = await response.arrayBuffer()
+	const decoder = new TextDecoder();
+	const deflated = decoder.decode(buffer);
+	const parsedDeflated = JSON.parse(deflated)
+
+	const db: AnyOrama = create({
+		schema: {...DOCS_PRESET_SCHEMA, version: 'enum'},
+		plugins: [
+			pluginSecureProxy({
+				apiKey: "uir4ywya-ufD86TQr6RpEp6zFeux_79N",
+				embeddings: {
+					model: "orama/gte-small",
+					defaultProperty: "embeddings",
+					onInsert: {
+						generate: true,
+						properties: ['title', 'content'],
+						verbose: false
 					},
-					chat: {
-						model: "openai/gpt-4o",
-					},
-				}),
-			],
-		});
+				},
+				chat: {
+					model: "openai/gpt-4o",
+				},
+			})
+		]
+	})
 
-		insertMultiple(db, [
-			{ title: "Hello world", description: "This is a test" },
-			{ title: "Hello world 2", description: "This is a test 2" },
-			{ title: "Hello world 3", description: "This is a test 3" },
-			{ title: "Hello world 4", description: "This is a test 4" },
-			{ title: "Hello world 5", description: "This is a test 5" },
-			{ title: "Hello world 6", description: "This is a test 6" },
-		]);
+	await insertMultiple(db, Object.values(parsedDeflated.docs.docs))
 
-		return db
-	} catch (e: any) {
-		console.error(e);
-	}
+	return db
 }

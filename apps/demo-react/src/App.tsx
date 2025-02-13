@@ -1,8 +1,10 @@
+import { useState, useEffect } from 'react'
 import { OramaChatBox, OramaSearchBox, OramaSearchButton } from '@orama/react-components'
 import './App.css'
 
 import { BrowserRouter, Routes, Route, NavLink, useNavigate } from 'react-router'
 import { createOSSInstance } from "./utils.ts"
+import {AnyOrama} from "@orama/orama";
 
 const API_KEY = 'LerNlbp6379jVKaPs4wt2nZT4MJZbU1J'
 const ENDPOINT = 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd'
@@ -29,7 +31,17 @@ function App() {
 }
 
 const ChatBoxPage = () => {
-  const ossInstance = createOSSInstance()
+  const [ossInstance, setOssInstance] = useState<AnyOrama | null>(null)
+
+  useEffect(() => {
+    const fetchOSSInstance = async () => {
+      const oramaInstance = await createOSSInstance()
+
+      setOssInstance(oramaInstance)
+    }
+
+    void fetchOSSInstance()
+  }, [])
 
   return (
     <>
@@ -82,18 +94,20 @@ const ChatBoxPage = () => {
             }}
           />
           <h1>OSS ChatBox</h1>
-          {/*<OramaChatBox
-            clientInstance={ossInstance}
-            style={{ height: '600px' }}
-            onAnswerSourceClick={(e: Event) => console.log(e)}
-            onAnswerGenerated={(e: Event) => console.log(e)}
-            chatMarkdownLinkTitle={({ text }) => text?.toUpperCase()}
-            chatMarkdownLinkHref={({ href }) => href}
-            onChatMarkdownLinkClicked={(e: Event) => {
-              console.log(e)
-              e.preventDefault()
-            }}
-          />*/}
+          {ossInstance && (
+            <OramaChatBox
+              clientInstance={ossInstance}
+              style={{ height: '600px' }}
+              onAnswerSourceClick={(e: Event) => console.log(e)}
+              onAnswerGenerated={(e: Event) => console.log(e)}
+              chatMarkdownLinkTitle={({ text }) => text?.toUpperCase()}
+              chatMarkdownLinkHref={({ href }) => href}
+              onChatMarkdownLinkClicked={(e: Event) => {
+                console.log(e)
+                e.preventDefault()
+              }}
+            />
+          )}
         </div>
       </main>
     </>
