@@ -17,8 +17,8 @@ export function Store<S extends StoresMapKeys>(storeName: S): PropertyDecorator 
     if (!classConstructor[STORE_PROPS]) {
       classConstructor[STORE_PROPS] = []
     }
-    // Add the property key to our metadata.
-    classConstructor[STORE_PROPS].push(propKey)
+    // Save both the property key and storeName in the metadata.
+    classConstructor[STORE_PROPS].push({ propKey, storeName })
 
     // Patch componentWillLoad only once for the class.
     if (!classConstructor[STORE_WILL_LOAD_PATCHED]) {
@@ -31,11 +31,11 @@ export function Store<S extends StoresMapKeys>(storeName: S): PropertyDecorator 
         // Access the host element
         const hostEl = getElement(this)
 
-        const storeProps: (string | symbol)[] = this.constructor[STORE_PROPS]
+        const storeProps = this.constructor[STORE_PROPS]
         if (storeProps) {
-          for (const storeProp of storeProps) {
+          for (const { propKey, storeName } of storeProps) {
             const store = getStore(storeName, hostEl)
-            this[storeProp] = store
+            this[propKey] = store
           }
         }
 

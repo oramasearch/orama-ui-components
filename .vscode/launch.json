@@ -1,0 +1,15 @@
+{
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch Chrome against localhost",
+      "url": "http://localhost:3333",
+      "sourceMaps": true,
+      "webRoot": "${workspaceFolder}/packages/ui-stencil",
+      "sourceMapPathOverrides": {
+        "*": "${webRoot}/*"
+      }
+    }
+  ]
+}
