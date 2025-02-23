@@ -15,13 +15,14 @@
 | `placeholder`           | `placeholder`              |             | `string`                                                                    | `undefined` |
 | `size`                  | `size`                     |             | `"large" \| "medium" \| "small"`                                            | `'medium'`  |
 | `type`                  | `type`                     |             | `"email" \| "number" \| "password" \| "search" \| "tel" \| "text" \| "url"` | `'text'`    |
+| `value`                 | `value`                    |             | `string`                                                                    | `undefined` |
 
 
 ## Events
 
-| Event        | Description | Type                |
-| ------------ | ----------- | ------------------- |
-| `resetValue` |             | `CustomEvent<void>` |
+| Event          | Description | Type                  |
+| -------------- | ----------- | --------------------- |
+| `inputChanged` |             | `CustomEvent<string>` |
 
 
 ## Dependencies

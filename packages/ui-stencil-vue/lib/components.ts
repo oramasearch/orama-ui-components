@@ -125,7 +125,8 @@ export const OramaInput = /*@__PURE__*/ defineContainer<JSX.OramaInput>('orama-i
   'labelForScreenReaders',
   'defaultValue',
   'autoFocus',
-  'resetValue'
+  'value',
+  'inputChanged'
 ]);
 
 
@@ -144,11 +145,10 @@ export const OramaMarkdown = /*@__PURE__*/ defineContainer<JSX.OramaMarkdown>('o
 
 
 export const OramaModal = /*@__PURE__*/ defineContainer<JSX.OramaModal>('orama-modal', undefined, [
-  'open',
   'closeOnEscape',
   'closeOnOutsideClick',
   'mainTitle',
-  'modalStatusChanged'
+  'modalClosed'
 ]);
 
 
@@ -206,7 +206,8 @@ export const OramaSearchBox = /*@__PURE__*/ defineContainer<JSX.OramaSearchBox>(
   'answerGenerated',
   'answerSourceClick',
   'chatMarkdownLinkClicked',
-  'modalClosed'
+  'modalClosed',
+  'modalStatusChanged'
 ]);
 
 

@@ -167,10 +167,11 @@ export const ChatAssistentMessageWithFakeRendering: StoryWithFakeRendering = {
     let count = 0
 
     const intervalId = setInterval(() => {
-      if (count >= MARKDOWN_MESSAGE.length) {
+      if (count >= MARKDOWN_MESSAGE.length || !fakeStreamingMessage) {
         clearInterval(intervalId)
         // biome-ignore lint/suspicious/noExplicitAny: Enum giving error
         interaction.status = 'done' as any
+        return
       }
 
       interaction.response = fakeStreamingMessage.substring(0, count)

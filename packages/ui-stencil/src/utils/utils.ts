@@ -157,26 +157,3 @@ export function updateCssVariables(element: HTMLElement, scheme: ColorScheme, th
     }
   }
 }
-
-const EXTERNAL_COMPONENT_TAG_LIST = ['orama-search-box', 'orama-chat-box']
-
-export function getExternalComponentHTMLElement(element: HTMLElement): HTMLElement | null {
-  let currentNode: ShadowRoot | HTMLElement | null = element
-
-  currentNode.parentNode
-  while (true) {
-    if (!currentNode) {
-      return null
-    }
-
-    if (currentNode instanceof ShadowRoot) {
-      const host = currentNode.host as HTMLElement
-      if (EXTERNAL_COMPONENT_TAG_LIST.includes(host.tagName.toLowerCase())) {
-        return host
-      }
-      currentNode = host
-    } else {
-      currentNode = (currentNode.parentNode as HTMLElement) ?? null
-    }
-  }
-}

@@ -24,7 +24,6 @@ export class OramaSearch {
   @Prop() highlightTitle?: HighlightOptions | false = false
   @Prop() highlightDescription?: HighlightOptions | false = false
 
-  @State() searchValue = ''
   @State() selectedFacet = ''
 
   @Event({ bubbles: true, composed: true }) searchCompleted: EventEmitter<OnSearchCompletedCallbackProps>
@@ -39,28 +38,16 @@ export class OramaSearch {
   @Store('chat')
   private chatStore: ChatStoreType
 
-  @Watch('searchValue')
-  @Watch('selectedFacet')
-  handleSearchValueChange() {
-    this.searchStore.state.searchService.search(this.searchValue, this.selectedFacet, {
+  doSearch() {
+    if (!this.globalStore.state.currentTerm) {
+      return
+    }
+
+    this.searchStore.state.searchService.search(this.globalStore.state.currentTerm, this.selectedFacet, {
       onSearchCompletedCallback: (onSearchCompletedCallbackProps) => {
         this.searchCompleted.emit(onSearchCompletedCallbackProps)
       },
     })
-    this.globalStore.state.currentTerm = this.searchValue
-  }
-
-  @Listen('oramaItemClick')
-  handleOramaItemClick(event: CustomEvent<SearchResult>) {
-    // console.log(`Item clicked: ${event.detail.title}`, event.detail)
-  }
-
-  onSelectedFacetChangedHandler = (facetName: string) => {
-    this.selectedFacet = facetName
-  }
-
-  onInputChange = (e: Event) => {
-    this.searchValue = (e.target as HTMLInputElement).value
   }
 
   handleSubmit = (e: Event) => {
@@ -82,13 +69,16 @@ export class OramaSearch {
             focus-on-arrow-nav
             autoFocus={this.focusInput}
             type="search"
-            onInput={this.onInputChange}
+            onInput={(e) => {
+              const target = e.target as HTMLInputElement
+              this.globalStore.state.currentTerm = target.value
+
+              this.doSearch()
+            }}
+            value={this.globalStore.state.currentTerm}
             size="large"
             labelForScreenReaders={this.placeholder}
             placeholder={this.placeholder}
-            onResetValue={() => {
-              this.searchValue = ''
-            }}
           />
           <slot name="summary" />
         </form>
@@ -96,7 +86,11 @@ export class OramaSearch {
           <orama-facets
             facets={this.searchStore.state.facets}
             selectedFacet={this.selectedFacet}
-            selectedFacetChanged={this.onSelectedFacetChangedHandler}
+            selectedFacetChanged={(facetName) => {
+              this.selectedFacet = facetName
+
+              this.doSearch()
+            }}
           />
           <orama-search-results
             suggestions={!this.globalStore.state.currentTerm?.length && !this.disableChat ? this.suggestions : []}
@@ -111,7 +105,7 @@ export class OramaSearch {
             linksTarget={this.linksTarget}
             linksRel={this.linksRel}
             sections={this.searchStore.state.results}
-            searchTerm={this.searchValue}
+            searchTerm={this.globalStore.state.currentTerm}
             highlightTitle={this.highlightTitle}
             highlightDescription={this.highlightDescription}
             loading={this.searchStore.state.loading}

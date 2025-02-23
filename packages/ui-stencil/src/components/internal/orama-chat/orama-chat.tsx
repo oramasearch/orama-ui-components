@@ -266,9 +266,9 @@ export class OramaChat {
   }
 
   disconnectedCallback() {
-    this.messagesContainerRef.removeEventListener('wheel', this.handleWheel)
-    this.scrollableContainerResizeObserver.disconnect()
-    this.nonScrollableContainerResizeObserver.disconnect()
+    this.messagesContainerRef?.removeEventListener('wheel', this.handleWheel)
+    this.scrollableContainerResizeObserver?.disconnect()
+    this.nonScrollableContainerResizeObserver?.disconnect()
 
     if (this.clearChatOnDisconnect) {
       this.chatStore.state.interactions = []

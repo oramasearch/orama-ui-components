@@ -30,7 +30,7 @@
     "@orama/switch": "^3.0.0",
     "@oramacloud/client": "^2.1.0",
     "@phosphor-icons/webcomponents": "^2.1.5",
-    "@stencil/core": "^4.19.0",
+    "@stencil/core": "4.27.0",
     "@stencil/store": "^2.0.16",
     "dompurify": "^3.1.6",
     "highlight.js": "^11.10.0",
@@ -43,7 +43,7 @@
   "devDependencies": {
     "@stencil-community/postcss": "^2.2.0",
     "@stencil/angular-output-target": "^0.8.4",
-    "@stencil/react-output-target": "^0.5.3",
+    "@stencil/react-output-target": "^0.8.2",
     "@stencil/sass": "^3.0.12",
     "@stencil/store": "^2.0.16",
     "@stencil/vue-output-target": "^0.8.8",
