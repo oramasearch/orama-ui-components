@@ -39,8 +39,10 @@ export class Input {
   @Prop() labelForScreenReaders?: InputProps['labelForScreenReaders']
   @Prop() defaultValue: InputProps['defaultValue']
   @Prop() autoFocus?: boolean = false
+  @Prop() value?: string
 
-  @State() inputRefReady = false
+  @Event() inputChanged: EventEmitter<string>
+
   private inputRef!: HTMLInputElement
 
   @Event({
@@ -49,26 +51,12 @@ export class Input {
     cancelable: true,
     bubbles: true,
   })
-  resetValue!: EventEmitter<void>
-
-  @State() value: string
 
   @Watch('autoFocus')
   handleAutoFocusChange() {
     if (this.autoFocus) {
       this.inputRef?.focus()
     }
-  }
-
-  handleChange = (event: Event) => {
-    const target = event.target as HTMLInputElement
-    this.value = target.value
-  }
-
-  clearInputValue = (): void => {
-    this.value = ''
-    this.inputRef.focus()
-    this.resetValue.emit()
   }
 
   ensureFocus() {
@@ -79,15 +67,6 @@ export class Input {
       }
     }, 10)
   }
-
-  componentShouldUpdate(newValue: string, oldValue: string | undefined, property: string) {
-    if (property === 'value' && newValue !== oldValue) {
-      this.value = newValue
-      return true
-    }
-    return false
-  }
-
   componentDidLoad() {
     if (this.autoFocus) {
       this.ensureFocus()
@@ -129,19 +108,26 @@ export class Input {
               {...inputProps}
               ref={(el) => {
                 this.inputRef = el as HTMLInputElement
-                if (this.autoFocus && el) {
-                  this.inputRefReady = true
-                }
               }}
               class={inputClass}
               id={this.name}
               type={this.type}
               value={this.value}
-              onInput={(event) => this.handleChange(event)}
+              onInput={(event) => {
+                const target = event.target as HTMLInputElement
+                this.inputChanged.emit(target.value)
+              }}
               placeholder={this.placeholder}
             />
             {isSearch && !!this.value && (
-              <button type="button" class="reset-button" onClick={this.clearInputValue}>
+              <button
+                type="button"
+                class="reset-button"
+                onClick={() => {
+                  this.inputRef.focus()
+                  this.inputChanged.emit('')
+                }}
+              >
                 <ph-x size={16} />
               </button>
             )}

@@ -10,9 +10,23 @@
     <script nomodule src="/build/orama-ui.js"></script>
   </head>
   <body>
-    <search-box-toggler></search-box-toggler>
-    <div id="orama-ui">
-      <search-box></search-box>
+    <div>
+      <orama-search-button id="search-box" />
+      <orama-search-box />
     </div>
+
+    <script>
+      const searchBox = document.querySelector('orama-search-box');
+
+      const API_KEY = 'LerNlbp6379jVKaPs4wt2nZT4MJZbU1J';
+      const ENDPOINT = 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd';
+
+      searchBox.index = {
+        api_key: API_KEY,
+        endpoint: ENDPOINT,
+      };
+
+      searchBox.facetProperty = 'category';
+    </script>
   </body>
 </html>

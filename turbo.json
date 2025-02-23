@@ -8,24 +8,27 @@
         ".next/**",
         "!.next/cache/**",
         "dist/**",
-        "storybook-static/**"
+        "storybook-static/**",
+        "../packages/ui-stencil-react/src/components/stencil-generated"
       ]
     },
     "lint": {},
     "clean": {},
     "maintenance": {},
-    "build:watch": {
-      "cache": false
-    },
     "dev": {
       "cache": false,
       "persistent": true,
-      "dependsOn": ["@orama/wc-components#build"]
+      "outputs": []
     },
     "demo-react#dev": {
-      "cache": false,
+      "cache": true,
       "persistent": true,
-      "dependsOn": ["@orama/react-components#build"]
+      "dependsOn": ["^build"]
+    },
+    "demo-nextjs#dev": {
+      "cache": true,
+      "persistent": true,
+      "dependsOn": ["^build"]
     }
   }
 }

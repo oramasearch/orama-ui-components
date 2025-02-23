@@ -1,7 +1,7 @@
 import { OramaChatBox, OramaSearchBox, OramaSearchButton } from '@orama/react-components'
 import './App.css'
 
-import { BrowserRouter, Routes, Route, NavLink, useNavigate } from 'react-router'
+import { BrowserRouter, Routes, Route, NavLink } from 'react-router'
 
 const API_KEY = 'LerNlbp6379jVKaPs4wt2nZT4MJZbU1J'
 const ENDPOINT = 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd'
@@ -85,7 +85,6 @@ const ChatBoxPage = () => {
 }
 
 const SearchBoxPage = () => {
-  const navigate = useNavigate()
   return (
     <>
       <main>
@@ -96,6 +95,9 @@ const SearchBoxPage = () => {
             onModalClosed={() => {
               console.log('closed')
             }}
+            onModalStatusChanged={(e) => {
+              console.log('Status changed to: ', e.detail.open)
+            }}
             colorScheme="system"
             index={{
               api_key: API_KEY,
@@ -105,8 +107,7 @@ const SearchBoxPage = () => {
             onSearchCompleted={(e: Event) => console.log(e)}
             onSearchResultClick={(e) => {
               e.preventDefault()
-              alert('Moving back to home page')
-              navigate('/')
+              alert('Element clicked')
             }}
             onAnswerGenerated={(e: Event) => console.log(e)}
             onAnswerSourceClick={(e: Event) => {

@@ -18,6 +18,8 @@ export const config: Config = {
   extras: {
     // Otherwise we would need to import each component in applications with bundlers like vite.
     enableImportInjection: true,
+    experimentalSlotFixes: true,
+    scopedSlotTextContentFix: true,
   },
   globalStyle: 'src/styles/globals.scss',
   outputTargets: [
@@ -27,18 +29,22 @@ export const config: Config = {
     },
     {
       type: 'dist-custom-elements',
+      externalRuntime: false,
     },
     {
       type: 'docs-readme',
+    },
+    {
+      type: 'dist-hydrate-script',
+      dir: './hydrate',
     },
     {
       type: 'www',
       serviceWorker: null, // disable service workers
     },
     reactOutputTarget({
-      componentCorePackage,
-      proxiesFile: '../ui-stencil-react/src/components/stencil-generated/index.ts',
-      includeDefineCustomElements: true,
+      outDir: '../ui-stencil-react/src/components/stencil-generated/',
+      hydrateModule: `${componentCorePackage}/hydrate`,
     }),
     angularOutputTarget({
       componentCorePackage,
@@ -50,9 +56,6 @@ export const config: Config = {
       proxiesFile: '../ui-stencil-vue/lib/components.ts',
     }),
   ],
-  testing: {
-    browserHeadless: 'new',
-  },
   plugins: [
     sass({
       injectGlobalPaths: ['src/styles/abstracts.scss'],

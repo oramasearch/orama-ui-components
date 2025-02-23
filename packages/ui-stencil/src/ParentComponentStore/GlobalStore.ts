@@ -1,4 +1,4 @@
-import type { ObservableMap } from '@stencil/store'
+import { createStore, type ObservableMap } from '@stencil/store'
 
 export const GlobalStoreInitialProps = {
   open: false,
@@ -6,3 +6,5 @@ export const GlobalStoreInitialProps = {
   currentTerm: '',
 }
 export type GlobalStoreType = ObservableMap<typeof GlobalStoreInitialProps>
+
+export const testGlobalStore = createStore(GlobalStoreInitialProps)

@@ -1,7 +1,7 @@
 import { ChatStoreInitialProps, type ChatStoreType } from '@/ParentComponentStore/ChatStore'
 import { type GlobalStoreType, GlobalStoreInitialProps } from '@/ParentComponentStore/GlobalStore'
 import { SearchStoreInitialProps, type SearchStoreType } from '@/ParentComponentStore/SearchStore'
-import { getExternalComponentHTMLElement } from '@/utils/utils'
+
 import { createStore } from '@stencil/store'
 
 export type StoresMapType = {
@@ -77,11 +77,34 @@ export const removeAllStores = (parentComponentId: string) => {
 }
 
 export function getStore<T extends StoresMapKeys>(storeName: T, element: HTMLElement) {
-  const externalComponent = getExternalComponentHTMLElement(element)
+  const externalComponent = getExternalParentComponentHTMLElement(element)
 
   if (!externalComponent) {
     throw new Error('Failed to get store')
   }
 
   return getParentComponentStore(externalComponent.id, storeName)
+}
+
+const EXTERNAL_COMPONENT_TAG_LIST = ['orama-search-box', 'orama-chat-box']
+
+function getExternalParentComponentHTMLElement(element: HTMLElement): HTMLElement | null {
+  let currentNode: ShadowRoot | HTMLElement | null = element
+
+  currentNode.parentNode
+  while (true) {
+    if (!currentNode) {
+      return null
+    }
+
+    if (currentNode instanceof ShadowRoot) {
+      const host = currentNode.host as HTMLElement
+      if (EXTERNAL_COMPONENT_TAG_LIST.includes(host.tagName.toLowerCase())) {
+        return host
+      }
+      currentNode = host
+    } else {
+      currentNode = (currentNode.parentNode as HTMLElement) ?? null
+    }
+  }
 }
