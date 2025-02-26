@@ -12,14 +12,13 @@
 | `closeOnEscape`       | `close-on-escape`        |             | `boolean` | `true`  |
 | `closeOnOutsideClick` | `close-on-outside-click` |             | `boolean` | `true`  |
 | `mainTitle`           | `main-title`             |             | `string`  | `''`    |
-| `open`                | `open`                   |             | `boolean` | `false` |
 
 
 ## Events
 
-| Event                | Description | Type                                               |
-| -------------------- | ----------- | -------------------------------------------------- |
-| `modalStatusChanged` |             | `CustomEvent<{ open: boolean; id: HTMLElement; }>` |
+| Event         | Description | Type               |
+| ------------- | ----------- | ------------------ |
+| `modalClosed` |             | `CustomEvent<any>` |
 
 
 ## Dependencies

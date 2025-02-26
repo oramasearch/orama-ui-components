@@ -203,6 +203,13 @@ export class SearchBox {
   @Event({ bubbles: true, composed: true })
   modalClosed: EventEmitter
 
+  /**
+   * Fire when modal status changes
+   * @deprecated use modalClosed instead
+   */
+  @Event({ bubbles: true, composed: true })
+  modalStatusChanged: EventEmitter<{ open: boolean; id: HTMLElement }>
+
   wrapperRef!: HTMLElement
 
   schemaQuery: MediaQueryList
@@ -227,6 +234,13 @@ export class SearchBox {
   @Watch('open')
   handleOpenPropChange(newValue: boolean) {
     this.globalStore.state.open = newValue
+    this.modalStatusChanged.emit({
+      open: newValue,
+      id: this.wrapperRef,
+    })
+    if (!newValue) {
+      this.modalClosed.emit()
+    }
   }
 
   @Watch('facetProperty')
@@ -237,18 +251,6 @@ export class SearchBox {
   @Watch('searchParams')
   handleSearchParamsChange(newValue: SearchParams<Orama<AnyOrama | OramaClient>>) {
     this.searchStore.state.searchParams = newValue
-  }
-
-  @Listen('modalStatusChanged')
-  modalStatusChangedHandler(event: CustomEvent<{ open: boolean; id: HTMLElement }>) {
-    if (event.detail.id === this.wrapperRef) {
-      if (!event.detail.open) {
-        this.globalStore.state.open = false
-        this.open = false
-
-        this.modalClosed.emit()
-      }
-    }
   }
 
   @Listen('keydown', { target: 'document' })
@@ -298,17 +300,17 @@ export class SearchBox {
 
       if (!this.globalStore.state.open) {
         this.globalStore.state.currentTerm = ''
-
         // TODO: We should be reseting the context, but we do not want to lose params definitions.
         // We may want to handle params in a different way.
+
         this.searchStore.state.facets = []
         this.searchStore.state.count = 0
         this.searchStore.state.results = []
         this.searchStore.state.highlightedIndex = -1
         this.searchStore.state.loading = false
         this.searchStore.state.error = false
-
         this.chatStore.state.interactions = []
+        setTimeout(() => {})
       }
     })
 
@@ -431,9 +433,12 @@ export class SearchBox {
       <Fragment>
         <orama-modal
           ref={(el) => (this.wrapperRef = el)}
-          open={this.globalStore.state.open}
           class="modal"
           mainTitle="Start your search"
+          onModalClosed={(e) => {
+            this.open = false
+            e.stopPropagation()
+          }}
           closeOnEscape={this.globalStore.state.currentTask === 'search' || this.windowWidth <= 1024}
         >
           {this.getInnerContent()}
@@ -452,22 +457,6 @@ export class SearchBox {
     )
   }
 
-  render() {
-    if (this.layout === 'modal' && !this.globalStore.state.open) {
-      return null
-    }
-
-    if (!this.searchStore.state.searchService) {
-      return <orama-text as="p">Unable to initialize search service</orama-text>
-    }
-
-    if (!this.chatStore.state.chatService) {
-      return <orama-text as="p">Unable to initialize chat service</orama-text>
-    }
-
-    return this.layout === 'modal' ? this.getModalLayout() : this.getEmbedLayout()
-  }
-
   private closeSearchbox = () => {
     this.globalStore.state.open = false
     this.open = false
@@ -484,5 +473,21 @@ export class SearchBox {
 
   private updateWindowWidth = (event: CustomEvent) => {
     this.windowWidth = event.detail
+  }
+
+  render() {
+    if (this.layout === 'modal' && !this.globalStore.state.open) {
+      return null
+    }
+
+    if (!this.searchStore.state.searchService) {
+      return <orama-text as="p">Unable to initialize search service</orama-text>
+    }
+
+    if (!this.chatStore.state.chatService) {
+      return <orama-text as="p">Unable to initialize chat service</orama-text>
+    }
+
+    return this.layout === 'modal' ? this.getModalLayout() : this.getEmbedLayout()
   }
 }

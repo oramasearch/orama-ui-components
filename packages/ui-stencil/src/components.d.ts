@@ -11,7 +11,6 @@ import { OramaClient } from "@oramacloud/client";
 import { AnyOrama, Orama, SearchParams } from "@orama/orama";
 import { TThemeOverrides } from "./config/theme";
 import { InputProps } from "./components/internal/orama-input/orama-input";
-import { ModalStatus } from "./components/internal/orama-modal/orama-modal";
 import { HighlightOptions } from "@orama/highlight";
 import { TThemeOverrides as TThemeOverrides1 } from "./components.d";
 import { SearchResultsProps } from "./components/internal/orama-search-results/orama-search-results";
@@ -22,7 +21,6 @@ export { OramaClient } from "@oramacloud/client";
 export { AnyOrama, Orama, SearchParams } from "@orama/orama";
 export { TThemeOverrides } from "./config/theme";
 export { InputProps } from "./components/internal/orama-input/orama-input";
-export { ModalStatus } from "./components/internal/orama-modal/orama-modal";
 export { HighlightOptions } from "@orama/highlight";
 export { TThemeOverrides as TThemeOverrides1 } from "./components.d";
 export { SearchResultsProps } from "./components/internal/orama-search-results/orama-search-results";
@@ -36,20 +34,52 @@ export namespace Components {
         "type"?: ButtonProps['type'];
         "variant"?: ButtonProps['variant'];
         "withTooltip"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "with-tooltip"?: string;
     }
     interface OramaChat {
         "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
         "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "clearChatOnDisconnect"?: boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "clear-chat-on-disconnect"?: boolean;
         "defaultTerm"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "default-term"?: string;
         "focusInput"?: boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "focus-input"?: boolean;
         "linksRel"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "links-rel"?: string;
         "linksTarget"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "links-target"?: string;
         "placeholder"?: string;
         "prompt"?: string;
         "showClearChat"?: boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "show-clear-chat"?: boolean;
         "sourceBaseUrl"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "source-base-url"?: string;
         "sourcesMap"?: SourcesMap;
         "suggestions"?: string[];
         "systemPrompts"?: string[];
@@ -62,21 +92,45 @@ export namespace Components {
     }
     interface OramaChatBox {
         "autoFocus": boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "auto-focus"?: boolean;
         "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
         "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "clearChatOnDisconnect": boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "clear-chat-on-disconnect"?: boolean;
         "clientInstance"?: OramaClient | AnyOrama;
         /**
           * Component color schema
          */
         "colorScheme"?: ColorScheme;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "color-scheme"?: ColorScheme;
         "index"?: CloudIndexConfig | CloudIndexConfig[];
         "linksRel"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "links-rel"?: string;
         "linksTarget"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "links-target"?: string;
         "placeholder"?: string;
         "prompt"?: string;
         "sourceBaseUrl"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "source-base-url"?: string;
         "sourcesMap"?: SourcesMap;
         "suggestions"?: string[];
         "systemPrompts"?: string[];
@@ -107,6 +161,10 @@ export namespace Components {
     interface OramaFacets {
         "facets": Facet[];
         "selectedFacet": string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "selected-facet"?: string;
         "selectedFacetChanged": (facetName: string) => void;
     }
     interface OramaFooter {
@@ -115,13 +173,26 @@ export namespace Components {
     }
     interface OramaInput {
         "autoFocus"?: boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "auto-focus"?: boolean;
         "defaultValue": InputProps['defaultValue'];
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "default-value"?: InputProps['defaultValue'];
         "label"?: InputProps['label'];
         "labelForScreenReaders"?: InputProps['labelForScreenReaders'];
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "label-for-screen-readers"?: InputProps['labelForScreenReaders'];
         "name": InputProps['name'];
         "placeholder"?: InputProps['placeholder'];
         "size"?: InputProps['size'];
         "type"?: InputProps['type'];
+        "value"?: string;
     }
     interface OramaLogoIcon {
         "size": number;
@@ -134,24 +205,71 @@ export namespace Components {
     }
     interface OramaModal {
         "closeOnEscape": boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "close-on-escape"?: boolean;
         "closeOnOutsideClick": boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "close-on-outside-click"?: boolean;
         "mainTitle": string;
-        "open": boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "main-title"?: string;
     }
     interface OramaNavigationBar {
         "handleClose": () => void;
         "showBackButton": boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "show-back-button"?: boolean;
         "showChatActions": boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "show-chat-actions"?: boolean;
     }
     interface OramaSearch {
         "disableChat"?: boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "disable-chat"?: boolean;
         "focusInput"?: boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "focus-input"?: boolean;
         "highlightDescription"?: HighlightOptions | false;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "highlight-description"?: HighlightOptions | false;
         "highlightTitle"?: HighlightOptions | false;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "highlight-title"?: HighlightOptions | false;
         "linksRel"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "links-rel"?: string;
         "linksTarget"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "links-target"?: string;
         "placeholder"?: string;
         "sourceBaseUrl"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "source-base-url"?: string;
         "suggestions"?: string[];
     }
     interface OramaSearchBox {
@@ -172,6 +290,10 @@ export namespace Components {
          */
         "chatPlaceholder"?: string;
         /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "chat-placeholder"?: string;
+        /**
           * Orama Instance
          */
         "clientInstance"?: OramaClient | AnyOrama;
@@ -180,21 +302,41 @@ export namespace Components {
          */
         "colorScheme"?: ColorScheme;
         /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "color-scheme"?: ColorScheme;
+        /**
           * Disables chat capabilities
          */
         "disableChat"?: boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "disable-chat"?: boolean;
         /**
           * Index result property to
          */
         "facetProperty"?: string;
         /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "facet-property"?: string;
+        /**
           * Options for highlights of Search Result descriptions
          */
         "highlightDescription"?: HighlightOptions | false;
         /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "highlight-description"?: HighlightOptions | false;
+        /**
           * Options for highlights of Search Result titles
          */
         "highlightTitle"?: HighlightOptions | false;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "highlight-title"?: HighlightOptions | false;
         /**
           * Orama Index configuration  note: It will be overrided by clientInstance property
          */
@@ -208,9 +350,17 @@ export namespace Components {
          */
         "linksRel"?: string;
         /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "links-rel"?: string;
+        /**
           * Used to provide linkRel to search result links
          */
         "linksTarget"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "links-target"?: string;
         "open": boolean;
         /**
           * @deprecated it will be removed on next releases Placeholder for chat input
@@ -233,9 +383,17 @@ export namespace Components {
          */
         "searchPlaceholder"?: string;
         /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "search-placeholder"?: string;
+        /**
           * Used to provide source base URL for the Search Results
          */
         "sourceBaseUrl"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "source-base-url"?: string;
         /**
           * Used to map Chat result sources to expected Orama Chat properties
          */
@@ -251,20 +409,48 @@ export namespace Components {
     }
     interface OramaSearchButton {
         "colorScheme"?: ColorScheme;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "color-scheme"?: ColorScheme;
         "size": 'small' | 'medium' | 'large';
         "themeConfig"?: Partial<TThemeOverrides>;
     }
     interface OramaSearchResults {
         "error": boolean;
         "highlightDescription"?: HighlightOptions | false;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "highlight-description"?: HighlightOptions | false;
         "highlightTitle"?: HighlightOptions | false;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "highlight-title"?: HighlightOptions | false;
         "linksRel"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "links-rel"?: string;
         "linksTarget"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "links-target"?: string;
         "loading": boolean;
         "searchTerm": SearchResultsProps['searchTerm'];
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "search-term"?: SearchResultsProps['searchTerm'];
         "sections": SearchResultBySection[];
         "setChatTerm": (term: string) => void;
         "sourceBaseUrl"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "source-base-url"?: string;
         "suggestions"?: string[];
     }
     interface OramaSlidingPanel {
@@ -274,8 +460,20 @@ export namespace Components {
     }
     interface OramaSources {
         "linksRel"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "links-rel"?: string;
         "linksTarget"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "links-target"?: string;
         "sourceBaseURL"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "source-base-u-r-l"?: string;
         "sources": any;
         "sourcesMap"?: SourcesMap;
     }
@@ -308,19 +506,39 @@ export namespace Components {
          */
         "styledAs"?: TextProps['styledAs'];
         /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "styled-as"?: TextProps['styledAs'];
+        /**
           * optionally change variant style - default is primary
          */
         "variant": TextProps['variant'];
     }
     interface OramaTextarea {
         "autoFocus": boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "auto-focus"?: boolean;
         "maxRows": number | string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "max-rows"?: number | string;
         "minRows": number | string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "min-rows"?: number | string;
         "placeholder": string;
         "value": string | null;
     }
     interface OramaToggler {
         "performInitialAnimation": boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "perform-initial-animation"?: boolean;
     }
 }
 export interface OramaChatCustomEvent<T> extends CustomEvent<T> {
@@ -470,7 +688,7 @@ declare global {
         new (): HTMLOramaFooterElement;
     };
     interface HTMLOramaInputElementEventMap {
-        "resetValue": void;
+        "inputChanged": string;
     }
     interface HTMLOramaInputElement extends Components.OramaInput, HTMLStencilElement {
         addEventListener<K extends keyof HTMLOramaInputElementEventMap>(type: K, listener: (this: HTMLOramaInputElement, ev: OramaInputCustomEvent<HTMLOramaInputElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -510,7 +728,7 @@ declare global {
         new (): HTMLOramaMarkdownElement;
     };
     interface HTMLOramaModalElementEventMap {
-        "modalStatusChanged": ModalStatus;
+        "modalClosed": any;
     }
     interface HTMLOramaModalElement extends Components.OramaModal, HTMLStencilElement {
         addEventListener<K extends keyof HTMLOramaModalElementEventMap>(type: K, listener: (this: HTMLOramaModalElement, ev: OramaModalCustomEvent<HTMLOramaModalElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -559,6 +777,7 @@ declare global {
         "answerSourceClick": OnAnswerSourceClickCallbackProps;
         "chatMarkdownLinkClicked": OnChatMarkdownLinkClickedCallbackProps;
         "modalClosed": any;
+        "modalStatusChanged": { open: boolean; id: HTMLElement };
     }
     interface HTMLOramaSearchBoxElement extends Components.OramaSearchBox, HTMLStencilElement {
         addEventListener<K extends keyof HTMLOramaSearchBoxElementEventMap>(type: K, listener: (this: HTMLOramaSearchBoxElement, ev: OramaSearchBoxCustomEvent<HTMLOramaSearchBoxElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -682,23 +901,55 @@ declare namespace LocalJSX {
         "type"?: ButtonProps['type'];
         "variant"?: ButtonProps['variant'];
         "withTooltip"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "with-tooltip"?: string;
     }
     interface OramaChat {
         "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
         "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "clearChatOnDisconnect"?: boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "clear-chat-on-disconnect"?: boolean;
         "defaultTerm"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "default-term"?: string;
         "focusInput"?: boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "focus-input"?: boolean;
         "linksRel"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "links-rel"?: string;
         "linksTarget"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "links-target"?: string;
         "onAnswerGenerated"?: (event: OramaChatCustomEvent<OnAnswerGeneratedCallbackProps>) => void;
         "onClearChat"?: (event: OramaChatCustomEvent<void>) => void;
         "onStartConversation"?: (event: OramaChatCustomEvent<onStartConversationCallbackProps>) => void;
         "placeholder"?: string;
         "prompt"?: string;
         "showClearChat"?: boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "show-clear-chat"?: boolean;
         "sourceBaseUrl"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "source-base-url"?: string;
         "sourcesMap"?: SourcesMap;
         "suggestions"?: string[];
         "systemPrompts"?: string[];
@@ -711,18 +962,38 @@ declare namespace LocalJSX {
     }
     interface OramaChatBox {
         "autoFocus"?: boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "auto-focus"?: boolean;
         "chatMarkdownLinkHref"?: ChatMarkdownLinkHref;
         "chatMarkdownLinkTarget"?: ChatMarkdownLinkTarget;
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "clearChatOnDisconnect"?: boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "clear-chat-on-disconnect"?: boolean;
         "clientInstance"?: OramaClient | AnyOrama;
         /**
           * Component color schema
          */
         "colorScheme"?: ColorScheme;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "color-scheme"?: ColorScheme;
         "index"?: CloudIndexConfig | CloudIndexConfig[];
         "linksRel"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "links-rel"?: string;
         "linksTarget"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "links-target"?: string;
         /**
           * Fired when answer generation is successfully completed
          */
@@ -746,6 +1017,10 @@ declare namespace LocalJSX {
         "placeholder"?: string;
         "prompt"?: string;
         "sourceBaseUrl"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "source-base-url"?: string;
         "sourcesMap"?: SourcesMap;
         "suggestions"?: string[];
         "systemPrompts"?: string[];
@@ -777,6 +1052,10 @@ declare namespace LocalJSX {
     interface OramaFacets {
         "facets"?: Facet[];
         "selectedFacet"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "selected-facet"?: string;
         "selectedFacetChanged"?: (facetName: string) => void;
     }
     interface OramaFooter {
@@ -785,14 +1064,27 @@ declare namespace LocalJSX {
     }
     interface OramaInput {
         "autoFocus"?: boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "auto-focus"?: boolean;
         "defaultValue"?: InputProps['defaultValue'];
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "default-value"?: InputProps['defaultValue'];
         "label"?: InputProps['label'];
         "labelForScreenReaders"?: InputProps['labelForScreenReaders'];
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "label-for-screen-readers"?: InputProps['labelForScreenReaders'];
         "name"?: InputProps['name'];
-        "onResetValue"?: (event: OramaInputCustomEvent<void>) => void;
+        "onInputChanged"?: (event: OramaInputCustomEvent<string>) => void;
         "placeholder"?: InputProps['placeholder'];
         "size"?: InputProps['size'];
         "type"?: InputProps['type'];
+        "value"?: string;
     }
     interface OramaLogoIcon {
         "size"?: number;
@@ -806,27 +1098,74 @@ declare namespace LocalJSX {
     }
     interface OramaModal {
         "closeOnEscape"?: boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "close-on-escape"?: boolean;
         "closeOnOutsideClick"?: boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "close-on-outside-click"?: boolean;
         "mainTitle"?: string;
-        "onModalStatusChanged"?: (event: OramaModalCustomEvent<ModalStatus>) => void;
-        "open"?: boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "main-title"?: string;
+        "onModalClosed"?: (event: OramaModalCustomEvent<any>) => void;
     }
     interface OramaNavigationBar {
         "handleClose"?: () => void;
         "showBackButton"?: boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "show-back-button"?: boolean;
         "showChatActions"?: boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "show-chat-actions"?: boolean;
     }
     interface OramaSearch {
         "disableChat"?: boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "disable-chat"?: boolean;
         "focusInput"?: boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "focus-input"?: boolean;
         "highlightDescription"?: HighlightOptions | false;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "highlight-description"?: HighlightOptions | false;
         "highlightTitle"?: HighlightOptions | false;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "highlight-title"?: HighlightOptions | false;
         "linksRel"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "links-rel"?: string;
         "linksTarget"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "links-target"?: string;
         "onAnswerGenerated"?: (event: OramaSearchCustomEvent<OnAnswerGeneratedCallbackProps>) => void;
         "onSearchCompleted"?: (event: OramaSearchCustomEvent<OnSearchCompletedCallbackProps>) => void;
         "placeholder"?: string;
         "sourceBaseUrl"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "source-base-url"?: string;
         "suggestions"?: string[];
     }
     interface OramaSearchBox {
@@ -847,6 +1186,10 @@ declare namespace LocalJSX {
          */
         "chatPlaceholder"?: string;
         /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "chat-placeholder"?: string;
+        /**
           * Orama Instance
          */
         "clientInstance"?: OramaClient | AnyOrama;
@@ -855,21 +1198,41 @@ declare namespace LocalJSX {
          */
         "colorScheme"?: ColorScheme;
         /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "color-scheme"?: ColorScheme;
+        /**
           * Disables chat capabilities
          */
         "disableChat"?: boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "disable-chat"?: boolean;
         /**
           * Index result property to
          */
         "facetProperty"?: string;
         /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "facet-property"?: string;
+        /**
           * Options for highlights of Search Result descriptions
          */
         "highlightDescription"?: HighlightOptions | false;
         /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "highlight-description"?: HighlightOptions | false;
+        /**
           * Options for highlights of Search Result titles
          */
         "highlightTitle"?: HighlightOptions | false;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "highlight-title"?: HighlightOptions | false;
         /**
           * Orama Index configuration  note: It will be overrided by clientInstance property
          */
@@ -883,9 +1246,17 @@ declare namespace LocalJSX {
          */
         "linksRel"?: string;
         /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "links-rel"?: string;
+        /**
           * Used to provide linkRel to search result links
          */
         "linksTarget"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "links-target"?: string;
         /**
           * Fired when answer generation is successfully completed
          */
@@ -906,6 +1277,11 @@ declare namespace LocalJSX {
           * Fired when modal is closed
          */
         "onModalClosed"?: (event: OramaSearchBoxCustomEvent<any>) => void;
+        /**
+          * Fire when modal status changes
+          * @deprecated use modalClosed instead
+         */
+        "onModalStatusChanged"?: (event: OramaSearchBoxCustomEvent<{ open: boolean; id: HTMLElement }>) => void;
         /**
           * Fired when search successfully resolves
          */
@@ -940,9 +1316,17 @@ declare namespace LocalJSX {
          */
         "searchPlaceholder"?: string;
         /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "search-placeholder"?: string;
+        /**
           * Used to provide source base URL for the Search Results
          */
         "sourceBaseUrl"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "source-base-url"?: string;
         /**
           * Used to map Chat result sources to expected Orama Chat properties
          */
@@ -958,21 +1342,49 @@ declare namespace LocalJSX {
     }
     interface OramaSearchButton {
         "colorScheme"?: ColorScheme;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "color-scheme"?: ColorScheme;
         "size"?: 'small' | 'medium' | 'large';
         "themeConfig"?: Partial<TThemeOverrides>;
     }
     interface OramaSearchResults {
         "error"?: boolean;
         "highlightDescription"?: HighlightOptions | false;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "highlight-description"?: HighlightOptions | false;
         "highlightTitle"?: HighlightOptions | false;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "highlight-title"?: HighlightOptions | false;
         "linksRel"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "links-rel"?: string;
         "linksTarget"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "links-target"?: string;
         "loading"?: boolean;
         "onSearchResultClick"?: (event: OramaSearchResultsCustomEvent<OnSearchResultClickCallbackProps>) => void;
         "searchTerm"?: SearchResultsProps['searchTerm'];
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "search-term"?: SearchResultsProps['searchTerm'];
         "sections"?: SearchResultBySection[];
         "setChatTerm"?: (term: string) => void;
         "sourceBaseUrl"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "source-base-url"?: string;
         "suggestions"?: string[];
     }
     interface OramaSlidingPanel {
@@ -982,9 +1394,21 @@ declare namespace LocalJSX {
     }
     interface OramaSources {
         "linksRel"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "links-rel"?: string;
         "linksTarget"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "links-target"?: string;
         "onAnswerSourceClick"?: (event: OramaSourcesCustomEvent<OnAnswerSourceClickCallbackProps>) => void;
         "sourceBaseURL"?: string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "source-base-u-r-l"?: string;
         "sources"?: any;
         "sourcesMap"?: SourcesMap;
     }
@@ -1017,19 +1441,39 @@ declare namespace LocalJSX {
          */
         "styledAs"?: TextProps['styledAs'];
         /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "styled-as"?: TextProps['styledAs'];
+        /**
           * optionally change variant style - default is primary
          */
         "variant"?: TextProps['variant'];
     }
     interface OramaTextarea {
         "autoFocus"?: boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "auto-focus"?: boolean;
         "maxRows"?: number | string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "max-rows"?: number | string;
         "minRows"?: number | string;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "min-rows"?: number | string;
         "placeholder"?: string;
         "value"?: string | null;
     }
     interface OramaToggler {
         "performInitialAnimation"?: boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "perform-initial-animation"?: boolean;
     }
     interface IntrinsicElements {
         "orama-button": OramaButton;

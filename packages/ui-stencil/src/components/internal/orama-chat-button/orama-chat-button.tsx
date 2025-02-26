@@ -17,7 +17,7 @@ export class OramaChatButton {
 
   @Prop() label: string
   @Prop() active?: boolean = false
-  @Prop() highlight?: boolean = false
+  @Prop({ mutable: true }) highlight?: boolean = false
   @Prop() class?: string
 
   @Watch('active')

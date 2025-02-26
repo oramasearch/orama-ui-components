@@ -12,12 +12,13 @@
   ],
   "scripts": {
     "build": "tsup",
-    "build:watch": "tsup --watch",
+    "dev": "tsup --watch",
     "clean": "rm -rf node_modules .turbo",
     "test": "node ./__tests__/react-library.test.js"
   },
   "dependencies": {
-    "@orama/wc-components": "workspace:*"
+    "@orama/wc-components": "workspace:*",
+    "@stencil/react-output-target": "^0.8.2"
   },
   "devDependencies": {
     "@types/node": "^20",

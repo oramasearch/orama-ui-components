@@ -1,4 +1,4 @@
-import { Component, h, Prop, State, Listen, Element, Event, type EventEmitter, Watch } from '@stencil/core'
+import { Component, h, Prop, State, Element, Event, type EventEmitter, Watch } from '@stencil/core'
 
 export type ModalStatus = {
   open: boolean
@@ -10,15 +10,13 @@ export type ModalStatus = {
   scoped: true,
 })
 export class OramaModal {
-  @Prop() open = false
   @Prop() closeOnEscape = true
   @Prop() closeOnOutsideClick = true
   @Prop() mainTitle = ''
 
   @State() activeElement: HTMLElement
-  @State() modalIsOpen = this.open
 
-  @Event() modalStatusChanged: EventEmitter<ModalStatus>
+  @Event() modalClosed: EventEmitter
 
   @Element() el: HTMLElement
 
@@ -27,43 +25,6 @@ export class OramaModal {
   private firstFocusableElement: HTMLElement
   private lastFocusableElement: HTMLElement
   private innerModalRef: HTMLElement
-
-  @Listen('keydown', { target: 'document' })
-  handleKeyDown(ev: KeyboardEvent) {
-    if (this.modalIsOpen) {
-      switch (ev.key) {
-        case 'Tab':
-          this.trapFocus(ev)
-          break
-        case 'Escape':
-          if (this.closeOnEscape) {
-            ev.preventDefault()
-            ev.stopPropagation()
-            this.closeModal()
-          }
-          break
-      }
-    }
-  }
-
-  @Watch('modalIsOpen')
-  handleOpenChange(newValue: boolean) {
-    this.modalStatusChanged.emit({
-      open: newValue,
-      id: this.el,
-    })
-
-    if (newValue) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = this.originalBodyOverflowState
-    }
-  }
-
-  @Watch('open')
-  handleOpenPropChange(newValue: boolean) {
-    this.modalIsOpen = newValue
-  }
 
   private trapFocus(event: KeyboardEvent) {
     const focusableElements = this.el.querySelectorAll(
@@ -102,50 +63,53 @@ export class OramaModal {
     }
   }
 
-  disconnectedCallback() {
-    this.modalIsOpen = false
-  }
-
-  private closeModal() {
-    this.modalIsOpen = false
-  }
-
-  componentDidLoad() {
+  connectedCallback() {
     this.originalBodyOverflowState = document.body.style.overflow
 
-    if (this.modalIsOpen) {
-      this.activeElement = document.activeElement as HTMLElement
-      this.handleFocus()
-      document.body.style.overflow = 'hidden'
-    }
-    this.el.addEventListener('click', (event) => {
-      if (this.innerModalRef && !this.innerModalRef.contains(event.target as Node)) {
-        event.stopPropagation()
-        event.preventDefault()
-        this.closeModal()
-      }
-    })
+    this.activeElement = document.activeElement as HTMLElement
+    this.handleFocus()
+    document.body.style.overflow = 'hidden'
+  }
+
+  disconnectedCallback() {
+    document.body.style.overflow = this.originalBodyOverflowState
   }
 
   componentDidUpdate() {
-    if (this.modalIsOpen) {
-      this.handleFocus()
-    } else if (this.activeElement) {
+    this.handleFocus()
+    if (this.activeElement) {
       this.activeElement.focus()
     }
   }
 
   render() {
-    if (!this.modalIsOpen) {
-      return null
-    }
-
     return (
       <dialog
-        class={`modal ${this.modalIsOpen ? 'open' : ''}`}
+        class={'modal open'}
         aria-modal="true"
         aria-labelledby="modalTitle"
         aria-describedby="modalContent"
+        onKeyDown={(event) => {
+          switch (event.key) {
+            case 'Tab':
+              this.trapFocus(event)
+              break
+            case 'Escape':
+              if (this.closeOnEscape) {
+                event.preventDefault()
+                event.stopPropagation()
+                this.modalClosed.emit()
+              }
+              break
+          }
+        }}
+        onClick={(event) => {
+          if (this.innerModalRef && !this.innerModalRef.contains(event.target as Node)) {
+            event.stopPropagation()
+            event.preventDefault()
+            this.modalClosed.emit()
+          }
+        }}
       >
         <div class="modal-inner" ref={(ref) => (this.innerModalRef = ref)}>
           <h1 id="modalTitle" class="modal-title">
@@ -154,7 +118,7 @@ export class OramaModal {
           <div id="modalContent" class="modal-content">
             <slot />
           </div>
-          <button onClick={() => this.closeModal()} type="button" class="modal-close">
+          <button onClick={() => this.modalClosed.emit()} type="button" class="modal-close">
             Close
           </button>
         </div>

@@ -64,39 +64,39 @@ function compileScss(filePath) {
       },
       'background-color($arg1, $arg2)': (args) => {
         try {
-          const colorKey = args[0].assertString('arg1').text;
-          const palette = args[1].assertMap('arg2');
+          const colorKey = args[0].assertString('arg1').text
+          const palette = args[1].assertMap('arg2')
 
           // Find color value in background section
-          let colorValue = null;
+          let colorValue = null
           palette.contents.forEach((value, key) => {
             if (key.text === 'background') {
               value.contents.forEach((val, k) => {
-                if (k.text === colorKey) colorValue = val;
-              });
+                if (k.text === colorKey) colorValue = val
+              })
             }
-          });
+          })
 
-          if (!colorValue) return new sass.SassColor({ r: 0, g: 0, b: 0, a: 1 });
-          if (colorValue instanceof sass.SassColor) return colorValue;
+          if (!colorValue) return new sass.SassColor({ r: 0, g: 0, b: 0, a: 1 })
+          if (colorValue instanceof sass.SassColor) return colorValue
 
-          const colorStr = colorValue.toString();
+          const colorStr = colorValue.toString()
 
           // Handle named colors
-          if (colorStr === 'white') return new sass.SassColor({ r: 255, g: 255, b: 255, a: 1 });
-          if (colorStr === 'black') return new sass.SassColor({ r: 0, g: 0, b: 0, a: 1 });
-          if (colorStr === 'transparent') return new sass.SassColor({ r: 0, g: 0, b: 0, a: 0 });
+          if (colorStr === 'white') return new sass.SassColor({ r: 255, g: 255, b: 255, a: 1 })
+          if (colorStr === 'black') return new sass.SassColor({ r: 0, g: 0, b: 0, a: 1 })
+          if (colorStr === 'transparent') return new sass.SassColor({ r: 0, g: 0, b: 0, a: 0 })
 
           // Handle hex colors
           if (colorStr.startsWith('#')) {
-            const rgb = hexToRgb(colorStr);
-            return new sass.SassColor({ ...rgb, a: 1 });
+            const rgb = hexToRgb(colorStr)
+            return new sass.SassColor({ ...rgb, a: 1 })
           }
 
           // Default fallback
-          return new sass.SassColor({ r: 0, g: 0, b: 0, a: 1 });
+          return new sass.SassColor({ r: 0, g: 0, b: 0, a: 1 })
         } catch (error) {
-          return new sass.SassColor({ r: 0, g: 0, b: 0, a: 1 });
+          return new sass.SassColor({ r: 0, g: 0, b: 0, a: 1 })
         }
       },
       'border-color($arg1, $arg2)': (args) => {
@@ -127,21 +127,21 @@ function compileScss(filePath) {
       },
       'adjust($color, $kwargs)': (args) => {
         try {
-          const color = args[0].assertColor('color');
-          const kwargs = args[1].assertMap('kwargs');
-          const alphaAdjust = kwargs.get('alpha')?.assertNumber('alpha')?.value || 0;
-          
+          const color = args[0].assertColor('color')
+          const kwargs = args[1].assertMap('kwargs')
+          const alphaAdjust = kwargs.get('alpha')?.assertNumber('alpha')?.value || 0
+
           return new sass.SassColor({
             r: color.red,
             g: color.green,
             b: color.blue,
-            a: Math.max(0, Math.min(1, color.alpha + alphaAdjust))
-          });
+            a: Math.max(0, Math.min(1, color.alpha + alphaAdjust)),
+          })
         } catch (error) {
-          console.error('Error in adjust:', error);
-          return new sass.SassColor({ r: 0, g: 0, b: 0, a: 1 });
+          console.error('Error in adjust:', error)
+          return new sass.SassColor({ r: 0, g: 0, b: 0, a: 1 })
         }
-      }
+      },
     },
   })
   return result.css.toString()
@@ -205,7 +205,7 @@ async function extractExportVariables(css) {
 
     // Write the JavaScript file
     fs.writeFileSync('./src/config/colors.ts', `${comment}\n${jsContent}`, 'utf-8')
-        // remove the temporary file
+    // remove the temporary file
     fs.unlinkSync(scssFilePath)
     console.log('SCSS :export variables have been extracted to _colors.js')
   } catch (error) {
