@@ -25,8 +25,8 @@ import type { OramaClient } from '@oramacloud/client'
 import '@phosphor-icons/webcomponents/dist/icons/PhArrowClockwise.mjs'
 import type { AnyOrama } from '@orama/orama'
 import { initStore, removeAllStores } from '@/ParentComponentStore/ParentComponentStoreManager'
-import { CollectionManager } from '@orama/core'
-import { ChatStoreType } from '@/ParentComponentStore/ChatStore'
+import type { CollectionManager } from '@orama/core'
+import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
 import { OramaCoreChatService } from '@/services/OramaCoreChatService'
 
 @Component({

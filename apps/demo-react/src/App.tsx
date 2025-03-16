@@ -2,9 +2,20 @@ import { OramaChatBox, OramaSearchBox, OramaSearchButton } from '@orama/react-co
 import './App.css'
 
 import { BrowserRouter, Routes, Route, NavLink, useNavigate } from 'react-router'
+import { CollectionManager } from '@orama/core'
 
 const API_KEY = 'LerNlbp6379jVKaPs4wt2nZT4MJZbU1J'
 const ENDPOINT = 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd'
+const readAPIKey = 'dedcb9323d0ae3c9eeb6ea91ffa787fa76e8e5e49a42d109a42b9792860e14ef'
+
+const ORAMACORE_URL = 'http://35.247.18.91:8080'
+const COLLECTION_NAME = 'tanstack-test-ui-components'
+
+const collection = new CollectionManager({
+  url: ORAMACORE_URL,
+  collectionID: COLLECTION_NAME,
+  readAPIKey,
+})
 
 function App() {
   return (
@@ -34,10 +45,11 @@ const ChatBoxPage = () => {
         <h2 style={{ textAlign: 'center' }}>CHAT BOX</h2>
         <div className="component-row">
           <OramaChatBox
-            index={{
-              api_key: API_KEY,
-              endpoint: ENDPOINT,
-            }}
+            // index={{
+            //   api_key: API_KEY,
+            //   endpoint: ENDPOINT,
+            // }}
+            clientInstance={collection}
             style={{ height: '600px' }}
             onAnswerSourceClick={(e: Event) => console.log(e)}
             onAnswerGenerated={(e: Event) => console.log(e)}

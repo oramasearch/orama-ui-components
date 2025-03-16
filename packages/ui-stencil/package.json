@@ -25,7 +25,7 @@
   },
   "types": "dist/types/index.d.ts",
   "dependencies": {
-    "@orama/core": "^0.0.2",
+    "@orama/core": "^0.0.5",
     "@orama/highlight": "^0.1.6",
     "@orama/orama": "^3.0.0",
     "@orama/switch": "^3.0.0",
