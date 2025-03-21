@@ -4,6 +4,7 @@ TODO: We'll make this task automatic in the future
 */
 
 @use 'sass:color';
+@use 'sass:map';
 
 /**
 * * PRIMITIVE COLORS
@@ -168,5 +169,5 @@ $elementColorsDark: (
   ),
 );
 
-$palette: map-merge($semanticColors, $elementColors);
-$paletteDark: map-merge($semanticColorsDark, $elementColorsDark);
+$palette: map.merge($semanticColors, $elementColors);
+$paletteDark: map.merge($semanticColorsDark, $elementColorsDark);
