@@ -1,0 +1,58 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Install pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 8
+        
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'pnpm'
+        
+    - name: Verify pnpm installation
+      run: pnpm --version
+        
+    - name: Install dependencies
+      run: pnpm install --no-frozen-lockfile
+      
+    - name: Build packages
+      run: pnpm build
+
+    - name: Cache Cypress binary
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cache/Cypress
+          packages/e2e-tests/node_modules/.cache/Cypress
+        key: ${{ runner.os }}-cypress-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-cypress-
+        
+    - name: Install Cypress binary
+      working-directory: packages/e2e-tests
+      run: |
+        pnpm cypress install
+        pnpm cypress verify
+        
+    - name: Run Cypress tests
+      run: |
+        pnpm test:e2e:react

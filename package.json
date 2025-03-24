@@ -16,7 +16,12 @@
     "lint": "turbo run lint",
     "maintenance": "turbo run maintenance",
     "publish:packages": "node scripts/release.mjs",
-    "convert-scss-to-js": "cd packages/ui-stencil && node extract-scss-vars.js"
+    "convert-scss-to-js": "cd packages/ui-stencil && node extract-scss-vars.js",
+    "test:e2e": "pnpm --filter=e2e-tests test:all",
+    "test:e2e:react": "pnpm --filter=e2e-tests test:react",
+    "test:e2e:nextjs": "pnpm --filter=e2e-tests test:nextjs",
+    "test:e2e:vue": "pnpm --filter=e2e-tests test:vue",
+    "cy:open": "pnpm --filter=e2e-tests cy:open"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
