@@ -1,0 +1,126 @@
+{
+  "count": 111,
+  "elapsed": { "raw": 0, "formatted": "0ms" },
+  "hits": [
+    {
+      "id": "114",
+      "score": 17.339209853435904,
+      "document": {
+        "category": "Cloud",
+        "content": "User segmentation is a feature that allows you to create and manage user segments based on user attributes, events, or other criteria. You can then use these segments to target users with personalized answers, content, campaigns, or other actions. In the following guide, we’ll be exploring how to create user segments for three different Personas: Evaluator, Buyer, and Gamer. If you’re new to the concept of “Personas”, we recommend reading the interaction-design.org guide Personas – A Simple Introduction\n.",
+        "id": "114",
+        "path": "/cloud/audience-management/user-segmentation#user-segmentation",
+        "section": "Cloud",
+        "title": "User Segmentation"
+      }
+    },
+    {
+      "id": "116",
+      "score": 17.33912189384786,
+      "document": {
+        "category": "Cloud",
+        "content": "Depending on your plan, you can create more or fewer segments and triggers: Plan: Free; Number of segments: 3; Number of triggers: 3 per index\nPlan: Hobby; Number of segments: 5; Number of triggers: 10 per index\nPlan: Pro; Number of segments: 10; Number of triggers: 50 per index\nPlan: Premium; Number of segments: 25; Number of triggers: 100 per index\nPlan: Enterprise; Number of segments: Unlimited; Number of triggers: Unlimited\n Let’s start by creating the Evaluator segment. Here we will write an exhaustive description of the segment, including the user’s behavior and attributes. Remember, the more detailed the description, the better you can target your users. We will also write a goal for the segment. This will help Orama understand how to drive the conversation based on the user’s behavior. For example, if the user is an Evaluator, we want to provide them with more information about the games and try to convert them into Buyers or prompt them to subscribe to a newsletter. Once we’ve created the Evaluator segment, we can start creating the Buyer segment. Here we will write a different description and goal for the segment. Once we’ve created the Buyer segment, we can move on to the Gamer segment, and eventually, this is how the dashboard will look like: Now that we have our segments set up, we can start creating triggers to target users based on their behavior. We’ll cover triggers in the next guide.",
+        "id": "116",
+        "path": "/cloud/audience-management/user-segmentation#creating-new-segments",
+        "section": "Cloud",
+        "title": "Creating new segments"
+      }
+    },
+    {
+      "id": "119",
+      "score": 17.339121891163504,
+      "document": {
+        "category": "Cloud",
+        "content": "In the previous guide, we created three user segments: Evaluator, Buyer, and Gamer. In short, these segments are defined as follows: Evaluator: a user who is interested in learning more about the games. They make questions and comparisons among games. Buyer: a user that is looking for a game to buy, but is not quite sure about what they’re looking for. They frequently ask generic questions about a game, then change to another, and can’t decide which one is best for them. Gamer: an experienced user who already knows what they’re looking for. They ask precise questions about specific games. If you followed the previous guide and created these segments, this is how your segments view will look like: Now that we created some segments, we can create triggers to target users based on their behavior. Remember, triggers and segments are subject to your plan’s limitations. You can check the number of segments and triggers you can create based on your plan in the User Segmentation guide. We will start by creating our first trigger for the Evaluator segment. Just click on the segment card to open the segment view: To get started, click on the “Add trigger” button, and compile the form with the following information: As you can see, we’re explicitly telling Orama to reply with a specific table containing some specific links when the user asks for a comparison between two or more games. This way, we can provide the user with the information they’re looking for, and also prompt them to take action based on the information we’re providing. Now we can create triggers for the Buyer and Gamer segments. Just click on the segment card to open the segment view and repeat the process!",
+        "id": "119",
+        "path": "/cloud/audience-management/triggers#creating-new-triggers",
+        "section": "Cloud",
+        "title": "Creating new triggers"
+      }
+    },
+    {
+      "id": "268",
+      "score": 11.574514713068831,
+      "document": {
+        "category": "Cloud",
+        "content": "Creating a new index is extremely simple. When creating your first index, you have the option to: import a static file (either JSON or CSV) connect to an e-commerce platform (we currently support Shopify and Elasticpath) install a native plugin for your app (like Strapi or Docusaurus) or implement your custom HTTP integration by connecting your Orama Cloud Index using Remote JSON or REST APIs datasources and our Official SDKs.",
+        "id": "268",
+        "path": "/cloud/working-with-indexes/create-a-new-index#create-a-new-index",
+        "section": "Cloud",
+        "title": "Create a new index"
+      }
+    },
+    {
+      "id": "270",
+      "score": 11.574514713068831,
+      "document": {
+        "category": "Cloud",
+        "content": "For this guide, we will use a JSON file. You can follow along using this dataset. Let’s start. Click on “Import from files”, and complete the next screen as you prefer.Once you click on “Create index”, Orama will create an empty index for you. Here you can upload a JSON file, and Orama will show you a preview of the first document found in it. You can use this information to write the searchable properties schema.Remember that you can only perform search and filter through properties that are present in the search schema.\nTo make Orama faster, read the Optimizing Orama: Schema Optimization article on our blog. Now you only need to determine how you want to perform vector/hybrid search on your index. You can use Orama embedding models or OpenAI ones. Refer to Embeddings Generation to learn more about this feature.\nIf you’re unsure about which model to use, we recommend using the Orama AI embeddings, as they are free, faster and more optimized than OpenAI’s.\norama/gte-small is the default embedding model, and we highly recommend using this model for most use cases. If you need more powerful embeddings, you can use the orama/gte-medium or orama/gte-large models, as well as OpenAI’s ones. Once you selected the properties to generate the embeddings from, click on “Save and deploy” to release your index. After the deployment process is finished, you’ll be able to see an endpoint and a public API key. You can use these two parameters for performing search using the Orama Client SDK.\nTo update your index, simply upload a new JSON file with the same schema (or edit the schema accordingly with your new data) and click on “Save and deploy” again. Let’s start. Click on “Import from files”, and complete the next screen as you prefer. Once you click on “Create index”, Orama will create an empty index for you. Here you can upload a JSON file, and Orama will show you a preview of the first document found in it. You can use this information to write the searchable properties schema. Remember that you can only perform search and filter through properties that are present in the search schema.\nTo make Orama faster, read the Optimizing Orama: Schema Optimization article on our blog. Now you only need to determine how you want to perform vector/hybrid search on your index. You can use Orama embedding models or OpenAI ones. Refer to Embeddings Generation to learn more about this feature.\nIf you’re unsure about which model to use, we recommend using the Orama AI embeddings, as they are free, faster and more optimized than OpenAI’s.\norama/gte-small is the default embedding model, and we highly recommend using this model for most use cases. If you need more powerful embeddings, you can use the orama/gte-medium or orama/gte-large models, as well as OpenAI’s ones. Once you selected the properties to generate the embeddings from, click on “Save and deploy” to release your index. After the deployment process is finished, you’ll be able to see an endpoint and a public API key. You can use these two parameters for performing search using the Orama Client SDK.\nTo update your index, simply upload a new JSON file with the same schema (or edit the schema accordingly with your new data) and click on “Save and deploy” again.",
+        "id": "270",
+        "path": "/cloud/working-with-indexes/create-a-new-index#tutorial",
+        "section": "Cloud",
+        "title": "Tutorial"
+      }
+    },
+    {
+      "id": "267",
+      "score": 11.574514713068831,
+      "document": {
+        "category": "Cloud",
+        "content": "Overview Select a Data Source Tutorial",
+        "id": "267",
+        "path": "/cloud/working-with-indexes/create-a-new-index#on-this-page",
+        "section": "Cloud",
+        "title": "On this page"
+      }
+    },
+    {
+      "id": "269",
+      "score": 11.574514713068831,
+      "document": {
+        "category": "Cloud",
+        "content": "Where do you want to import your data from?",
+        "id": "269",
+        "path": "/cloud/working-with-indexes/create-a-new-index#select-a-data-source",
+        "section": "Cloud",
+        "title": "Select a Data Source"
+      }
+    },
+    {
+      "id": "341",
+      "score": 11.574514713068831,
+      "document": {
+        "category": "Open Source",
+        "content": "We can create a new instance (from now on database) with an indexing schema.\nThe schema represents the searchable properties of the document to be inserted.\nNot all properties need to be indexed, but only those that we want to be able to search for. If you want to learn more and see real-world examples, check out this blog post we wrote about schema optimization.",
+        "id": "341",
+        "path": "/open-source/usage/create#create-a-new-orama-instance",
+        "section": "Open Source",
+        "title": "Create a new Orama instance"
+      }
+    },
+    {
+      "id": "459",
+      "score": 11.574514713068831,
+      "document": {
+        "category": "Open Source",
+        "content": "If you want to create a new component, you first have to define your component in the ObjectComponents or FunctionComponents interfaces in src/types.ts. In case of object components, the definition should be a new interface defined in the same file. As convention, start the interface with the letter I. Example: \n\ninterface IShiningDetector {   isShining(): SyncOrAsyncValue<boolean> }\nexport interface ObjectComponents {  tokenizer: Tokenizer | TokenizerConfig  index: IIndex  documentsStore: IDocumentsStore shiningDetector: IShiningDetector}\n\n Remember that all functions used in Orama’s components can be async, so we advise to use the SyncOrAsyncValue for their return value.\nThis also implies that when you invoke this function you should always use await to make sure the function is correctly handled whether it is async or not.",
+        "id": "459",
+        "path": "/open-source/internals/components#step-1-define-a-new-interface",
+        "section": "Open Source",
+        "title": "Step 1: Define a new interface"
+      }
+    },
+    {
+      "id": "462",
+      "score": 11.574514713068831,
+      "document": {
+        "category": "Open Source",
+        "content": "Update the create method in src/methods/create.ts to use the component provided in the options, or create a new one using the object or factory function defined in the previous step. If you added a field to the Data interface, also provide the initial value. Example: \n\nimport { createShiningDetector } from '../components/shiningDetector.js'\nexport async function create({ schema, language, components }: CreateArguments): Promise<Orama> {\n  // ...\n  const orama = {    data: {},    caches: {},    // ...   shiningDetector: components.shiningDetector ?? createShiningDetector()  } as Orama\n  orama.data = {    index: await orama.index.create(orama, schema),    docs: await orama.documentsStore.create(orama),    shining: { Paolo: 10 }  }",
+        "id": "462",
+        "path": "/open-source/internals/components#step-4-update-the-create-method",
+        "section": "Open Source",
+        "title": "Step 4: Update the create method"
+      }
+    }
+  ]
+}

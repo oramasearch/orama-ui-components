@@ -20,6 +20,26 @@
       "persistent": true,
       "outputs": []
     },
+    "test:e2e": {
+      "dependsOn": ["^build"],
+      "outputs": ["cypress/videos/**", "cypress/screenshots/**"],
+      "inputs": ["cypress/**"]
+    },
+    "test:e2e:react": {
+      "dependsOn": ["^build", "demo-react#build"],
+      "outputs": ["cypress/videos/**", "cypress/screenshots/**"],
+      "inputs": ["cypress/**"]
+    },
+    "test:e2e:nextjs": {
+      "dependsOn": ["^build", "demo-nextjs#build"],
+      "outputs": ["cypress/videos/**", "cypress/screenshots/**"],
+      "inputs": ["cypress/**"]
+    },
+    "test:e2e:vue": {
+      "dependsOn": ["^build", "demo-vue#build"],
+      "outputs": ["cypress/videos/**", "cypress/screenshots/**"],
+      "inputs": ["cypress/**"]
+    },
     "demo-react#dev": {
       "cache": true,
       "persistent": true,

@@ -39,3 +39,11 @@ yarn-error.log*
 # Sentil
 **/stencil-generated/*
 !**/stencil-generated/.gitkeep
+
+# cypress
+**/cypress/screenshots/*
+**/cypress/videos/*
+**/cypress/downloads/*
+**/cypress/screenshots/.gitkeep
+**/cypress/videos/.gitkeep
+**/cypress/downloads/.gitkeep

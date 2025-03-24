@@ -1,0 +1,1770 @@
+[
+  {
+    "event": "message",
+    "data": {
+      "type": "conversation-metadata",
+      "message": {},
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "sources",
+      "message": [
+        {
+          "id": "115",
+          "score": 0.699999988079071,
+          "document": {
+            "category": "Cloud",
+            "content": "Once you create an index and set up the answer engine, you may realize that you’d like to give different users different answers based on their behavior or attributes. For example, you may want to prompt a user to sign up for a newsletter if they keep asking for your product’s latest updates. Or you may want to convert a user into a subscriber if they’ve asked about your pricing multiple times. This is where user segments come in. You can create a segment for each of these user types and then use these segments to trigger different answers or actions based on the user’s behavior. In our example, we have a database of NES games and we want to create three user segments: Evaluator, Buyer, and Gamer. Evaluator: Users who are interested in learning more about the games. Buyer: Users who are interested in purchasing the games. Gamer: Users who are interested in playing the games. If you want to follow along with this guide, you can create an index following the REST API guide, which will allow you to use the same data source and schema as we do in this guide. Once you have your index set up, this is what you’ll see: On the left side, you’ll see the “audience” tab. Click on it to start creating your segments.",
+            "id": "115",
+            "path": "/cloud/audience-management/user-segmentation#introduction-to-segments",
+            "section": "Cloud",
+            "title": "Introduction to segments"
+          }
+        },
+        {
+          "id": "114",
+          "score": 0.4166666865348816,
+          "document": {
+            "category": "Cloud",
+            "content": "User segmentation is a feature that allows you to create and manage user segments based on user attributes, events, or other criteria. You can then use these segments to target users with personalized answers, content, campaigns, or other actions. In the following guide, we’ll be exploring how to create user segments for three different Personas: Evaluator, Buyer, and Gamer. If you’re new to the concept of “Personas”, we recommend reading the interaction-design.org guide Personas – A Simple Introduction\n.",
+            "id": "114",
+            "path": "/cloud/audience-management/user-segmentation#user-segmentation",
+            "section": "Cloud",
+            "title": "User Segmentation"
+          }
+        },
+        {
+          "id": "112",
+          "score": 0.23333333432674408,
+          "document": {
+            "category": "Cloud",
+            "content": "Audience management is a feature that allows you to create and manage user segments and triggers. You can think of user segments as “Personas” or “Audiences” that you can define based on user attributes, events, or other criteria. You can then use these segments to target users with personalized answers, content, campaigns, or other actions. Orama allows you to create user segments and triggers on all of your indexes. To use these features, you’ll first need to create an index and learn how to use Orama answer engine features.",
+            "id": "112",
+            "path": "/cloud/audience-management/introduction#audience-management-an-introduction",
+            "section": "Cloud",
+            "title": "Audience management, an introduction"
+          }
+        },
+        {
+          "id": "116",
+          "score": 0.15833333134651184,
+          "document": {
+            "category": "Cloud",
+            "content": "Depending on your plan, you can create more or fewer segments and triggers: Plan: Free; Number of segments: 3; Number of triggers: 3 per index\nPlan: Hobby; Number of segments: 5; Number of triggers: 10 per index\nPlan: Pro; Number of segments: 10; Number of triggers: 50 per index\nPlan: Premium; Number of segments: 25; Number of triggers: 100 per index\nPlan: Enterprise; Number of segments: Unlimited; Number of triggers: Unlimited\n Let’s start by creating the Evaluator segment. Here we will write an exhaustive description of the segment, including the user’s behavior and attributes. Remember, the more detailed the description, the better you can target your users. We will also write a goal for the segment. This will help Orama understand how to drive the conversation based on the user’s behavior. For example, if the user is an Evaluator, we want to provide them with more information about the games and try to convert them into Buyers or prompt them to subscribe to a newsletter. Once we’ve created the Evaluator segment, we can start creating the Buyer segment. Here we will write a different description and goal for the segment. Once we’ve created the Buyer segment, we can move on to the Gamer segment, and eventually, this is how the dashboard will look like: Now that we have our segments set up, we can start creating triggers to target users based on their behavior. We’ll cover triggers in the next guide.",
+            "id": "116",
+            "path": "/cloud/audience-management/user-segmentation#creating-new-segments",
+            "section": "Cloud",
+            "title": "Creating new segments"
+          }
+        },
+        {
+          "id": "119",
+          "score": 0.12999999523162842,
+          "document": {
+            "category": "Cloud",
+            "content": "In the previous guide, we created three user segments: Evaluator, Buyer, and Gamer. In short, these segments are defined as follows: Evaluator: a user who is interested in learning more about the games. They make questions and comparisons among games. Buyer: a user that is looking for a game to buy, but is not quite sure about what they’re looking for. They frequently ask generic questions about a game, then change to another, and can’t decide which one is best for them. Gamer: an experienced user who already knows what they’re looking for. They ask precise questions about specific games. If you followed the previous guide and created these segments, this is how your segments view will look like: Now that we created some segments, we can create triggers to target users based on their behavior. Remember, triggers and segments are subject to your plan’s limitations. You can check the number of segments and triggers you can create based on your plan in the User Segmentation guide. We will start by creating our first trigger for the Evaluator segment. Just click on the segment card to open the segment view: To get started, click on the “Add trigger” button, and compile the form with the following information: As you can see, we’re explicitly telling Orama to reply with a specific table containing some specific links when the user asks for a comparison between two or more games. This way, we can provide the user with the information they’re looking for, and also prompt them to take action based on the information we’re providing. Now we can create triggers for the Buyer and Gamer segments. Just click on the segment card to open the segment view and repeat the process!",
+            "id": "119",
+            "path": "/cloud/audience-management/triggers#creating-new-triggers",
+            "section": "Cloud",
+            "title": "Creating new triggers"
+          }
+        },
+        {
+          "id": "118",
+          "score": 0.10000000149011612,
+          "document": {
+            "category": "Cloud",
+            "content": "Triggers are a feature that allows you to create and manage triggers based on user segments. You can think of triggers as “Events” or “Actions” that you can define based on user attributes, events, or other criteria. You can then use these triggers to target users with personalized answers, content, campaigns, or other actions. If you haven’t already, we recommend following the guide on User Segmentation to create user segments before creating triggers.",
+            "id": "118",
+            "path": "/cloud/audience-management/triggers#triggers",
+            "section": "Cloud",
+            "title": "Triggers"
+          }
+        },
+        {
+          "id": "113",
+          "score": 0.07500000298023224,
+          "document": {
+            "category": "Cloud",
+            "content": "Overview Introduction to segments Creating new segments",
+            "id": "113",
+            "path": "/cloud/audience-management/user-segmentation#on-this-page",
+            "section": "Cloud",
+            "title": "On this page"
+          }
+        },
+        {
+          "id": "289",
+          "score": 0.05384615436196327,
+          "document": {
+            "category": "Cloud",
+            "content": "Audience management is available on all plans. You can create an up to 5 user segments and 3 triggers on each of your indexes with the Free plan.",
+            "id": "289",
+            "path": "/cloud/understanding-orama/pricing-limits#audience-management",
+            "section": "Cloud",
+            "title": "Audience Management"
+          }
+        }
+      ],
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "related-queries",
+      "message": [],
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": "To",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " create",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " a",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " user",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " segment",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": ",",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " you",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " will",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " first",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " need",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " to",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " have",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " your",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " index",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " set",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " up",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": ".",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " Once",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " that",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " is",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " done",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": ",",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " follow",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " these",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " steps",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": ":\n\n",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": "1",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": ".",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " Navigate",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " to",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " the",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " \"",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": "aud",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": "ience",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": "\"",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " tab",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " in",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " your",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " dashboard",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": ".\n",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": "2",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": ".",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " Click",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " on",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " the",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " option",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " to",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " create",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " a",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " new",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " segment",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": ".\n",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": "3",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": ".",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " Provide",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " a",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " detailed",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " description",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " of",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " the",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " segment",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": ",",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " including",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " the",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " user",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": "’s",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " behavior",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " and",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " attributes",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": ".",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " For",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " example",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": ",",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " if",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " you",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " are",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " creating",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " an",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " \"",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": "Evaluator",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": "\"",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " segment",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": ",",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " you",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " might",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " describe",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " it",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " as",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " users",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " who",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " are",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " interested",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " in",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " learning",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " more",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " about",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " the",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " games",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " and",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " frequently",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " ask",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " questions",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " and",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " comparisons",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " among",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " them",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": ".\n",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": "4",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": ".",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " Set",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " a",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " goal",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " for",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " the",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " segment",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " to",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " help",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " guide",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " the",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " interactions",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": ".",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " For",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " instance",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": ",",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " you",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " might",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " want",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " to",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " convert",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " Evalu",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": "ators",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " into",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " Buyers",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " or",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " prompt",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " them",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " to",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " subscribe",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " to",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " a",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " newsletter",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": ".\n",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": "5",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": ".",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " Save",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " the",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " segment",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": ".\n\n",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": "You",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " can",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " create",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " different",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " segments",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " such",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " as",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " \"",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": "Buyer",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": "\"",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " and",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " \"",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": "G",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": "amer",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": "\"",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " by",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " following",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " the",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " same",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " process",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": ",",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " ensuring",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " each",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " has",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " a",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " unique",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " description",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " and",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " goal",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " tailored",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " to",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " their",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " specific",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": " behaviors",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "type": "text",
+      "message": ".",
+      "endOfBlock": false,
+      "interactionId": "vwz1mm7banm147zemniw0cxn"
+    }
+  }
+]

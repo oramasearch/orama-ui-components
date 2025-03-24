@@ -1,0 +1,25 @@
+{
+  "name": "e2e-tests",
+  "version": "0.5.1",
+  "private": true,
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "test:react": "start-server-and-test 'pnpm --filter demo-react dev' http://localhost:5173 cy:run",
+    "test:nextjs": "start-server-and-test 'pnpm --filter demo-nextjs dev' http://localhost:3000 cy:run",
+    "test:vue": "start-server-and-test 'pnpm --filter demo-vue dev' http://localhost:5174 cy:run",
+    "test:all": "pnpm test:react && pnpm test:nextjs && pnpm test:vue",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@testing-library/cypress": "10.0.3",
+    "@types/node": "22.13.11",
+    "cypress": "14.2.0",
+    "dotenv": "16.4.7",
+    "start-server-and-test": "2.0.11",
+    "typescript": "5.8.2"
+  }
+}
