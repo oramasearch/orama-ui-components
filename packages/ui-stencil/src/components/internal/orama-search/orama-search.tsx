@@ -1,5 +1,5 @@
 import { Component, Host, Listen, State, Watch, h, Element, Prop, type EventEmitter, Event } from '@stencil/core'
-import type { OnAnswerGeneratedCallbackProps, OnSearchCompletedCallbackProps, SearchResult } from '@/types'
+import type { OnAnswerGeneratedCallbackProps, OnSearchCompletedCallbackProps, SearchResult, TextDictionary } from '@/types'
 import type { HighlightOptions } from '@orama/highlight'
 import { Store } from '@/StoreDecorator'
 import type { SearchStoreType } from '@/ParentComponentStore/SearchStore'
@@ -23,6 +23,7 @@ export class OramaSearch {
   @Prop() disableChat?: boolean = false
   @Prop() highlightTitle?: HighlightOptions | false = false
   @Prop() highlightDescription?: HighlightOptions | false = false
+  @Prop() textDictionary?: Partial<TextDictionary>
 
   @State() selectedFacet = ''
 
@@ -110,6 +111,7 @@ export class OramaSearch {
             highlightDescription={this.highlightDescription}
             loading={this.searchStore.state.loading}
             error={this.searchStore.state.error}
+            textDictionary={this.textDictionary}
           />
         </div>
       </Host>

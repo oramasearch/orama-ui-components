@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/web-components'
-import type { Components } from '@orama/wc-components'
+import type { Components, TextDictionary } from '@orama/wc-components'
 import demoIndexes from '../config'
 import { html } from 'lit-html'
 import type { DemoIndexConfig } from '../config'
@@ -50,6 +50,14 @@ const meta: Meta<Components.OramaSearchBox & { preset: keyof DemoIndexConfig }> 
       },
       control: { type: 'radio' },
     },
+    textDictionary: {
+      control: { type: 'object' },
+      description: 'Dictionary of text strings used in the component',
+      table: {
+        type: { summary: 'Partial<TextDictionary>' },
+        defaultValue: { summary: '{}' },
+      }
+    },
     disableChat: {
       control: { type: 'boolean', defaultValue: false },
       table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
@@ -81,6 +89,23 @@ const Template = ({
   sourceBaseUrl,
   sourcesMap,
   resultMap,
+  textDictionary,
+}: {
+  preset: DemoIndexConfig
+  chatPlaceholder?: string
+  searchPlaceholder?: string
+  colorScheme?: 'light' | 'dark' | 'system'
+  disableChat?: boolean
+  suggestions?: string[]
+  open?: boolean
+  facetProperty?: string
+  themeConfig?: any
+  index?: any
+  clientInstance?: any
+  sourceBaseUrl?: string
+  sourcesMap?: any
+  resultMap?: any
+  textDictionary?: Partial<TextDictionary>
 }) => {
   return html`<div>
       <div style="width: 240px">
@@ -101,6 +126,7 @@ const Template = ({
       .disableChat=${disableChat}
       .chatPlaceholder=${chatPlaceholder}
       .searchPlaceholder=${searchPlaceholder}
+      .textDictionary=${textDictionary}
       .highlightTitle=${preset?.highlightTitle}
       .highlightDescription=${preset?.highlightDescription}
       .linksTarget=${preset?.linksTarget}
@@ -124,6 +150,23 @@ const TemplateAsEmbed = ({
   sourceBaseURL,
   suggestions,
   sourcesMap,
+  textDictionary,
+}: {
+  preset: DemoIndexConfig
+  chatPlaceholder?: string
+  searchPlaceholder?: string
+  colorScheme?: 'light' | 'dark' | 'system'
+  disableChat?: boolean
+  open?: boolean
+  facetProperty?: string
+  resultMap?: any
+  themeConfig?: any
+  index?: any
+  clientInstance?: any
+  sourceBaseURL?: string
+  suggestions?: string[]
+  sourcesMap?: any
+  textDictionary?: Partial<TextDictionary>
 }) => {
   return html`<div style="height: 420px">
     <orama-search-box
@@ -142,6 +185,7 @@ const TemplateAsEmbed = ({
       .disableChat=${disableChat}
       .chatPlaceholder=${chatPlaceholder}
       .searchPlaceholder=${searchPlaceholder}
+      .textDictionary=${textDictionary}
       .highlightTitle=${preset?.highlightTitle}
       .highlightDescription=${preset?.highlightDescription}
       .linksTarget=${preset?.linksTarget}
@@ -159,6 +203,22 @@ export const SearchBoxAsModal: Story = {
     preset: 'orama',
     colorScheme: 'light',
     disableChat: false,
+    textDictionary: {
+      searchPlaceholder: 'Search our documentation...',
+      chatPlaceholder: 'Ask our AI assistant...',
+      noResultsFound: 'We couldn\'t find any results',
+      noResultsFoundFor: 'for',
+      suggestions: 'You might want to try',
+      seeAll: 'View all results',
+      addMore: 'Load more',
+      clearChat: 'Reset conversation',
+      errorMessage: 'Oops! Something went wrong with your search.',
+      disclaimer: 'AI-generated responses may not always be accurate.',
+      startYourSearch: 'Begin your search',
+      initErrorSearch: 'Search service initialization failed',
+      initErrorChat: 'Chat service initialization failed',
+      chatButtonLabel: 'Get AI summary'
+    }
   },
 }
 
@@ -167,7 +227,22 @@ export const SearchBoxAsEmbed: Story = {
   args: {
     preset: 'orama',
     colorScheme: 'light',
-    chatPlaceholder: 'Ask me anything...',
     disableChat: false,
+    textDictionary: {
+      searchPlaceholder: 'Search our documentation...',
+      chatPlaceholder: 'Ask our AI assistant...',
+      noResultsFound: 'We couldn\'t find any results',
+      noResultsFoundFor: 'for',
+      suggestions: 'You might want to try',
+      seeAll: 'View all results',
+      addMore: 'Load more',
+      clearChat: 'Reset conversation',
+      errorMessage: 'Oops! Something went wrong with your search.',
+      disclaimer: 'AI-generated responses may not always be accurate.',
+      startYourSearch: 'Begin your search',
+      initErrorSearch: 'Search service initialization failed',
+      initErrorChat: 'Chat service initialization failed',
+      chatButtonLabel: 'Get AI summary'
+    }
   },
 }
