@@ -13,6 +13,10 @@
   }
 }
 
+dialog {
+  border: none;
+}
+
 .modal-content {
   display: flex;
   background-color: var(--background-color-primary, background-color('primary'));
