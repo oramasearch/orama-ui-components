@@ -170,6 +170,14 @@ export namespace Components {
     interface OramaFooter {
         "class"?: string;
         "colorScheme"?: Omit<ColorScheme, 'system'>;
+        /**
+          * Whether to show keyboard shortcuts in the footer
+         */
+        "showKeyboardShortcuts"?: boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "show-keyboard-shortcuts"?: boolean;
     }
     interface OramaInput {
         "autoFocus"?: boolean;
@@ -386,6 +394,14 @@ export namespace Components {
          * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
          */
         "search-placeholder"?: string;
+        /**
+          * Show keyboard shortcuts in the footer
+         */
+        "showKeyboardShortcuts"?: boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "show-keyboard-shortcuts"?: boolean;
         /**
           * Used to provide source base URL for the Search Results
          */
@@ -1061,6 +1077,14 @@ declare namespace LocalJSX {
     interface OramaFooter {
         "class"?: string;
         "colorScheme"?: Omit<ColorScheme, 'system'>;
+        /**
+          * Whether to show keyboard shortcuts in the footer
+         */
+        "showKeyboardShortcuts"?: boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "show-keyboard-shortcuts"?: boolean;
     }
     interface OramaInput {
         "autoFocus"?: boolean;
@@ -1319,6 +1343,14 @@ declare namespace LocalJSX {
          * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
          */
         "search-placeholder"?: string;
+        /**
+          * Show keyboard shortcuts in the footer
+         */
+        "showKeyboardShortcuts"?: boolean;
+        /**
+         * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
+         */
+        "show-keyboard-shortcuts"?: boolean;
         /**
           * Used to provide source base URL for the Search Results
          */

@@ -1,5 +1,8 @@
 import { Component, Prop, h, Element, Host } from '@stencil/core'
 import type { ColorScheme } from '@/types'
+import '@phosphor-icons/webcomponents/dist/icons/PhArrowBendDownLeft.mjs'
+import '@phosphor-icons/webcomponents/dist/icons/PhArrowUp.mjs'
+import '@phosphor-icons/webcomponents/dist/icons/PhArrowDown.mjs'
 
 @Component({
   tag: 'orama-footer',
@@ -15,9 +18,18 @@ export class OramaFooter {
 
   @Prop() class?: string
   @Prop() colorScheme?: Omit<ColorScheme, 'system'> = 'light'
+  /** Whether to show keyboard shortcuts in the footer */
+  @Prop() showKeyboardShortcuts?: boolean = false
 
   private poweredByDestinationUrl: string
   private linkTarget = '_blank'
+
+  /** Keyboard shortcuts to display */
+  private keyboardShortcuts = [
+    { name: 'select', key: 'Enter', icon: 'arrow-bend-down-left', description: 'to select' },
+    { name: 'navigate', key: '↑ ↓', icon: 'arrows-vertical', description: 'to navigate' },
+    { name: 'close', key: 'Esc', icon: 'esc', description: 'to close' },
+  ]
 
   componentWillLoad() {
     const utmSource = encodeURIComponent(window.location.hostname)
@@ -27,10 +39,56 @@ export class OramaFooter {
     }
   }
 
+  private renderIcon(shortcut: { name: string; icon: string }) {
+    // Special case for ESC key
+    if (shortcut.icon === 'esc') {
+      return (
+        <div>
+          <span class="shortcut-icon">
+          <span class="esc-text">esc</span>
+          </span>
+        </div>
+      )
+    }
+    
+    // For Phosphor icons
+    switch (shortcut.icon) {
+      case 'arrow-bend-down-left':
+        return (
+          <span class="shortcut-icon">
+            <ph-arrow-bend-down-left size={12} />
+          </span>
+        );
+      case 'arrows-vertical':
+        return (
+          <div class="arrows-container">
+            <span class="shortcut-icon">
+              <ph-arrow-up size={12} />
+            </span>
+            <span class="shortcut-icon">
+              <ph-arrow-down size={12} />
+            </span>
+          </div>
+        );
+      default:
+        return null;
+    }
+  }
+
   render() {
     const imgName = this.colorScheme === 'dark' ? 'orama-when-dark.svg' : 'orama-when-light.svg'
     return (
       <Host>
+        {this.showKeyboardShortcuts && (
+          <div class="keyboard-shortcuts" aria-label="Keyboard shortcuts">
+            {this.keyboardShortcuts.map((shortcut) => (
+              <div class="shortcut-item">
+                {this.renderIcon(shortcut)}
+                <span class="shortcut-description">{shortcut.description}</span>
+              </div>
+            ))}
+          </div>
+        )}
         <div class="powered-by">
           <a href={this.poweredByDestinationUrl} target={this.linkTarget} rel="noopener noreferrer" class="logo-link">
             <orama-text as="small">Powered by</orama-text>
