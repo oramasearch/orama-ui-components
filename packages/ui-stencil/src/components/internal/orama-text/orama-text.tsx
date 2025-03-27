@@ -36,10 +36,10 @@ export class OramaText implements TextProps {
   @Prop() variant: TextProps['variant'] = 'primary'
   @Prop() inactive?: TextProps['inactive']
 
-  @State() defaultStyle: string =
-    this.styledAs === 'span' || this.styledAs === 'small' || this.styledAs === 'p' ? this.styledAs : this.as
-
   render() {
+    const defaultStyle =
+      this.styledAs === 'span' || this.styledAs === 'small' || this.styledAs === 'p' ? this.styledAs : this.as
+
     const Tag = this.as
     const declaredProps = ['as', 'styled-as', 'class']
     const textProps = getNonExplicitAttributes(this.el, declaredProps)
@@ -47,9 +47,9 @@ export class OramaText implements TextProps {
     return (
       <Tag
         class={{
-          [this.defaultStyle]: true,
+          [defaultStyle]: true,
           [`text-${this.align}`]: !!this.align,
-          [`${this.defaultStyle}-${this.variant}`]: true,
+          [`${defaultStyle}-${this.variant}`]: true,
           'text-inactive': !!this.inactive,
           'text-bold': !!this.bold,
           [this.class]: !!this.class,
