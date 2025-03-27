@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "stencil-design-system",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "scripts": {
     "build": "pnpm convert-scss-to-js && turbo run build",
     "build:storybook": "turbo run build --filter=storybook",
