@@ -39,10 +39,6 @@ export class OramaSearch {
   private chatStore: ChatStoreType
 
   doSearch() {
-    if (!this.globalStore.state.currentTerm) {
-      return
-    }
-
     this.searchStore.state.searchService.search(this.globalStore.state.currentTerm, this.selectedFacet, {
       onSearchCompletedCallback: (onSearchCompletedCallbackProps) => {
         this.searchCompleted.emit(onSearchCompletedCallbackProps)
