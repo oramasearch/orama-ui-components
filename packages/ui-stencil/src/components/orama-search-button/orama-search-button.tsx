@@ -82,6 +82,10 @@ export class OramaSearchButton {
     this.schemaQuery.removeEventListener('change', this.onPrefersColorSchemeChange)
   }
 
+  componentWillLoad() {
+    this.updateTheme()
+  }
+
   render() {
     return (
       <Host>
