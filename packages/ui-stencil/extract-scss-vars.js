@@ -25,17 +25,17 @@ function createTempColorsFile() {
     .replace(/:/g, ':')
 
   const tempColorsContent = `
-  @import 'colors';
+  @use 'colors';
 
   :export {
     ${primitiveColorsToExport}
-    @each $key, $value in $palette {
+    @each $key, $value in colors.$palette {
       @each $subkey, $subvalue in $value {
         --#{$key}-color-#{$subkey}-light: #{$subvalue};
       }
     }
 
-    @each $key, $value in $paletteDark {
+    @each $key, $value in colors.$paletteDark {
       @each $subkey, $subvalue in $value {
         --#{$key}-color-#{$subkey}-dark: #{$subvalue};
       }
