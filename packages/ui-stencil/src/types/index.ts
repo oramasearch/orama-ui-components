@@ -101,3 +101,23 @@ export type TChatInteraction = {
   interactionId?: string
   relatedQueries?: string[]
 }
+
+/**
+ * Dictionary for all text content in the components
+ */
+export type TextDictionary = {
+  searchPlaceholder: string
+  chatPlaceholder: string
+  noResultsFound: string
+  noResultsFoundFor: string
+  suggestions: string
+  seeAll: string
+  addMore: string
+  clearChat: string
+  errorMessage: string
+  disclaimer: string
+  startYourSearch: string
+  initErrorSearch: string
+  initErrorChat: string
+  chatButtonLabel: string
+}

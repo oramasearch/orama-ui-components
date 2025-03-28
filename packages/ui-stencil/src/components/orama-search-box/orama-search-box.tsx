@@ -40,6 +40,7 @@ import type {
   ResultItemRenderFunction,
   ResultMap,
   SourcesMap,
+  TextDictionary,
 } from '@/types'
 import type { TThemeOverrides } from '@/config/theme'
 import { initStore, removeAllStores } from '@/ParentComponentStore/ParentComponentStoreManager'
@@ -124,11 +125,6 @@ export class SearchBox {
    */
   @Prop() highlightDescription?: HighlightOptions | false = false
   /**
-   * @deprecated it will be removed on next releases
-   * Placeholder for chat input
-   */
-  @Prop() placeholder?: string
-  /**
    * Placeholder for chat input
    */
   @Prop() chatPlaceholder?: string
@@ -156,6 +152,34 @@ export class SearchBox {
    * Callback function used on every AI Chat link target
    */
   @Prop() chatMarkdownLinkTarget?: ChatMarkdownLinkTarget
+  /**
+   * Text dictionary for customizing all text content in the component.
+   * This can be set either via HTML attribute as a JSON string or via JavaScript as an object.
+   * It allows for customization of all text elements like placeholders, error messages, and UI labels.
+   * @example
+   * // Via HTML attribute
+   * <orama-search-box textDictionary='{"searchPlaceholder": "Search our docs..."}' />
+   * 
+   * // Via JavaScript
+   * const searchBox = document.querySelector('orama-search-box');
+   * searchBox.textDictionary = { searchPlaceholder: "Search our docs..." };
+   */
+  @Prop() textDictionary?: Partial<TextDictionary> = {}
+
+  /**
+   * Watch for changes to the textDictionary prop
+   */
+  @Watch('textDictionary')
+  handleTextDictionaryChange(newValue: Partial<TextDictionary> | string) {
+    // Handle case where textDictionary is passed as a string (via HTML attribute)
+    if (typeof newValue === 'string') {
+      try {
+        this.textDictionary = JSON.parse(newValue);
+      } catch (e) {
+        console.error('Error parsing textDictionary:', e);
+      }
+    }
+  }
 
   @State() componentID = generateRandomID('search-box')
   @State() systemScheme: Omit<ColorScheme, 'system'> = 'light'
@@ -164,6 +188,22 @@ export class SearchBox {
   private searchStore: SearchStoreType
   private chatStore: ChatStoreType
   private globalStore: GlobalStoreType
+  private defaultTextDictionary: TextDictionary = {
+    searchPlaceholder: 'Search...',
+    chatPlaceholder: 'Ask me anything',
+    noResultsFound: 'No results found',
+    noResultsFoundFor: 'No results found for',
+    suggestions: 'Suggestions',
+    seeAll: 'See all',
+    addMore: 'Add more',
+    clearChat: 'Clear chat',
+    errorMessage: 'An error occurred while trying to search. Please try again.',
+    disclaimer: 'Orama can make mistakes. Please verify the information.',
+    startYourSearch: 'Start your search',
+    initErrorSearch: 'Unable to initialize search service',
+    initErrorChat: 'Unable to initialize chat service',
+    chatButtonLabel: 'Get a summary',
+  }
 
   /**
    * Fired when search successfully resolves
@@ -337,6 +377,27 @@ export class SearchBox {
     this.schemaQuery?.removeEventListener('change', this.onPrefersColorSchemeChange)
   }
 
+  /**
+   * Gets the text for a specific key from the textDictionary prop.
+   * Prioritizes direct props (searchPlaceholder, chatPlaceholder) for backward compatibility,
+   * then falls back to the textDictionary prop, and finally to the defaultTextDictionary.
+   * 
+   * @param key - The key to get the text for
+   * @returns The text for the specified key
+   */
+  getText(key: keyof TextDictionary): string {
+    // First check if there's a direct prop for this key (for backward compatibility)
+    if (key === 'searchPlaceholder' && this.searchPlaceholder) {
+      return this.searchPlaceholder;
+    }
+    if (key === 'chatPlaceholder' && this.chatPlaceholder) {
+      return this.chatPlaceholder;
+    }
+    
+    // Then check the textDictionary prop
+    return this.textDictionary?.[key] || this.defaultTextDictionary[key];
+  }
+
   getSearchBox() {
     return (
       <div
@@ -349,7 +410,7 @@ export class SearchBox {
         }`}
       >
         <orama-search
-          placeholder={this?.searchPlaceholder || 'Search...'}
+          placeholder={this.getText('searchPlaceholder')}
           focusInput={this.globalStore.state.currentTask === 'search'}
           sourceBaseUrl={this.sourceBaseUrl}
           linksTarget={this.linksTarget}
@@ -358,13 +419,19 @@ export class SearchBox {
           highlightDescription={this.highlightDescription}
           disableChat={this.disableChat}
           suggestions={this.suggestions}
+          textDictionary={{
+            noResultsFound: this.getText('noResultsFound'),
+            noResultsFoundFor: this.getText('noResultsFoundFor'),
+            suggestions: this.getText('suggestions'),
+            errorMessage: this.getText('errorMessage'),
+          }}
         >
           {this.windowWidth > 1024 && !this.disableChat && (
             <orama-chat-button
               slot="summary"
               focus-on-arrow-nav
               active={!!this.globalStore.state.currentTerm}
-              label={`${this.globalStore.state.currentTerm ? `${this.globalStore.state.currentTerm} - ` : ''}Get a summary`}
+              label={`${this.globalStore.state.currentTerm ? `${this.globalStore.state.currentTerm} - ` : ''}${this.getText('chatButtonLabel')}`}
               onClick={this.onChatButtonClick}
               onKeyPress={this.onChatButtonClick}
             />
@@ -382,7 +449,7 @@ export class SearchBox {
           defaultTerm={this.globalStore.state.currentTask === 'chat' ? this.globalStore.state.currentTerm : ''}
           showClearChat={false}
           focusInput={this.globalStore.state.currentTask === 'chat'}
-          placeholder={this?.chatPlaceholder || this.placeholder}
+          placeholder={this.getText('chatPlaceholder')}
           sourceBaseUrl={this.sourceBaseUrl}
           linksTarget={this.linksTarget}
           linksRel={this.linksRel}
@@ -390,6 +457,11 @@ export class SearchBox {
           suggestions={this.suggestions}
           chatMarkdownLinkTitle={this.chatMarkdownLinkTitle}
           chatMarkdownLinkHref={this.chatMarkdownLinkHref}
+          chatMarkdownLinkTarget={this.chatMarkdownLinkTarget}
+          textDictionary={{
+            clearChat: this.getText('clearChat'),
+            disclaimer: this.getText('disclaimer'),
+          }}
         />
       </Fragment>
     )
@@ -434,7 +506,7 @@ export class SearchBox {
         <orama-modal
           ref={(el) => (this.wrapperRef = el)}
           class="modal"
-          mainTitle="Start your search"
+          mainTitle={this.getText('startYourSearch')}
           onModalClosed={(e) => {
             this.open = false
             e.stopPropagation()
@@ -481,11 +553,11 @@ export class SearchBox {
     }
 
     if (!this.searchStore.state.searchService) {
-      return <orama-text as="p">Unable to initialize search service</orama-text>
+      return <orama-text as="p">{this.getText('initErrorSearch')}</orama-text>
     }
 
     if (!this.chatStore.state.chatService) {
-      return <orama-text as="p">Unable to initialize chat service</orama-text>
+      return <orama-text as="p">{this.getText('initErrorChat')}</orama-text>
     }
 
     return this.layout === 'modal' ? this.getModalLayout() : this.getEmbedLayout()

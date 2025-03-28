@@ -8,6 +8,7 @@ import {
   type onStartConversationCallbackProps,
   type SearchResult,
   type SourcesMap,
+  type TextDictionary,
 } from '@/types'
 import '@phosphor-icons/webcomponents/dist/icons/PhPaperPlaneTilt.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhStopCircle.mjs'
@@ -34,6 +35,7 @@ export class OramaChat {
   @Prop() prompt?: string
   @Prop() systemPrompts?: string[]
   @Prop() clearChatOnDisconnect?: boolean
+  @Prop() textDictionary?: Partial<TextDictionary>
 
   @Prop() chatMarkdownLinkTitle?: ChatMarkdownLinkTitle
   @Prop() chatMarkdownLinkHref?: ChatMarkdownLinkHref
