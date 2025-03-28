@@ -1,7 +1,7 @@
 import { OramaChatBox, OramaSearchBox, OramaSearchButton } from '@orama/react-components'
 import './App.css'
 
-import { BrowserRouter, Routes, Route, NavLink } from 'react-router'
+import { BrowserRouter, Routes, Route, NavLink, Navigate } from 'react-router'
 
 const API_KEY = 'LerNlbp6379jVKaPs4wt2nZT4MJZbU1J'
 const ENDPOINT = 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd'
@@ -11,7 +11,7 @@ function App() {
     <BrowserRouter>
       <div>
         <nav>
-          <NavLink to="/" end>
+          <NavLink to="/searchbox" end>
             SearchBox
           </NavLink>
           <NavLink to="/chat" end>
@@ -19,7 +19,8 @@ function App() {
           </NavLink>
         </nav>
         <Routes>
-          <Route path="/" element={<SearchBoxPage />} />
+          <Route path="/" element={<Navigate to="/searchbox" />} />
+          <Route path="/searchbox" element={<SearchBoxPage />} />
           <Route path="/chat" element={<ChatBoxPage />} />
         </Routes>
       </div>
@@ -33,36 +34,6 @@ const ChatBoxPage = () => {
       <main>
         <h2 style={{ textAlign: 'center' }}>CHAT BOX</h2>
         <div className="component-row">
-          <OramaChatBox
-            index={{
-              api_key: API_KEY,
-              endpoint: ENDPOINT,
-            }}
-            style={{ height: '600px' }}
-            onAnswerSourceClick={(e: Event) => console.log(e)}
-            onAnswerGenerated={(e: Event) => console.log(e)}
-            chatMarkdownLinkTitle={({ text }) => text?.toUpperCase()}
-            chatMarkdownLinkHref={({ href }) => href}
-            onChatMarkdownLinkClicked={(e: Event) => {
-              console.log(e)
-              e.preventDefault()
-            }}
-          />
-          <OramaChatBox
-            index={{
-              api_key: API_KEY,
-              endpoint: ENDPOINT,
-            }}
-            style={{ height: '600px' }}
-            onAnswerSourceClick={(e: Event) => console.log(e)}
-            onAnswerGenerated={(e: Event) => console.log(e)}
-            chatMarkdownLinkTitle={({ text }) => text?.toUpperCase()}
-            chatMarkdownLinkHref={({ href }) => href}
-            onChatMarkdownLinkClicked={(e: Event) => {
-              console.log(e)
-              e.preventDefault()
-            }}
-          />
           <OramaChatBox
             index={{
               api_key: API_KEY,

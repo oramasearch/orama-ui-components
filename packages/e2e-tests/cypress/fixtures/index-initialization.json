@@ -1,0 +1,15 @@
+{
+  "deploymentID": "i9zyssc9o44purp045y4tp0h",
+  "index": "bodkvg5go3x6ucxbwao1bhha",
+  "deploymentDatetime": "2025-03-22T10:37:16.678Z",
+  "schema": {
+    "path": "string",
+    "title": "string",
+    "content": "string",
+    "section": "enum",
+    "category": "enum",
+    "embedding": "vector[384][]"
+  },
+  "collectUrl": "https://telemetry.orama.run/collect",
+  "pop": "GIG"
+}
