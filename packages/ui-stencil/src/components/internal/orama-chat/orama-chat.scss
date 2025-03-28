@@ -73,6 +73,12 @@ orama-chat {
   margin-bottom: var(--spacing-s, $spacing-s);
 }
 
+.disclaimer-text {
+  margin-top: var(--spacing-xs, $spacing-xs);
+  opacity: 0.8;
+  color: var(--text-color-secondary, text-color('secondary'));
+}
+
 .suggestions-wrapper {
   display: flex;
   flex-direction: column;

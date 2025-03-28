@@ -120,4 +120,5 @@ export type TextDictionary = {
   initErrorSearch: string
   initErrorChat: string
   chatButtonLabel: string
+  searchButtonLabel: string
 }

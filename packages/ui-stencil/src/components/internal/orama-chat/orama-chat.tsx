@@ -15,6 +15,7 @@ import '@phosphor-icons/webcomponents/dist/icons/PhStopCircle.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhArrowDown.mjs'
 import { Store } from '@/StoreDecorator'
 import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
+import { defaultTextDictionary, getText as getTextUtil } from '@/utils/textDictionary'
 
 const BOTTOM_THRESHOLD = 1
 
@@ -36,6 +37,7 @@ export class OramaChat {
   @Prop() systemPrompts?: string[]
   @Prop() clearChatOnDisconnect?: boolean
   @Prop() textDictionary?: Partial<TextDictionary>
+  @Prop() disclaimer?: string = 'Orama can make mistakes. Please verify the information.'
 
   @Prop() chatMarkdownLinkTitle?: ChatMarkdownLinkTitle
   @Prop() chatMarkdownLinkHref?: ChatMarkdownLinkHref
@@ -75,6 +77,26 @@ export class OramaChat {
     }
   }
 
+  @Watch('textDictionary')
+  handleTextDictionaryChange() {
+    // If textDictionary has a chatPlaceholder, update the placeholder prop
+    if (this.textDictionary?.chatPlaceholder) {
+      this.placeholder = this.textDictionary.chatPlaceholder;
+    }
+    
+    // If textDictionary has a disclaimer, update the disclaimer prop
+    if (this.textDictionary?.disclaimer) {
+      this.disclaimer = this.textDictionary.disclaimer;
+    }
+
+    // Log the current values for debugging
+    console.log('Updated from textDictionary:', {
+      placeholder: this.placeholder,
+      disclaimer: this.disclaimer,
+      textDictionary: this.textDictionary
+    });
+  }
+
   triggerSendQuestion = (question: string) => {
     if (this.chatStore.state.chatService === null) {
       throw new Error('Chat Service is not initialized')
@@ -105,6 +127,16 @@ export class OramaChat {
   private chatStore: ChatStoreType
 
   componentWillLoad() {
+    // Initialize placeholder and disclaimer from textDictionary if available
+    this.handleTextDictionaryChange();
+    
+    // Ensure the disclaimer has a default value if not set
+    if (!this.disclaimer && this.textDictionary?.disclaimer) {
+      this.disclaimer = this.textDictionary.disclaimer;
+    } else if (!this.disclaimer) {
+      this.disclaimer = 'Orama can make mistakes. Please verify the information.';
+    }
+    
     this.chatStore.on('set', (prop, newInteractions, oldInteractions) => {
       if (prop !== 'interactions') {
         return
@@ -115,6 +147,23 @@ export class OramaChat {
         this.pendingNewInteractionSideEffects = true
       }
     })
+  }
+
+  /**
+   * Gets the text for a specific key from the textDictionary prop.
+   * Prioritizes direct props (placeholder) for backward compatibility,
+   * then falls back to the textDictionary prop, and finally to the defaultTextDictionary.
+   * 
+   * @param key - The key to get the text for
+   * @returns The text for the specified key
+   */
+  getText(key: keyof TextDictionary): string {
+    // Create a map of direct props for backward compatibility
+    const directProps: Partial<Record<keyof TextDictionary, string>> = {
+      chatPlaceholder: this.placeholder,
+    };
+    
+    return getTextUtil(key, this.textDictionary, directProps);
   }
 
   handleFocus = () => {
@@ -335,7 +384,7 @@ export class OramaChat {
         {this.showClearChat && hasInteractions && (
           <div class="header">
             <button type="button" onClick={this.handleClearChat}>
-              <ph-arrow-clockwise weight="fill" size="14" /> Clear chat
+              <ph-arrow-clockwise weight="fill" size="14" /> {this.getText('clearChat')}
             </button>
           </div>
         )}
@@ -434,9 +483,11 @@ export class OramaChat {
               </orama-textarea>
             </div>
           </form>
-          <orama-text as="p" styledAs="small" align="center">
-            Orama can make mistakes. Please verify the information.
-          </orama-text>
+          {this.disclaimer && (
+            <orama-text as="p" styledAs="small" align="center" class="disclaimer-text">
+              {this.disclaimer}
+            </orama-text>
+          )}
         </div>
       </Host>
     )

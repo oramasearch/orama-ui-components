@@ -5,6 +5,7 @@ import { Store } from '@/StoreDecorator'
 import type { SearchStoreType } from '@/ParentComponentStore/SearchStore'
 import type { GlobalStoreType } from '@/ParentComponentStore/GlobalStore'
 import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
+import { defaultTextDictionary, getText as getTextUtil } from '@/utils/textDictionary'
 
 @Component({
   tag: 'orama-search',
@@ -38,6 +39,23 @@ export class OramaSearch {
   private globalStore: GlobalStoreType
   @Store('chat')
   private chatStore: ChatStoreType
+
+  /**
+   * Gets the text for a specific key from the textDictionary prop.
+   * Prioritizes direct props (placeholder) for backward compatibility,
+   * then falls back to the textDictionary prop, and finally to the defaultTextDictionary.
+   * 
+   * @param key - The key to get the text for
+   * @returns The text for the specified key
+   */
+  getText(key: keyof TextDictionary): string {
+    // Create a map of direct props for backward compatibility
+    const directProps: Partial<Record<keyof TextDictionary, string>> = {
+      searchPlaceholder: this.placeholder,
+    };
+    
+    return getTextUtil(key, this.textDictionary, directProps);
+  }
 
   doSearch() {
     if (!this.globalStore.state.currentTerm) {
@@ -78,8 +96,8 @@ export class OramaSearch {
             }}
             value={this.globalStore.state.currentTerm}
             size="large"
-            labelForScreenReaders={this.placeholder}
-            placeholder={this.placeholder}
+            labelForScreenReaders={this.getText('searchPlaceholder')}
+            placeholder={this.getText('searchPlaceholder')}
           />
           <slot name="summary" />
         </form>

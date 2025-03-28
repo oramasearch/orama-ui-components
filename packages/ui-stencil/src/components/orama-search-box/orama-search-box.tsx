@@ -22,6 +22,7 @@ import {
   updateThemeClasses,
   validateCloudIndexConfig,
 } from '@/utils/utils'
+import { defaultTextDictionary, getText as getTextUtil } from '@/utils/textDictionary'
 import type { AnyOrama, Orama, SearchParams } from '@orama/orama'
 import type { HighlightOptions } from '@orama/highlight'
 import type { OramaClient } from '@oramacloud/client'
@@ -152,6 +153,7 @@ export class SearchBox {
    * Callback function used on every AI Chat link target
    */
   @Prop() chatMarkdownLinkTarget?: ChatMarkdownLinkTarget
+  @Prop() disclaimer?: string
   /**
    * Text dictionary for customizing all text content in the component.
    * This can be set either via HTML attribute as a JSON string or via JavaScript as an object.
@@ -188,22 +190,7 @@ export class SearchBox {
   private searchStore: SearchStoreType
   private chatStore: ChatStoreType
   private globalStore: GlobalStoreType
-  private defaultTextDictionary: TextDictionary = {
-    searchPlaceholder: 'Search...',
-    chatPlaceholder: 'Ask me anything',
-    noResultsFound: 'No results found',
-    noResultsFoundFor: 'No results found for',
-    suggestions: 'Suggestions',
-    seeAll: 'See all',
-    addMore: 'Add more',
-    clearChat: 'Clear chat',
-    errorMessage: 'An error occurred while trying to search. Please try again.',
-    disclaimer: 'Orama can make mistakes. Please verify the information.',
-    startYourSearch: 'Start your search',
-    initErrorSearch: 'Unable to initialize search service',
-    initErrorChat: 'Unable to initialize chat service',
-    chatButtonLabel: 'Get a summary',
-  }
+  private defaultTextDictionary: TextDictionary = defaultTextDictionary
 
   /**
    * Fired when search successfully resolves
@@ -386,16 +373,13 @@ export class SearchBox {
    * @returns The text for the specified key
    */
   getText(key: keyof TextDictionary): string {
-    // First check if there's a direct prop for this key (for backward compatibility)
-    if (key === 'searchPlaceholder' && this.searchPlaceholder) {
-      return this.searchPlaceholder;
-    }
-    if (key === 'chatPlaceholder' && this.chatPlaceholder) {
-      return this.chatPlaceholder;
-    }
+    // Create a map of direct props for backward compatibility
+    const directProps: Partial<Record<keyof TextDictionary, string>> = {
+      searchPlaceholder: this.searchPlaceholder,
+      chatPlaceholder: this.chatPlaceholder,
+    };
     
-    // Then check the textDictionary prop
-    return this.textDictionary?.[key] || this.defaultTextDictionary[key];
+    return getTextUtil(key, this.textDictionary, directProps);
   }
 
   getSearchBox() {
@@ -419,12 +403,7 @@ export class SearchBox {
           highlightDescription={this.highlightDescription}
           disableChat={this.disableChat}
           suggestions={this.suggestions}
-          textDictionary={{
-            noResultsFound: this.getText('noResultsFound'),
-            noResultsFoundFor: this.getText('noResultsFoundFor'),
-            suggestions: this.getText('suggestions'),
-            errorMessage: this.getText('errorMessage'),
-          }}
+          textDictionary={this.textDictionary}
         >
           {this.windowWidth > 1024 && !this.disableChat && (
             <orama-chat-button
@@ -458,10 +437,8 @@ export class SearchBox {
           chatMarkdownLinkTitle={this.chatMarkdownLinkTitle}
           chatMarkdownLinkHref={this.chatMarkdownLinkHref}
           chatMarkdownLinkTarget={this.chatMarkdownLinkTarget}
-          textDictionary={{
-            clearChat: this.getText('clearChat'),
-            disclaimer: this.getText('disclaimer'),
-          }}
+          disclaimer={this.disclaimer}
+          textDictionary={this.textDictionary}
         />
       </Fragment>
     )

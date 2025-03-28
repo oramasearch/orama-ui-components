@@ -32,6 +32,8 @@ export const OramaChat = /*@__PURE__*/ defineContainer<JSX.OramaChat>('orama-cha
   'prompt',
   'systemPrompts',
   'clearChatOnDisconnect',
+  'textDictionary',
+  'disclaimer',
   'chatMarkdownLinkTitle',
   'chatMarkdownLinkHref',
   'chatMarkdownLinkTarget',
@@ -65,6 +67,8 @@ export const OramaChatBox = /*@__PURE__*/ defineContainer<JSX.OramaChatBox>('ora
   'chatMarkdownLinkTitle',
   'chatMarkdownLinkHref',
   'chatMarkdownLinkTarget',
+  'textDictionary',
+  'disclaimer',
   'themeConfig',
   'colorScheme',
   'answerGenerated',
@@ -169,6 +173,7 @@ export const OramaSearch = /*@__PURE__*/ defineContainer<JSX.OramaSearch>('orama
   'disableChat',
   'highlightTitle',
   'highlightDescription',
+  'textDictionary',
   'searchCompleted',
   'answerGenerated'
 ]);
@@ -191,7 +196,6 @@ export const OramaSearchBox = /*@__PURE__*/ defineContainer<JSX.OramaSearchBox>(
   'layout',
   'highlightTitle',
   'highlightDescription',
-  'placeholder',
   'chatPlaceholder',
   'searchPlaceholder',
   'suggestions',
@@ -199,6 +203,8 @@ export const OramaSearchBox = /*@__PURE__*/ defineContainer<JSX.OramaSearchBox>(
   'chatMarkdownLinkTitle',
   'chatMarkdownLinkHref',
   'chatMarkdownLinkTarget',
+  'disclaimer',
+  'textDictionary',
   'searchCompleted',
   'searchResultClick',
   'clearChat',
@@ -214,7 +220,8 @@ export const OramaSearchBox = /*@__PURE__*/ defineContainer<JSX.OramaSearchBox>(
 export const OramaSearchButton = /*@__PURE__*/ defineContainer<JSX.OramaSearchButton>('orama-search-button', undefined, [
   'size',
   'themeConfig',
-  'colorScheme'
+  'colorScheme',
+  'textDictionary'
 ]);
 
 
@@ -230,6 +237,7 @@ export const OramaSearchResults = /*@__PURE__*/ defineContainer<JSX.OramaSearchR
   'error',
   'highlightTitle',
   'highlightDescription',
+  'textDictionary',
   'searchResultClick'
 ]);
 

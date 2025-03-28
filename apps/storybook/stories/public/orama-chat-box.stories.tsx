@@ -32,6 +32,28 @@ const meta: Meta<
         },
       },
     },
+    textDictionary: {
+      control: { type: 'object' },
+      table: {
+        type: {
+          summary: 'Partial<TextDictionary>',
+          detail: `{
+  chatPlaceholder: string
+  initErrorChat: string
+  disclaimer: string
+  // ... other text properties
+}`,
+        },
+      },
+    },
+    disclaimer: {
+      control: { type: 'text' },
+      table: {
+        type: {
+          summary: 'string',
+        },
+      },
+    },
     index: {
       control: { type: 'object' },
       table: {
@@ -78,11 +100,16 @@ const meta: Meta<
 
 export default meta
 
-const Template = ({ preset, colorScheme }) => {
+const Template = ({ preset, colorScheme, textDictionary, disclaimer }: {
+  preset: any;
+  colorScheme?: string;
+  textDictionary?: Record<string, string>;
+  disclaimer?: string;
+}) => {
   return html`
     <orama-chat-box
       .index=${preset?.index}
-      .instance=${preset?.instance}
+      .clientInstance=${preset?.clientInstance}
       .placeholder=${preset?.placeholder}
       .sourceBaseUrl=${preset?.sourceBaseUrl}
       .sourcesMap=${preset?.sourcesMap}
@@ -90,7 +117,9 @@ const Template = ({ preset, colorScheme }) => {
       .systemPrompts=${preset?.systemPrompts}
       .colorScheme=${colorScheme || preset?.colorScheme}
       .themeConfig=${preset?.themeConfig}
+      .textDictionary=${textDictionary}
       .clearChatOnDisconnect=${preset?.clearChatOnDisconnect}
+      .disclaimer=${disclaimer}
       prompt=${preset?.prompt}
     ></orama-chat-box>
   `
@@ -103,6 +132,16 @@ export const ChatBox: Story = {
   args: {
     preset: 'orama',
     colorScheme: 'dark',
+    textDictionary: {
+      chatPlaceholder: 'Ask about our documentation...',
+      initErrorChat: 'Chat service could not be initialized',
+      disclaimer: 'Orama can make mistakes. Please verify the information.',
+    },
+    disclaimer: 'Orama can make mistakes. Please verify the information.',
+    index: {
+      api_key: 'LerNlbp6379jVKaPs4wt2nZT4MJZbU1J',
+      endpoint: 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd'
+    },
     themeConfig: {
       radius: {
         // "--textarea-radius": '0px'

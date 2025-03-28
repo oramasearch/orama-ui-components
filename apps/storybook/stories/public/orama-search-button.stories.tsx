@@ -26,6 +26,18 @@ const meta: Meta<
         },
       },
     },
+    textDictionary: {
+      control: { type: 'object' },
+      table: {
+        type: {
+          summary: 'Partial<TextDictionary>',
+          detail: `{
+  searchButtonLabel: string
+  // ... other text properties
+}`,
+        },
+      },
+    },
     size: {
       options: ['small', 'medium', 'large'],
       table: {
@@ -39,7 +51,12 @@ const meta: Meta<
 export default meta
 type Story = StoryObj<Components.OramaSearchButton>
 
-const Template = (label: string) => (args) => {
+const Template = (label: string) => (args: {
+  label?: string;
+  colorScheme?: string;
+  size?: 'small' | 'medium' | 'large';
+  textDictionary?: Record<string, string>;
+}) => {
   return html`
     <div style="display: flex; justify-content: flex-start">
       <div style="width: 240px">
@@ -47,6 +64,7 @@ const Template = (label: string) => (args) => {
           label="${args.label}"
           .colorScheme=${args.colorScheme}
           .size=${args.size}
+          .textDictionary=${args.textDictionary}
         >
             ${label}
         </orama-search-button>
@@ -59,7 +77,7 @@ const Template = (label: string) => (args) => {
             endpoint: 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd'
           }
         }
-        .chatPlaceholder=${demoIndexes.orama.placeholder}
+        .searchPlaceholder="Search our documentation..."
         .facetProperty=${demoIndexes.orama.facetProperty}
         .resultMap=${demoIndexes.orama.resultMap}
         .themeConfig=${demoIndexes.orama.themeConfig}
@@ -77,5 +95,8 @@ export const SearchButton: Story = {
   args: {
     colorScheme: 'light',
     size: 'medium',
+    textDictionary: {
+      searchButtonLabel: 'Search Documentation',
+    },
   },
 }
