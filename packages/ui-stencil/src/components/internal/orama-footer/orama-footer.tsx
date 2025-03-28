@@ -56,17 +56,17 @@ export class OramaFooter {
       case 'arrow-bend-down-left':
         return (
           <span class="shortcut-icon">
-            <ph-arrow-bend-down-left size={12} />
+            <ph-arrow-bend-down-left size={16} />
           </span>
         );
       case 'arrows-vertical':
         return (
           <div class="arrows-container">
             <span class="shortcut-icon">
-              <ph-arrow-up size={12} />
+              <ph-arrow-up size={16} />
             </span>
             <span class="shortcut-icon">
-              <ph-arrow-down size={12} />
+              <ph-arrow-down size={16} />
             </span>
           </div>
         );
