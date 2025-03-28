@@ -18,20 +18,19 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-xs, $spacing-xs);
-  font-size: 0.85rem;
+  font-size: $font-size-md;
 }
 
 .shortcut-description {
-  color: var(--text-color-secondary, text-color('secondary'));
+  color: var(--text-color-tertiary, text-color('tertiary'));
 }
 
 .shortcut-icon {
-  color: var(--text-color-primary, text-color('primary'));
+  color: var(--text-color-tertiary, text-color('tertiary'));
   display: flex;
   align-items: center;
-  padding: var(--spacing-xs, $spacing-xs);
   border-radius: var(--radius-xs, $radius-xs);
-  background: var(--background-color-tertiary, background-color('tertiary'));
+  background: var(--background-color-fourth, background-color('tertiary'));
   border: 0.7px solid var(--border-color-primary, border-color('primary'));
   justify-self: flex-end;
   min-width: 24px;
