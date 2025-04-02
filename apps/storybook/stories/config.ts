@@ -1,5 +1,6 @@
 import type { Components } from '@orama/wc-components'
 import { OramaClient } from '@oramacloud/client'
+import { CollectionManager } from '@orama/core'
 
 export type DemoIndexConfig = Record<string, Components.OramaSearchBox>
 
@@ -14,6 +15,27 @@ const demoIndexes: DemoIndexConfig = {
     clientInstance: new OramaClient({
       api_key: 'LerNlbp6379jVKaPs4wt2nZT4MJZbU1J',
       endpoint: 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd',
+    }),
+    placeholder: 'What do you want to learn about Orama?',
+    sourceBaseUrl: 'https://docs.orama.com',
+    sourcesMap: {
+      title: 'title',
+      description: 'content',
+    },
+    suggestions: ['What is Orama?', 'Does Orama have an integration with Strapi?', 'How to create an answer session?'],
+    facetProperty: 'category',
+    resultMap: {
+      title: 'title',
+      description: 'content',
+      section: 'category',
+    },
+  },
+  oramaCore: {
+    open: true,
+    clientInstance: new CollectionManager({
+      url:'https://oramacore.orama.foo',
+      collectionID: 'tes-agndc5',
+      readAPIKey: 'Dj3uK8wklKlO8dJUIcB5YtqZNuk945dC',
     }),
     placeholder: 'What do you want to learn about Orama?',
     sourceBaseUrl: 'https://docs.orama.com',

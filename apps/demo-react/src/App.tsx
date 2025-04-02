@@ -3,9 +3,9 @@ import './App.css'
 import { BrowserRouter, Routes, Route, NavLink, Navigate } from 'react-router'
 import { CollectionManager } from '@orama/core'
 
-const ORAMACORE_ENDPOINT = ''
-const ORAMACORE_COLLECTION_ID = ''
-const ORAMACORE_READ_API_KEY = ''
+const ORAMACORE_ENDPOINT = 'https://oramacore.orama.foo'
+const ORAMACORE_COLLECTION_ID = 'tes-agndc5'
+const ORAMACORE_READ_API_KEY = 'Dj3uK8wklKlO8dJUIcB5YtqZNuk945dC'
 
 const collectionManager = new CollectionManager({
   url: ORAMACORE_ENDPOINT,
@@ -46,8 +46,8 @@ const ChatBoxPage = () => {
             style={{ height: '600px' }}
             onAnswerSourceClick={(e: Event) => console.log(e)}
             onAnswerGenerated={(e: Event) => console.log(e)}
-            chatMarkdownLinkTitle={({ text }) => text?.toUpperCase()}
-            chatMarkdownLinkHref={({ href }) => href}
+            chatMarkdownLinkTitle={({ text }: { text: string; href: string }) => text?.toUpperCase()}
+            chatMarkdownLinkHref={({ href }: { text: string; href: string }) => href}
             onChatMarkdownLinkClicked={(e: Event) => {
               console.log(e)
               e.preventDefault()
@@ -67,17 +67,18 @@ const SearchBoxPage = () => {
         <div className="component-row">
         <OramaSearchButton colorScheme="system">Search</OramaSearchButton>
           <OramaSearchBox
+            resultMap={{title:"breed", description: "country"}}
             onModalClosed={() => {
               console.log('closed')
             }}
-            onModalStatusChanged={(e) => {
+            onModalStatusChanged={(e: CustomEvent) => {
               console.log('Status changed to: ', e.detail.open)
             }}
             colorScheme="system"
             clientInstance={collectionManager}
             suggestions={['Suggestion 1', 'Suggestion 2', 'Suggestion 3']}
             onSearchCompleted={(e: Event) => console.log(e)}
-            onSearchResultClick={(e) => {
+            onSearchResultClick={(e: React.MouseEvent) => {
               e.preventDefault()
               alert('Element clicked')
             }}
@@ -86,9 +87,9 @@ const SearchBoxPage = () => {
               console.log(e)
               e.preventDefault()
             }}
-            chatMarkdownLinkTitle={({ text }) => text?.toUpperCase()}
-            chatMarkdownLinkHref={({ href }) => href}
-            onChatMarkdownLinkClicked={(e) => {
+            chatMarkdownLinkTitle={({ text }: { text: string; href: string }) => text?.toUpperCase()}
+            chatMarkdownLinkHref={({ href }: { text: string; href: string }) => href}
+            onChatMarkdownLinkClicked={(e: React.MouseEvent) => {
               alert('Callback on client side')
               e.preventDefault()
             }}
