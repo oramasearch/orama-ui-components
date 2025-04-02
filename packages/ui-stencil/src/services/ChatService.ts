@@ -1,20 +1,20 @@
 import type { AskParams } from '@oramacloud/client'
 import type { AnswerSession as OSSAnswerSession } from '@orama/orama'
-import type { AnswerSession as CloudAnswerSession } from '@oramacloud/client'
+import type { AnswerSession as SwitchAnswerSession } from '@orama/core'
 import type { OramaSwitchClient } from '@orama/switch'
-import { Switch } from '@orama/switch'
 import { OramaClientNotInitializedError } from '@/erros/OramaClientNotInitialized'
 import { TAnswerStatus, type OnAnswerGeneratedCallbackProps } from '@/types'
 import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
 
 export class ChatService {
-  oramaClient: Switch
-  answerSession: CloudAnswerSession<true> | OSSAnswerSession
+  private oramaClient: any
+  answerSession: SwitchAnswerSession<true> | OSSAnswerSession | any
   private chatStore: ChatStoreType
 
   constructor(oramaClient: OramaSwitchClient, chatStore: ChatStoreType) {
-    this.oramaClient = new Switch(oramaClient)
+    this.oramaClient = oramaClient
     this.chatStore = chatStore
+    console.log('ChatService initialized with client:', this.oramaClient)
   }
 
   sendQuestion = (
@@ -24,32 +24,31 @@ export class ChatService {
       onAnswerGeneratedCallback?: (onAnswerGeneratedCallback: OnAnswerGeneratedCallbackProps) => unknown
     },
   ) => {
-    if (!this.oramaClient) {
-      throw new OramaClientNotInitializedError()
+    if (!this.oramaClient) throw new OramaClientNotInitializedError()
+    console.log('sendQuestion called with term:', term)
+
+
+    if (systemPrompts?.length) {
+      console.log('Setting system prompts:', systemPrompts)
+      if (this.answerSession && 'setSystemPromptConfiguration' in this.answerSession) {
+        (this.answerSession as any).setSystemPromptConfiguration(systemPrompts)
+      }
     }
 
-    const askParams: AskParams = { term: term, related: { howMany: 3, format: 'question' } }
+    const existingInteractions = this.chatStore.state.interactions
 
+    console.log('Creating answer session with client:', this.oramaClient)
+    console.log('Client has createAnswerSession method:', !!this.oramaClient.createAnswerSession)
+    
     if (!this.answerSession) {
       const existingInteractions = this.chatStore.state.interactions
-
       this.answerSession = this.oramaClient.createAnswerSession({
         events: {
           onStateChange: (state) => {
+            console.log('Answer session state changed:', state)
             // TODO: Remove: this is a quick and dirty fix for odd behavior of the SDK. When we abort, it generates a new interaction with empty query and empty anwer.
             const normalizedState = state.filter((stateItem) => !!stateItem.query)
-            // if (normalizedState[normalizedState.length - 1].aborted) {
-            //   this.chatStore.state.interactions = this.chatStore.state.interactions.map((interaction, index) => {
-            //     if (index === this.chatStore.state.interactions.length - 1) {
-            //       return {
-            //         ...interaction,
-            //         status: TAnswerStatus.aborted,
-            //       };
-            //     }
-            //     return interaction;
-            //   });
-            //   return;
-            // }
+            console.log('Normalized state:', normalizedState)
 
             this.chatStore.state.interactions = [
               ...(existingInteractions || []),
@@ -104,26 +103,35 @@ export class ChatService {
           },
         },
       })
-
-      if (this.oramaClient.clientType === 'cloud' && systemPrompts) {
-        ;(this.answerSession as CloudAnswerSession<true>).setSystemPromptConfiguration({ systemPrompts })
-      }
     }
 
-    // TODO: ABORT/ERROR/STOP should emmit onStateChange event. Keeping the lines below as a reference
-    // TODO: WE may want to reveive ask props as a Service prop instead of enforcing it here
-    return this.answerSession.ask(askParams).catch((error) => {
-      this.chatStore.state.interactions = this.chatStore.state.interactions.map((interaction, index) => {
-        if (index === this.chatStore.state.interactions.length - 1) {
-          return {
-            ...interaction,
-            status: TAnswerStatus.error,
-          }
+    console.log('Answer session created:', this.answerSession)
+    console.log('Answer session has answerStream method:', !!this.answerSession.answerStream)
+
+    try {
+      if (this.answerSession.answerStream) {
+        console.log('Using answerStream method')
+        const answerStream = this.answerSession.answerStream({
+          query: term,
+          interactionID: `interaction-${Date.now()}`,
+          sessionID: `session-${Date.now()}`,
+          visitorID: `visitor-${Date.now()}`,
+        })
+
+        for (const answer of answerStream) {
+          console.log('Answer stream response:', answer)
         }
-        return interaction
-      })
-      console.error(error)
-    })
+      } else if (this.answerSession.ask) {
+        // Fallback to ask method if available
+        console.log('Using ask method')
+        const response = this.answerSession.ask(term)
+        console.log('Ask method response:', response)
+      } else {
+        console.error('Neither answerStream nor ask method is available')
+      }
+    } catch (e) {
+      console.error('Error in answer method:', e)
+    }
   }
 
   abortAnswer = () => {
@@ -157,10 +165,24 @@ export class ChatService {
         this.chatStore.state.interactions[this.chatStore.state.interactions.length - 1].status,
       )
     ) {
-      this.answerSession.abortAnswer()
+      this.abortAnswer()
     }
 
-    this.answerSession.clearSession()
+    // Clear the session if the method exists
+    if ('clearSession' in this.answerSession) {
+      (this.answerSession as any).clearSession()
+    }
     this.chatStore.state.interactions = []
+  }
+
+  regenerateLatest = async () => {
+    if (!this.answerSession) {
+      throw new OramaClientNotInitializedError()
+    }
+
+    // Regenerate the last answer if the method exists
+    if ('regenerateLast' in this.answerSession) {
+      (this.answerSession as any).regenerateLast({ stream: false })
+    }
   }
 }

@@ -1,6 +1,5 @@
 import type { ClientSearchParams } from '@oramacloud/client'
 import { OramaClientNotInitializedError } from '@/erros/OramaClientNotInitialized'
-import { Switch, type OramaSwitchClient } from '@orama/switch'
 import type {
   OnSearchCompletedCallbackProps,
   ResultItemRenderFunction,
@@ -11,6 +10,11 @@ import type {
   SearchResultWithIcon,
 } from '@/types'
 import type { SearchStoreType } from '@/ParentComponentStore/SearchStore'
+import type { AnswerSession as OSSAnswerSession } from '@orama/orama'
+import type { AnswerSession as SwitchAnswerSession } from '@orama/core'
+import type { OramaSwitchClient } from '@orama/switch'
+import type { AnyOrama, Orama, SearchParams } from '@orama/orama'
+import type { OramaClient } from '@oramacloud/client'
 
 const LIMIT_RESULTS = 10
 
@@ -19,14 +23,16 @@ const LIMIT_RESULTS = 10
 type OramaHit = { id: string; score: number; document: any }
 
 export class SearchService {
-  private abortController: AbortController
-  private oramaClient: Switch<OramaSwitchClient>
+  private client: any
+  answerSession: SwitchAnswerSession<true> | OSSAnswerSession | any
   private searchStore: SearchStoreType
+  private abortController: AbortController
 
   constructor(oramaClient: OramaSwitchClient, searchStore: SearchStoreType) {
-    this.oramaClient = new Switch(oramaClient)
-    this.abortController = new AbortController()
+    this.client = oramaClient
     this.searchStore = searchStore
+    this.abortController = new AbortController()
+    console.log('SearchService initialized with client:', this.client)
   }
 
   search = async (
@@ -37,7 +43,7 @@ export class SearchService {
       onSearchErrorCallback?: (error: Error) => unknown
     },
   ) => {
-    if (!this.oramaClient) {
+    if (!this.client) {
       throw new OramaClientNotInitializedError()
     }
 
@@ -78,40 +84,49 @@ export class SearchService {
       }),
     } as ClientSearchParams
 
-    await this.oramaClient
-      .search(clientSearchParams, { abortController: this.abortController })
-      .then((results) => {
-        if (latestAbortController.signal.aborted) {
-          return
-        }
+    console.log('Searching with params:', clientSearchParams)
 
-        if (results && !results.hits) {
-          throw new Error(
-            'This search was made by a OramaClient with property mergeResult set to false. Orama Search Service requires mergeResult to be true.',
-          )
-        }
+    try {
+      const results = await this.client.search(clientSearchParams, { abortController: this.abortController })
+      
+      if (latestAbortController.signal.aborted) {
+        return
+      }
 
-        this.searchStore.state.results = this.parserResults(results?.hits, this.searchStore.state.resultMap)
-        this.searchStore.state.count = results?.count || 0
-        this.searchStore.state.facets = this.parseFacets(results?.facets, this.searchStore.state.facetProperty)
-        this.searchStore.state.highlightedIndex = -1
+      console.log('Search results:', results)
 
-        this.searchStore.state.loading = false
+      if (results && !results.hits) {
+        throw new Error(
+          'This search was made by a OramaClient with property mergeResult set to false. Orama Search Service requires mergeResult to be true.',
+        )
+      }
 
-        callbacks?.onSearchCompletedCallback?.({
-          clientSearchParams,
-          result: {
-            results: this.searchStore.state.results,
-            resultsCount: this.searchStore.state.count,
-            facets: this.searchStore.state.facets,
-          },
-        })
+      this.searchStore.state.results = this.parserResults(results?.hits, this.searchStore.state.resultMap)
+      this.searchStore.state.count = results?.count || 0
+      this.searchStore.state.facets = this.parseFacets(results?.facets, this.searchStore.state.facetProperty)
+      this.searchStore.state.highlightedIndex = -1
+
+      this.searchStore.state.loading = false
+
+      callbacks?.onSearchCompletedCallback?.({
+        clientSearchParams,
+        result: {
+          results: this.searchStore.state.results,
+          resultsCount: this.searchStore.state.count,
+          facets: this.searchStore.state.facets,
+        },
       })
-      .catch((error) => {
-        this.searchStore.state.loading = false
+    } catch (error) {
+      console.error('Search error:', error)
+      
+      if (latestAbortController.signal.aborted) {
+        return
+      }
 
-        callbacks?.onSearchErrorCallback?.(error)
-      })
+      this.searchStore.state.loading = false
+
+      callbacks?.onSearchErrorCallback?.(error)
+    }
   }
 
   abortSearch(): void {

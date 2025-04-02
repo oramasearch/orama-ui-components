@@ -25,6 +25,7 @@ import {
 import type { AnyOrama, Orama, SearchParams } from '@orama/orama'
 import type { HighlightOptions } from '@orama/highlight'
 import type { OramaClient } from '@oramacloud/client'
+import type { CollectionManager } from '@orama/core'
 import type {
   ChatMarkdownLinkHref,
   ChatMarkdownLinkTarget,
@@ -73,9 +74,9 @@ export class SearchBox {
    */
   @Prop() index?: CloudIndexConfig | CloudIndexConfig[]
   /**
-   * Orama Instance
+   * Orama Instance or CollectionManager
    */
-  @Prop() clientInstance?: OramaClient | AnyOrama
+  @Prop() clientInstance?: OramaClient | AnyOrama | CollectionManager
   @Prop({ mutable: true, reflect: true }) open = false
   /**
    * Index result property to
@@ -272,7 +273,13 @@ export class SearchBox {
 
   startServices() {
     validateCloudIndexConfig(this.htmlElement, this.index, this.clientInstance)
-    const oramaClient = this.clientInstance ? this.clientInstance : initOramaClient(this.index)
+    let oramaClient;
+    if (this.clientInstance && 'collectionID' in this.clientInstance && 'url' in this.clientInstance && 'readAPIKey' in this.clientInstance) {
+      console.log('Using CollectionManager directly:', this.clientInstance);
+      oramaClient = this.clientInstance;
+    } else {
+      oramaClient = this.clientInstance || initOramaClient(this.index)
+    }
 
     this.searchStore.state.searchService = new SearchService(oramaClient, this.searchStore)
     this.chatStore.state.chatService = new ChatService(oramaClient, this.chatStore)

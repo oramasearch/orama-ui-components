@@ -1,10 +1,17 @@
 import { OramaChatBox, OramaSearchBox, OramaSearchButton } from '@orama/react-components'
 import './App.css'
-
 import { BrowserRouter, Routes, Route, NavLink, Navigate } from 'react-router'
+import { CollectionManager } from '@orama/core'
 
-const API_KEY = 'LerNlbp6379jVKaPs4wt2nZT4MJZbU1J'
-const ENDPOINT = 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd'
+const ORAMACORE_ENDPOINT = ''
+const ORAMACORE_COLLECTION_ID = ''
+const ORAMACORE_READ_API_KEY = ''
+
+const collectionManager = new CollectionManager({
+  url: ORAMACORE_ENDPOINT,
+  collectionID: ORAMACORE_COLLECTION_ID,
+  readAPIKey: ORAMACORE_READ_API_KEY,
+})
 
 function App() {
   return (
@@ -35,10 +42,7 @@ const ChatBoxPage = () => {
         <h2 style={{ textAlign: 'center' }}>CHAT BOX</h2>
         <div className="component-row">
           <OramaChatBox
-            index={{
-              api_key: API_KEY,
-              endpoint: ENDPOINT,
-            }}
+            clientInstance={collectionManager}
             style={{ height: '600px' }}
             onAnswerSourceClick={(e: Event) => console.log(e)}
             onAnswerGenerated={(e: Event) => console.log(e)}
@@ -61,7 +65,7 @@ const SearchBoxPage = () => {
       <main>
         <h2 style={{ textAlign: 'center' }}>SEARCH BOX</h2>
         <div className="component-row">
-          <OramaSearchButton colorScheme="system">Search</OramaSearchButton>
+        <OramaSearchButton colorScheme="system">Search</OramaSearchButton>
           <OramaSearchBox
             onModalClosed={() => {
               console.log('closed')
@@ -70,10 +74,7 @@ const SearchBoxPage = () => {
               console.log('Status changed to: ', e.detail.open)
             }}
             colorScheme="system"
-            index={{
-              api_key: API_KEY,
-              endpoint: ENDPOINT,
-            }}
+            clientInstance={collectionManager}
             suggestions={['Suggestion 1', 'Suggestion 2', 'Suggestion 3']}
             onSearchCompleted={(e: Event) => console.log(e)}
             onSearchResultClick={(e) => {
