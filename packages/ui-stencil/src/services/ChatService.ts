@@ -1,6 +1,6 @@
 import type { AskParams } from '@oramacloud/client'
 import type { AnswerSession as OSSAnswerSession } from '@orama/orama'
-import type { AnswerSession as SwitchAnswerSession } from '@orama/core'
+import type { AnswerSession } from '@orama/core'
 import type { OramaSwitchClient } from '@orama/switch'
 import { OramaClientNotInitializedError } from '@/erros/OramaClientNotInitialized'
 import { TAnswerStatus, type OnAnswerGeneratedCallbackProps } from '@/types'
@@ -8,7 +8,7 @@ import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
 
 export class ChatService {
   private oramaClient: any
-  answerSession: SwitchAnswerSession<true> | OSSAnswerSession | any
+  answerSession: AnswerSession | OSSAnswerSession | any
   private chatStore: ChatStoreType
 
   constructor(oramaClient: OramaSwitchClient, chatStore: ChatStoreType) {
@@ -17,7 +17,7 @@ export class ChatService {
     console.log('ChatService initialized with client:', this.oramaClient)
   }
 
-  sendQuestion = (
+  sendQuestion = async (
     term: string,
     systemPrompts?: string[],
     callbacks?: {
@@ -27,6 +27,13 @@ export class ChatService {
     if (!this.oramaClient) throw new OramaClientNotInitializedError()
     console.log('sendQuestion called with term:', term)
 
+    // Define askParams for use in callbacks
+    const askParams = {
+      term,
+      interactionID: `interaction-${Date.now()}`,
+      sessionID: `session-${Date.now()}`,
+      visitorID: `visitor-${Date.now()}`,
+    }
 
     if (systemPrompts?.length) {
       console.log('Setting system prompts:', systemPrompts)
@@ -80,7 +87,7 @@ export class ChatService {
 
                 if (isLatest && answerStatus === TAnswerStatus.done) {
                   callbacks?.onAnswerGeneratedCallback?.({
-                    askParams: askParams,
+                    askParams,
                     query: interaction.query,
                     sources: interaction.sources,
                     answer: interaction.response,
@@ -118,13 +125,24 @@ export class ChatService {
           visitorID: `visitor-${Date.now()}`,
         })
 
-        for (const answer of answerStream) {
-          console.log('Answer stream response:', answer)
+        // Create a helper function to process the AsyncGenerator
+        const processAsyncGenerator = async () => {
+          try {
+            // Proper way to iterate over an AsyncGenerator
+            for await (const answer of answerStream) {
+              console.log('Answer stream response:', answer)
+            }
+          } catch (error) {
+            console.error('Error processing answer stream:', error)
+          }
         }
+        
+        // Start processing but don't await it (non-blocking)
+        processAsyncGenerator()
       } else if (this.answerSession.ask) {
         // Fallback to ask method if available
         console.log('Using ask method')
-        const response = this.answerSession.ask(term)
+        const response = await this.answerSession.ask(term)
         console.log('Ask method response:', response)
       } else {
         console.error('Neither answerStream nor ask method is available')
@@ -173,16 +191,5 @@ export class ChatService {
       (this.answerSession as any).clearSession()
     }
     this.chatStore.state.interactions = []
-  }
-
-  regenerateLatest = async () => {
-    if (!this.answerSession) {
-      throw new OramaClientNotInitializedError()
-    }
-
-    // Regenerate the last answer if the method exists
-    if ('regenerateLast' in this.answerSession) {
-      (this.answerSession as any).regenerateLast({ stream: false })
-    }
   }
 }

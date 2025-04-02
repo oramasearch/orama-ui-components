@@ -11,7 +11,7 @@ import type {
 } from '@/types'
 import type { SearchStoreType } from '@/ParentComponentStore/SearchStore'
 import type { AnswerSession as OSSAnswerSession } from '@orama/orama'
-import type { AnswerSession as SwitchAnswerSession } from '@orama/core'
+import type { AnswerSession } from '@orama/core'
 import type { OramaSwitchClient } from '@orama/switch'
 import type { AnyOrama, Orama, SearchParams } from '@orama/orama'
 import type { OramaClient } from '@oramacloud/client'
@@ -24,7 +24,7 @@ type OramaHit = { id: string; score: number; document: any }
 
 export class SearchService {
   private client: any
-  answerSession: SwitchAnswerSession<true> | OSSAnswerSession | any
+  answerSession: AnswerSession | OSSAnswerSession | any
   private searchStore: SearchStoreType
   private abortController: AbortController
 

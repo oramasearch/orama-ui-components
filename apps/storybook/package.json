@@ -13,6 +13,7 @@
   "dependencies": {
     "@orama/wc-components": "workspace:*",
     "@oramacloud/client": "^2.1.0",
+    "@orama/core": "0.0.11",
     "@storybook/preview-api": "^8.2.9",
     "@storybook/web-components": "^8.2.3"
   },
