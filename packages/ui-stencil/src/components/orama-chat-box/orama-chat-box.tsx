@@ -22,9 +22,10 @@ import type {
   TextDictionary,
 } from '@/types'
 import type { TThemeOverrides } from '@/config/theme'
-import type { OramaClient } from '@oramacloud/client'
-import '@phosphor-icons/webcomponents/dist/icons/PhArrowClockwise.mjs'
 import type { AnyOrama } from '@orama/orama'
+import type { OramaClient } from '@oramacloud/client'
+import type { CollectionManager } from '@orama/core'
+import '@phosphor-icons/webcomponents/dist/icons/PhArrowClockwise.mjs'
 import { initStore, removeAllStores } from '@/ParentComponentStore/ParentComponentStoreManager'
 import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
 import { Store } from '@/StoreDecorator'
@@ -37,7 +38,7 @@ import { Store } from '@/StoreDecorator'
 export class ChatBox {
   @Element() el: HTMLElement
   @Prop() index?: CloudIndexConfig | CloudIndexConfig[]
-  @Prop() clientInstance?: OramaClient | AnyOrama
+  @Prop() clientInstance?: OramaClient | AnyOrama | CollectionManager
   @Prop() sourceBaseUrl?: string
   @Prop() linksTarget?: string
   @Prop() linksRel?: string
@@ -170,10 +171,14 @@ export class ChatBox {
     this.startChatService()
   }
 
-  startChatService() {
-    if (this.chatStore.state.chatService) return
-    validateCloudIndexOrInstance(this.el, this.index, this.clientInstance)
-    const oramaClient = this.clientInstance || initOramaClient(this.index)
+  private startChatService() {
+    let oramaClient
+    if (this.clientInstance && 'collectionID' in this.clientInstance && 'url' in this.clientInstance && 'readAPIKey' in this.clientInstance) {
+      console.log('Using CollectionManager directly:', this.clientInstance);
+      oramaClient = this.clientInstance;
+    } else {
+      oramaClient = this.clientInstance || initOramaClient(this.index)
+    }
 
     this.chatStore.state.chatService = new ChatService(oramaClient, this.chatStore)
   }

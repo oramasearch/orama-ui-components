@@ -2,6 +2,7 @@ import type { TThemeOverrides } from '@/components'
 import type { CloudIndexConfig, ColorScheme } from '@/types'
 import type { AnyOrama } from '@orama/orama'
 import { OramaClient } from '@oramacloud/client'
+import type { CollectionManager } from '@orama/core'
 
 /**
  * Arrow keys navigation for focusable elements within a container
@@ -77,7 +78,7 @@ export function getNonExplicitAttributes(element: HTMLElement, explicitProps: st
 export function validateCloudIndexConfig(
   el: HTMLElement,
   indexOrIndexes?: CloudIndexConfig | CloudIndexConfig[],
-  instance?: OramaClient | AnyOrama,
+  instance?: OramaClient | AnyOrama | CollectionManager,
 ): void {
   const componentDetails = `
     Component: ${el.tagName.toLowerCase()}
@@ -99,8 +100,23 @@ export function validateCloudIndexConfig(
     }
   }
 
-  if (indexOrIndexes && instance) {
-    console.warn(`Both index and instance props are provided. Instance prop will be used. ${componentDetails}`)
+  // If instance is a CollectionManager, validate it has the required properties
+  if (instance && 'collectionID' in instance && 'url' in instance && 'readAPIKey' in instance) {
+    const collectionManager = instance as CollectionManager;
+    if (!collectionManager.url || !collectionManager.collectionID || !collectionManager.readAPIKey) {
+      throw new Error(
+        `Invalid CollectionManager configuration. Please provide valid url, collectionID, and readAPIKey properties. ${componentDetails}`,
+      )
+    }
+    // CollectionManager is valid, return early
+    return;
+  }
+
+  // For OramaClient and AnyOrama instances
+  if (instance && !('search' in instance)) {
+    throw new Error(
+      `Invalid instance. Expected either an OramaClient or an Orama OSS database. ${componentDetails}`,
+    )
   }
 }
 
