@@ -4,8 +4,8 @@ import { BrowserRouter, Routes, Route, NavLink, Navigate } from 'react-router'
 import { CollectionManager } from '@orama/core'
 
 const ORAMACORE_ENDPOINT = 'https://oramacore.orama.foo'
-const ORAMACORE_COLLECTION_ID = 'tes-agndc5'
-const ORAMACORE_READ_API_KEY = 'Dj3uK8wklKlO8dJUIcB5YtqZNuk945dC'
+const ORAMACORE_COLLECTION_ID = 'o17h4d118nfs2ohe2cg96xt8'
+const ORAMACORE_READ_API_KEY = 'xhFs0AVrpRXFNiUvGu14Bgvbhbt66ILa'
 
 const collectionManager = new CollectionManager({
   url: ORAMACORE_ENDPOINT,
@@ -42,6 +42,7 @@ const ChatBoxPage = () => {
         <h2 style={{ textAlign: 'center' }}>CHAT BOX</h2>
         <div className="component-row">
           <OramaChatBox
+            sourcesMap={{description: "content"}}
             clientInstance={collectionManager}
             style={{ height: '600px' }}
             onAnswerSourceClick={(e: Event) => console.log(e)}
@@ -67,7 +68,7 @@ const SearchBoxPage = () => {
         <div className="component-row">
         <OramaSearchButton colorScheme="system">Search</OramaSearchButton>
           <OramaSearchBox
-            resultMap={{title:"breed", description: "country"}}
+            resultMap={{description: "content"}}
             onModalClosed={() => {
               console.log('closed')
             }}

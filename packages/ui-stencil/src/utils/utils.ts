@@ -102,7 +102,7 @@ export function validateCloudIndexConfig(
 
   // If instance is a CollectionManager, validate it has the required properties
   if (instance && 'collectionID' in instance && 'url' in instance && 'readAPIKey' in instance) {
-    const collectionManager = instance as CollectionManager;
+    const collectionManager = instance as any;
     if (!collectionManager.url || !collectionManager.collectionID || !collectionManager.readAPIKey) {
       throw new Error(
         `Invalid CollectionManager configuration. Please provide valid url, collectionID, and readAPIKey properties. ${componentDetails}`,
