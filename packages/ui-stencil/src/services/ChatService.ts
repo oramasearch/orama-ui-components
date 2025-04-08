@@ -29,10 +29,7 @@ export class ChatService {
 
     // Define askParams for use in callbacks
     const askParams = {
-      term,
-      interactionID: `interaction-${Date.now()}`,
-      sessionID: `session-${Date.now()}`,
-      visitorID: `visitor-${Date.now()}`,
+      term
     }
 
     if (systemPrompts?.length) {
