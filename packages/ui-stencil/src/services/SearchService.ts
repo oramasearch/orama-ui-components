@@ -13,8 +13,6 @@ import type { SearchStoreType } from '@/ParentComponentStore/SearchStore'
 import type { AnswerSession as OSSAnswerSession } from '@orama/orama'
 import type { AnswerSession } from '@orama/core'
 import type { OramaSwitchClient } from '@orama/switch'
-import type { AnyOrama, Orama, SearchParams } from '@orama/orama'
-import type { OramaClient } from '@oramacloud/client'
 
 const LIMIT_RESULTS = 10
 
