@@ -33,8 +33,7 @@
   background: var(--background-color-fourth, background-color('tertiary'));
   border: 0.7px solid var(--border-color-primary, border-color('primary'));
   justify-self: flex-end;
-  min-width: 24px;
-  min-height: 24px;
+  padding: pxToRem(4);
   justify-content: center;
 }
 
@@ -81,8 +80,7 @@
   }
 
   .keyboard-shortcuts {
-    flex-wrap: wrap;
-    justify-content: center;
+    display: none;
   }
 
   .powered-by {
