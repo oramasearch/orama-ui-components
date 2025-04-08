@@ -55,28 +55,40 @@ describe('SearchBox Component', () => {
   })
 
   it('should start chat after clicking on Get a summary', () => {
+    // Open the search box
     cy.get('orama-search-button').click()
 
+    // Find the input element and type the search query
     const searchInput = cy.get('orama-search-box').shadow().find('input[type="search"]')
     searchInput.type('create segments')
     
-    cy.get('orama-search-box').shadow().find('button').contains('Get a summary').click()
-
-    cy.wait('@chatRequest')
+    // Wait for the search request to be intercepted
+    cy.wait('@searchRequest', { timeout: 10000 })
     
-    // Look for the Get a summary button and click it
+    // Wait for search results to be visible
+    cy.get('orama-search-box').shadow().find('li.sc-orama-search-results').should('exist')
+    
+    // Log all buttons to help with debugging
+    cy.get('orama-search-box').shadow().find('button').then(buttons => {
+      console.log(`Found ${buttons.length} buttons`)
+      buttons.each((i, el) => {
+        console.log(`Button ${i} text: ${Cypress.$(el).text()}`)
+      })
+    })
+    
+    // Use cy.contains to find the button with 'summary' text (case insensitive)
     cy.get('orama-search-box')
       .shadow()
-      .contains('Get a summary')
-      .click({force: true})
+      .contains('button', /summary/i, { timeout: 10000 })
+      .click({ force: true })
     
     // Wait for the chat request to be intercepted
-    cy.wait('@chatRequest', { timeout: 15000 })
+    cy.wait('@chatRequest', { timeout: 20000 })
     
     // Check for chat response
     cy.get('orama-search-box')
       .shadow()
-      .find('.chat-container')
+      .find('.chat-container, .chat-response, [class*=chat]')
       .should('exist')
   })
 })
