@@ -37,9 +37,8 @@ Cypress.Commands.add('waitForPageLoad', () => {
 
 // Custom command to mock Orama API responses
 Cypress.Commands.add('mockOramaApi', () => {
-  // First, let's set up a spy to log all network requests for debugging
+  // Set up a detailed spy to log all network requests for debugging
   cy.intercept('**', (req) => {
-    console.log('Network request:', req.method, req.url)
     req.continue()
   })
 
@@ -80,11 +79,11 @@ Cypress.Commands.add('mockOramaApi', () => {
     fixture: 'index-initialization.json',
   }).as('indexInitializationRequest')
 
-  // Intercept chat requests for all possible endpoints
+  // Intercept chat requests
   cy.fixture('chat-response.json')
     .then((streamEvents) => {
+      // Create a proper event stream response for chat requests
       const chatResponseHandler = (req: any) => {
-        console.log('Intercepted chat request:', req.url)
         const responseBody = streamEvents
           .map((event: any) => `event: ${event.event}
 data: ${JSON.stringify(event.data)}
@@ -97,24 +96,13 @@ data: ${JSON.stringify(event.data)}
           headers: {
             'Content-Type': 'text/event-stream',
             'Cache-Control': 'no-cache',
-            Connection: 'keep-alive',
+            'Connection': 'keep-alive',
           },
           body: responseBody
         })
       }
       
-      // Intercept all chat/answer requests with generic patterns
-      // Pattern 1: Match any POST request to a URL containing /collections/ and /answer
-      cy.intercept('POST', '**/collections/**/answer**', chatResponseHandler).as('chatRequest')
-      
-      // Pattern 2: Match any POST request to a URL containing /answer
-      cy.intercept('POST', '**/answer**', chatResponseHandler).as('chatRequest')
-      
-      // Pattern 3: Match any POST request to a URL containing /chat
-      cy.intercept('POST', '**/chat**', chatResponseHandler).as('chatRequest')
-      
-      // Pattern 4: Match any POST request to a URL containing /stream
-      cy.intercept('POST', '**/stream**', chatResponseHandler).as('chatRequest')
+      cy.intercept('POST', '**/answer*', chatResponseHandler).as('chatRequest')
     })
 })
 
