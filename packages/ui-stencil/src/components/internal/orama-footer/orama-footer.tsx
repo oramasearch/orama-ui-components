@@ -82,10 +82,12 @@ export class OramaFooter {
         {this.showKeyboardShortcuts && (
           <div class="keyboard-shortcuts" aria-label="Keyboard shortcuts">
             {this.keyboardShortcuts.map((shortcut) => (
-              <orama-text as="small" variant="tertiary">
+              <div class="shortcut-item">
                 {this.renderIcon(shortcut)}
-                <span class="shortcut-description">{shortcut.description}</span>
-              </orama-text>
+                <orama-text as="small" variant="tertiary">
+                  <span class="shortcut-description">{shortcut.description}</span>
+                </orama-text>
+              </div>
             ))}
           </div>
         )}
