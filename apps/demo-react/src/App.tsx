@@ -2,16 +2,28 @@ import { OramaChatBox, OramaSearchBox, OramaSearchButton } from '@orama/react-co
 import './App.css'
 import { BrowserRouter, Routes, Route, NavLink, Navigate } from 'react-router'
 import { CollectionManager } from '@orama/core'
+import { Switch } from '@orama/switch'
 
 const ORAMACORE_ENDPOINT = 'https://oramacore.orama.foo'
 const ORAMACORE_COLLECTION_ID = 'o17h4d118nfs2ohe2cg96xt8'
 const ORAMACORE_READ_API_KEY = 'xhFs0AVrpRXFNiUvGu14Bgvbhbt66ILa'
 
+// Create a CollectionManager instance
 const collectionManager = new CollectionManager({
   url: ORAMACORE_ENDPOINT,
   collectionID: ORAMACORE_COLLECTION_ID,
   readAPIKey: ORAMACORE_READ_API_KEY,
 })
+
+// Create a Switch client with the CollectionManager
+// This approach is recommended for better compatibility
+let client;
+try {
+  client = new Switch(collectionManager)
+} catch (error) {
+  // Fall back to using CollectionManager directly if Switch creation fails
+  client = collectionManager
+}
 
 function App() {
   return (
@@ -43,7 +55,7 @@ const ChatBoxPage = () => {
         <div className="component-row">
           <OramaChatBox
             sourcesMap={{description: "content"}}
-            clientInstance={collectionManager}
+            clientInstance={client}
             style={{ height: '600px' }}
             onAnswerSourceClick={(e: Event) => console.log(e)}
             onAnswerGenerated={(e: Event) => console.log(e)}
@@ -76,7 +88,7 @@ const SearchBoxPage = () => {
               console.log('Status changed to: ', e.detail.open)
             }}
             colorScheme="system"
-            clientInstance={collectionManager}
+            clientInstance={client}
             suggestions={['Suggestion 1', 'Suggestion 2', 'Suggestion 3']}
             onSearchCompleted={(e: Event) => console.log(e)}
             onSearchResultClick={(e: React.MouseEvent) => {
