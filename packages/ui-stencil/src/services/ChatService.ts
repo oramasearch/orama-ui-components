@@ -1,20 +1,36 @@
 import type { AskParams } from '@oramacloud/client'
 import type { AnswerSession as OSSAnswerSession } from '@orama/orama'
-import type { AnswerSession } from '@orama/core'
-import type { OramaSwitchClient } from '@orama/switch'
+import type { AnswerSession as CloudAnswerSession } from '@oramacloud/client'
+import { Switch, type OramaSwitchClient } from '@orama/switch'
+import type { OramaClient } from '@oramacloud/client'
+import type { CollectionManager } from '@orama/core'
+import type { AnyOrama } from '@orama/orama'
 import { OramaClientNotInitializedError } from '@/erros/OramaClientNotInitialized'
 import { TAnswerStatus, type OnAnswerGeneratedCallbackProps } from '@/types'
 import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
 
 export class ChatService {
+  // Use any for answerSession to accommodate different implementations
+  answerSession: any
   private oramaClient: any
-  answerSession: AnswerSession | OSSAnswerSession | any
   private chatStore: ChatStoreType
 
-  constructor(oramaClient: OramaSwitchClient, chatStore: ChatStoreType) {
-    this.oramaClient = oramaClient
+  constructor(oramaClient: any, chatStore: ChatStoreType) {
+    // Check if the client is already a Switch instance
+    if (oramaClient && oramaClient.constructor && 
+        (oramaClient.constructor.name === 'Switch' || 
+         // Also check for properties that indicate it's a Switch instance
+         (typeof oramaClient.search === 'function' && 
+          typeof oramaClient.clientType === 'string' && 
+          (oramaClient.isCloud === true || oramaClient.isCore === true || oramaClient.isJS === true)))) {
+      
+      this.oramaClient = oramaClient
+    } else {
+      // Just use the client directly - we now create the Switch in the demo app
+      this.oramaClient = oramaClient
+    }
+    
     this.chatStore = chatStore
-    console.log('ChatService initialized with client:', this.oramaClient)
   }
 
   sendQuestion = async (
@@ -48,7 +64,7 @@ export class ChatService {
       const existingInteractions = this.chatStore.state.interactions
       this.answerSession = this.oramaClient.createAnswerSession({
         events: {
-          onStateChange: (state) => {
+          onStateChange: (state: any) => {
             console.log('Answer session state changed:', state)
             // TODO: Remove: this is a quick and dirty fix for odd behavior of the SDK. When we abort, it generates a new interaction with empty query and empty anwer.
             const normalizedState = state.filter((stateItem) => !!stateItem.query)
@@ -115,12 +131,18 @@ export class ChatService {
     try {
       if (this.answerSession.answerStream) {
         console.log('Using answerStream method')
-        const answerStream = this.answerSession.answerStream({
-          query: term,
-          interactionID: `interaction-${Date.now()}`,
-          sessionID: `session-${Date.now()}`,
-          visitorID: `visitor-${Date.now()}`,
-        })
+        // Create proper params object for answerStream
+        const streamParams = {
+          term: term,
+          limit: 10,
+          threshold: 0.5,
+          userData: {
+            interactionID: `interaction-${Date.now()}`,
+            sessionID: `session-${Date.now()}`,
+            visitorID: `visitor-${Date.now()}`
+          }
+        }
+        const answerStream = this.answerSession.answerStream(streamParams)
 
         // Create a helper function to process the AsyncGenerator
         const processAsyncGenerator = async () => {
@@ -139,7 +161,18 @@ export class ChatService {
       } else if (this.answerSession.ask) {
         // Fallback to ask method if available
         console.log('Using ask method')
-        const response = await this.answerSession.ask(term)
+        // Create proper AskParams object
+        const askParams: AskParams = {
+          term: term,
+          limit: 10,
+          threshold: 0.5,
+          userData: {
+            interactionID: `interaction-${Date.now()}`,
+            sessionID: `session-${Date.now()}`,
+            visitorID: `visitor-${Date.now()}`
+          }
+        }
+        const response = await this.answerSession.ask(askParams)
         console.log('Ask method response:', response)
       } else {
         console.error('Neither answerStream nor ask method is available')
