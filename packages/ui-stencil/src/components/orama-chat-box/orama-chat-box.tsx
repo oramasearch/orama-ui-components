@@ -21,12 +21,12 @@ import type {
 } from '@/types'
 import type { TThemeOverrides } from '@/config/theme'
 import type { AnyOrama } from '@orama/orama'
-import type { OramaClient } from '@oramacloud/client'
-import type { CollectionManager } from '@orama/core'
+import { OramaClient } from '@oramacloud/client'
+import { CollectionManager } from '@orama/core'
 import '@phosphor-icons/webcomponents/dist/icons/PhArrowClockwise.mjs'
 import { initStore, removeAllStores } from '@/ParentComponentStore/ParentComponentStoreManager'
 import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
-import { Store } from '@/StoreDecorator'
+
 
 @Component({
   tag: 'orama-chat-box',
@@ -122,14 +122,23 @@ export class ChatBox {
   }
 
   private startChatService() {
-    let oramaClient
-    if (this.clientInstance && 'collectionID' in this.clientInstance && 'url' in this.clientInstance && 'readAPIKey' in this.clientInstance) {
-      console.log('Using CollectionManager directly:', this.clientInstance);
+    let oramaClient: CollectionManager | OramaClient;
+    // First try instanceof check
+    if (this.clientInstance instanceof CollectionManager) {
       oramaClient = this.clientInstance;
-    } else {
-      oramaClient = this.clientInstance || initOramaClient(this.index)
     }
-
+    else if (this.clientInstance instanceof OramaClient) {
+      oramaClient = this.clientInstance;
+    }
+    else if (this.clientInstance && 
+             typeof this.clientInstance === 'object' && 
+             this.clientInstance.constructor && 
+             this.clientInstance.constructor.name === 'CollectionManager') {
+      oramaClient = this.clientInstance as any;
+    }
+    else {
+      oramaClient = initOramaClient(this.index)
+    }
     this.chatStore.state.chatService = new ChatService(oramaClient, this.chatStore)
   }
 

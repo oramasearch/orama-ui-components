@@ -1,8 +1,8 @@
 import type { ClientSearchParams } from '@oramacloud/client'
 import { OramaClientNotInitializedError } from '@/erros/OramaClientNotInitialized'
 import { Switch, type OramaSwitchClient } from '@orama/switch'
-import type { OramaClient } from '@oramacloud/client'
-import type { CollectionManager } from '@orama/core'
+import { OramaClient } from '@oramacloud/client'
+import { CollectionManager } from '@orama/core'
 import type { AnyOrama } from '@orama/orama'
 import type {
   OnSearchCompletedCallbackProps,
@@ -23,21 +23,14 @@ type OramaHit = { id: string; score: number; document: any }
 
 export class SearchService {
   private abortController: AbortController
-  private client: any
+  private client: OramaClient | CollectionManager | Switch
   private searchStore: SearchStoreType
 
-  constructor(oramaClient: any, searchStore: SearchStoreType) {
+  constructor(oramaClient: OramaClient | CollectionManager | Switch, searchStore: SearchStoreType) {
     // Check if the client is already a Switch instance
-    if (oramaClient && oramaClient.constructor && 
-        (oramaClient.constructor.name === 'Switch' || 
-         // Also check for properties that indicate it's a Switch instance
-         (typeof oramaClient.search === 'function' && 
-          typeof oramaClient.clientType === 'string' && 
-          (oramaClient.isCloud === true || oramaClient.isCore === true || oramaClient.isJS === true)))) {
-      
+    if (oramaClient instanceof Switch) {
       this.client = oramaClient
     } else {
-      // Just use the client directly - we now create the Switch in the demo app
       this.client = oramaClient
     }
     
@@ -96,7 +89,17 @@ export class SearchService {
 
 
     try {
-      const results = await this.client.search(clientSearchParams, { abortController: this.abortController })
+      let results;
+      if (this.client instanceof Switch) {
+        results = await this.client.search(clientSearchParams, { abortController: this.abortController })
+      } else if (this.client instanceof OramaClient) {
+        results = await this.client.search(clientSearchParams, { abortController: this.abortController })
+      } else if (this.client instanceof CollectionManager) {
+        results = await this.client.search(clientSearchParams as any)
+      } else {
+        // Fallback with type assertion
+        results = await (this.client as any).search(clientSearchParams)
+      }
 
         if (latestAbortController.signal.aborted) {
           return
@@ -226,22 +229,22 @@ export class SearchService {
   }
 
   private parseFacets = (
-    rawFacets: Record<
-      string,
-      {
-        count: number
-        values: Record<string, number>
-      }
-    >,
+    rawFacets: any,
     facetProperty,
   ): { name: string; count: number }[] => {
-    if (!facetProperty || !rawFacets || !rawFacets[facetProperty]?.values) {
+    // Handle case where facets are missing or empty
+    if (!facetProperty || !rawFacets) {
+      return []
+    }
+    
+    // Handle different facet formats based on client type
+    const facetPropertyObject = rawFacets[facetProperty]
+    if (!facetPropertyObject || !facetPropertyObject.values) {
       return []
     }
 
-    const facetPropertyObject = rawFacets[facetProperty]
-
-    const totalCount = Object.values(facetPropertyObject.values).reduce((acc, count) => acc + count, 0)
+    // Process facets in standard format
+    const totalCount = Object.values(facetPropertyObject.values).reduce((acc: number, count: number) => acc + count, 0)
     const allFacets = Object.keys(facetPropertyObject.values).map((key) => {
       return {
         name: key,

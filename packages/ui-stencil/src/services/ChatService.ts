@@ -1,7 +1,7 @@
 import type { AskParams } from '@oramacloud/client'
 import type { AnswerSession as OSSAnswerSession } from '@orama/orama'
 import type { AnswerSession as CloudAnswerSession } from '@oramacloud/client'
-import { Switch, type OramaSwitchClient } from '@orama/switch'
+import type { AnswerSession } from '@orama/core'
 import type { OramaClient } from '@oramacloud/client'
 import type { CollectionManager } from '@orama/core'
 import type { AnyOrama } from '@orama/orama'
@@ -10,26 +10,12 @@ import { TAnswerStatus, type OnAnswerGeneratedCallbackProps } from '@/types'
 import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
 
 export class ChatService {
-  // Use any for answerSession to accommodate different implementations
-  answerSession: any
-  private oramaClient: any
+  answerSession: OSSAnswerSession | CloudAnswerSession<true> | AnswerSession
+  private oramaClient: OramaClient | CollectionManager
   private chatStore: ChatStoreType
 
-  constructor(oramaClient: any, chatStore: ChatStoreType) {
-    // Check if the client is already a Switch instance
-    if (oramaClient && oramaClient.constructor && 
-        (oramaClient.constructor.name === 'Switch' || 
-         // Also check for properties that indicate it's a Switch instance
-         (typeof oramaClient.search === 'function' && 
-          typeof oramaClient.clientType === 'string' && 
-          (oramaClient.isCloud === true || oramaClient.isCore === true || oramaClient.isJS === true)))) {
-      
-      this.oramaClient = oramaClient
-    } else {
-      // Just use the client directly - we now create the Switch in the demo app
-      this.oramaClient = oramaClient
-    }
-    
+  constructor(oramaClient: OramaClient | CollectionManager , chatStore: ChatStoreType) {
+    this.oramaClient = oramaClient
     this.chatStore = chatStore
   }
 
@@ -41,7 +27,6 @@ export class ChatService {
     },
   ) => {
     if (!this.oramaClient) throw new OramaClientNotInitializedError()
-    console.log('sendQuestion called with term:', term)
 
     // Define askParams for use in callbacks
     const askParams = {
@@ -49,119 +34,113 @@ export class ChatService {
     }
 
     if (systemPrompts?.length) {
-      console.log('Setting system prompts:', systemPrompts)
       if (this.answerSession && 'setSystemPromptConfiguration' in this.answerSession) {
         (this.answerSession as any).setSystemPromptConfiguration(systemPrompts)
       }
     }
 
     const existingInteractions = this.chatStore.state.interactions
-
-    console.log('Creating answer session with client:', this.oramaClient)
-    console.log('Client has createAnswerSession method:', !!this.oramaClient.createAnswerSession)
     
     if (!this.answerSession) {
-      const existingInteractions = this.chatStore.state.interactions
-      this.answerSession = this.oramaClient.createAnswerSession({
-        events: {
-          onStateChange: (state: any) => {
-            console.log('Answer session state changed:', state)
-            // TODO: Remove: this is a quick and dirty fix for odd behavior of the SDK. When we abort, it generates a new interaction with empty query and empty anwer.
-            const normalizedState = state.filter((stateItem) => !!stateItem.query)
-            console.log('Normalized state:', normalizedState)
+      try {
+        const existingInteractions = this.chatStore.state.interactions
+        
+        try {
+          this.answerSession = (this.oramaClient as any).createAnswerSession({
+            events: {
+              onStateChange: (state: any) => {
+                // Filter out empty interactions
+                const normalizedState = state.filter((stateItem) => !!stateItem.query)
 
-            this.chatStore.state.interactions = [
-              ...(existingInteractions || []),
-              ...normalizedState.map((interaction, index) => {
-                const isLatest = state.length - 1 === index
-                let answerStatus = TAnswerStatus.loading
-                let sources = []
+                this.chatStore.state.interactions = [
+                  ...(existingInteractions || []),
+                  ...normalizedState.map((interaction, index) => {
+                    const isLatest = state.length - 1 === index
+                    let answerStatus = TAnswerStatus.loading
+                    let sources = []
 
-                if (interaction.aborted) {
-                  answerStatus = TAnswerStatus.aborted
-                } else if (interaction.loading && interaction.sources) {
-                  answerStatus = TAnswerStatus.rendering
-                } else if (interaction.loading && interaction.response) {
-                  answerStatus = TAnswerStatus.streaming
-                } else if (!interaction.loading && interaction.response) {
-                  answerStatus = TAnswerStatus.done
-                }
+                    if (interaction.aborted) {
+                      answerStatus = TAnswerStatus.aborted
+                    } else if (interaction.loading && interaction.sources) {
+                      answerStatus = TAnswerStatus.rendering
+                    } else if (interaction.loading && interaction.response) {
+                      answerStatus = TAnswerStatus.streaming
+                    } else if (!interaction.loading && interaction.response) {
+                      answerStatus = TAnswerStatus.done
+                    }
 
-                // biome-ignore lint/suspicious/noExplicitAny: Client should expose this type
-                /**
-                 * we usually expected to receive interaction.sources as an array, but sometimes it comes as an object.
-                 * need to check OSS Orama and fix it if it's a bug.
-                 **/
-                if (interaction.sources) {
-                  sources = Array.isArray(interaction.sources)
-                    ? (interaction.sources as any)?.map((source) => source.document)
-                    : (interaction.sources.hits as any)?.map((source) => source.document)
-                }
+                    // Handle sources in different formats
+                    if (interaction.sources) {
+                      sources = Array.isArray(interaction.sources)
+                        ? (interaction.sources as any)?.map((source) => source.document)
+                        : (interaction.sources.hits as any)?.map((source) => source.document)
+                    }
 
-                if (isLatest && answerStatus === TAnswerStatus.done) {
-                  callbacks?.onAnswerGeneratedCallback?.({
-                    askParams,
-                    query: interaction.query,
-                    sources: interaction.sources,
-                    answer: interaction.response,
-                    segment: interaction.segment,
-                    trigger: interaction.trigger,
-                  })
-                }
+                    if (isLatest && answerStatus === TAnswerStatus.done) {
+                      callbacks?.onAnswerGeneratedCallback?.({
+                        askParams,
+                        query: interaction.query,
+                        sources: interaction.sources,
+                        answer: interaction.response,
+                        segment: interaction.segment,
+                        trigger: interaction.trigger,
+                      })
+                    }
 
-                return {
-                  query: interaction.query,
-                  interactionId: interaction.interactionId,
-                  response: interaction.response,
-                  relatedQueries: interaction.relatedQueries,
-                  status: answerStatus,
-                  latest: isLatest,
-                  sources,
-                }
-              }),
-            ]
+                    return {
+                      query: interaction.query,
+                      interactionId: interaction.interactionId,
+                      response: interaction.response,
+                      relatedQueries: interaction.relatedQueries,
+                      status: answerStatus,
+                      latest: isLatest,
+                      sources,
+                    }
+                  }),
+                ]
+              },
+            },
+          })
+        } catch (methodError) {
+          console.error('Client does not support createAnswerSession method:', methodError)
+          this.chatStore.state.interactions = [
+            ...(existingInteractions || []),
+            {
+              query: term,
+              interactionId: `interaction-${Date.now()}`,
+              response: 'Sorry, this client does not support chat functionality.',
+              status: TAnswerStatus.error,
+              latest: true,
+              sources: [],
+            },
+          ]
+          return
+        }
+      } catch (error) {
+        console.error('Error creating answer session:', error)
+        this.chatStore.state.interactions = [
+          ...(existingInteractions || []),
+          {
+            query: term,
+            interactionId: `interaction-${Date.now()}`,
+            response: 'Sorry, there was an error creating the answer session. Please try again later.',
+            status: TAnswerStatus.error,
+            latest: true,
+            sources: [],
           },
-        },
-      })
+        ]
+        return
+      }
     }
 
-    console.log('Answer session created:', this.answerSession)
-    console.log('Answer session has answerStream method:', !!this.answerSession.answerStream)
-
     try {
-      if (this.answerSession.answerStream) {
-        console.log('Using answerStream method')
-        // Create proper params object for answerStream
-        const streamParams = {
-          term: term,
-          limit: 10,
-          threshold: 0.5,
-          userData: {
-            interactionID: `interaction-${Date.now()}`,
-            sessionID: `session-${Date.now()}`,
-            visitorID: `visitor-${Date.now()}`
-          }
-        }
-        const answerStream = this.answerSession.answerStream(streamParams)
-
-        // Create a helper function to process the AsyncGenerator
-        const processAsyncGenerator = async () => {
-          try {
-            // Proper way to iterate over an AsyncGenerator
-            for await (const answer of answerStream) {
-              console.log('Answer stream response:', answer)
-            }
-          } catch (error) {
-            console.error('Error processing answer stream:', error)
-          }
-        }
-        
-        // Start processing but don't await it (non-blocking)
-        processAsyncGenerator()
-      } else if (this.answerSession.ask) {
-        // Fallback to ask method if available
-        console.log('Using ask method')
-        // Create proper AskParams object
+      if (!this.answerSession) {
+        console.error('Answer session was not created')
+        return
+      }
+      
+      // Try to use ask method first as it might be more stable   
+      try {
         const askParams: AskParams = {
           term: term,
           limit: 10,
@@ -172,13 +151,68 @@ export class ChatService {
             visitorID: `visitor-${Date.now()}`
           }
         }
-        const response = await this.answerSession.ask(askParams)
-        console.log('Ask method response:', response)
-      } else {
-        console.error('Neither answerStream nor ask method is available')
+        const response = await (this.answerSession as any).ask(askParams)
+      } catch (askError) {
+        console.error('Error using ask method, falling back to answerStream:', askError)
+        // Fall back to answerStream if ask fails
+        try {
+          this.tryAnswerStream(term)
+        } catch (streamError) {
+          console.error('Error using answerStream method:', streamError)
+          // Update chat store to show error to user
+          const latestInteraction = this.chatStore.state.interactions[this.chatStore.state.interactions.length - 1]
+          if (latestInteraction) {
+            latestInteraction.status = TAnswerStatus.error
+            latestInteraction.response = 'Sorry, the answer service is not available. Please try again later.'
+            this.chatStore.state.interactions = [...this.chatStore.state.interactions]
+          }
+        }
       }
     } catch (e) {
       console.error('Error in answer method:', e)
+    }
+  }
+
+  private tryAnswerStream = (term: string) => {
+    // Create proper params object for answerStream with required fields
+    const streamParams = {
+      term: term,
+      limit: 10,
+      threshold: 0.5,
+      // Add required fields for AnswerConfig
+      interactionID: `interaction-${Date.now()}`,
+      query: term,
+      visitorID: `visitor-${Date.now()}`,
+      sessionID: `session-${Date.now()}`
+    }
+    
+    try {
+      const answerStream = (this.answerSession as any).answerStream(streamParams)
+
+      // Create a helper function to process the AsyncGenerator
+      const processAsyncGenerator = async () => {
+        try {
+          // Proper way to iterate over an AsyncGenerator
+          for await (const answer of answerStream) {
+            // Process answer silently
+          }
+        } catch (error) {
+          console.error('Error processing answer stream:', error)
+          
+          // Update chat store to show error to user
+          const latestInteraction = this.chatStore.state.interactions[this.chatStore.state.interactions.length - 1]
+          if (latestInteraction) {
+            latestInteraction.status = TAnswerStatus.error
+            latestInteraction.response = 'Sorry, there was an error processing your request. Please try again later.'
+            this.chatStore.state.interactions = [...this.chatStore.state.interactions]
+          }
+        }
+      }
+      
+      // Start processing but don't await it (non-blocking)
+      processAsyncGenerator()
+    } catch (error) {
+      console.error('Error creating answer stream:', error)
     }
   }
 
@@ -187,7 +221,7 @@ export class ChatService {
       throw new OramaClientNotInitializedError()
     }
 
-    this.answerSession.abortAnswer()
+    (this.answerSession as any).abortAnswer()
   }
 
   regenerateLatest = async () => {
@@ -195,7 +229,7 @@ export class ChatService {
       throw new OramaClientNotInitializedError()
     }
 
-    this.answerSession.regenerateLast({ stream: false })
+    (this.answerSession as any).regenerateLast({ stream: false })
   }
 
   resetChat = async () => {

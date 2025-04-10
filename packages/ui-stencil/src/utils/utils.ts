@@ -2,7 +2,7 @@ import type { TThemeOverrides } from '@/components'
 import type { CloudIndexConfig, ColorScheme } from '@/types'
 import type { AnyOrama } from '@orama/orama'
 import { OramaClient } from '@oramacloud/client'
-import type { CollectionManager } from '@orama/core'
+import { CollectionManager } from '@orama/core'
 
 /**
  * Arrow keys navigation for focusable elements within a container
@@ -100,15 +100,18 @@ export function validateCloudIndexConfig(
     }
   }
 
-  // If instance is a CollectionManager, validate it has the required properties
-  if (instance && 'collectionID' in instance && 'url' in instance && 'readAPIKey' in instance) {
-    const collectionManager = instance as any;
-    if (!collectionManager.url || !collectionManager.collectionID || !collectionManager.readAPIKey) {
-      throw new Error(
-        `Invalid CollectionManager configuration. Please provide valid url, collectionID, and readAPIKey properties. ${componentDetails}`,
-      )
-    }
-    // CollectionManager is valid, return early
+  // First try instanceof check for CollectionManager
+  if (instance instanceof CollectionManager) {
+    console.log('validateCloudIndexConfig - CollectionManager detected via instanceof');
+    return;
+  }
+  
+  // Then try constructor name check (handles module duplication issues)
+  if (instance && 
+      typeof instance === 'object' && 
+      instance.constructor && 
+      instance.constructor.name === 'CollectionManager') {
+    console.log('validateCloudIndexConfig - CollectionManager detected via constructor name');
     return;
   }
 
