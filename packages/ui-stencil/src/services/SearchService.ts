@@ -23,17 +23,12 @@ type OramaHit = { id: string; score: number; document: any }
 
 export class SearchService {
   private abortController: AbortController
-  private client: OramaClient | CollectionManager | Switch
+  private client: Switch<OramaSwitchClient>
   private searchStore: SearchStoreType
 
-  constructor(oramaClient: OramaClient | CollectionManager | Switch, searchStore: SearchStoreType) {
+  constructor(oramaClient: OramaClient | CollectionManager | AnyOrama, searchStore: SearchStoreType) {
     // Check if the client is already a Switch instance
-    if (oramaClient instanceof Switch) {
-      this.client = oramaClient
-    } else {
-      this.client = oramaClient
-    }
-    
+    this.client = new Switch(oramaClient)
     this.searchStore = searchStore
     this.abortController = new AbortController()
   }
@@ -90,17 +85,7 @@ export class SearchService {
 
     try {
       let results;
-      if (this.client instanceof Switch) {
-        results = await this.client.search(clientSearchParams, { abortController: this.abortController })
-      } else if (this.client instanceof OramaClient) {
-        results = await this.client.search(clientSearchParams, { abortController: this.abortController })
-      } else if (this.client instanceof CollectionManager) {
-        results = await this.client.search(clientSearchParams as any)
-      } else {
-        // Fallback with type assertion
         results = await (this.client as any).search(clientSearchParams)
-      }
-
         if (latestAbortController.signal.aborted) {
           return
         }

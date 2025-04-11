@@ -303,23 +303,8 @@ export class SearchBox {
   }
 
   startServices() {
+    const oramaClient = this.clientInstance ? this.clientInstance : initOramaClient(this.index);
     validateCloudIndexConfig(this.htmlElement, this.index, this.clientInstance)
-    let oramaClient: CollectionManager | OramaClient;
-    if (this.clientInstance instanceof CollectionManager) {
-      oramaClient = this.clientInstance;
-    }
-    else if (this.clientInstance instanceof OramaClient) {
-      oramaClient = this.clientInstance;
-    }
-    else if (this.clientInstance && 
-             typeof this.clientInstance === 'object' && 
-             this.clientInstance.constructor && 
-             this.clientInstance.constructor.name === 'CollectionManager') {
-      oramaClient = this.clientInstance as any;
-    }
-    else {
-      oramaClient = initOramaClient(this.index)
-    }
     this.searchStore.state.searchService = new SearchService(oramaClient, this.searchStore)
     this.chatStore.state.chatService = new ChatService(oramaClient, this.chatStore)
   }
