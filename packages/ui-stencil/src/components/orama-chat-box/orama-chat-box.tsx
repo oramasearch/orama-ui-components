@@ -122,23 +122,9 @@ export class ChatBox {
   }
 
   private startChatService() {
-    let oramaClient: CollectionManager | OramaClient;
-    // First try instanceof check
-    if (this.clientInstance instanceof CollectionManager) {
-      oramaClient = this.clientInstance;
-    }
-    else if (this.clientInstance instanceof OramaClient) {
-      oramaClient = this.clientInstance;
-    }
-    else if (this.clientInstance && 
-             typeof this.clientInstance === 'object' && 
-             this.clientInstance.constructor && 
-             this.clientInstance.constructor.name === 'CollectionManager') {
-      oramaClient = this.clientInstance as any;
-    }
-    else {
-      oramaClient = initOramaClient(this.index)
-    }
+    if (this.chatStore.state.chatService) return
+    validateCloudIndexOrInstance(this.el, this.index, this.clientInstance)
+    const oramaClient = this.clientInstance || initOramaClient(this.index)
     this.chatStore.state.chatService = new ChatService(oramaClient, this.chatStore)
   }
 
