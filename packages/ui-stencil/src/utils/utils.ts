@@ -78,7 +78,7 @@ export function getNonExplicitAttributes(element: HTMLElement, explicitProps: st
 export function validateCloudIndexConfig(
   el: HTMLElement,
   indexOrIndexes?: CloudIndexConfig | CloudIndexConfig[],
-  instance?: OramaClient | AnyOrama | CollectionManager,
+  instance?: OramaClient | AnyOrama | CollectionManager | Record<string, any>,
 ): void {
   const componentDetails = `
     Component: ${el.tagName.toLowerCase()}
@@ -100,6 +100,11 @@ export function validateCloudIndexConfig(
     }
   }
 
+  // If no instance is provided, we've already validated the index
+  if (!instance) {
+    return;
+  }
+
   // First try instanceof check for CollectionManager
   if (instance instanceof CollectionManager) {
     console.log('validateCloudIndexConfig - CollectionManager detected via instanceof');
@@ -115,12 +120,26 @@ export function validateCloudIndexConfig(
     return;
   }
 
-  // For OramaClient and AnyOrama instances
-  if (instance && !('search' in instance)) {
-    throw new Error(
-      `Invalid instance. Expected either an OramaClient or an Orama OSS database. ${componentDetails}`,
-    )
+  // Check for plain object with CollectionManager-like properties
+  if (instance && 
+      typeof instance === 'object' && 
+      'url' in instance && 
+      'collectionID' in instance && 
+      'readAPIKey' in instance) {
+    console.log('validateCloudIndexConfig - CollectionManager-like object detected');
+    return;
   }
+
+  // Check for OramaClient or AnyOrama instances (must have search method)
+  if (instance && 'search' in instance) {
+    console.log('validateCloudIndexConfig - OramaClient or AnyOrama detected via search method');
+    return;
+  }
+
+  // If we get here, the instance is invalid
+  throw new Error(
+    `Invalid instance. Expected either an OramaClient, Orama OSS database, or CollectionManager-like object. ${componentDetails}`,
+  )
 }
 
 export function initOramaClient(indexOrIndexes: CloudIndexConfig | CloudIndexConfig[]): OramaClient | null {

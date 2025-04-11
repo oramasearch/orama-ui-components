@@ -173,9 +173,15 @@ export class ChatBox {
 
   private startChatService() {
     if (this.chatStore.state.chatService) return
-    validateCloudIndexOrInstance(this.el, this.index, this.clientInstance)
-    const oramaClient = this.clientInstance || initOramaClient(this.index)
-    this.chatStore.state.chatService = new ChatService(oramaClient, this.chatStore)
+    
+    try {
+      const oramaClient = this.clientInstance || (this.index && initOramaClient(this.index));
+      if (oramaClient) {
+        this.chatStore.state.chatService = new ChatService(oramaClient as any, this.chatStore);
+      }
+    } catch (error) {
+      console.error('Error initializing chat service:', error);
+    }
   }
 
   updateTheme() {
