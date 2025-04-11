@@ -8,14 +8,15 @@ import type { AnyOrama } from '@orama/orama'
 import { OramaClientNotInitializedError } from '@/erros/OramaClientNotInitialized'
 import { TAnswerStatus, type OnAnswerGeneratedCallbackProps } from '@/types'
 import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
+import { Switch, type OramaSwitchClient } from '@orama/switch'
 
 export class ChatService {
   answerSession: OSSAnswerSession | CloudAnswerSession<true> | AnswerSession
-  private oramaClient: OramaClient | CollectionManager
+  private oramaClient: Switch<OramaSwitchClient>
   private chatStore: ChatStoreType
 
-  constructor(oramaClient: OramaClient | CollectionManager , chatStore: ChatStoreType) {
-    this.oramaClient = oramaClient
+  constructor(oramaClient: OramaClient | CollectionManager | AnyOrama , chatStore: ChatStoreType) {
+    this.oramaClient = new Switch(oramaClient)
     this.chatStore = chatStore
   }
 
