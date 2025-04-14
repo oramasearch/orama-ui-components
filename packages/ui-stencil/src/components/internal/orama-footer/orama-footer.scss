@@ -8,6 +8,45 @@
   background-color: var(--background-color-secondary, background-color('secondary'));
 }
 
+.keyboard-shortcuts {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-m, $spacing-m);
+}
+
+.shortcut-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs, $spacing-xs);
+  font-size: $font-size-md;
+}
+
+.shortcut-description {
+  color: var(--text-color-tertiary, text-color('tertiary'));
+}
+
+.shortcut-icon {
+  color: var(--text-color-tertiary, text-color('tertiary'));
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-xs, $radius-xs);
+  background: var(--background-color-fourth, background-color('tertiary'));
+  border: 0.7px solid var(--border-color-primary, border-color('primary'));
+  justify-self: flex-end;
+  padding: pxToRem(4);
+  justify-content: center;
+}
+
+.arrows-container {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs, $spacing-xs);
+}
+
+.esc-text {
+  font-size: 0.7rem;
+}
+
 .powered-by {
   display: flex;
   align-items: flex-end;
@@ -32,4 +71,19 @@
 
 .logo {
   max-width: pxToRem(62);
+}
+
+@media (max-width: 768px) {
+  :host {
+    flex-direction: column;
+    gap: var(--spacing-m, $spacing-m);
+  }
+
+  .keyboard-shortcuts {
+    display: none;
+  }
+
+  .powered-by {
+    justify-content: center;
+  }
 }

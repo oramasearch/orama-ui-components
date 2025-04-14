@@ -54,6 +54,11 @@ const meta: Meta<Components.OramaSearchBox & { preset: keyof DemoIndexConfig }> 
       control: { type: 'boolean', defaultValue: false },
       table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
+    showKeyboardShortcuts: {
+      control: { type: 'boolean', defaultValue: false },
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+      description: 'Show keyboard shortcuts in the footer',
+    },
     themeConfig: {
       control: false,
       table: {
@@ -81,6 +86,7 @@ const Template = ({
   sourceBaseUrl,
   sourcesMap,
   resultMap,
+  showKeyboardShortcuts,
 }) => {
   return html`<div>
       <div style="width: 240px">
@@ -106,6 +112,7 @@ const Template = ({
       .linksTarget=${preset?.linksTarget}
       .placeholder=${preset?.placeholder}
       .searchParams=${preset?.searchParams}
+      .showKeyboardShortcuts=${showKeyboardShortcuts}
     ></orama-search-box></div>`
 }
 
@@ -124,6 +131,7 @@ const TemplateAsEmbed = ({
   sourceBaseURL,
   suggestions,
   sourcesMap,
+  showKeyboardShortcuts,
 }) => {
   return html`<div style="height: 420px">
     <orama-search-box
@@ -147,6 +155,7 @@ const TemplateAsEmbed = ({
       .linksTarget=${preset?.linksTarget}
       .placeholder=${preset?.placeholder}
       .searchParams=${preset?.searchParams}
+      .showKeyboardShortcuts=${showKeyboardShortcuts}
     ></orama-search-box>
   </div>`
 }
