@@ -78,7 +78,7 @@ export function getNonExplicitAttributes(element: HTMLElement, explicitProps: st
 export function validateCloudIndexConfig(
   el: HTMLElement,
   indexOrIndexes?: CloudIndexConfig | CloudIndexConfig[],
-  instance?: OramaClient | AnyOrama | CollectionManager | Record<string, any>,
+  instance?: OramaClient | AnyOrama | CollectionManager,
 ): void {
   const componentDetails = `
     Component: ${el.tagName.toLowerCase()}
