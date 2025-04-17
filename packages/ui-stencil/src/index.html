@@ -10,22 +10,29 @@
     <script nomodule src="/build/orama-ui.js"></script>
   </head>
   <body>
-    <div>
+    <div class="orama-ui-container">
       <orama-search-button id="search-box" />
       <orama-search-box />
     </div>
 
-    <script>
+    <script type="module">
+      import { CollectionManager } from '/node_modules/@orama/core/dist/index.js';
+
       const searchBox = document.querySelector('orama-search-box');
 
-      const API_KEY = 'LerNlbp6379jVKaPs4wt2nZT4MJZbU1J';
-      const ENDPOINT = 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd';
+      const collectionManager = new CollectionManager({
+        url: 'https://oramacore.orama.foo',
+        collectionID: 'iq4km9an1dqgzk6nuhudf9s2',
+        readAPIKey: 'b3jAPTFHAoZ3j5iEKN7jKMn0J3CyBvMK',
+      });
+      searchBox.clientInstance = collectionManager;
 
-      searchBox.index = {
-        api_key: API_KEY,
-        endpoint: ENDPOINT,
-      };
-
+      // const API_KEY = 'LerNlbp6379jVKaPs4wt2nZT4MJZbU1J';
+      // const ENDPOINT = 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd';
+      // searchBox.index = {
+      //   api_key: API_KEY,
+      //   endpoint: ENDPOINT,
+      // };
       searchBox.facetProperty = 'category';
     </script>
   </body>
