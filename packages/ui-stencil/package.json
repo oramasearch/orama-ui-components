@@ -28,7 +28,7 @@
     "@orama/core": "^0.0.11",
     "@orama/highlight": "^0.1.6",
     "@orama/orama": "^3.1.4",
-    "@orama/switch": "^3.1.5",
+    "@orama/switch": "^3.1.6",
     "@oramacloud/client": "^2.1.4",
     "@phosphor-icons/webcomponents": "^2.1.5",
     "@stencil/core": "4.27.0",
