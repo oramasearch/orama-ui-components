@@ -2,7 +2,7 @@ import type { TThemeOverrides } from '@/components'
 import type { CloudIndexConfig, ColorScheme } from '@/types'
 import type { AnyOrama } from '@orama/orama'
 import { OramaClient } from '@oramacloud/client'
-import { CollectionManager } from '@orama/core'
+import type { CollectionManager } from '@orama/core'
 
 /**
  * Arrow keys navigation for focusable elements within a container
@@ -79,61 +79,55 @@ export function validateCloudIndexConfig(
   el: HTMLElement,
   indexOrIndexes?: CloudIndexConfig | CloudIndexConfig[],
   instance?: OramaClient | AnyOrama | CollectionManager,
+  oramaCoreInstance?: CollectionManager,
 ): void {
   const componentDetails = `
     Component: ${el.tagName.toLowerCase()}
     Id: ${el.id}
   `
 
-  if (!indexOrIndexes && !instance) {
+  if (!indexOrIndexes && !instance && !oramaCoreInstance) {
     throw new Error(
       `Invalid component configuration. Please provide a valid index or instance prop. ${componentDetails}`,
     )
   }
 
   if (indexOrIndexes) {
+    if (instance || oramaCoreInstance) {
+      throw new Error(
+        `Invalid component configuration. Only one of indexOrIndexes, instance, or oramaCoreInstance can be provided. ${componentDetails}`,
+      )
+    }
+
     const indexes = Array.isArray(indexOrIndexes) ? indexOrIndexes : [indexOrIndexes]
-    if (indexes.some((index) => !index.api_key || !index.endpoint)) {
+    if (indexes.some((index) => !index?.api_key || !index?.endpoint)) {
       throw new Error(
         `Invalid cloud index configuration. Please provide a valid api_key and endpoint ${componentDetails}`,
       )
     }
+
+    return
+  }
+
+  if (instance) {
+    if (indexOrIndexes || oramaCoreInstance) {
+      throw new Error(
+        `Invalid component configuration. Only one of indexOrIndexes, instance, or oramaCoreInstance can be provided. ${componentDetails}`,
+      )
+    }
+
+    return
   }
 
   // If no instance is provided, we've already validated the index
-  if (!instance) {
-    return;
-  }
+  if (oramaCoreInstance) {
+    if (indexOrIndexes || instance) {
+      throw new Error(
+        `Invalid component configuration. Only one of indexOrIndexes, instance, or oramaCoreInstance can be provided. ${componentDetails}`,
+      )
+    }
 
-  // First try instanceof check for CollectionManager
-  if (instance instanceof CollectionManager) {
-    console.log('validateCloudIndexConfig - CollectionManager detected via instanceof');
-    return;
-  }
-  
-  // Then try constructor name check (handles module duplication issues)
-  if (instance && 
-      typeof instance === 'object' && 
-      instance.constructor && 
-      instance.constructor.name === 'CollectionManager') {
-    console.log('validateCloudIndexConfig - CollectionManager detected via constructor name');
-    return;
-  }
-
-  // Check for plain object with CollectionManager-like properties
-  if (instance && 
-      typeof instance === 'object' && 
-      'url' in instance && 
-      'collectionID' in instance && 
-      'readAPIKey' in instance) {
-    console.log('validateCloudIndexConfig - CollectionManager-like object detected');
-    return;
-  }
-
-  // Check for OramaClient or AnyOrama instances (must have search method)
-  if (instance && 'search' in instance) {
-    console.log('validateCloudIndexConfig - OramaClient or AnyOrama detected via search method');
-    return;
+    return
   }
 
   // If we get here, the instance is invalid

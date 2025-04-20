@@ -24,8 +24,8 @@ import {
 } from '@/utils/utils'
 import type { AnyOrama, Orama, SearchParams } from '@orama/orama'
 import type { HighlightOptions } from '@orama/highlight'
-import { OramaClient } from '@oramacloud/client'
-import { CollectionManager } from '@orama/core'
+import type { OramaClient } from '@oramacloud/client'
+import type { CollectionManager } from '@orama/core'
 import type {
   ChatMarkdownLinkHref,
   ChatMarkdownLinkTarget,
@@ -76,7 +76,8 @@ export class SearchBox {
   /**
    * Orama Instance or CollectionManager
    */
-  @Prop() clientInstance?: OramaClient | AnyOrama | CollectionManager
+  @Prop() clientInstance?: OramaClient | AnyOrama
+  @Prop() oramaCoreClientInstance?: CollectionManager
   @Prop({ mutable: true, reflect: true }) open = false
   /**
    * Index result property to
@@ -217,6 +218,7 @@ export class SearchBox {
 
   @Watch('index')
   @Watch('clientInstance')
+  @Watch('oramaCoreClientInstance')
   indexChanged() {
     // This is a naive way to check if it is safe to eval this method (after componentWillLoad)
     if (!this.searchStore) {
@@ -271,11 +273,32 @@ export class SearchBox {
     updateCssVariables(this.htmlElement, scheme as ColorScheme, this.themeConfig)
   }
 
+  getOldOramaClient() {
+    if (this.oramaCoreClientInstance) {
+      return undefined
+    }
+
+    if (this.clientInstance) {
+      return this.clientInstance
+    }
+
+    return initOramaClient(this.index)
+  }
+
   startServices() {
-    const oramaClient = this.clientInstance ? this.clientInstance : initOramaClient(this.index);
-    validateCloudIndexConfig(this.htmlElement, this.index, this.clientInstance)
-    this.searchStore.state.searchService = new SearchService(oramaClient, this.searchStore)
-    this.chatStore.state.chatService = new ChatService(oramaClient, this.chatStore)
+    if (!this.index && !this.clientInstance && !this.oramaCoreClientInstance) {
+      // Skip initialization if no index or clientInstance is provided
+      return
+    }
+
+    validateCloudIndexConfig(this.htmlElement, this.index, this.clientInstance, this.oramaCoreClientInstance)
+    const oldOramaClient = this.getOldOramaClient()
+    this.searchStore.state.searchService = new SearchService(
+      oldOramaClient,
+      this.oramaCoreClientInstance,
+      this.searchStore,
+    )
+    this.chatStore.state.chatService = new ChatService(oldOramaClient, this.oramaCoreClientInstance, this.chatStore)
   }
 
   componentWillLoad() {

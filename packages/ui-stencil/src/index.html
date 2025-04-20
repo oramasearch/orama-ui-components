@@ -11,29 +11,78 @@
   </head>
   <body>
     <div class="orama-ui-container">
-      <orama-search-button id="search-box" />
-      <orama-search-box />
+      <orama-search-button id="search-box"> </orama-search-button>
+      <orama-search-box></orama-search-box>
+      <div style="padding-top: 48px">
+        <orama-chat-box></orama-chat-box>
+      </div>
     </div>
 
     <script type="module">
-      import { CollectionManager } from '/node_modules/@orama/core/dist/index.js';
+      import { CollectionManager } from 'https://esm.sh/@orama/core';
+
+      const ORAMA_CORE_CONFIG = {
+        URL: 'https://oramacore.orama.foo',
+        COLLECTION_ID: 'tuhn04iqevs4vttgl865pigh',
+        READ_API_KEY: 'QaPXfBUHy4g35IUGhq0bdUc79AeXwzQb',
+      };
+
+      const ORAMA_CLOUD_CONFIG = {
+        API_KEY: 'zXwDwhqAfapCJ5WA2uHWNTjC0YeH22RU',
+        ENDPOINT: 'https://cloud.orama.run/v1/indexes/names-osgbzg',
+      };
 
       const searchBox = document.querySelector('orama-search-box');
+      searchBox.suggestions = ['What is the email of Ramzy Hakewell? Can you generate more 15 emails adding a incremental counter on each email?'];
 
-      const collectionManager = new CollectionManager({
-        url: 'https://oramacore.orama.foo',
-        collectionID: 'iq4km9an1dqgzk6nuhudf9s2',
-        readAPIKey: 'b3jAPTFHAoZ3j5iEKN7jKMn0J3CyBvMK',
-      });
-      searchBox.clientInstance = collectionManager;
+      const chatBox = document.querySelector('orama-chat-box');
+      chatBox.style.height = '600px';
+      chatBox.suggestions = ['What is the email of Ramzy Hakewell? Can you generate more 15 emails adding a incremental counter on each email?'];
 
-      // const API_KEY = 'LerNlbp6379jVKaPs4wt2nZT4MJZbU1J';
-      // const ENDPOINT = 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd';
-      // searchBox.index = {
-      //   api_key: API_KEY,
-      //   endpoint: ENDPOINT,
-      // };
-      searchBox.facetProperty = 'category';
+      const useOramaCore = true;
+
+      if (useOramaCore) {
+        const collectionManager = new CollectionManager({
+          url: ORAMA_CORE_CONFIG.URL,
+          collectionID: ORAMA_CORE_CONFIG.COLLECTION_ID,
+          readAPIKey: ORAMA_CORE_CONFIG.READ_API_KEY,
+        });
+        searchBox.oramaCoreClientInstance = collectionManager;
+
+        chatBox.oramaCoreClientInstance = collectionManager;
+      } else {
+        searchBox.index = {
+          api_key: ORAMA_CLOUD_CONFIG.API_KEY,
+          endpoint: ORAMA_CLOUD_CONFIG.ENDPOINT,
+        };
+        searchBox.facetProperty = 'gender';
+
+        chatBox.index = {
+          api_key: ORAMA_CLOUD_CONFIG.API_KEY,
+          endpoint: ORAMA_CLOUD_CONFIG.ENDPOINT,
+        };
+      }
+
+      searchBox.resultMap = {
+        title: item => {
+          return `${item.first_name} ${item.last_name}`;
+        },
+        description: item => {
+          return `${item.email} ${item.ip_address}`;
+        },
+        path: 'ip_address',
+      };
+      searchBox.sourcesMap = {
+        title: 'first_name',
+        description: 'email',
+        path: 'ip_address',
+      };
+
+      chatBox.sourcesMap = {
+        title: 'first_name',
+        description: 'email',
+        path: 'ip_address',
+      };
     </script>
   </body>
 </html>

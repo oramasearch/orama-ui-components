@@ -1,8 +1,8 @@
 import type { ClientSearchParams } from '@oramacloud/client'
 import { OramaClientNotInitializedError } from '@/erros/OramaClientNotInitialized'
 import { Switch, type OramaSwitchClient } from '@orama/switch'
-import { OramaClient } from '@oramacloud/client'
-import { CollectionManager } from '@orama/core'
+import type { OramaClient } from '@oramacloud/client'
+import type { CollectionManager } from '@orama/core'
 import type { AnyOrama } from '@orama/orama'
 import type {
   OnSearchCompletedCallbackProps,
@@ -23,12 +23,11 @@ type OramaHit = { id: string; score: number; document: any }
 
 export class SearchService {
   private abortController: AbortController
-  private client: Switch<OramaSwitchClient>
+  private client: Switch<OramaSwitchClient> | CollectionManager
   private searchStore: SearchStoreType
 
-  constructor(oramaClient: OramaClient | CollectionManager | AnyOrama, searchStore: SearchStoreType) {
-    // Check if the client is already a Switch instance
-    this.client = new Switch(oramaClient)
+  constructor(oramaClient: OramaClient | AnyOrama, oramaCoreClient: CollectionManager, searchStore: SearchStoreType) {
+    this.client = oramaCoreClient ? oramaCoreClient : new Switch(oramaClient)
     this.searchStore = searchStore
     this.abortController = new AbortController()
   }
@@ -80,37 +79,36 @@ export class SearchService {
             },
           }),
       }),
-    } as ClientSearchParams
-
+      // In order to make the types work for both Switch and CollectionManager
+    } as ClientSearchParams & { term: string }
 
     try {
-      let results;
-        results = await (this.client as any).search(clientSearchParams)
-        if (latestAbortController.signal.aborted) {
-          return
-        }
+      const results = await this.client.search(clientSearchParams)
+      if (latestAbortController.signal.aborted) {
+        return
+      }
 
-        if (results && !results.hits) {
-          throw new Error(
-            'This search was made by a OramaClient with property mergeResult set to false. Orama Search Service requires mergeResult to be true.',
-          )
-        }
+      if (results && !results.hits) {
+        throw new Error(
+          'This search was made by a OramaClient with property mergeResult set to false. Orama Search Service requires mergeResult to be true.',
+        )
+      }
 
-        this.searchStore.state.results = this.parserResults(results?.hits, this.searchStore.state.resultMap)
-        this.searchStore.state.count = results?.count || 0
-        this.searchStore.state.facets = this.parseFacets(results?.facets, this.searchStore.state.facetProperty)
-        this.searchStore.state.highlightedIndex = -1
+      this.searchStore.state.results = this.parserResults(results?.hits, this.searchStore.state.resultMap)
+      this.searchStore.state.count = results?.count || 0
+      this.searchStore.state.facets = this.parseFacets(results?.facets, this.searchStore.state.facetProperty)
+      this.searchStore.state.highlightedIndex = -1
 
-        this.searchStore.state.loading = false
+      this.searchStore.state.loading = false
 
-        callbacks?.onSearchCompletedCallback?.({
-          clientSearchParams,
-          result: {
-            results: this.searchStore.state.results,
-            resultsCount: this.searchStore.state.count,
-            facets: this.searchStore.state.facets,
-          },
-        })
+      callbacks?.onSearchCompletedCallback?.({
+        clientSearchParams,
+        result: {
+          results: this.searchStore.state.results,
+          resultsCount: this.searchStore.state.count,
+          facets: this.searchStore.state.facets,
+        },
+      })
       callbacks?.onSearchCompletedCallback?.({
         clientSearchParams,
         result: {
@@ -121,7 +119,7 @@ export class SearchService {
       })
     } catch (error) {
       console.error('Search error:', error)
-      
+
       if (latestAbortController.signal.aborted) {
         return
       }
@@ -213,15 +211,12 @@ export class SearchService {
     }
   }
 
-  private parseFacets = (
-    rawFacets: any,
-    facetProperty,
-  ): { name: string; count: number }[] => {
+  private parseFacets = (rawFacets: unknown, facetProperty: string): { name: string; count: number }[] => {
     // Handle case where facets are missing or empty
     if (!facetProperty || !rawFacets) {
       return []
     }
-    
+
     // Handle different facet formats based on client type
     const facetPropertyObject = rawFacets[facetProperty]
     if (!facetPropertyObject || !facetPropertyObject.values) {

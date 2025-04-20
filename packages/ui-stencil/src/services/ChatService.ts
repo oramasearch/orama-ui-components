@@ -1,7 +1,7 @@
 import type { AskParams } from '@oramacloud/client'
 import type { AnswerSession as OSSAnswerSession } from '@orama/orama'
 import type { AnswerSession as CloudAnswerSession } from '@oramacloud/client'
-import type { AnswerSession } from '@orama/core'
+import type { AnswerConfig, AnswerSession as CoreAnswerSession } from '@orama/core'
 import type { OramaClient } from '@oramacloud/client'
 import type { CollectionManager } from '@orama/core'
 import type { AnyOrama } from '@orama/orama'
@@ -11,12 +11,12 @@ import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
 import { Switch, type OramaSwitchClient } from '@orama/switch'
 
 export class ChatService {
-  answerSession: OSSAnswerSession | CloudAnswerSession<true> | AnswerSession
-  private oramaClient: Switch<OramaSwitchClient>
+  private answerSession: OSSAnswerSession | CloudAnswerSession<true> | CoreAnswerSession
+  private client: Switch<OramaSwitchClient> | CollectionManager
   private chatStore: ChatStoreType
 
-  constructor(oramaClient: OramaClient | CollectionManager | AnyOrama , chatStore: ChatStoreType) {
-    this.oramaClient = new Switch(oramaClient)
+  constructor(oramaClient: OramaClient | AnyOrama, oramaCoreClient: CollectionManager, chatStore: ChatStoreType) {
+    this.client = oramaCoreClient ? oramaCoreClient : new Switch(oramaClient)
     this.chatStore = chatStore
   }
 
@@ -27,29 +27,33 @@ export class ChatService {
       onAnswerGeneratedCallback?: (onAnswerGeneratedCallback: OnAnswerGeneratedCallbackProps) => unknown
     },
   ) => {
-    if (!this.oramaClient) throw new OramaClientNotInitializedError()
+    if (!this.client) throw new OramaClientNotInitializedError()
 
-    // Define askParams for use in callbacks
-    const askParams = {
-      term
+    const askParams: AskParams = {
+      term,
     }
 
     if (systemPrompts?.length) {
       if (this.answerSession && 'setSystemPromptConfiguration' in this.answerSession) {
-        (this.answerSession as any).setSystemPromptConfiguration(systemPrompts)
+        ;(this.answerSession as any).setSystemPromptConfiguration(systemPrompts)
       }
     }
 
     const existingInteractions = this.chatStore.state.interactions
-    
+
     if (!this.answerSession) {
       try {
         const existingInteractions = this.chatStore.state.interactions
-        
+
         try {
-          this.answerSession = (this.oramaClient as any).createAnswerSession({
+          /* TODO: Inferfaces between Orama Core and Orama Cloud are different.
+            we must cast the client to the correct type and use different implementations.
+
+            We are not doing that for the sake of speed, but we must circle back to this.
+          */
+          this.answerSession = this.client.createAnswerSession({
             events: {
-              onStateChange: (state: any) => {
+              onStateChange: (state) => {
                 // Filter out empty interactions
                 const normalizedState = state.filter((stateItem) => !!stateItem.query)
 
@@ -90,7 +94,8 @@ export class ChatService {
 
                     return {
                       query: interaction.query,
-                      interactionId: interaction.interactionId,
+                      // interactionId for Old Orama and id for Orama Core
+                      interactionId: interaction.interactionId || interaction.id,
                       response: interaction.response,
                       relatedQueries: interaction.relatedQueries,
                       status: answerStatus,
@@ -134,87 +139,61 @@ export class ChatService {
       }
     }
 
+    if (!this.answerSession) {
+      console.error('Answer session was not created')
+      return
+    }
+
     try {
-      if (!this.answerSession) {
-        console.error('Answer session was not created')
-        return
+      // Check existence of answerStream method (means that the client is Orama Core)
+      if ((this.answerSession as CoreAnswerSession).answer) {
+        this.askOramaCore(term)
+      } else {
+        this.askOramaCloud(term)
       }
-      
-      // Try to use ask method first as it might be more stable   
-      try {
-        const askParams: AskParams = {
-          term: term,
-          limit: 10,
-          threshold: 0.5,
-          userData: {
-            interactionID: `interaction-${Date.now()}`,
-            sessionID: `session-${Date.now()}`,
-            visitorID: `visitor-${Date.now()}`
-          }
-        }
-        const response = await (this.answerSession as any).ask(askParams)
-      } catch (askError) {
-        console.error('Error using ask method, falling back to answerStream:', askError)
-        // Fall back to answerStream if ask fails
-        try {
-          this.tryAnswerStream(term)
-        } catch (streamError) {
-          console.error('Error using answerStream method:', streamError)
-          // Update chat store to show error to user
-          const latestInteraction = this.chatStore.state.interactions[this.chatStore.state.interactions.length - 1]
-          if (latestInteraction) {
-            latestInteraction.status = TAnswerStatus.error
-            latestInteraction.response = 'Sorry, the answer service is not available. Please try again later.'
-            this.chatStore.state.interactions = [...this.chatStore.state.interactions]
-          }
-        }
+    } catch (error) {
+      // Update chat store to show error to user
+      const latestInteraction = this.chatStore.state.interactions[this.chatStore.state.interactions.length - 1]
+      if (latestInteraction) {
+        latestInteraction.status = TAnswerStatus.error
+        latestInteraction.response = 'Sorry, the answer service is not available. Please try again later.'
+        this.chatStore.state.interactions = [...this.chatStore.state.interactions]
       }
-    } catch (e) {
-      console.error('Error in answer method:', e)
     }
   }
 
-  private tryAnswerStream = (term: string) => {
-    // Create proper params object for answerStream with required fields
-    const streamParams = {
+  private askOramaCore = (query: string) => {
+    const streamParams: AnswerConfig = {
+      interactionID: `interaction-${Date.now()}`,
+      query,
+      visitorID: `visitor-${Date.now()}`,
+      sessionID: `session-${Date.now()}`,
+    }
+
+    const answerStream = (this.answerSession as CoreAnswerSession).answerStream(streamParams)
+
+    const processAsyncGenerator = async () => {
+      for await (const _ of answerStream) {
+      }
+    }
+
+    processAsyncGenerator()
+  }
+
+  private askOramaCloud = (term: string) => {
+    const askParams: AskParams = {
       term: term,
       limit: 10,
       threshold: 0.5,
-      // Add required fields for AnswerConfig
-      interactionID: `interaction-${Date.now()}`,
-      query: term,
-      visitorID: `visitor-${Date.now()}`,
-      sessionID: `session-${Date.now()}`
+      userData: {
+        interactionID: `interaction-${Date.now()}`,
+        sessionID: `session-${Date.now()}`,
+        visitorID: `visitor-${Date.now()}`,
+      },
     }
-    
-    try {
-      const answerStream = (this.answerSession as any).answerStream(streamParams)
 
-      // Create a helper function to process the AsyncGenerator
-      const processAsyncGenerator = async () => {
-        try {
-          // Proper way to iterate over an AsyncGenerator
-          for await (const answer of answerStream) {
-            // Process answer silently
-          }
-        } catch (error) {
-          console.error('Error processing answer stream:', error)
-          
-          // Update chat store to show error to user
-          const latestInteraction = this.chatStore.state.interactions[this.chatStore.state.interactions.length - 1]
-          if (latestInteraction) {
-            latestInteraction.status = TAnswerStatus.error
-            latestInteraction.response = 'Sorry, there was an error processing your request. Please try again later.'
-            this.chatStore.state.interactions = [...this.chatStore.state.interactions]
-          }
-        }
-      }
-      
-      // Start processing but don't await it (non-blocking)
-      processAsyncGenerator()
-    } catch (error) {
-      console.error('Error creating answer stream:', error)
-    }
+    const oldAnswerSession = this.answerSession as OSSAnswerSession | CloudAnswerSession<true>
+    oldAnswerSession.ask(askParams)
   }
 
   abortAnswer = () => {
@@ -222,7 +201,11 @@ export class ChatService {
       throw new OramaClientNotInitializedError()
     }
 
-    (this.answerSession as any).abortAnswer()
+    if ((this.answerSession as CoreAnswerSession).abort) {
+      ;(this.answerSession as CoreAnswerSession).abort()
+    } else {
+      ;(this.answerSession as OSSAnswerSession | CloudAnswerSession<true>).abortAnswer()
+    }
   }
 
   regenerateLatest = async () => {
@@ -230,10 +213,22 @@ export class ChatService {
       throw new OramaClientNotInitializedError()
     }
 
-    (this.answerSession as any).regenerateLast({ stream: false })
+    // Check if the client is Orama Cloud
+    if ((this.answerSession as OSSAnswerSession | CloudAnswerSession<true>).regenerateLast) {
+      const nonOramaCoreAnswerSession = this.answerSession as OSSAnswerSession | CloudAnswerSession<true>
+      nonOramaCoreAnswerSession.regenerateLast({ stream: false })
+    } else {
+      // const oramaCoreAnswerSession = this.answerSession as CoreAnswerSession
+      throw new Error('Regenerate last is not supported in Orama Core')
+    }
   }
 
   resetChat = async () => {
+    // Check if the client is Orama Core
+    if ((this.answerSession as CoreAnswerSession).answer) {
+      throw new Error('Reset chat is not supported in Orama Core')
+    }
+
     if (!this.answerSession) {
       throw new OramaClientNotInitializedError()
     }
@@ -251,10 +246,10 @@ export class ChatService {
       this.abortAnswer()
     }
 
-    // Clear the session if the method exists
-    if ('clearSession' in this.answerSession) {
-      (this.answerSession as any).clearSession()
-    }
+    // TODO: It should change as soon as we have a reset method in the Orama Core SDK
+    const oldAnswerSession = this.answerSession as OSSAnswerSession | CloudAnswerSession<true>
+    oldAnswerSession.clearSession()
+
     this.chatStore.state.interactions = []
   }
 }

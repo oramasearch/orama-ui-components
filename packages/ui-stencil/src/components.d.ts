@@ -106,7 +106,7 @@ export namespace Components {
          * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
          */
         "clear-chat-on-disconnect"?: boolean;
-        "clientInstance"?: OramaClient | AnyOrama | CollectionManager;
+        "clientInstance"?: OramaClient | AnyOrama;
         /**
           * Component color schema
          */
@@ -126,6 +126,7 @@ export namespace Components {
          * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
          */
         "links-target"?: string;
+        "oramaCoreClientInstance"?: CollectionManager;
         "placeholder"?: string;
         "prompt"?: string;
         "sourceBaseUrl"?: string;
@@ -298,7 +299,7 @@ export namespace Components {
         /**
           * Orama Instance or CollectionManager
          */
-        "clientInstance"?: OramaClient | AnyOrama | CollectionManager;
+        "clientInstance"?: OramaClient | AnyOrama;
         /**
           * Component color schema
          */
@@ -364,6 +365,7 @@ export namespace Components {
          */
         "links-target"?: string;
         "open": boolean;
+        "oramaCoreClientInstance"?: CollectionManager;
         /**
           * @deprecated it will be removed on next releases Placeholder for chat input
          */
@@ -976,7 +978,7 @@ declare namespace LocalJSX {
          * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
          */
         "clear-chat-on-disconnect"?: boolean;
-        "clientInstance"?: OramaClient | AnyOrama | CollectionManager;
+        "clientInstance"?: OramaClient | AnyOrama;
         /**
           * Component color schema
          */
@@ -1016,6 +1018,7 @@ declare namespace LocalJSX {
           * Fired as soon as the conversation is started
          */
         "onStartConversation"?: (event: OramaChatBoxCustomEvent<onStartConversationCallbackProps>) => void;
+        "oramaCoreClientInstance"?: CollectionManager;
         "placeholder"?: string;
         "prompt"?: string;
         "sourceBaseUrl"?: string;
@@ -1194,7 +1197,7 @@ declare namespace LocalJSX {
         /**
           * Orama Instance or CollectionManager
          */
-        "clientInstance"?: OramaClient | AnyOrama | CollectionManager;
+        "clientInstance"?: OramaClient | AnyOrama;
         /**
           * Component color schema
          */
@@ -1297,6 +1300,7 @@ declare namespace LocalJSX {
          */
         "onStartConversation"?: (event: OramaSearchBoxCustomEvent<onStartConversationCallbackProps>) => void;
         "open"?: boolean;
+        "oramaCoreClientInstance"?: CollectionManager;
         /**
           * @deprecated it will be removed on next releases Placeholder for chat input
          */
