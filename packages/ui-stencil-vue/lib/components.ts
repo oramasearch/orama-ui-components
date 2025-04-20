@@ -54,6 +54,7 @@ export const OramaChatAssistentMessage = /*@__PURE__*/ defineContainer<JSX.Orama
 export const OramaChatBox = /*@__PURE__*/ defineContainer<JSX.OramaChatBox>('orama-chat-box', undefined, [
   'index',
   'clientInstance',
+  'oramaCoreClientInstance',
   'sourceBaseUrl',
   'linksTarget',
   'linksRel',
@@ -184,6 +185,7 @@ export const OramaSearchBox = /*@__PURE__*/ defineContainer<JSX.OramaSearchBox>(
   'colorScheme',
   'index',
   'clientInstance',
+  'oramaCoreClientInstance',
   'open',
   'facetProperty',
   'resultMap',

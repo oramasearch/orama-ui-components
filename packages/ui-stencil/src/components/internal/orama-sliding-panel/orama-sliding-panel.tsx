@@ -83,7 +83,7 @@ export class SlideInPanel {
               <ph-x size="18" />
             </button>
           </div>
-          <div id="panel" role="region" aria-hidden={!this.isOpen} tabindex="-1" class="slide-container-inner">
+          <div id="panel" aria-hidden={!this.isOpen} tabindex="-1" class="slide-container-inner">
             <slot />
           </div>
         </div>
