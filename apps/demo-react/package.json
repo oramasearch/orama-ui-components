@@ -11,7 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@orama/core": "^0.0.11",
+    "@orama/core": "^0.1.3",
     "@orama/react-components": "workspace:*",
     "@oramacloud/client": "^2.1.4",
     "react": "^19",
