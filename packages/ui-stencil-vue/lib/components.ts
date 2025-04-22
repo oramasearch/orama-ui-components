@@ -113,7 +113,8 @@ export const OramaFacets = /*@__PURE__*/ defineContainer<JSX.OramaFacets>('orama
 
 export const OramaFooter = /*@__PURE__*/ defineContainer<JSX.OramaFooter>('orama-footer', undefined, [
   'class',
-  'colorScheme'
+  'colorScheme',
+  'showKeyboardShortcuts'
 ]);
 
 
@@ -201,6 +202,7 @@ export const OramaSearchBox = /*@__PURE__*/ defineContainer<JSX.OramaSearchBox>(
   'chatMarkdownLinkTitle',
   'chatMarkdownLinkHref',
   'chatMarkdownLinkTarget',
+  'showKeyboardShortcuts',
   'searchCompleted',
   'searchResultClick',
   'clearChat',
