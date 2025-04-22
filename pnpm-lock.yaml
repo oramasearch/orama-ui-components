@@ -370,8 +370,8 @@ importers:
   packages/ui-stencil:
     dependencies:
       '@orama/core':
-        specifier: ^0.0.11
-        version: 0.0.11
+        specifier: ^0.1.3
+        version: 0.1.3
       '@orama/highlight':
         specifier: ^0.1.6
         version: 0.1.9
@@ -380,7 +380,7 @@ importers:
         version: 3.1.6
       '@orama/switch':
         specifier: ^3.1.6
-        version: 3.1.6(@orama/core@0.0.11)(@orama/orama@3.1.6)(@oramacloud/client@2.1.4)
+        version: 3.1.6(@orama/core@0.1.3)(@orama/orama@3.1.6)(@oramacloud/client@2.1.4)
       '@oramacloud/client':
         specifier: ^2.1.4
         version: 2.1.4
@@ -5355,6 +5355,17 @@ packages:
       - babel-plugin-macros
     dev: false
 
+  /@orama/core@0.1.3:
+    resolution: {integrity: sha512-xzRrF3gbuIhzAi+AiKczwhFIM2Byerx/LesQ/m4Jk8LQGHljz3z47msbkluM2o4J96x5Mc/JYE/WNQF+s5H+lg==}
+    dependencies:
+      '@orama/cuid2': 2.2.3
+      dedent: 1.5.3
+      zod: 3.24.3
+      zod-to-json-schema: 3.24.5(zod@3.24.3)
+    transitivePeerDependencies:
+      - babel-plugin-macros
+    dev: false
+
   /@orama/cuid2@2.2.3:
     resolution: {integrity: sha512-Lcak3chblMejdlSHgYU2lS2cdOhDpU6vkfIJH4m+YKvqQyLqs1bB8+w6NT1MG5bO12NUK2GFc34Mn2xshMIQ1g==}
     dependencies:
@@ -5378,6 +5389,18 @@ packages:
       '@oramacloud/client': ^2.1.1
     dependencies:
       '@orama/core': 0.0.11
+      '@orama/orama': 3.1.6
+      '@oramacloud/client': 2.1.4
+    dev: false
+
+  /@orama/switch@3.1.6(@orama/core@0.1.3)(@orama/orama@3.1.6)(@oramacloud/client@2.1.4):
+    resolution: {integrity: sha512-Swj9tQZWQ8tw44sAJmlF15xlJ5+h1GdgysvPGTe1NHJCcAOrX2qxp4OsWB+1vxmIxewP6brnP/U3nUehQNQi6g==}
+    peerDependencies:
+      '@orama/core': ^0.0.10
+      '@orama/orama': 3.1.6
+      '@oramacloud/client': ^2.1.1
+    dependencies:
+      '@orama/core': 0.1.3
       '@orama/orama': 3.1.6
       '@oramacloud/client': 2.1.4
     dev: false
@@ -22795,9 +22818,21 @@ packages:
     engines: {node: '>=18'}
     dev: true
 
+  /zod-to-json-schema@3.24.5(zod@3.24.3):
+    resolution: {integrity: sha512-/AuWwMP+YqiPbsJx5D6TfgRTc4kTLjsh5SOcd4bLsfUg2RcEXrFMJl1DGgdHy2aCfsIA/cr/1JM0xcB2GZji8g==}
+    peerDependencies:
+      zod: ^3.24.1
+    dependencies:
+      zod: 3.24.3
+    dev: false
+
   /zod@3.23.8:
     resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
     dev: true
+
+  /zod@3.24.3:
+    resolution: {integrity: sha512-HhY1oqzWCQWuUqvBFnsyrtZRhyPeR7SUGv+C4+MsisMuVfSPx8HpwWqH8tRahSlt6M3PiFAcoeFhZAqIXTxoSg==}
+    dev: false
 
   /zone.js@0.14.10:
     resolution: {integrity: sha512-YGAhaO7J5ywOXW6InXNlLmfU194F8lVgu7bRntUF3TiG8Y3nBK0x1UJJuHUP/e8IyihkjCYqhCScpSwnlaSRkQ==}
