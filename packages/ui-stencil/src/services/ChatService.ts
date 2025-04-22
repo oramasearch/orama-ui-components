@@ -218,17 +218,12 @@ export class ChatService {
       const nonOramaCoreAnswerSession = this.answerSession as OSSAnswerSession | CloudAnswerSession<true>
       nonOramaCoreAnswerSession.regenerateLast({ stream: false })
     } else {
-      // const oramaCoreAnswerSession = this.answerSession as CoreAnswerSession
-      throw new Error('Regenerate last is not supported in Orama Core')
+      const oramaCoreAnswerSession = this.answerSession as CoreAnswerSession
+      oramaCoreAnswerSession.regenerateLast({ stream: false })
     }
   }
 
   resetChat = async () => {
-    // Check if the client is Orama Core
-    if ((this.answerSession as CoreAnswerSession).answer) {
-      throw new Error('Reset chat is not supported in Orama Core')
-    }
-
     if (!this.answerSession) {
       throw new OramaClientNotInitializedError()
     }
@@ -246,9 +241,7 @@ export class ChatService {
       this.abortAnswer()
     }
 
-    // TODO: It should change as soon as we have a reset method in the Orama Core SDK
-    const oldAnswerSession = this.answerSession as OSSAnswerSession | CloudAnswerSession<true>
-    oldAnswerSession.clearSession()
+    this.answerSession.clearSession()
 
     this.chatStore.state.interactions = []
   }
