@@ -1,10 +1,14 @@
 'use client'
 import React from 'react'
 import { Tabs } from 'radix-ui'
+import { CollectionManager } from '@orama/core'
 import { OramaChatBox, OramaSearchBox, OramaSearchButton } from '@orama/react-components'
 
-const API_KEY = 'LerNlbp6379jVKaPs4wt2nZT4MJZbU1J'
-const ENDPOINT = 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd'
+const clientInstance = new CollectionManager({
+  url: 'https://oramacore.orama.foo',
+  collectionID: 'cxlenmho72jp3qpbdphbmfdn',
+  readAPIKey: 'caTS1G81uC8uBoWICSQYzmGjGVBCqxrf',
+})
 
 const Orama = () => {
   const [initialPrompt, setInitialPrompt] = React.useState('')
@@ -12,7 +16,7 @@ const Orama = () => {
   return (
     <div>
       <OramaSearchButton style={{ marginBottom: '24px' }} />
-      <OramaSearchBox index={{ api_key: API_KEY, endpoint: ENDPOINT }} colorScheme={'light'} />
+      <OramaSearchBox clientInstance={clientInstance} colorScheme={'light'} />
       <Tabs.Root className="TabsRoot" defaultValue="tab1">
         <Tabs.List className="TabsList" aria-label="Manage your account">
           <Tabs.Trigger className="TabsTrigger" value="tab1">
@@ -29,7 +33,7 @@ const Orama = () => {
           <p className="Text">Tab with chatbox here</p>
           <div style={{ height: '400px' }}>
             <OramaChatBox
-              index={{ api_key: API_KEY, endpoint: ENDPOINT }}
+              clientInstance={clientInstance}
               clearChatOnDisconnect={false}
               onClearChat={() => setInitialPrompt('')}
               onStartConversation={(e: Event) => console.log('onStartConversation', e)}
