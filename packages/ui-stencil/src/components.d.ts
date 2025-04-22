@@ -9,6 +9,7 @@ import { ButtonProps } from "./components/internal/orama-button/orama-button";
 import { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, CloudIndexConfig, ColorScheme, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnChatMarkdownLinkClickedCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, onStartConversationCallbackProps, ResultItemRenderFunction, ResultMap, SearchResultBySection, SourcesMap, TChatInteraction } from "./types/index";
 import { OramaClient } from "@oramacloud/client";
 import { AnyOrama, Orama, SearchParams } from "@orama/orama";
+import { CollectionManager } from "@orama/core";
 import { TThemeOverrides } from "./config/theme";
 import { InputProps } from "./components/internal/orama-input/orama-input";
 import { HighlightOptions } from "@orama/highlight";
@@ -19,6 +20,7 @@ export { ButtonProps } from "./components/internal/orama-button/orama-button";
 export { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, CloudIndexConfig, ColorScheme, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnChatMarkdownLinkClickedCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, onStartConversationCallbackProps, ResultItemRenderFunction, ResultMap, SearchResultBySection, SourcesMap, TChatInteraction } from "./types/index";
 export { OramaClient } from "@oramacloud/client";
 export { AnyOrama, Orama, SearchParams } from "@orama/orama";
+export { CollectionManager } from "@orama/core";
 export { TThemeOverrides } from "./config/theme";
 export { InputProps } from "./components/internal/orama-input/orama-input";
 export { HighlightOptions } from "@orama/highlight";
@@ -124,6 +126,7 @@ export namespace Components {
          * @deprecated use camelCase instead. Support for dash-casing will be removed in Stencil v5.
          */
         "links-target"?: string;
+        "oramaCoreClientInstance"?: CollectionManager;
         "placeholder"?: string;
         "prompt"?: string;
         "sourceBaseUrl"?: string;
@@ -302,7 +305,7 @@ export namespace Components {
          */
         "chat-placeholder"?: string;
         /**
-          * Orama Instance
+          * Orama Instance or CollectionManager
          */
         "clientInstance"?: OramaClient | AnyOrama;
         /**
@@ -370,6 +373,7 @@ export namespace Components {
          */
         "links-target"?: string;
         "open": boolean;
+        "oramaCoreClientInstance"?: CollectionManager;
         /**
           * @deprecated it will be removed on next releases Placeholder for chat input
          */
@@ -1030,6 +1034,7 @@ declare namespace LocalJSX {
           * Fired as soon as the conversation is started
          */
         "onStartConversation"?: (event: OramaChatBoxCustomEvent<onStartConversationCallbackProps>) => void;
+        "oramaCoreClientInstance"?: CollectionManager;
         "placeholder"?: string;
         "prompt"?: string;
         "sourceBaseUrl"?: string;
@@ -1214,7 +1219,7 @@ declare namespace LocalJSX {
          */
         "chat-placeholder"?: string;
         /**
-          * Orama Instance
+          * Orama Instance or CollectionManager
          */
         "clientInstance"?: OramaClient | AnyOrama;
         /**
@@ -1319,6 +1324,7 @@ declare namespace LocalJSX {
          */
         "onStartConversation"?: (event: OramaSearchBoxCustomEvent<onStartConversationCallbackProps>) => void;
         "open"?: boolean;
+        "oramaCoreClientInstance"?: CollectionManager;
         /**
           * @deprecated it will be removed on next releases Placeholder for chat input
          */

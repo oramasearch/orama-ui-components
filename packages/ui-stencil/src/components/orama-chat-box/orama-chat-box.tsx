@@ -6,6 +6,7 @@ import {
   validateCloudIndexConfig as validateCloudIndexOrInstance,
   updateCssVariables,
   updateThemeClasses,
+  validateCloudIndexConfig,
 } from '@/utils/utils'
 import type {
   ChatMarkdownLinkHref,
@@ -20,12 +21,12 @@ import type {
   SourcesMap,
 } from '@/types'
 import type { TThemeOverrides } from '@/config/theme'
-import type { OramaClient } from '@oramacloud/client'
-import '@phosphor-icons/webcomponents/dist/icons/PhArrowClockwise.mjs'
 import type { AnyOrama } from '@orama/orama'
+import type { OramaClient } from '@oramacloud/client'
+import type { CollectionManager } from '@orama/core'
+import '@phosphor-icons/webcomponents/dist/icons/PhArrowClockwise.mjs'
 import { initStore, removeAllStores } from '@/ParentComponentStore/ParentComponentStoreManager'
 import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
-import { Store } from '@/StoreDecorator'
 
 @Component({
   tag: 'orama-chat-box',
@@ -33,9 +34,10 @@ import { Store } from '@/StoreDecorator'
   shadow: true,
 })
 export class ChatBox {
-  @Element() el: HTMLElement
+  @Element() htmlElement: HTMLElement
   @Prop() index?: CloudIndexConfig | CloudIndexConfig[]
   @Prop() clientInstance?: OramaClient | AnyOrama
+  @Prop() oramaCoreClientInstance?: CollectionManager
   @Prop() sourceBaseUrl?: string
   @Prop() linksTarget?: string
   @Prop() linksRel?: string
@@ -106,7 +108,7 @@ export class ChatBox {
   private chatStore: ChatStoreType
 
   componentWillLoad() {
-    this.el.id = this.componentID
+    this.htmlElement.id = this.componentID
     this.schemaQuery = window.matchMedia('(prefers-color-scheme: dark)')
     this.systemScheme = this.schemaQuery.matches ? 'dark' : 'light'
     this.updateTheme()
@@ -116,22 +118,39 @@ export class ChatBox {
   }
 
   componentDidLoad() {
-    this.el.id = this.componentID
+    this.htmlElement.id = this.componentID
     this.startChatService()
   }
 
-  startChatService() {
-    if (this.chatStore.state.chatService) return
-    validateCloudIndexOrInstance(this.el, this.index, this.clientInstance)
-    const oramaClient = this.clientInstance || initOramaClient(this.index)
+  getOldOramaClient() {
+    if (this.oramaCoreClientInstance) {
+      return undefined
+    }
 
-    this.chatStore.state.chatService = new ChatService(oramaClient, this.chatStore)
+    if (this.clientInstance) {
+      return this.clientInstance
+    }
+
+    return initOramaClient(this.index)
+  }
+
+  private startChatService() {
+    if (this.chatStore.state.chatService) return
+
+    if (!this.index && !this.clientInstance && !this.oramaCoreClientInstance) {
+      // Skip initialization if no index or clientInstance is provided
+      return
+    }
+
+    validateCloudIndexConfig(this.htmlElement, this.index, this.clientInstance, this.oramaCoreClientInstance)
+    const oldOramaClient = this.getOldOramaClient()
+    this.chatStore.state.chatService = new ChatService(oldOramaClient, this.oramaCoreClientInstance, this.chatStore)
   }
 
   updateTheme() {
-    const scheme = updateThemeClasses(this.el, this.colorScheme, this.systemScheme)
+    const scheme = updateThemeClasses(this.htmlElement, this.colorScheme, this.systemScheme)
 
-    updateCssVariables(this.el, scheme as ColorScheme, this.themeConfig)
+    updateCssVariables(this.htmlElement, scheme as ColorScheme, this.themeConfig)
   }
 
   private onPrefersColorSchemeChange = (event) => {

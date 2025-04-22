@@ -1,10 +1,19 @@
 import { OramaChatBox, OramaSearchBox, OramaSearchButton } from '@orama/react-components'
 import './App.css'
-
 import { BrowserRouter, Routes, Route, NavLink, Navigate } from 'react-router'
+import { CollectionManager } from '@orama/core'
 
-const API_KEY = 'LerNlbp6379jVKaPs4wt2nZT4MJZbU1J'
-const ENDPOINT = 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd'
+const ORAMACORE_ENDPOINT = 'https://oramacore.orama.foo'
+const ORAMACORE_COLLECTION_ID = 'cxlenmho72jp3qpbdphbmfdn'
+const ORAMACORE_READ_API_KEY = 'caTS1G81uC8uBoWICSQYzmGjGVBCqxrf'
+
+// Create a CollectionManager instance
+const collectionManager = new CollectionManager({
+  url: ORAMACORE_ENDPOINT,
+  collectionID: ORAMACORE_COLLECTION_ID,
+  readAPIKey: ORAMACORE_READ_API_KEY,
+})
+
 
 function App() {
   return (
@@ -35,15 +44,13 @@ const ChatBoxPage = () => {
         <h2 style={{ textAlign: 'center' }}>CHAT BOX</h2>
         <div className="component-row">
           <OramaChatBox
-            index={{
-              api_key: API_KEY,
-              endpoint: ENDPOINT,
-            }}
+            sourcesMap={{description: "content"}}
+            oramaCoreClientInstance={collectionManager}
             style={{ height: '600px' }}
             onAnswerSourceClick={(e: Event) => console.log(e)}
             onAnswerGenerated={(e: Event) => console.log(e)}
-            chatMarkdownLinkTitle={({ text }) => text?.toUpperCase()}
-            chatMarkdownLinkHref={({ href }) => href}
+            chatMarkdownLinkTitle={({ text }: { text: string; href: string }) => text?.toUpperCase()}
+            chatMarkdownLinkHref={({ href }: { text: string; href: string }) => href}
             onChatMarkdownLinkClicked={(e: Event) => {
               console.log(e)
               e.preventDefault()
@@ -61,19 +68,17 @@ const SearchBoxPage = () => {
       <main>
         <h2 style={{ textAlign: 'center' }}>SEARCH BOX</h2>
         <div className="component-row">
-          <OramaSearchButton colorScheme="system">Search</OramaSearchButton>
+        <OramaSearchButton colorScheme="system">Search</OramaSearchButton>
           <OramaSearchBox
+            resultMap={{description: "content"}}
             onModalClosed={() => {
               console.log('closed')
             }}
-            onModalStatusChanged={(e) => {
+            onModalStatusChanged={(e: CustomEvent) => {
               console.log('Status changed to: ', e.detail.open)
             }}
             colorScheme="system"
-            index={{
-              api_key: API_KEY,
-              endpoint: ENDPOINT,
-            }}
+            oramaCoreClientInstance={collectionManager}
             suggestions={['Suggestion 1', 'Suggestion 2', 'Suggestion 3']}
             onSearchCompleted={(e: Event) => console.log(e)}
             onSearchResultClick={(e) => {
@@ -85,8 +90,8 @@ const SearchBoxPage = () => {
               console.log(e)
               e.preventDefault()
             }}
-            chatMarkdownLinkTitle={({ text }) => text?.toUpperCase()}
-            chatMarkdownLinkHref={({ href }) => href}
+            chatMarkdownLinkTitle={({ text }: { text: string; href: string }) => text?.toUpperCase()}
+            chatMarkdownLinkHref={({ href }: { text: string; href: string }) => href}
             onChatMarkdownLinkClicked={(e) => {
               alert('Callback on client side')
               e.preventDefault()

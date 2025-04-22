@@ -84,6 +84,6 @@ $height-panel-header: 5vh;
   cursor: pointer;
   border: 0;
   background-color: transparent;
-  color: $gray50;
+  color: var(--text-color-primary, text-color('primary'));
   animation: showIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
 }

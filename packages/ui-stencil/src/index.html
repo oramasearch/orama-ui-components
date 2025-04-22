@@ -10,23 +10,79 @@
     <script nomodule src="/build/orama-ui.js"></script>
   </head>
   <body>
-    <div>
-      <orama-search-button id="search-box" />
-      <orama-search-box />
+    <div class="orama-ui-container">
+      <orama-search-button id="search-box"> </orama-search-button>
+      <orama-search-box></orama-search-box>
+      <div style="padding-top: 48px">
+        <orama-chat-box></orama-chat-box>
+      </div>
     </div>
 
-    <script>
-      const searchBox = document.querySelector('orama-search-box');
+    <script type="module">
+      import { CollectionManager } from 'https://esm.sh/@orama/core';
 
-      const API_KEY = 'LerNlbp6379jVKaPs4wt2nZT4MJZbU1J';
-      const ENDPOINT = 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd';
-
-      searchBox.index = {
-        api_key: API_KEY,
-        endpoint: ENDPOINT,
+      const ORAMA_CORE_CONFIG = {
+        URL: 'https://oramacore.orama.foo',
+        COLLECTION_ID: 'tuhn04iqevs4vttgl865pigh',
+        READ_API_KEY: 'QaPXfBUHy4g35IUGhq0bdUc79AeXwzQb',
       };
 
-      searchBox.facetProperty = 'category';
+      const ORAMA_CLOUD_CONFIG = {
+        API_KEY: 'zXwDwhqAfapCJ5WA2uHWNTjC0YeH22RU',
+        ENDPOINT: 'https://cloud.orama.run/v1/indexes/names-osgbzg',
+      };
+
+      const searchBox = document.querySelector('orama-search-box');
+      searchBox.suggestions = ['What is the email of Ramzy Hakewell? Can you generate more 15 emails adding a incremental counter on each email?'];
+
+      const chatBox = document.querySelector('orama-chat-box');
+      chatBox.style.height = '600px';
+      chatBox.suggestions = ['What is the email of Ramzy Hakewell? Can you generate more 15 emails adding a incremental counter on each email?'];
+
+      const useOramaCore = true;
+
+      if (useOramaCore) {
+        const collectionManager = new CollectionManager({
+          url: ORAMA_CORE_CONFIG.URL,
+          collectionID: ORAMA_CORE_CONFIG.COLLECTION_ID,
+          readAPIKey: ORAMA_CORE_CONFIG.READ_API_KEY,
+        });
+        searchBox.oramaCoreClientInstance = collectionManager;
+
+        chatBox.oramaCoreClientInstance = collectionManager;
+      } else {
+        searchBox.index = {
+          api_key: ORAMA_CLOUD_CONFIG.API_KEY,
+          endpoint: ORAMA_CLOUD_CONFIG.ENDPOINT,
+        };
+        searchBox.facetProperty = 'gender';
+
+        chatBox.index = {
+          api_key: ORAMA_CLOUD_CONFIG.API_KEY,
+          endpoint: ORAMA_CLOUD_CONFIG.ENDPOINT,
+        };
+      }
+
+      searchBox.resultMap = {
+        title: item => {
+          return `${item.first_name} ${item.last_name}`;
+        },
+        description: item => {
+          return `${item.email} ${item.ip_address}`;
+        },
+        path: 'ip_address',
+      };
+      searchBox.sourcesMap = {
+        title: 'first_name',
+        description: 'email',
+        path: 'ip_address',
+      };
+
+      chatBox.sourcesMap = {
+        title: 'first_name',
+        description: 'email',
+        path: 'ip_address',
+      };
     </script>
   </body>
 </html>

@@ -1,3 +1,12 @@
+<script setup>
+import { CollectionManager } from '@orama/core'
+
+const clientInstance = new CollectionManager({
+  url:'https://oramacore.orama.foo',
+  collectionID: 'cxlenmho72jp3qpbdphbmfdn',
+  readAPIKey: 'caTS1G81uC8uBoWICSQYzmGjGVBCqxrf',
+})
+</script>
 <template>
   <main>
     <section>
@@ -7,10 +16,7 @@
     <section>
       <h2>Stencil Components</h2>
       <div class="component-row">
-        <orama-chat-box .index="{
-          api_key: 'yl2JSnjLNBV6FVfUWEyadpjFr6KzPiDR',
-          endpoint: 'https://cloud.orama.run/v1/indexes/recipes-m7w9mm',
-      }" />
+        <orama-chat-box .clientInstance="clientInstance" />
       </div>
     </section>
   </main>

@@ -1,6 +1,9 @@
 import type { ClientSearchParams } from '@oramacloud/client'
 import { OramaClientNotInitializedError } from '@/erros/OramaClientNotInitialized'
 import { Switch, type OramaSwitchClient } from '@orama/switch'
+import type { OramaClient } from '@oramacloud/client'
+import type { CollectionManager } from '@orama/core'
+import type { AnyOrama } from '@orama/orama'
 import type {
   OnSearchCompletedCallbackProps,
   ResultItemRenderFunction,
@@ -20,13 +23,13 @@ type OramaHit = { id: string; score: number; document: any }
 
 export class SearchService {
   private abortController: AbortController
-  private oramaClient: Switch<OramaSwitchClient>
+  private client: Switch<OramaSwitchClient> | CollectionManager
   private searchStore: SearchStoreType
 
-  constructor(oramaClient: OramaSwitchClient, searchStore: SearchStoreType) {
-    this.oramaClient = new Switch(oramaClient)
-    this.abortController = new AbortController()
+  constructor(oramaClient: OramaClient | AnyOrama, oramaCoreClient: CollectionManager, searchStore: SearchStoreType) {
+    this.client = oramaCoreClient ? oramaCoreClient : new Switch(oramaClient)
     this.searchStore = searchStore
+    this.abortController = new AbortController()
   }
 
   search = async (
@@ -37,7 +40,7 @@ export class SearchService {
       onSearchErrorCallback?: (error: Error) => unknown
     },
   ) => {
-    if (!this.oramaClient) {
+    if (!this.client) {
       throw new OramaClientNotInitializedError()
     }
 
@@ -76,42 +79,55 @@ export class SearchService {
             },
           }),
       }),
-    } as ClientSearchParams
+      // In order to make the types work for both Switch and CollectionManager
+    } as ClientSearchParams & { term: string }
 
-    await this.oramaClient
-      .search(clientSearchParams, { abortController: this.abortController })
-      .then((results) => {
-        if (latestAbortController.signal.aborted) {
-          return
-        }
+    try {
+      const results = await this.client.search(clientSearchParams)
+      if (latestAbortController.signal.aborted) {
+        return
+      }
 
-        if (results && !results.hits) {
-          throw new Error(
-            'This search was made by a OramaClient with property mergeResult set to false. Orama Search Service requires mergeResult to be true.',
-          )
-        }
+      if (results && !results.hits) {
+        throw new Error(
+          'This search was made by a OramaClient with property mergeResult set to false. Orama Search Service requires mergeResult to be true.',
+        )
+      }
 
-        this.searchStore.state.results = this.parserResults(results?.hits, this.searchStore.state.resultMap)
-        this.searchStore.state.count = results?.count || 0
-        this.searchStore.state.facets = this.parseFacets(results?.facets, this.searchStore.state.facetProperty)
-        this.searchStore.state.highlightedIndex = -1
+      this.searchStore.state.results = this.parserResults(results?.hits, this.searchStore.state.resultMap)
+      this.searchStore.state.count = results?.count || 0
+      this.searchStore.state.facets = this.parseFacets(results?.facets, this.searchStore.state.facetProperty)
+      this.searchStore.state.highlightedIndex = -1
 
-        this.searchStore.state.loading = false
+      this.searchStore.state.loading = false
 
-        callbacks?.onSearchCompletedCallback?.({
-          clientSearchParams,
-          result: {
-            results: this.searchStore.state.results,
-            resultsCount: this.searchStore.state.count,
-            facets: this.searchStore.state.facets,
-          },
-        })
+      callbacks?.onSearchCompletedCallback?.({
+        clientSearchParams,
+        result: {
+          results: this.searchStore.state.results,
+          resultsCount: this.searchStore.state.count,
+          facets: this.searchStore.state.facets,
+        },
       })
-      .catch((error) => {
-        this.searchStore.state.loading = false
-
-        callbacks?.onSearchErrorCallback?.(error)
+      callbacks?.onSearchCompletedCallback?.({
+        clientSearchParams,
+        result: {
+          results: this.searchStore.state.results,
+          resultsCount: this.searchStore.state.count,
+          facets: this.searchStore.state.facets,
+        },
       })
+    } catch (error) {
+      console.error('Search error:', error)
+
+      if (latestAbortController.signal.aborted) {
+        return
+      }
+
+      this.searchStore.state.loading = false
+
+      callbacks?.onSearchErrorCallback?.(error)
+    }
   }
 
   abortSearch(): void {
@@ -195,23 +211,20 @@ export class SearchService {
     }
   }
 
-  private parseFacets = (
-    rawFacets: Record<
-      string,
-      {
-        count: number
-        values: Record<string, number>
-      }
-    >,
-    facetProperty,
-  ): { name: string; count: number }[] => {
-    if (!facetProperty || !rawFacets || !rawFacets[facetProperty]?.values) {
+  private parseFacets = (rawFacets: unknown, facetProperty: string): { name: string; count: number }[] => {
+    // Handle case where facets are missing or empty
+    if (!facetProperty || !rawFacets) {
       return []
     }
 
+    // Handle different facet formats based on client type
     const facetPropertyObject = rawFacets[facetProperty]
+    if (!facetPropertyObject || !facetPropertyObject.values) {
+      return []
+    }
 
-    const totalCount = Object.values(facetPropertyObject.values).reduce((acc, count) => acc + count, 0)
+    // Process facets in standard format
+    const totalCount = Object.values(facetPropertyObject.values).reduce((acc: number, count: number) => acc + count, 0)
     const allFacets = Object.keys(facetPropertyObject.values).map((key) => {
       return {
         name: key,
