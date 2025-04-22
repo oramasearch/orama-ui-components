@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@orama/core": "^0.0.11",
-    "@orama/switch": "^3.1.4",
     "@orama/react-components": "workspace:*",
     "@oramacloud/client": "^2.1.4",
     "react": "^19",
