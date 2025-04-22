@@ -16,7 +16,7 @@ const Orama = () => {
   return (
     <div>
       <OramaSearchButton style={{ marginBottom: '24px' }} />
-      <OramaSearchBox clientInstance={clientInstance} colorScheme={'light'} />
+      <OramaSearchBox oramaCoreClientInstance={clientInstance} colorScheme={'light'} />
       <Tabs.Root className="TabsRoot" defaultValue="tab1">
         <Tabs.List className="TabsList" aria-label="Manage your account">
           <Tabs.Trigger className="TabsTrigger" value="tab1">
@@ -33,7 +33,7 @@ const Orama = () => {
           <p className="Text">Tab with chatbox here</p>
           <div style={{ height: '400px' }}>
             <OramaChatBox
-              clientInstance={clientInstance}
+              oramaCoreClientInstance={clientInstance}
               clearChatOnDisconnect={false}
               onClearChat={() => setInitialPrompt('')}
               onStartConversation={(e: Event) => console.log('onStartConversation', e)}
