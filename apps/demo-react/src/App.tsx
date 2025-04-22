@@ -45,7 +45,7 @@ const ChatBoxPage = () => {
         <div className="component-row">
           <OramaChatBox
             sourcesMap={{description: "content"}}
-            clientInstance={collectionManager}
+            oramaCoreClientInstance={collectionManager}
             style={{ height: '600px' }}
             onAnswerSourceClick={(e: Event) => console.log(e)}
             onAnswerGenerated={(e: Event) => console.log(e)}
@@ -78,10 +78,10 @@ const SearchBoxPage = () => {
               console.log('Status changed to: ', e.detail.open)
             }}
             colorScheme="system"
-            clientInstance={collectionManager}
+            oramaCoreClientInstance={collectionManager}
             suggestions={['Suggestion 1', 'Suggestion 2', 'Suggestion 3']}
             onSearchCompleted={(e: Event) => console.log(e)}
-            onSearchResultClick={(e: React.MouseEvent) => {
+            onSearchResultClick={(e) => {
               e.preventDefault()
               alert('Element clicked')
             }}
@@ -92,7 +92,7 @@ const SearchBoxPage = () => {
             }}
             chatMarkdownLinkTitle={({ text }: { text: string; href: string }) => text?.toUpperCase()}
             chatMarkdownLinkHref={({ href }: { text: string; href: string }) => href}
-            onChatMarkdownLinkClicked={(e: React.MouseEvent) => {
+            onChatMarkdownLinkClicked={(e) => {
               alert('Callback on client side')
               e.preventDefault()
             }}
