@@ -4,7 +4,7 @@ export default defineConfig((options): Options => {
   return {
     entry: ["src/index.ts", "src/orama-ui.css"],
     format: ["cjs", "esm"],
-    target: "esnext",
+    target: "es2017",
     dts: true,
     sourcemap: true,
     splitting: true,
@@ -14,5 +14,10 @@ export default defineConfig((options): Options => {
     external: ["react", "react-dom"],
     injectStyle: true,
     noExternal: ["@orama/wc-components"],
+    outExtension({ format }) {
+      return {
+        js: format === "esm" ? ".mjs" : ".cjs",
+      };
+    },
   };
 });

@@ -4,11 +4,24 @@
   "description": "React components for Orama Cloud",
   "license": "Apache-2.0",
   "author": "",
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./orama-ui.css": "./dist/orama-ui.css"
+  },
   "files": [
-    "dist"
+    "dist",
+    "dist/**/*.mjs",
+    "loader",
+    "package.json",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsup",
