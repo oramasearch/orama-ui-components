@@ -3,7 +3,6 @@ import { ChatService } from '@/services/ChatService'
 import {
   generateRandomID,
   initOramaClient,
-  validateCloudIndexConfig as validateCloudIndexOrInstance,
   updateCssVariables,
   updateThemeClasses,
   validateCloudIndexConfig,
@@ -44,6 +43,7 @@ export class ChatBox {
   @Prop() placeholder?: string
   @Prop() sourcesMap?: SourcesMap
   @Prop() suggestions?: string[]
+  @Prop() relatedQueries?: number
   @Prop() autoFocus = true
   @Prop() systemPrompts?: string[]
   @Prop() prompt?: string
@@ -184,6 +184,7 @@ export class ChatBox {
           sourceBaseUrl={this.sourceBaseUrl}
           sourcesMap={this.sourcesMap}
           suggestions={this.suggestions}
+          relatedQueries={this.relatedQueries}
           focusInput={this.autoFocus}
           systemPrompts={this.systemPrompts}
           prompt={this.prompt}

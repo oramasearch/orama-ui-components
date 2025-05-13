@@ -31,6 +31,7 @@ export class OramaChat {
   @Prop() defaultTerm?: string
   @Prop() focusInput?: boolean = false
   @Prop() suggestions?: string[]
+  @Prop() relatedQueries?: number
   @Prop() prompt?: string
   @Prop() systemPrompts?: string[]
   @Prop() clearChatOnDisconnect?: boolean
@@ -54,7 +55,7 @@ export class OramaChat {
   @Watch('defaultTerm')
   handleDefaultTermChange() {
     if (this.defaultTerm) {
-      this.chatStore.state.chatService?.sendQuestion(this.defaultTerm, this.systemPrompts, {
+      this.chatStore.state.chatService?.sendQuestion(this.defaultTerm, this.relatedQueries, this.systemPrompts, {
         onAnswerGeneratedCallback: (params) => this.answerGenerated.emit(params),
       })
     }
@@ -68,19 +69,19 @@ export class OramaChat {
   @Watch('prompt')
   promptWatcher(newValue: string, oldValue: string) {
     if (newValue !== oldValue) {
-      this.triggerSendQuestion(newValue)
+      this.triggerSendQuestion(newValue, this.relatedQueries)
       this.chatStore.state.prompt = newValue
     }
   }
 
-  triggerSendQuestion = (question: string) => {
+  triggerSendQuestion = (question: string, relatedQueries?: number) => {
     if (this.chatStore.state.chatService === null) {
       throw new Error('Chat Service is not initialized')
     }
 
     this.startConversation.emit({ userPrompt: question, systemPrompts: this.systemPrompts })
 
-    this.chatStore.state.chatService.sendQuestion(question, this.systemPrompts, {
+    this.chatStore.state.chatService.sendQuestion(question, relatedQueries, this.systemPrompts, {
       onAnswerGeneratedCallback: (params) => this.answerGenerated.emit(params),
     })
   }
@@ -284,7 +285,7 @@ export class OramaChat {
 
     this.startConversation.emit({ userPrompt: this.inputValue, systemPrompts: this.systemPrompts })
 
-    this.chatStore.state.chatService.sendQuestion(this.inputValue, this.systemPrompts, {
+    this.chatStore.state.chatService.sendQuestion(this.inputValue, this.relatedQueries, this.systemPrompts, {
       onAnswerGeneratedCallback: (params) => this.answerGenerated.emit(params),
     })
 
@@ -303,7 +304,7 @@ export class OramaChat {
 
     this.startConversation.emit({ userPrompt: suggestion, systemPrompts: this.systemPrompts })
 
-    this.chatStore.state.chatService.sendQuestion(suggestion, undefined, {
+    this.chatStore.state.chatService.sendQuestion(suggestion, undefined, undefined, {
       onAnswerGeneratedCallback: (params) => this.answerGenerated.emit(params),
     })
     this.inputValue = ''

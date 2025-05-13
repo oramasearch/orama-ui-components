@@ -7,23 +7,24 @@
 
 ## Properties
 
-| Property                 | Attribute                  | Description | Type                                                          | Default             |
-| ------------------------ | -------------------------- | ----------- | ------------------------------------------------------------- | ------------------- |
-| `chatMarkdownLinkHref`   | --                         |             | `({ text, href }: { text: string; href: string; }) => string` | `undefined`         |
-| `chatMarkdownLinkTarget` | --                         |             | `({ text, href }: { text: string; href: string; }) => string` | `undefined`         |
-| `chatMarkdownLinkTitle`  | --                         |             | `({ text, href }: { text: string; href: string; }) => string` | `undefined`         |
-| `clearChatOnDisconnect`  | `clear-chat-on-disconnect` |             | `boolean`                                                     | `undefined`         |
-| `defaultTerm`            | `default-term`             |             | `string`                                                      | `undefined`         |
-| `focusInput`             | `focus-input`              |             | `boolean`                                                     | `false`             |
-| `linksRel`               | `links-rel`                |             | `string`                                                      | `undefined`         |
-| `linksTarget`            | `links-target`             |             | `string`                                                      | `undefined`         |
-| `placeholder`            | `placeholder`              |             | `string`                                                      | `'Ask me anything'` |
-| `prompt`                 | `prompt`                   |             | `string`                                                      | `undefined`         |
-| `showClearChat`          | `show-clear-chat`          |             | `boolean`                                                     | `true`              |
-| `sourceBaseUrl`          | `source-base-url`          |             | `string`                                                      | `''`                |
-| `sourcesMap`             | --                         |             | `{ path?: string; description?: string; title?: string; }`    | `undefined`         |
-| `suggestions`            | --                         |             | `string[]`                                                    | `undefined`         |
-| `systemPrompts`          | --                         |             | `string[]`                                                    | `undefined`         |
+| Property                 | Attribute                   | Description | Type                                                          | Default             |
+| ------------------------ | --------------------------- | ----------- | ------------------------------------------------------------- | ------------------- |
+| `chatMarkdownLinkHref`   | `chat-markdown-link-href`   |             | `({ text, href }: { text: string; href: string; }) => string` | `undefined`         |
+| `chatMarkdownLinkTarget` | `chat-markdown-link-target` |             | `({ text, href }: { text: string; href: string; }) => string` | `undefined`         |
+| `chatMarkdownLinkTitle`  | `chat-markdown-link-title`  |             | `({ text, href }: { text: string; href: string; }) => string` | `undefined`         |
+| `clearChatOnDisconnect`  | `clear-chat-on-disconnect`  |             | `boolean`                                                     | `undefined`         |
+| `defaultTerm`            | `default-term`              |             | `string`                                                      | `undefined`         |
+| `focusInput`             | `focus-input`               |             | `boolean`                                                     | `false`             |
+| `linksRel`               | `links-rel`                 |             | `string`                                                      | `undefined`         |
+| `linksTarget`            | `links-target`              |             | `string`                                                      | `undefined`         |
+| `placeholder`            | `placeholder`               |             | `string`                                                      | `'Ask me anything'` |
+| `prompt`                 | `prompt`                    |             | `string`                                                      | `undefined`         |
+| `relatedQueries`         | `related-queries`           |             | `number`                                                      | `undefined`         |
+| `showClearChat`          | `show-clear-chat`           |             | `boolean`                                                     | `true`              |
+| `sourceBaseUrl`          | `source-base-url`           |             | `string`                                                      | `''`                |
+| `sourcesMap`             | `sources-map`               |             | `{ title?: string; description?: string; path?: string; }`    | `undefined`         |
+| `suggestions`            | `suggestions`               |             | `string[]`                                                    | `undefined`         |
+| `systemPrompts`          | `system-prompts`            |             | `string[]`                                                    | `undefined`         |
 
 
 ## Events

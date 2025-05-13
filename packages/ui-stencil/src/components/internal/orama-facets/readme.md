@@ -5,11 +5,11 @@
 
 ## Properties
 
-| Property               | Attribute        | Description | Type                          | Default     |
-| ---------------------- | ---------------- | ----------- | ----------------------------- | ----------- |
-| `facets`               | --               |             | `Facet[]`                     | `undefined` |
-| `selectedFacet`        | `selected-facet` |             | `string`                      | `undefined` |
-| `selectedFacetChanged` | --               |             | `(facetName: string) => void` | `undefined` |
+| Property               | Attribute                | Description | Type                          | Default     |
+| ---------------------- | ------------------------ | ----------- | ----------------------------- | ----------- |
+| `facets`               | `facets`                 |             | `Facet[]`                     | `undefined` |
+| `selectedFacet`        | `selected-facet`         |             | `string`                      | `undefined` |
+| `selectedFacetChanged` | `selected-facet-changed` |             | `(facetName: string) => void` | `undefined` |
 
 
 ## Dependencies

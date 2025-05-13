@@ -21,6 +21,7 @@ export class OramaSearch {
   @Prop() linksTarget?: string
   @Prop() linksRel?: string
   @Prop() disableChat?: boolean = false
+  @Prop() relatedQueries?: number
   @Prop() highlightTitle?: HighlightOptions | false = false
   @Prop() highlightDescription?: HighlightOptions | false = false
 
@@ -92,7 +93,7 @@ export class OramaSearch {
             suggestions={!this.globalStore.state.currentTerm?.length && !this.disableChat ? this.suggestions : []}
             setChatTerm={(term) => {
               this.globalStore.state.currentTask = 'chat'
-              this.chatStore.state.chatService?.sendQuestion(term, undefined, {
+              this.chatStore.state.chatService?.sendQuestion(term, this.relatedQueries, undefined, {
                 onAnswerGeneratedCallback: (onAnswerGeneratedCallbackProps) =>
                   this.answerGenerated.emit(onAnswerGeneratedCallbackProps),
               })

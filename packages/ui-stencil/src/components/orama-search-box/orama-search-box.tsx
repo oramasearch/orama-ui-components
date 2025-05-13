@@ -1,16 +1,4 @@
-import {
-  Component,
-  Prop,
-  Watch,
-  h,
-  Listen,
-  Element,
-  State,
-  Fragment,
-  Event,
-  type EventEmitter,
-  Method,
-} from '@stencil/core'
+import { Component, Prop, Watch, h, Listen, Element, State, Fragment, Event, type EventEmitter } from '@stencil/core'
 import { ChatService } from '@/services/ChatService'
 import { SearchService } from '@/services/SearchService'
 import { windowWidthListener } from '@/services/WindowService'
@@ -162,6 +150,10 @@ export class SearchBox {
    * Show keyboard shortcuts in the footer
    */
   @Prop() showKeyboardShortcuts?: boolean = false
+  /**
+   * Display automatic chat suggestions
+   */
+  @Prop() relatedQueries?: number
 
   @State() componentID = generateRandomID('search-box')
   @State() systemScheme: Omit<ColorScheme, 'system'> = 'light'
@@ -417,6 +409,7 @@ export class SearchBox {
           suggestions={this.suggestions}
           chatMarkdownLinkTitle={this.chatMarkdownLinkTitle}
           chatMarkdownLinkHref={this.chatMarkdownLinkHref}
+          relatedQueries={this.relatedQueries}
         />
       </Fragment>
     )
