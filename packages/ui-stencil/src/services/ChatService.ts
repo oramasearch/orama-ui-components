@@ -175,7 +175,7 @@ export class ChatService {
     console.log('askOramaCore', query, relatedQueries)
     const streamParams: AnswerConfig = {
       query,
-      ...(relatedQueries > 0
+      ...(relatedQueries
         ? {
             related: {
               enabled: true,

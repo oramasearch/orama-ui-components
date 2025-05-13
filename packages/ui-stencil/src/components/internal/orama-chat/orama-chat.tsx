@@ -297,14 +297,14 @@ export class OramaChat {
     this.chatStore.state.chatService.abortAnswer()
   }
 
-  handleSuggestionClick = (suggestion: string) => {
+  handleSuggestionClick = (suggestion: string, relatedQueries?: number) => {
     if (this.chatStore.state.chatService === null) {
       throw new Error('Chat Service is not initialized')
     }
 
     this.startConversation.emit({ userPrompt: suggestion, systemPrompts: this.systemPrompts })
 
-    this.chatStore.state.chatService.sendQuestion(suggestion, undefined, undefined, {
+    this.chatStore.state.chatService.sendQuestion(suggestion, relatedQueries, undefined, {
       onAnswerGeneratedCallback: (params) => this.answerGenerated.emit(params),
     })
     this.inputValue = ''
