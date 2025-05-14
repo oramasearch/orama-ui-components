@@ -9,7 +9,7 @@
 
 | Property          | Attribute           | Description | Type         | Default     |
 | ----------------- | ------------------- | ----------- | ------------ | ----------- |
-| `handleClose`     | `handle-close`      |             | `() => void` | `undefined` |
+| `handleClose`     | --                  |             | `() => void` | `undefined` |
 | `showBackButton`  | `show-back-button`  |             | `boolean`    | `true`      |
 | `showChatActions` | `show-chat-actions` |             | `boolean`    | `false`     |
 

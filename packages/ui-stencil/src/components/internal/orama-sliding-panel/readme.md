@@ -10,7 +10,7 @@
 | Property   | Attribute  | Description | Type         | Default     |
 | ---------- | ---------- | ----------- | ------------ | ----------- |
 | `backdrop` | `backdrop` |             | `boolean`    | `false`     |
-| `closed`   | `closed`   |             | `() => void` | `undefined` |
+| `closed`   | --         |             | `() => void` | `undefined` |
 | `open`     | `open`     |             | `boolean`    | `false`     |
 
 

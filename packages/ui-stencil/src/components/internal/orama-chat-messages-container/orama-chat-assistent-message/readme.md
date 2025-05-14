@@ -7,12 +7,12 @@
 
 ## Properties
 
-| Property                 | Attribute                   | Description | Type                                                                                                                                               | Default     |
-| ------------------------ | --------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `chatMarkdownLinkHref`   | `chat-markdown-link-href`   |             | `({ text, href }: { text: string; href: string; }) => string`                                                                                      | `undefined` |
-| `chatMarkdownLinkTarget` | `chat-markdown-link-target` |             | `({ text, href }: { text: string; href: string; }) => string`                                                                                      | `undefined` |
-| `chatMarkdownLinkTitle`  | `chat-markdown-link-title`  |             | `({ text, href }: { text: string; href: string; }) => string`                                                                                      | `undefined` |
-| `interaction`            | `interaction`               |             | `{ query: string; response?: string; sources?: any; latest?: boolean; status: TAnswerStatus; interactionId?: string; relatedQueries?: string[]; }` | `undefined` |
+| Property                 | Attribute | Description | Type                                                                                                                                               | Default     |
+| ------------------------ | --------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `chatMarkdownLinkHref`   | --        |             | `({ text, href }: { text: string; href: string; }) => string`                                                                                      | `undefined` |
+| `chatMarkdownLinkTarget` | --        |             | `({ text, href }: { text: string; href: string; }) => string`                                                                                      | `undefined` |
+| `chatMarkdownLinkTitle`  | --        |             | `({ text, href }: { text: string; href: string; }) => string`                                                                                      | `undefined` |
+| `interaction`            | --        |             | `{ query: string; response?: string; sources?: any; latest?: boolean; status: TAnswerStatus; interactionId?: string; relatedQueries?: string[]; }` | `undefined` |
 
 
 ## Dependencies

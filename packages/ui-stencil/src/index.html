@@ -22,14 +22,9 @@
       import { CollectionManager } from 'https://esm.sh/@orama/core';
 
       const ORAMA_CORE_CONFIG = {
-        URL: 'https://oramacore.orama.foo',
-        COLLECTION_ID: 'tuhn04iqevs4vttgl865pigh',
-        READ_API_KEY: 'QaPXfBUHy4g35IUGhq0bdUc79AeXwzQb',
-      };
-
-      const ORAMA_CLOUD_CONFIG = {
-        API_KEY: 'zXwDwhqAfapCJ5WA2uHWNTjC0YeH22RU',
-        ENDPOINT: 'https://cloud.orama.run/v1/indexes/names-osgbzg',
+        URL: 'https://collections.orama.com',
+        COLLECTION_ID: 'ncd7zwmirytw1o47dogru4bz',
+        READ_API_KEY: 'df00PbXP0dbRUcJgFeFZSNNb7AhsqCw8',
       };
 
       const searchBox = document.querySelector('orama-search-box');
@@ -41,37 +36,54 @@
 
       const useOramaCore = true;
 
-      if (useOramaCore) {
-        const collectionManager = new CollectionManager({
-          url: ORAMA_CORE_CONFIG.URL,
-          collectionID: ORAMA_CORE_CONFIG.COLLECTION_ID,
-          readAPIKey: ORAMA_CORE_CONFIG.READ_API_KEY,
-        });
-        searchBox.oramaCoreClientInstance = collectionManager;
+      const collectionManager = new CollectionManager({
+        url: ORAMA_CORE_CONFIG.URL,
+        collectionID: ORAMA_CORE_CONFIG.COLLECTION_ID,
+        readAPIKey: ORAMA_CORE_CONFIG.READ_API_KEY,
+      });
+      searchBox.oramaCoreClientInstance = collectionManager;
+      chatBox.oramaCoreClientInstance = collectionManager;
 
-        chatBox.oramaCoreClientInstance = collectionManager;
-      } else {
-        searchBox.index = {
-          api_key: ORAMA_CLOUD_CONFIG.API_KEY,
-          endpoint: ORAMA_CLOUD_CONFIG.ENDPOINT,
-        };
-        searchBox.facetProperty = 'gender';
-
-        chatBox.index = {
-          api_key: ORAMA_CLOUD_CONFIG.API_KEY,
-          endpoint: ORAMA_CLOUD_CONFIG.ENDPOINT,
-        };
-      }
-
-      searchBox.resultMap = {
-        title: item => {
-          return `${item.first_name} ${item.last_name}`;
+      // Multiple result maps can be set like this
+      searchBox.resultMap = [
+        {
+          title: 'name',
+          description: item => {
+            return `${item.sex} - ${item.country}`;
+          },
+          datasourceId: 'dyaqkvxo36199sn6yd7saegdf',
         },
-        description: item => {
-          return `${item.email} ${item.ip_address}`;
+        {
+          title: item => {
+            return item.Title;
+          },
+          description: item => {
+            return item.Description;
+          },
+          path: 'ip_address',
+          datasourceId: 'jrmilfazf47z8xq2v4n8xs6ww',
         },
-        path: 'ip_address',
-      };
+      ];
+
+      // Or like this
+      // searchBox.resultMap = {
+      //   title: (item, datasourceId) => {
+      //     if (datasourceId === 'dyaqkvxo36199sn6yd7saegdf') {
+      //       return item.name;
+      //     }
+
+      //     return item.Title;
+      //   },
+      //   description: (item, datasourceId) => {
+      //     if (datasourceId === 'dyaqkvxo36199sn6yd7saegdf') {
+      //       return `${item.sex} - ${item.country}`;
+      //     }
+
+      //     return item.Description;
+      //   },
+      //   datasourceId: 'dyaqkvxo36199sn6yd7saegdf',
+      // };
+
       searchBox.sourcesMap = {
         title: 'first_name',
         description: 'email',
