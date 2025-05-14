@@ -20,14 +20,18 @@ export type SearchResultBySection = {
 
 export type Facet = { name: string; count: number }
 
-export type ResultMapKeys = keyof Omit<SearchResult, 'id'> | 'section'
-export type ResultMapRenderFunction = (any) => string
-export type ResultItemRenderFunction = (any) => string | null | undefined
+export type ResultMapKeys = keyof Omit<SearchResult, 'id'> | 'section' | 'datasourceId'
+// biome-ignore lint/suspicious/noExplicitAny: Item is indeed not any
+export type ResultMapRenderFunction = (item: any, datasourceId: string) => string
+// biome-ignore lint/suspicious/noExplicitAny: Item is indeed not any
+export type ResultItemRenderFunction = (item: any, datasourceId: string) => string | null | undefined
 
 // TODO: callback function should have the type of the schema
-export type ResultMap = { [K in ResultMapKeys]?: string | ResultMapRenderFunction } & {
+export type ResultMapItem = { [K in ResultMapKeys]?: string | ResultMapRenderFunction } & {
   icon?: string | ResultItemRenderFunction
 }
+
+export type ResultMap = ResultMapItem | ResultMapItem[]
 
 export type SourcesMap = { [K in keyof Omit<SearchResult, 'id'>]?: string }
 

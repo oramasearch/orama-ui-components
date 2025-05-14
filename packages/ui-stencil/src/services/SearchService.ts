@@ -8,6 +8,7 @@ import type {
   OnSearchCompletedCallbackProps,
   ResultItemRenderFunction,
   ResultMap,
+  ResultMapItem,
   ResultMapKeys,
   ResultMapRenderFunction,
   SearchResultBySection,
@@ -19,7 +20,7 @@ const LIMIT_RESULTS = 10
 
 // TODO: Orama Client should expose Result type
 // biome-ignore lint/suspicious/noExplicitAny: There is not way to type document as we only know what it is in runtime
-type OramaHit = { id: string; score: number; document: any }
+type OramaHit = { id: string; score: number; document: any; datasource_id: string }
 
 export class SearchService {
   private abortController: AbortController
@@ -94,7 +95,8 @@ export class SearchService {
         )
       }
 
-      this.searchStore.state.results = this.parserResults(results?.hits, this.searchStore.state.resultMap)
+      // biome-ignore lint/suspicious/noExplicitAny: To be fixed when Orama Swtich export the right type
+      this.searchStore.state.results = this.parserResults(results?.hits as any, this.searchStore.state.resultMap)
       this.searchStore.state.count = results?.count || 0
       this.searchStore.state.facets = this.parseFacets(results?.facets, this.searchStore.state.facetProperty)
       this.searchStore.state.highlightedIndex = -1
@@ -140,7 +142,24 @@ export class SearchService {
     throw new Error('Not implemented')
   }
 
-  private parserResults = (hits: OramaHit[] | undefined, resultMap: ResultMap): SearchResultBySection[] => {
+  private getResultMapObjectByForTheHit = (resultMapArrayOrObject: ResultMap, hit: OramaHit): ResultMapItem => {
+    const resultMapArray = Array.isArray(resultMapArrayOrObject) ? resultMapArrayOrObject : [resultMapArrayOrObject]
+
+    // If there is only one result map, assume it's the one for all hits, regardless of datasourceId
+    if (resultMapArray.length === 1) {
+      return resultMapArray[0]
+    }
+
+    // TODO: Instead of doing it per each HIT, we may want to create a map of datasourceId -> resultMap to avoid the O(n) lookup
+    const resultmapMatch = resultMapArray.find((resultMap) => resultMap.datasourceId === hit.datasource_id)
+
+    return resultmapMatch || {}
+  }
+
+  private parserResults = (
+    hits: OramaHit[] | undefined,
+    resultMapArrayOrObject: ResultMap,
+  ): SearchResultBySection[] => {
     if (!hits) {
       return []
     }
@@ -149,9 +168,13 @@ export class SearchService {
     const arraySectionMap: { [key: string]: number } = {}
 
     for (const hit of hits) {
+      const resultMap = this.getResultMapObjectByForTheHit(resultMapArrayOrObject, hit)
+
       const searchResultWithScore = this.hitToSearchResultParser(hit, resultMap)
       const documentSectionValue =
-        typeof resultMap.section === 'function' ? resultMap.section(hit.document) : hit.document[resultMap.section]
+        typeof resultMap.section === 'function'
+          ? resultMap.section(hit.document, hit.datasource_id)
+          : hit.document[resultMap.section]
 
       if (arraySectionMap[documentSectionValue] === undefined) {
         perSectionResults.push({
@@ -168,9 +191,9 @@ export class SearchService {
     return perSectionResults
   }
 
-  private hitToSearchResultParser = (hit: OramaHit, resultMap: ResultMap): SearchResultWithIcon => {
+  private hitToSearchResultParser = (hit: OramaHit, resultMapObject: ResultMapItem): SearchResultWithIcon => {
     function getResultMapValue(resultMapKey: ResultMapKeys): string {
-      const resultMapFunctionOrString = resultMap[resultMapKey]
+      const resultMapFunctionOrString = resultMapObject[resultMapKey]
 
       if (!resultMapFunctionOrString) {
         return hit.document[resultMapKey]
@@ -178,15 +201,15 @@ export class SearchService {
 
       if (typeof resultMapFunctionOrString === 'function') {
         const resultMapFunction = resultMapFunctionOrString as ResultMapRenderFunction
-        return resultMapFunction(hit.document)
+        return resultMapFunction(hit.document, hit.datasource_id)
       }
 
-      const resultMapString = resultMap[resultMapKey] as string
+      const resultMapString = resultMapObject[resultMapKey] as string
       return hit.document[resultMapString]
     }
 
     function getIcon(): string | null {
-      const iconStringOrFunction = resultMap.icon
+      const iconStringOrFunction = resultMapObject.icon
 
       if (!iconStringOrFunction) {
         return null
@@ -194,12 +217,12 @@ export class SearchService {
 
       if (typeof iconStringOrFunction === 'function') {
         const iconFunctionRender = iconStringOrFunction as ResultItemRenderFunction
-        const iconFunctionRenderResult = iconFunctionRender(hit.document)
+        const iconFunctionRenderResult = iconFunctionRender(hit.document, hit.datasource_id)
 
         return iconFunctionRenderResult ?? null
       }
 
-      return resultMap.icon as string
+      return resultMapObject.icon as string
     }
 
     return {

@@ -3,9 +3,9 @@ import './App.css'
 import { BrowserRouter, Routes, Route, NavLink, Navigate } from 'react-router'
 import { CollectionManager } from '@orama/core'
 
-const ORAMACORE_ENDPOINT = 'https://oramacore.orama.foo'
-const ORAMACORE_COLLECTION_ID = 'cxlenmho72jp3qpbdphbmfdn'
-const ORAMACORE_READ_API_KEY = 'caTS1G81uC8uBoWICSQYzmGjGVBCqxrf'
+const ORAMACORE_ENDPOINT = 'https://collections.orama.com'
+const ORAMACORE_COLLECTION_ID = 'ncd7zwmirytw1o47dogru4bz'
+const ORAMACORE_READ_API_KEY = 'df00PbXP0dbRUcJgFeFZSNNb7AhsqCw8'
 
 // Create a CollectionManager instance
 const collectionManager = new CollectionManager({
@@ -13,7 +13,6 @@ const collectionManager = new CollectionManager({
   collectionID: ORAMACORE_COLLECTION_ID,
   readAPIKey: ORAMACORE_READ_API_KEY,
 })
-
 
 function App() {
   return (
@@ -44,7 +43,7 @@ const ChatBoxPage = () => {
         <h2 style={{ textAlign: 'center' }}>CHAT BOX</h2>
         <div className="component-row">
           <OramaChatBox
-            sourcesMap={{description: "content"}}
+            sourcesMap={{ description: 'content' }}
             oramaCoreClientInstance={collectionManager}
             style={{ height: '600px' }}
             onAnswerSourceClick={(e: Event) => console.log(e)}
@@ -68,9 +67,27 @@ const SearchBoxPage = () => {
       <main>
         <h2 style={{ textAlign: 'center' }}>SEARCH BOX</h2>
         <div className="component-row">
-        <OramaSearchButton colorScheme="system">Search</OramaSearchButton>
+          <OramaSearchButton colorScheme="system">Search</OramaSearchButton>
           <OramaSearchBox
-            resultMap={{description: "content"}}
+            resultMap={[
+              {
+                title: 'name',
+                description: (item) => {
+                  return `${item.sex} - ${item.country}`
+                },
+                datasourceId: 'dyaqkvxo36199sn6yd7saegdf',
+              },
+              {
+                title: (item) => {
+                  return item.Title
+                },
+                description: (item) => {
+                  return item.Description
+                },
+                path: 'ip_address',
+                datasourceId: 'jrmilfazf47z8xq2v4n8xs6ww',
+              },
+            ]}
             onModalClosed={() => {
               console.log('closed')
             }}
