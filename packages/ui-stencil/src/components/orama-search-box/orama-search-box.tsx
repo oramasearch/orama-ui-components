@@ -201,13 +201,13 @@ export class SearchBox {
    * const searchBox = document.querySelector('orama-search-box');
    * searchBox.textDictionary = { searchPlaceholder: "Search our docs..." };
    */
-  @Prop() dictionary?: Partial<Dictionary> = {}
+  @Prop() dictionary?: Partial<TextDictionary> = {}
 
   /**
    * Watch for changes to the dictionary prop
    */
   @Watch('dictionary')
-  handleDictionaryChange(newValue: Partial<Dictionary> | string) {
+  handleDictionaryChange(newValue: Partial<TextDictionary> | string) {
     // Handle case where dictionary is passed as a string (via HTML attribute)
     if (typeof newValue === 'string') {
       try {
@@ -225,7 +225,22 @@ export class SearchBox {
   private searchStore: SearchStoreType
   private chatStore: ChatStoreType
   private globalStore: GlobalStoreType
-  private defaultTextDictionary: TextDictionary = defaultTextDictionary
+  private defaultTextDictionary: TextDictionary = {
+    searchPlaceholder: 'Search...',
+    chatPlaceholder: 'Ask me anything',
+    noResultsFound: 'No results found',
+    noResultsFoundFor: 'No results found for',
+    suggestions: 'Suggestions',
+    seeAll: 'See all',
+    addMore: 'Add more',
+    clearChat: 'Clear chat',
+    errorMessage: 'An error occurred while trying to search. Please try again.',
+    disclaimer: 'Orama can make mistakes. Please verify the information.',
+    startYourSearch: 'Start your search',
+    initErrorSearch: 'Unable to initialize search service',
+    initErrorChat: 'Unable to initialize chat service',
+    chatButtonLabel: 'Get a summary',
+  }
 
   /**
    * Fired when search successfully resolves
