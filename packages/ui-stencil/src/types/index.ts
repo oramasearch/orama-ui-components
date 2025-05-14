@@ -105,7 +105,7 @@ export type TChatInteraction = {
 /**
  * Dictionary for all text content in the components
  */
-export type TextDictionary = {
+export type Dictionary = {
   searchPlaceholder: string
   chatPlaceholder: string
   noResultsFound: string

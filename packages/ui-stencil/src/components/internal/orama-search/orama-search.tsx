@@ -24,7 +24,7 @@ export class OramaSearch {
   @Prop() disableChat?: boolean = false
   @Prop() highlightTitle?: HighlightOptions | false = false
   @Prop() highlightDescription?: HighlightOptions | false = false
-  @Prop() textDictionary?: Partial<TextDictionary>
+  @Prop() dictionary?: Partial<Dictionary>
 
   @State() selectedFacet = ''
 
@@ -125,7 +125,7 @@ export class OramaSearch {
             highlightDescription={this.highlightDescription}
             loading={this.searchStore.state.loading}
             error={this.searchStore.state.error}
-            textDictionary={this.textDictionary}
+            dictionary={this.dictionary}
           />
         </div>
       </Host>
