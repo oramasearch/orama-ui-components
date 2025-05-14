@@ -13,54 +13,54 @@ const createOramaJSDatabase = async () => {
       title: 'string',
       content: 'string',
       category: 'string',
-      url: 'string'
-    }
-  });
-  
+      url: 'string',
+    },
+  })
+
   // Insert some sample documents
   await insert(db, {
     title: 'Getting Started with Orama.js',
     content: 'Orama.js is a powerful full-text search engine that works in any JavaScript runtime.',
     category: 'Open Source',
-    url: '/docs/getting-started'
-  });
-  
+    url: '/docs/getting-started',
+  })
+
   await insert(db, {
     title: 'Creating a Database',
     content: 'Learn how to create and configure an Orama database for your application.',
     category: 'Open Source',
-    url: '/docs/create-database'
-  });
-  
+    url: '/docs/create-database',
+  })
+
   await insert(db, {
     title: 'Searching Documents',
     content: 'Discover how to perform powerful searches across your documents with Orama.',
     category: 'Open Source',
-    url: '/docs/search'
-  });
-  
+    url: '/docs/search',
+  })
+
   await insert(db, {
     title: 'Using Facets',
     content: 'Implement faceted search to allow users to filter and refine search results.',
     category: 'Open Source',
-    url: '/docs/facets'
-  });
-  
+    url: '/docs/facets',
+  })
+
   await insert(db, {
     title: 'Advanced Configurations',
     content: 'Explore advanced configurations and optimizations for Orama databases.',
     category: 'Open Source',
-    url: '/docs/advanced'
-  });
-  
-  return db;
-};
+    url: '/docs/advanced',
+  })
+
+  return db
+}
 
 // Create the database instance
-let oramaJSDatabase;
-createOramaJSDatabase().then(db => {
-  oramaJSDatabase = db;
-});
+let oramaJSDatabase
+createOramaJSDatabase().then((db) => {
+  oramaJSDatabase = db
+})
 
 const demoIndexes: DemoIndexConfig = {
   orama: {
@@ -92,10 +92,16 @@ const demoIndexes: DemoIndexConfig = {
   oramaCore: {
     open: true,
     clientInstance: new CollectionManager({
-      url:'https://oramacore.orama.foo',
-      collectionID: 'cxlenmho72jp3qpbdphbmfdn',
-      readAPIKey: 'caTS1G81uC8uBoWICSQYzmGjGVBCqxrf',
+      url: 'https://collections.orama.com',
+      collectionID: 'bktkmbcrq6oevqjisagq61u8',
+      readAPIKey: 'dfshiLS0swg2SANbDkXrEtXzCg1WPpo8',
     }),
+    relatedQueries: 3,
+    // clientInstance: new CollectionManager({
+    //   url: 'https://staging.collections.orama.com',
+    //   collectionID: 'qlpn24gz9t4b6gkha642uzrk',
+    //   readAPIKey: 'aIFyiCsyWtgtFlEskNfJvf0a7CD9E577',
+    // }),
     placeholder: 'What do you want to learn about Orama?',
     sourceBaseUrl: 'https://docs.orama.com',
     sourcesMap: {
@@ -103,7 +109,7 @@ const demoIndexes: DemoIndexConfig = {
       description: 'content',
     },
     suggestions: ['What is Orama?', 'Does Orama have an integration with Strapi?', 'How to create an answer session?'],
-    facetProperty: 'category',
+    // facetProperty: 'category',
     resultMap: {
       title: 'title',
       description: 'content',

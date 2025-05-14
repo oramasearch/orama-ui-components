@@ -16,8 +16,9 @@
 | `linksRel`             | `links-rel`             |             | `string`                      | `undefined`   |
 | `linksTarget`          | `links-target`          |             | `string`                      | `undefined`   |
 | `placeholder`          | `placeholder`           |             | `string`                      | `'Search...'` |
+| `relatedQueries`       | `related-queries`       |             | `number`                      | `undefined`   |
 | `sourceBaseUrl`        | `source-base-url`       |             | `string`                      | `undefined`   |
-| `suggestions`          | --                      |             | `string[]`                    | `[]`          |
+| `suggestions`          | `suggestions`           |             | `string[]`                    | `[]`          |
 
 
 ## Events

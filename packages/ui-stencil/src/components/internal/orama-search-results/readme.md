@@ -14,10 +14,10 @@
 | `linksTarget`          | `links-target`          |             | `string`                      | `'_blank'`              |
 | `loading`              | `loading`               |             | `boolean`                     | `false`                 |
 | `searchTerm`           | `search-term`           |             | `string`                      | `undefined`             |
-| `sections`             | --                      |             | `SearchResultBySection[]`     | `[]`                    |
-| `setChatTerm`          | --                      |             | `(term: string) => void`      | `undefined`             |
+| `sections`             | `sections`              |             | `SearchResultBySection[]`     | `[]`                    |
+| `setChatTerm`          | `set-chat-term`         |             | `(term: string) => void`      | `undefined`             |
 | `sourceBaseUrl`        | `source-base-url`       |             | `string`                      | `undefined`             |
-| `suggestions`          | --                      |             | `string[]`                    | `[]`                    |
+| `suggestions`          | `suggestions`           |             | `string[]`                    | `[]`                    |
 
 
 ## Events

@@ -32,7 +32,7 @@ export class OramaChatMessagesContainer {
 
   // TODO: I'm not sure about having this here as we're breaking our rule of maintain service access only to the very top level component
   onSuggestionClick = (suggestion: string) => {
-    this.chatStore.state.chatService?.sendQuestion(suggestion, undefined, {
+    this.chatStore.state.chatService?.sendQuestion(suggestion, undefined, undefined, {
       onAnswerGeneratedCallback: (onAnswerGeneratedCallbackProps) =>
         this.answerGenerated.emit(onAnswerGeneratedCallbackProps),
     })

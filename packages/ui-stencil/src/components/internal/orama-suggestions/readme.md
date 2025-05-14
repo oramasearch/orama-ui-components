@@ -7,12 +7,12 @@
 
 ## Properties
 
-| Property            | Attribute | Description | Type                           | Default     |
-| ------------------- | --------- | ----------- | ------------------------------ | ----------- |
-| `as`                | `as`      |             | `"chips" \| "list"`            | `'chips'`   |
-| `icon`              | --        |             | `Node`                         | `undefined` |
-| `suggestionClicked` | --        |             | `(suggestion: string) => void` | `undefined` |
-| `suggestions`       | --        |             | `string[]`                     | `undefined` |
+| Property            | Attribute            | Description | Type                           | Default     |
+| ------------------- | -------------------- | ----------- | ------------------------------ | ----------- |
+| `as`                | `as`                 |             | `"chips" \| "list"`            | `'chips'`   |
+| `icon`              | `icon`               |             | `Node`                         | `undefined` |
+| `suggestionClicked` | `suggestion-clicked` |             | `(suggestion: string) => void` | `undefined` |
+| `suggestions`       | `suggestions`        |             | `string[]`                     | `undefined` |
 
 
 ## Dependencies

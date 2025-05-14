@@ -113,6 +113,7 @@ const Template = ({
       .placeholder=${preset?.placeholder}
       .searchParams=${preset?.searchParams}
       .showKeyboardShortcuts=${showKeyboardShortcuts}
+      .relatedQueries=${preset?.relatedQueries}
     ></orama-search-box></div>`
 }
 
@@ -156,6 +157,7 @@ const TemplateAsEmbed = ({
       .placeholder=${preset?.placeholder}
       .searchParams=${preset?.searchParams}
       .showKeyboardShortcuts=${showKeyboardShortcuts}
+      .relatedQueries=${preset?.relatedQueries}
     ></orama-search-box>
   </div>`
 }
