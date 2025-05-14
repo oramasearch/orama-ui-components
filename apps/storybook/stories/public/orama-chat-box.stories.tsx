@@ -32,11 +32,11 @@ const meta: Meta<
         },
       },
     },
-    textDictionary: {
+    dictionary: {
       control: { type: 'object' },
       table: {
         type: {
-          summary: 'Partial<TextDictionary>',
+          summary: 'Partial<dictionary>',
           detail: `{
   chatPlaceholder: string
   initErrorChat: string
@@ -100,10 +100,10 @@ const meta: Meta<
 
 export default meta
 
-const Template = ({ preset, colorScheme, textDictionary, disclaimer }: {
+const Template = ({ preset, colorScheme, dictionary, disclaimer }: {
   preset: any;
   colorScheme?: string;
-  textDictionary?: Record<string, string>;
+  dictionary?: Record<string, string>;
   disclaimer?: string;
 }) => {
   return html`
@@ -117,7 +117,7 @@ const Template = ({ preset, colorScheme, textDictionary, disclaimer }: {
       .systemPrompts=${preset?.systemPrompts}
       .colorScheme=${colorScheme || preset?.colorScheme}
       .themeConfig=${preset?.themeConfig}
-      .textDictionary=${textDictionary}
+      .dictionary=${dictionary}
       .clearChatOnDisconnect=${preset?.clearChatOnDisconnect}
       .disclaimer=${disclaimer}
       prompt=${preset?.prompt}
@@ -132,7 +132,7 @@ export const ChatBox: Story = {
   args: {
     preset: 'orama',
     colorScheme: 'dark',
-    textDictionary: {
+    dictionary: {
       chatPlaceholder: 'Ask about our documentation...',
       initErrorChat: 'Chat service could not be initialized',
       disclaimer: 'Orama can make mistakes. Please verify the information.',

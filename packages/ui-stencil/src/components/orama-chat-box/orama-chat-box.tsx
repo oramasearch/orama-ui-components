@@ -8,7 +8,7 @@ import {
   updateThemeClasses,
   validateCloudIndexConfig,
 } from '@/utils/utils'
-import { defaultTextDictionary, getText as getTextUtil } from '@/utils/textDictionary'
+import { defaultTextDictionary, getText as getTextUtil } from '@/utils/dictionary'
 import type {
   ChatMarkdownLinkHref,
   ChatMarkdownLinkTarget,
@@ -20,7 +20,7 @@ import type {
   OnChatMarkdownLinkClickedCallbackProps,
   onStartConversationCallbackProps,
   SourcesMap,
-  TextDictionary,
+  dictionary,
 } from '@/types'
 import type { TThemeOverrides } from '@/config/theme'
 import type { AnyOrama } from '@orama/orama'
@@ -60,13 +60,13 @@ export class ChatBox {
    * It allows for customization of all text elements like placeholders, error messages, and UI labels.
    * @example
    * // Via HTML attribute
-   * <orama-chat-box textDictionary='{"chatPlaceholder": "Ask about our docs..."}' />
+   * <orama-chat-box dictionary='{"chatPlaceholder": "Ask about our docs..."}' />
    * 
    * // Via JavaScript
    * const chatBox = document.querySelector('orama-chat-box');
-   * chatBox.textDictionary = { chatPlaceholder: "Ask about our docs..." };
+   * chatBox.dictionary = { chatPlaceholder: "Ask about our docs..." };
    */
-  @Prop() textDictionary?: Partial<TextDictionary> = {}
+  @Prop() dictionary?: Partial<dictionary> = {}
   @Prop() disclaimer?: string
 
   /**
@@ -85,20 +85,20 @@ export class ChatBox {
   schemaQuery!: MediaQueryList
 
   /**
-   * Gets the text for a specific key from the textDictionary prop.
+   * Gets the text for a specific key from the dictionary prop.
    * Prioritizes direct props (placeholder) for backward compatibility,
-   * then falls back to the textDictionary prop, and finally to the defaultTextDictionary.
+   * then falls back to the dictionary prop, and finally to the defaultTextDictionary.
    * 
    * @param key - The key to get the text for
    * @returns The text for the specified key
    */
-  getText(key: keyof TextDictionary): string {
+  getText(key: keyof dictionary): string {
     // Create a map of direct props for backward compatibility
-    const directProps: Partial<Record<keyof TextDictionary, string>> = {
+    const directProps: Partial<Record<keyof dictionary, string>> = {
       chatPlaceholder: this.placeholder,
     };
     
-    return getTextUtil(key, this.textDictionary, directProps);
+    return getTextUtil(key, this.dictionary, directProps);
   }
 
   /**
@@ -141,16 +141,16 @@ export class ChatBox {
   }
 
   /**
-   * Watch for changes to the textDictionary prop
+   * Watch for changes to the dictionary prop
    */
-  @Watch('textDictionary')
-  handleTextDictionaryChange(newValue: Partial<TextDictionary> | string) {
-    // Handle case where textDictionary is passed as a string (via HTML attribute)
+  @Watch('dictionary')
+  handleTextDictionaryChange(newValue: Partial<dictionary> | string) {
+    // Handle case where dictionary is passed as a string (via HTML attribute)
     if (typeof newValue === 'string') {
       try {
-        this.textDictionary = JSON.parse(newValue);
+        this.dictionary = JSON.parse(newValue);
       } catch (e) {
-        console.error('Error parsing textDictionary:', e);
+        console.error('Error parsing dictionary:', e);
       }
     }
   }
@@ -240,7 +240,7 @@ export class ChatBox {
           clearChatOnDisconnect={this.clearChatOnDisconnect}
           chatMarkdownLinkTitle={this.chatMarkdownLinkTitle}
           chatMarkdownLinkHref={this.chatMarkdownLinkHref}
-          textDictionary={this.textDictionary}
+          dictionary={this.dictionary}
           disclaimer={this.disclaimer}
         >
           {!!this.chatStore.state?.interactions?.length && (

@@ -1,11 +1,11 @@
 import { Component, Host, Listen, State, Watch, h, Element, Prop, type EventEmitter, Event } from '@stencil/core'
-import type { OnAnswerGeneratedCallbackProps, OnSearchCompletedCallbackProps, SearchResult, TextDictionary } from '@/types'
+import type { OnAnswerGeneratedCallbackProps, OnSearchCompletedCallbackProps, SearchResult, dictionary } from '@/types'
 import type { HighlightOptions } from '@orama/highlight'
 import { Store } from '@/StoreDecorator'
 import type { SearchStoreType } from '@/ParentComponentStore/SearchStore'
 import type { GlobalStoreType } from '@/ParentComponentStore/GlobalStore'
 import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
-import { defaultTextDictionary, getText as getTextUtil } from '@/utils/textDictionary'
+import { defaultTextDictionary, getText as getTextUtil } from '@/utils/dictionary'
 
 @Component({
   tag: 'orama-search',
@@ -41,20 +41,20 @@ export class OramaSearch {
   private chatStore: ChatStoreType
 
   /**
-   * Gets the text for a specific key from the textDictionary prop.
+   * Gets the text for a specific key from the dictionary prop.
    * Prioritizes direct props (placeholder) for backward compatibility,
-   * then falls back to the textDictionary prop, and finally to the defaultTextDictionary.
+   * then falls back to the dictionary prop, and finally to the defaultTextDictionary.
    * 
    * @param key - The key to get the text for
    * @returns The text for the specified key
    */
-  getText(key: keyof TextDictionary): string {
+  getText(key: keyof dictionary): string {
     // Create a map of direct props for backward compatibility
-    const directProps: Partial<Record<keyof TextDictionary, string>> = {
+    const directProps: Partial<Record<keyof dictionary, string>> = {
       searchPlaceholder: this.placeholder,
     };
     
-    return getTextUtil(key, this.textDictionary, directProps);
+    return getTextUtil(key, this.dictionary, directProps);
   }
 
   doSearch() {

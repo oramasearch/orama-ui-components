@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/web-components'
-import type { Components, TextDictionary } from '@orama/wc-components'
+import type { Components, dictionary } from '@orama/wc-components'
 import demoIndexes from '../config'
 import { html } from 'lit-html'
 import type { DemoIndexConfig } from '../config'
@@ -50,11 +50,11 @@ const meta: Meta<Components.OramaSearchBox & { preset: keyof DemoIndexConfig }> 
       },
       control: { type: 'radio' },
     },
-    textDictionary: {
+    dictionary: {
       control: { type: 'object' },
       description: 'Dictionary of text strings used in the component',
       table: {
-        type: { summary: 'Partial<TextDictionary>' },
+        type: { summary: 'Partial<dictionary>' },
         defaultValue: { summary: '{}' },
       }
     },
@@ -94,7 +94,7 @@ const Template = ({
   sourceBaseUrl,
   sourcesMap,
   resultMap,
-  textDictionary,
+  dictionary,
   showKeyboardShortcuts,
 }: {
   preset: DemoIndexConfig
@@ -111,7 +111,7 @@ const Template = ({
   sourceBaseUrl?: string
   sourcesMap?: any
   resultMap?: any
-  textDictionary?: Partial<TextDictionary>
+  dictionary?: Partial<dictionary>
   showKeyboardShortcuts?: boolean
 }) => {
   return html`<div>
@@ -133,7 +133,7 @@ const Template = ({
       .disableChat=${disableChat}
       .chatPlaceholder=${chatPlaceholder}
       .searchPlaceholder=${searchPlaceholder}
-      .textDictionary=${textDictionary}
+      .dictionary=${dictionary}
       .highlightTitle=${preset?.highlightTitle}
       .highlightDescription=${preset?.highlightDescription}
       .linksTarget=${preset?.linksTarget}
@@ -158,7 +158,7 @@ const TemplateAsEmbed = ({
   sourceBaseUrl,
   suggestions,
   sourcesMap,
-  textDictionary,
+  dictionary,
   showKeyboardShortcuts,
 }: {
   preset: DemoIndexConfig
@@ -175,7 +175,7 @@ const TemplateAsEmbed = ({
   sourceBaseUrl?: string
   suggestions?: string[]
   sourcesMap?: any
-  textDictionary?: Partial<TextDictionary>
+  dictionary?: Partial<dictionary>
   showKeyboardShortcuts?: boolean
 }) => {
   return html`<div style="height: 420px">
@@ -195,7 +195,7 @@ const TemplateAsEmbed = ({
       .disableChat=${disableChat}
       .chatPlaceholder=${chatPlaceholder}
       .searchPlaceholder=${searchPlaceholder}
-      .textDictionary=${textDictionary}
+      .dictionary=${dictionary}
       .highlightTitle=${preset?.highlightTitle}
       .highlightDescription=${preset?.highlightDescription}
       .linksTarget=${preset?.linksTarget}
@@ -214,7 +214,7 @@ export const SearchBoxAsModal: Story = {
     preset: 'orama',
     colorScheme: 'light',
     disableChat: false,
-    textDictionary: {
+    dictionary: {
       searchPlaceholder: 'Search our documentation...',
       chatPlaceholder: 'Ask our AI assistant...',
       noResultsFound: 'We couldn\'t find any results',
@@ -239,7 +239,7 @@ export const SearchBoxAsEmbed: Story = {
     preset: 'orama',
     colorScheme: 'light',
     disableChat: false,
-    textDictionary: {
+    dictionary: {
       searchPlaceholder: 'Search our documentation...',
       chatPlaceholder: 'Ask our AI assistant...',
       noResultsFound: 'We couldn\'t find any results',

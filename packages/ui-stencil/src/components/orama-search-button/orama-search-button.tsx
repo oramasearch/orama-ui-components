@@ -1,9 +1,9 @@
 import { Component, Watch, Prop, h, State, Element, Listen, Host } from '@stencil/core'
-import type { ColorScheme, TextDictionary } from '@/types'
+import type { ColorScheme, dictionary } from '@/types'
 import '@phosphor-icons/webcomponents/dist/icons/PhMagnifyingGlass.mjs'
 import type { TThemeOverrides } from '@/components'
 import { generateRandomID, updateCssVariables, updateThemeClasses } from '@/utils/utils'
-import { defaultTextDictionary, getText as getTextUtil } from '@/utils/textDictionary'
+import { defaultTextDictionary, getText as getTextUtil } from '@/utils/dictionary'
 
 export type ButtonClick = {
   id: HTMLElement
@@ -27,25 +27,25 @@ export class OramaSearchButton {
    * This can be set either via HTML attribute as a JSON string or via JavaScript as an object.
    * @example
    * // Via HTML attribute
-   * <orama-search-button textDictionary='{"searchButtonLabel": "Search docs"}' />
+   * <orama-search-button dictionary='{"searchButtonLabel": "Search docs"}' />
    * 
    * // Via JavaScript
    * const searchButton = document.querySelector('orama-search-button');
-   * searchButton.textDictionary = { searchButtonLabel: "Search docs" };
+   * searchButton.dictionary = { searchButtonLabel: "Search docs" };
    */
-  @Prop() textDictionary?: Partial<TextDictionary> = {}
+  @Prop() dictionary?: Partial<dictionary> = {}
 
   /**
-   * Watch for changes to the textDictionary prop
+   * Watch for changes to the dictionary prop
    */
-  @Watch('textDictionary')
-  handleTextDictionaryChange(newValue: Partial<TextDictionary> | string) {
-    // Handle case where textDictionary is passed as a string (via HTML attribute)
+  @Watch('dictionary')
+  handleTextDictionaryChange(newValue: Partial<dictionary> | string) {
+    // Handle case where dictionary is passed as a string (via HTML attribute)
     if (typeof newValue === 'string') {
       try {
-        this.textDictionary = JSON.parse(newValue);
+        this.dictionary = JSON.parse(newValue);
       } catch (e) {
-        console.error('Error parsing textDictionary:', e);
+        console.error('Error parsing dictionary:', e);
       }
     }
   }
@@ -57,13 +57,13 @@ export class OramaSearchButton {
   schemaQuery!: MediaQueryList
 
   /**
-   * Gets the text for a specific key from the textDictionary prop.
+   * Gets the text for a specific key from the dictionary prop.
    * 
    * @param key - The key to get the text for
    * @returns The text for the specified key
    */
-  getText(key: keyof TextDictionary): string {
-    return getTextUtil(key, this.textDictionary);
+  getText(key: keyof dictionary): string {
+    return getTextUtil(key, this.dictionary);
   }
 
   @Watch('themeConfig')

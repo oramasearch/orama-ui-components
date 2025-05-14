@@ -8,14 +8,14 @@ import {
   type onStartConversationCallbackProps,
   type SearchResult,
   type SourcesMap,
-  type TextDictionary,
+  type dictionary,
 } from '@/types'
 import '@phosphor-icons/webcomponents/dist/icons/PhPaperPlaneTilt.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhStopCircle.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhArrowDown.mjs'
 import { Store } from '@/StoreDecorator'
 import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
-import { defaultTextDictionary, getText as getTextUtil } from '@/utils/textDictionary'
+import { defaultTextDictionary, getText as getTextUtil } from '@/utils/dictionary'
 
 const BOTTOM_THRESHOLD = 1
 
@@ -36,7 +36,7 @@ export class OramaChat {
   @Prop() prompt?: string
   @Prop() systemPrompts?: string[]
   @Prop() clearChatOnDisconnect?: boolean
-  @Prop() textDictionary?: Partial<TextDictionary>
+  @Prop() dictionary?: Partial<dictionary>
   @Prop() disclaimer?: string = 'Orama can make mistakes. Please verify the information.'
 
   @Prop() chatMarkdownLinkTitle?: ChatMarkdownLinkTitle
@@ -77,23 +77,23 @@ export class OramaChat {
     }
   }
 
-  @Watch('textDictionary')
+  @Watch('dictionary')
   handleTextDictionaryChange() {
-    // If textDictionary has a chatPlaceholder, update the placeholder prop
-    if (this.textDictionary?.chatPlaceholder) {
-      this.placeholder = this.textDictionary.chatPlaceholder;
+    // If dictionary has a chatPlaceholder, update the placeholder prop
+    if (this.dictionary?.chatPlaceholder) {
+      this.placeholder = this.dictionary.chatPlaceholder;
     }
     
-    // If textDictionary has a disclaimer, update the disclaimer prop
-    if (this.textDictionary?.disclaimer) {
-      this.disclaimer = this.textDictionary.disclaimer;
+    // If dictionary has a disclaimer, update the disclaimer prop
+    if (this.dictionary?.disclaimer) {
+      this.disclaimer = this.dictionary.disclaimer;
     }
 
     // Log the current values for debugging
-    console.log('Updated from textDictionary:', {
+    console.log('Updated from dictionary:', {
       placeholder: this.placeholder,
       disclaimer: this.disclaimer,
-      textDictionary: this.textDictionary
+      dictionary: this.dictionary
     });
   }
 
@@ -127,12 +127,12 @@ export class OramaChat {
   private chatStore: ChatStoreType
 
   componentWillLoad() {
-    // Initialize placeholder and disclaimer from textDictionary if available
+    // Initialize placeholder and disclaimer from dictionary if available
     this.handleTextDictionaryChange();
     
     // Ensure the disclaimer has a default value if not set
-    if (!this.disclaimer && this.textDictionary?.disclaimer) {
-      this.disclaimer = this.textDictionary.disclaimer;
+    if (!this.disclaimer && this.dictionary?.disclaimer) {
+      this.disclaimer = this.dictionary.disclaimer;
     } else if (!this.disclaimer) {
       this.disclaimer = 'Orama can make mistakes. Please verify the information.';
     }
@@ -150,20 +150,20 @@ export class OramaChat {
   }
 
   /**
-   * Gets the text for a specific key from the textDictionary prop.
+   * Gets the text for a specific key from the dictionary prop.
    * Prioritizes direct props (placeholder) for backward compatibility,
-   * then falls back to the textDictionary prop, and finally to the defaultTextDictionary.
+   * then falls back to the dictionary prop, and finally to the defaultTextDictionary.
    * 
    * @param key - The key to get the text for
    * @returns The text for the specified key
    */
-  getText(key: keyof TextDictionary): string {
+  getText(key: keyof dictionary): string {
     // Create a map of direct props for backward compatibility
-    const directProps: Partial<Record<keyof TextDictionary, string>> = {
+    const directProps: Partial<Record<keyof dictionary, string>> = {
       chatPlaceholder: this.placeholder,
     };
     
-    return getTextUtil(key, this.textDictionary, directProps);
+    return getTextUtil(key, this.dictionary, directProps);
   }
 
   handleFocus = () => {

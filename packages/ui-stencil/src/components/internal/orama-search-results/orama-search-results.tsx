@@ -1,5 +1,5 @@
 import { Component, Host, h, Element, Prop, Event, type EventEmitter } from '@stencil/core'
-import type { OnSearchResultClickCallbackProps, SearchResult, SearchResultBySection, TextDictionary } from '@/types'
+import type { OnSearchResultClickCallbackProps, SearchResult, SearchResultBySection, dictionary } from '@/types'
 import { Highlight } from '@orama/highlight'
 import type { HighlightOptions } from '@orama/highlight'
 import '@phosphor-icons/webcomponents/dist/icons/PhFiles.mjs'
@@ -28,7 +28,7 @@ export class SearchResults {
   @Prop() error = false
   @Prop() highlightTitle?: HighlightOptions | false = false
   @Prop() highlightDescription?: HighlightOptions | false = false
-  @Prop() textDictionary?: Partial<TextDictionary>
+  @Prop() dictionary?: Partial<dictionary>
 
   @Event({ bubbles: true, composed: true, cancelable: true })
   searchResultClick: EventEmitter<OnSearchResultClickCallbackProps>
@@ -99,7 +99,7 @@ export class SearchResults {
         <div class="suggestions-wrapper">
           {!!this.suggestions?.length && (
             <orama-text as="h2" styledAs="small" class="suggestions-title" variant="secondary">
-              {this.textDictionary?.suggestions || 'Suggestions'}
+              {this.dictionary?.suggestions || 'Suggestions'}
             </orama-text>
           )}
           <orama-suggestions
@@ -115,14 +115,14 @@ export class SearchResults {
     }
 
     if (this.error) {
-      return <div>{this.textDictionary?.errorMessage || 'An error occurred while trying to search. Please try again.'}</div>
+      return <div>{this.dictionary?.errorMessage || 'An error occurred while trying to search. Please try again.'}</div>
     }
 
     if (!this.loading && !this.sections?.some((section) => section.items.length > 0)) {
       return (
         <div class="results-empty">
           <orama-text as="h3" styledAs="span">
-            {`${this.textDictionary?.noResultsFound || 'No results found'} ${this.searchTerm ? `${this.textDictionary?.noResultsFoundFor || 'for'} "${this.searchTerm}"` : ''}`}
+            {`${this.dictionary?.noResultsFound || 'No results found'} ${this.searchTerm ? `${this.dictionary?.noResultsFoundFor || 'for'} "${this.searchTerm}"` : ''}`}
           </orama-text>
         </div>
       )

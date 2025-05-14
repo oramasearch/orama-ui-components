@@ -26,11 +26,11 @@ const meta: Meta<
         },
       },
     },
-    textDictionary: {
+    dictionary: {
       control: { type: 'object' },
       table: {
         type: {
-          summary: 'Partial<TextDictionary>',
+          summary: 'Partial<dictionary>',
           detail: `{
   searchButtonLabel: string
   // ... other text properties
@@ -55,7 +55,7 @@ const Template = (label: string) => (args: {
   label?: string;
   colorScheme?: string;
   size?: 'small' | 'medium' | 'large';
-  textDictionary?: Record<string, string>;
+  dictionary?: Record<string, string>;
 }) => {
   return html`
     <div style="display: flex; justify-content: flex-start">
@@ -64,7 +64,7 @@ const Template = (label: string) => (args: {
           label="${args.label}"
           .colorScheme=${args.colorScheme}
           .size=${args.size}
-          .textDictionary=${args.textDictionary}
+          .dictionary=${args.dictionary}
         >
             ${label}
         </orama-search-button>
@@ -95,7 +95,7 @@ export const SearchButton: Story = {
   args: {
     colorScheme: 'light',
     size: 'medium',
-    textDictionary: {
+    dictionary: {
       searchButtonLabel: 'Search Documentation',
     },
   },
