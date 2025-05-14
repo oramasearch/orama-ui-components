@@ -182,6 +182,10 @@ export class SearchBox {
       }
     }
   }
+  /**
+   * Show keyboard shortcuts in the footer
+   */
+  @Prop() showKeyboardShortcuts?: boolean = false
 
   @State() componentID = generateRandomID('search-box')
   @State() systemScheme: Omit<ColorScheme, 'system'> = 'light'
@@ -458,7 +462,10 @@ export class SearchBox {
           {this.getSearchBox()}
           {this.windowWidth <= 1024 && this.getChatBox()}
         </div>
-        <orama-footer colorScheme={this.colorScheme === 'system' ? this.systemScheme : this.colorScheme} />
+        <orama-footer
+          colorScheme={this.colorScheme === 'system' ? this.systemScheme : this.colorScheme}
+          showKeyboardShortcuts={this.showKeyboardShortcuts}
+        />
       </Fragment>
     )
   }
