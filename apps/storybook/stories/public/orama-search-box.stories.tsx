@@ -95,6 +95,7 @@ const Template = ({
   sourcesMap,
   resultMap,
   textDictionary,
+  showKeyboardShortcuts,
 }: {
   preset: DemoIndexConfig
   chatPlaceholder?: string
@@ -111,7 +112,7 @@ const Template = ({
   sourcesMap?: any
   resultMap?: any
   textDictionary?: Partial<TextDictionary>
-  showKeyboardShortcuts,
+  showKeyboardShortcuts?: boolean
 }) => {
   return html`<div>
       <div style="width: 240px">
@@ -154,10 +155,11 @@ const TemplateAsEmbed = ({
   themeConfig,
   index,
   clientInstance,
-  sourceBaseURL,
+  sourceBaseUrl,
   suggestions,
   sourcesMap,
   textDictionary,
+  showKeyboardShortcuts,
 }: {
   preset: DemoIndexConfig
   chatPlaceholder?: string
@@ -170,11 +172,11 @@ const TemplateAsEmbed = ({
   themeConfig?: any
   index?: any
   clientInstance?: any
-  sourceBaseURL?: string
+  sourceBaseUrl?: string
   suggestions?: string[]
   sourcesMap?: any
   textDictionary?: Partial<TextDictionary>
-  showKeyboardShortcuts,
+  showKeyboardShortcuts?: boolean
 }) => {
   return html`<div style="height: 420px">
     <orama-search-box
@@ -188,7 +190,7 @@ const TemplateAsEmbed = ({
       .clientInstance=${clientInstance || preset.clientInstance}
       .instance=${preset.instance}
       .suggestions=${suggestions || preset?.suggestions}
-      .sourceBaseUrl=${sourceBaseURL || preset?.sourceBaseUrl}
+      .sourceBaseUrl=${sourceBaseUrl || preset?.sourceBaseUrl}
       .sourcesMap=${sourcesMap || preset?.sourcesMap}
       .disableChat=${disableChat}
       .chatPlaceholder=${chatPlaceholder}

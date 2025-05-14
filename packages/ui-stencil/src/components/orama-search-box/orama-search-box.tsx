@@ -189,6 +189,35 @@ export class SearchBox {
    */
   @Prop() showKeyboardShortcuts?: boolean = false
 
+  /**
+   * Text dictionary for customizing all text content in the component.
+   * This can be set either via HTML attribute as a JSON string or via JavaScript as an object.
+   * It allows for customization of all text elements like placeholders, error messages, and UI labels.
+   * @example
+   * // Via HTML attribute
+   * <orama-search-box textDictionary='{"searchPlaceholder": "Search our docs..."}' />
+   * 
+   * // Via JavaScript
+   * const searchBox = document.querySelector('orama-search-box');
+   * searchBox.textDictionary = { searchPlaceholder: "Search our docs..." };
+   */
+  @Prop() dictionary?: Partial<Dictionary> = {}
+
+  /**
+   * Watch for changes to the dictionary prop
+   */
+  @Watch('dictionary')
+  handleDictionaryChange(newValue: Partial<Dictionary> | string) {
+    // Handle case where dictionary is passed as a string (via HTML attribute)
+    if (typeof newValue === 'string') {
+      try {
+        this.dictionary = JSON.parse(newValue);
+      } catch (e) {
+        console.error('Error parsing textDictionary:', e);
+      }
+    }
+  }
+
   @State() componentID = generateRandomID('search-box')
   @State() systemScheme: Omit<ColorScheme, 'system'> = 'light'
   @State() windowWidth: number
