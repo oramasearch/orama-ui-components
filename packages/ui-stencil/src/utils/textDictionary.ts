@@ -1,9 +1,9 @@
-import type { dictionary } from '@/types'
+import type { Dictionary } from '@/types'
 
 /**
  * Default text dictionary with standard text values for all components
  */
-export const defaultTextDictionary: dictionary = {
+export const defaultTextDictionary: Dictionary = {
   searchPlaceholder: 'Search...',
   chatPlaceholder: 'Ask me anything',
   noResultsFound: 'No results found',
@@ -32,9 +32,9 @@ export const defaultTextDictionary: dictionary = {
  * @returns The text for the specified key
  */
 export function getText(
-  key: keyof dictionary,
-  dictionary: Partial<dictionary> = {},
-  directProps: Partial<Record<keyof dictionary, string>> = {}
+  key: keyof Dictionary,
+  dictionary: Partial<Dictionary> = {},
+  directProps: Partial<Record<keyof Dictionary, string>> = {}
 ): string {
   // First check if there's a direct prop for this key (for backward compatibility)
   if (directProps[key]) {

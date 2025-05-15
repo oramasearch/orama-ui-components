@@ -1,5 +1,5 @@
 import { Component, Host, h, Element, Prop, Event, type EventEmitter } from '@stencil/core'
-import type { OnSearchResultClickCallbackProps, SearchResult, SearchResultBySection, dictionary } from '@/types'
+import type { OnSearchResultClickCallbackProps, SearchResult, SearchResultBySection, Dictionary } from '@/types'
 import { Highlight } from '@orama/highlight'
 import type { HighlightOptions } from '@orama/highlight'
 import '@phosphor-icons/webcomponents/dist/icons/PhFiles.mjs'
@@ -28,7 +28,7 @@ export class SearchResults {
   @Prop() error = false
   @Prop() highlightTitle?: HighlightOptions | false = false
   @Prop() highlightDescription?: HighlightOptions | false = false
-  @Prop() dictionary?: Partial<dictionary>
+  @Prop() dictionary?: Partial<Dictionary>
 
   @Event({ bubbles: true, composed: true, cancelable: true })
   searchResultClick: EventEmitter<OnSearchResultClickCallbackProps>

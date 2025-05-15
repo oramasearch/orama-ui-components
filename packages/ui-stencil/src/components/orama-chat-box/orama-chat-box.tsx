@@ -8,7 +8,7 @@ import {
   updateThemeClasses,
   validateCloudIndexConfig,
 } from '@/utils/utils'
-import { defaultTextDictionary, getText as getTextUtil } from '@/utils/dictionary'
+import { defaultTextDictionary, getText as getTextUtil } from '@/utils/textDictionary'
 import type {
   ChatMarkdownLinkHref,
   ChatMarkdownLinkTarget,
@@ -20,7 +20,7 @@ import type {
   OnChatMarkdownLinkClickedCallbackProps,
   onStartConversationCallbackProps,
   SourcesMap,
-  dictionary,
+  Dictionary,
 } from '@/types'
 import type { TThemeOverrides } from '@/config/theme'
 import type { AnyOrama } from '@orama/orama'
@@ -66,7 +66,7 @@ export class ChatBox {
    * const chatBox = document.querySelector('orama-chat-box');
    * chatBox.dictionary = { chatPlaceholder: "Ask about our docs..." };
    */
-  @Prop() dictionary?: Partial<dictionary> = {}
+  @Prop() dictionary?: Partial<Dictionary> = {}
   @Prop() disclaimer?: string
 
   /**
@@ -92,9 +92,9 @@ export class ChatBox {
    * @param key - The key to get the text for
    * @returns The text for the specified key
    */
-  getText(key: keyof dictionary): string {
+  getText(key: keyof Dictionary): string {
     // Create a map of direct props for backward compatibility
-    const directProps: Partial<Record<keyof dictionary, string>> = {
+    const directProps: Partial<Record<keyof Dictionary, string>> = {
       chatPlaceholder: this.placeholder,
     };
     
@@ -144,7 +144,7 @@ export class ChatBox {
    * Watch for changes to the dictionary prop
    */
   @Watch('dictionary')
-  handleTextDictionaryChange(newValue: Partial<dictionary> | string) {
+  handleTextDictionaryChange(newValue: Partial<Dictionary> | string) {
     // Handle case where dictionary is passed as a string (via HTML attribute)
     if (typeof newValue === 'string') {
       try {

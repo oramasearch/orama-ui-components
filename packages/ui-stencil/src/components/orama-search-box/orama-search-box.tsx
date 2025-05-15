@@ -22,7 +22,7 @@ import {
   updateThemeClasses,
   validateCloudIndexConfig,
 } from '@/utils/utils'
-import { defaultTextDictionary, getText as getTextUtil } from '@/utils/dictionary'
+import { defaultTextDictionary as importedDefaultTextDictionary, getText as getTextUtil } from '@/utils/textDictionary'
 import type { AnyOrama, Orama, SearchParams } from '@orama/orama'
 import type { HighlightOptions } from '@orama/highlight'
 import type { OramaClient } from '@oramacloud/client'
@@ -42,7 +42,7 @@ import type {
   ResultItemRenderFunction,
   ResultMap,
   SourcesMap,
-  dictionary,
+  Dictionary,
 } from '@/types'
 import type { TThemeOverrides } from '@/config/theme'
 import { initStore, removeAllStores } from '@/ParentComponentStore/ParentComponentStoreManager'
@@ -136,7 +136,7 @@ export class SearchBox {
    */
   @Prop() searchPlaceholder?: string
   /**
-   * List of initial questions for Orama Chat
+   * List of suggestions to show when the input is empty
    */
   @Prop() suggestions?: string[]
   /**
@@ -155,68 +155,46 @@ export class SearchBox {
    * Callback function used on every AI Chat link target
    */
   @Prop() chatMarkdownLinkTarget?: ChatMarkdownLinkTarget
-  @Prop() disclaimer?: string
-  /**
-   * Text dictionary for customizing all text content in the component.
-   * This can be set either via HTML attribute as a JSON string or via JavaScript as an object.
-   * It allows for customization of all text elements like placeholders, error messages, and UI labels.
-   * @example
-   * // Via HTML attribute
-   * <orama-search-box dictionary='{"searchPlaceholder": "Search our docs..."}' />
-   * 
-   * // Via JavaScript
-   * const searchBox = document.querySelector('orama-search-box');
-   * searchBox.dictionary = { searchPlaceholder: "Search our docs..." };
-   */
-  @Prop() dictionary?: Partial<dictionary> = {}
-
-  /**
-   * Watch for changes to the dictionary prop
-   */
-  @Watch('dictionary')
-  handleTextDictionaryChange(newValue: Partial<dictionary> | string) {
-    // Handle case where dictionary is passed as a string (via HTML attribute)
-    if (typeof newValue === 'string') {
-      try {
-        this.dictionary = JSON.parse(newValue);
-      } catch (e) {
-        console.error('Error parsing dictionary:', e);
-      }
-    }
-  }
   /**
    * Show keyboard shortcuts in the footer
    */
-  @Prop() showKeyboardShortcuts?: boolean = false
+  @Prop() showKeyboardShortcuts?: boolean = true
+  /**
+   * Disclaimer text to show below the chat input
+   */
+  @Prop() disclaimer?: string
 
   /**
-   * Text dictionary for customizing all text content in the component.
-   * This can be set either via HTML attribute as a JSON string or via JavaScript as an object.
-   * It allows for customization of all text elements like placeholders, error messages, and UI labels.
+   * Custom text dictionary for localization
    * @example
-   * // Via HTML attribute
-   * <orama-search-box dictionary='{"searchPlaceholder": "Search our docs..."}' />
-   * 
-   * // Via JavaScript
    * const searchBox = document.querySelector('orama-search-box');
-   * searchBox.dictionary = { searchPlaceholder: "Search our docs..." };
+   * searchBox.dictionary = { searchPlaceholder: "Search our products..." };
    */
-  @Prop() dictionary?: Partial<dictionary> = {}
+  @Prop() dictionary?: Partial<Dictionary> = {}
 
   /**
    * Watch for changes to the dictionary prop
    */
   @Watch('dictionary')
-  handleDictionaryChange(newValue: Partial<dictionary> | string) {
-    // Handle case where dictionary is passed as a string (via HTML attribute)
+  handleDictionaryChange(newValue: Partial<Dictionary> | string) {
+    let parsedNewValue: Partial<Dictionary> = {};
     if (typeof newValue === 'string') {
       try {
-        this.dictionary = JSON.parse(newValue);
+        parsedNewValue = JSON.parse(newValue);
       } catch (e) {
-        console.error('Error parsing dictionary:', e);
+        console.error('Failed to parse dictionary string:', e);
+        // Keep current internalTextDictionary or revert to pure defaults if preferred
       }
+    } else {
+      parsedNewValue = newValue || {};
     }
+    this.internalTextDictionary = { ...importedDefaultTextDictionary, ...parsedNewValue };
   }
+
+  /**
+   * Internal state for the parsed text dictionary.
+   */
+  @State() private internalTextDictionary: Dictionary;
 
   @State() componentID = generateRandomID('search-box')
   @State() systemScheme: Omit<ColorScheme, 'system'> = 'light'
@@ -225,22 +203,6 @@ export class SearchBox {
   private searchStore: SearchStoreType
   private chatStore: ChatStoreType
   private globalStore: GlobalStoreType
-  private defaultTextDictionary: dictionary = {
-    searchPlaceholder: 'Search...',
-    chatPlaceholder: 'Ask me anything',
-    noResultsFound: 'No results found',
-    noResultsFoundFor: 'No results found for',
-    suggestions: 'Suggestions',
-    seeAll: 'See all',
-    addMore: 'Add more',
-    clearChat: 'Clear chat',
-    errorMessage: 'An error occurred while trying to search. Please try again.',
-    disclaimer: 'Orama can make mistakes. Please verify the information.',
-    startYourSearch: 'Start your search',
-    initErrorSearch: 'Unable to initialize search service',
-    initErrorChat: 'Unable to initialize chat service',
-    chatButtonLabel: 'Get a summary',
-  }
 
   /**
    * Fired when search successfully resolves
@@ -418,6 +380,18 @@ export class SearchBox {
 
     this.schemaQuery.addEventListener('change', this.onPrefersColorSchemeChange)
     windowWidthListener.addEventListener('widthChange', this.updateWindowWidth)
+
+    let propValue: Partial<Dictionary> = {};
+    if (typeof this.dictionary === 'string') {
+      try {
+        propValue = JSON.parse(this.dictionary);
+      } catch (e) {
+        console.error('Failed to parse initial dictionary string:', e);
+      }
+    } else {
+      propValue = this.dictionary || {};
+    }
+    this.internalTextDictionary = { ...importedDefaultTextDictionary, ...propValue };
   }
 
   connectedCallback() {
@@ -443,14 +417,14 @@ export class SearchBox {
    * @param key - The key to get the text for
    * @returns The text for the specified key
    */
-  getText(key: keyof dictionary): string {
+  getText(key: keyof Dictionary): string {
     // Create a map of direct props for backward compatibility
-    const directProps: Partial<Record<keyof dictionary, string>> = {
+    const directProps: Partial<Record<keyof Dictionary, string>> = {
       searchPlaceholder: this.searchPlaceholder,
       chatPlaceholder: this.chatPlaceholder,
     };
-    
-    return getTextUtil(key, this.dictionary, directProps);
+
+    return getTextUtil(key, this.internalTextDictionary, directProps);
   }
 
   getSearchBox() {
@@ -474,7 +448,7 @@ export class SearchBox {
           highlightDescription={this.highlightDescription}
           disableChat={this.disableChat}
           suggestions={this.suggestions}
-          dictionary={this.dictionary}
+          dictionary={this.internalTextDictionary}
         >
           {this.windowWidth > 1024 && !this.disableChat && (
             <orama-chat-button
@@ -509,7 +483,7 @@ export class SearchBox {
           chatMarkdownLinkHref={this.chatMarkdownLinkHref}
           chatMarkdownLinkTarget={this.chatMarkdownLinkTarget}
           disclaimer={this.disclaimer}
-          dictionary={this.dictionary}
+          dictionary={this.internalTextDictionary}
         />
       </Fragment>
     )

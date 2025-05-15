@@ -1,9 +1,9 @@
 import { Component, Watch, Prop, h, State, Element, Listen, Host } from '@stencil/core'
-import type { ColorScheme, dictionary } from '@/types'
+import type { ColorScheme, Dictionary } from '@/types'
 import '@phosphor-icons/webcomponents/dist/icons/PhMagnifyingGlass.mjs'
 import type { TThemeOverrides } from '@/components'
 import { generateRandomID, updateCssVariables, updateThemeClasses } from '@/utils/utils'
-import { defaultTextDictionary, getText as getTextUtil } from '@/utils/dictionary'
+import { defaultTextDictionary, getText as getTextUtil } from '@/utils/textDictionary'
 
 export type ButtonClick = {
   id: HTMLElement
@@ -33,13 +33,13 @@ export class OramaSearchButton {
    * const searchButton = document.querySelector('orama-search-button');
    * searchButton.dictionary = { searchButtonLabel: "Search docs" };
    */
-  @Prop() dictionary?: Partial<dictionary> = {}
+  @Prop() dictionary?: Partial<Dictionary> = {}
 
   /**
    * Watch for changes to the dictionary prop
    */
   @Watch('dictionary')
-  handleTextDictionaryChange(newValue: Partial<dictionary> | string) {
+  handleTextDictionaryChange(newValue: Partial<Dictionary> | string) {
     // Handle case where dictionary is passed as a string (via HTML attribute)
     if (typeof newValue === 'string') {
       try {
@@ -62,7 +62,7 @@ export class OramaSearchButton {
    * @param key - The key to get the text for
    * @returns The text for the specified key
    */
-  getText(key: keyof dictionary): string {
+  getText(key: keyof Dictionary): string {
     return getTextUtil(key, this.dictionary);
   }
 

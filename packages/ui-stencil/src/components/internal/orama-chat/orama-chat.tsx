@@ -8,14 +8,14 @@ import {
   type onStartConversationCallbackProps,
   type SearchResult,
   type SourcesMap,
-  type dictionary,
+  type Dictionary,
 } from '@/types'
 import '@phosphor-icons/webcomponents/dist/icons/PhPaperPlaneTilt.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhStopCircle.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhArrowDown.mjs'
 import { Store } from '@/StoreDecorator'
 import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
-import { defaultTextDictionary, getText as getTextUtil } from '@/utils/dictionary'
+import { defaultTextDictionary, getText as getTextUtil } from '@/utils/textDictionary'
 
 const BOTTOM_THRESHOLD = 1
 
@@ -36,7 +36,7 @@ export class OramaChat {
   @Prop() prompt?: string
   @Prop() systemPrompts?: string[]
   @Prop() clearChatOnDisconnect?: boolean
-  @Prop() dictionary?: Partial<dictionary>
+  @Prop() dictionary?: Partial<Dictionary>
   @Prop() disclaimer?: string = 'Orama can make mistakes. Please verify the information.'
 
   @Prop() chatMarkdownLinkTitle?: ChatMarkdownLinkTitle
@@ -157,13 +157,20 @@ export class OramaChat {
    * @param key - The key to get the text for
    * @returns The text for the specified key
    */
-  getText(key: keyof dictionary): string {
+  getText(key: keyof Dictionary): string {
     // Create a map of direct props for backward compatibility
-    const directProps: Partial<Record<keyof dictionary, string>> = {
+    const directProps: Partial<Record<keyof Dictionary, string>> = {
       chatPlaceholder: this.placeholder,
     };
-    
-    return getTextUtil(key, this.dictionary, directProps);
+
+    // If the key exists in directProps and its value is defined, return its value
+    const directValue = directProps[key];
+    if (directValue !== undefined) {
+      return directValue;
+    }
+
+    // Otherwise, try to get the text from the dictionary prop or fall back to the defaultTextDictionary
+    return getTextUtil(key, this.dictionary);
   }
 
   handleFocus = () => {
