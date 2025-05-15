@@ -13,6 +13,6 @@ export default defineConfig((options): Options => {
     outDir: "dist",
     external: ["react", "react-dom"],
     injectStyle: true,
-    noExternal: ["@orama/wc-components"],
+    noExternal: ["@orama/wc-components"]
   };
 });
