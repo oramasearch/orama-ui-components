@@ -1,7 +1,7 @@
 import type { Components } from '@orama/wc-components'
 import { OramaClient } from '@oramacloud/client'
 import { CollectionManager } from '@orama/core'
-import { create, insert, search } from '@orama/orama'
+import { create, insert } from '@orama/orama'
 
 export type DemoIndexConfig = Record<string, Components.OramaSearchBox>
 
@@ -13,54 +13,55 @@ const createOramaJSDatabase = async () => {
       title: 'string',
       content: 'string',
       category: 'string',
-      url: 'string'
-    }
-  });
-  
+      url: 'string',
+    },
+  })
+
   // Insert some sample documents
   await insert(db, {
     title: 'Getting Started with Orama.js',
     content: 'Orama.js is a powerful full-text search engine that works in any JavaScript runtime.',
     category: 'Open Source',
-    url: '/docs/getting-started'
-  });
-  
+    url: '/docs/getting-started',
+  })
+
   await insert(db, {
     title: 'Creating a Database',
     content: 'Learn how to create and configure an Orama database for your application.',
     category: 'Open Source',
-    url: '/docs/create-database'
-  });
-  
+    url: '/docs/create-database',
+  })
+
   await insert(db, {
     title: 'Searching Documents',
     content: 'Discover how to perform powerful searches across your documents with Orama.',
     category: 'Open Source',
-    url: '/docs/search'
-  });
-  
+    url: '/docs/search',
+  })
+
   await insert(db, {
     title: 'Using Facets',
     content: 'Implement faceted search to allow users to filter and refine search results.',
     category: 'Open Source',
-    url: '/docs/facets'
-  });
-  
+    url: '/docs/facets',
+  })
+
   await insert(db, {
     title: 'Advanced Configurations',
     content: 'Explore advanced configurations and optimizations for Orama databases.',
     category: 'Open Source',
-    url: '/docs/advanced'
-  });
-  
-  return db;
-};
+    url: '/docs/advanced',
+  })
+
+  return db
+}
 
 // Create the database instance
-let oramaJSDatabase;
-createOramaJSDatabase().then(db => {
-  oramaJSDatabase = db;
-});
+// biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
+let oramaJSDatabase
+createOramaJSDatabase().then((db) => {
+  oramaJSDatabase = db
+})
 
 const demoIndexes: DemoIndexConfig = {
   orama: {
@@ -74,7 +75,6 @@ const demoIndexes: DemoIndexConfig = {
       api_key: 'LerNlbp6379jVKaPs4wt2nZT4MJZbU1J',
       endpoint: 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd',
     }),
-    placeholder: 'What do you want to learn about Orama?',
     sourceBaseUrl: 'https://docs.orama.com',
     sourcesMap: {
       title: 'title',
@@ -91,12 +91,11 @@ const demoIndexes: DemoIndexConfig = {
 
   oramaCore: {
     open: true,
-    clientInstance: new CollectionManager({
-      url:'https://oramacore.orama.foo',
+    oramaCoreClientInstance: new CollectionManager({
+      url: 'https://oramacore.orama.foo',
       collectionID: 'cxlenmho72jp3qpbdphbmfdn',
       readAPIKey: 'caTS1G81uC8uBoWICSQYzmGjGVBCqxrf',
     }),
-    placeholder: 'What do you want to learn about Orama?',
     sourceBaseUrl: 'https://docs.orama.com',
     sourcesMap: {
       title: 'title',
@@ -114,7 +113,6 @@ const demoIndexes: DemoIndexConfig = {
     open: true,
     // Use the Orama.js database instance
     clientInstance: oramaJSDatabase,
-    placeholder: 'Search the Orama.js documentation',
     sourceBaseUrl: 'https://docs.orama.com',
     sourcesMap: {
       title: 'title',
@@ -145,7 +143,6 @@ const demoIndexes: DemoIndexConfig = {
       api_key: 'yl2JSnjLNBV6FVfUWEyadpjFr6KzPiDR',
       endpoint: 'https://cloud.orama.run/v1/indexes/recipes-m7w9mm',
     },
-    placeholder: 'What do you want to cook today?',
     sourcesMap: {
       description: 'category',
     },

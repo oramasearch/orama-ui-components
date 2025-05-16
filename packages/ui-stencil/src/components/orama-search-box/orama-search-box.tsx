@@ -1,16 +1,4 @@
-import {
-  Component,
-  Prop,
-  Watch,
-  h,
-  Listen,
-  Element,
-  State,
-  Fragment,
-  Event,
-  type EventEmitter,
-  Method,
-} from '@stencil/core'
+import { Component, Prop, Watch, h, Listen, Element, State, Fragment, Event, type EventEmitter } from '@stencil/core'
 import { ChatService } from '@/services/ChatService'
 import { SearchService } from '@/services/SearchService'
 import { windowWidthListener } from '@/services/WindowService'
@@ -173,29 +161,33 @@ export class SearchBox {
   @Prop() dictionary?: Partial<Dictionary> = {}
 
   /**
+   * Display automatic chat suggestions
+   */
+  @Prop() relatedQueries?: number
+
+  /**
    * Watch for changes to the dictionary prop
    */
   @Watch('dictionary')
   handleDictionaryChange(newValue: Partial<Dictionary> | string) {
-    let parsedNewValue: Partial<Dictionary> = {};
+    let parsedNewValue: Partial<Dictionary> = {}
     if (typeof newValue === 'string') {
       try {
-        parsedNewValue = JSON.parse(newValue);
+        parsedNewValue = JSON.parse(newValue)
       } catch (e) {
-        console.error('Failed to parse dictionary string:', e);
+        console.error('Failed to parse dictionary string:', e)
         // Keep current internalTextDictionary or revert to pure defaults if preferred
       }
     } else {
-      parsedNewValue = newValue || {};
+      parsedNewValue = newValue || {}
     }
-    this.internalTextDictionary = { ...importedDefaultTextDictionary, ...parsedNewValue };
+    this.internalTextDictionary = { ...importedDefaultTextDictionary, ...parsedNewValue }
   }
 
   /**
    * Internal state for the parsed text dictionary.
    */
-  @State() private internalTextDictionary: Dictionary;
-
+  @State() private internalTextDictionary: Dictionary
   @State() componentID = generateRandomID('search-box')
   @State() systemScheme: Omit<ColorScheme, 'system'> = 'light'
   @State() windowWidth: number
@@ -381,17 +373,17 @@ export class SearchBox {
     this.schemaQuery.addEventListener('change', this.onPrefersColorSchemeChange)
     windowWidthListener.addEventListener('widthChange', this.updateWindowWidth)
 
-    let propValue: Partial<Dictionary> = {};
+    let propValue: Partial<Dictionary> = {}
     if (typeof this.dictionary === 'string') {
       try {
-        propValue = JSON.parse(this.dictionary);
+        propValue = JSON.parse(this.dictionary)
       } catch (e) {
-        console.error('Failed to parse initial dictionary string:', e);
+        console.error('Failed to parse initial dictionary string:', e)
       }
     } else {
-      propValue = this.dictionary || {};
+      propValue = this.dictionary || {}
     }
-    this.internalTextDictionary = { ...importedDefaultTextDictionary, ...propValue };
+    this.internalTextDictionary = { ...importedDefaultTextDictionary, ...propValue }
   }
 
   connectedCallback() {
@@ -413,7 +405,7 @@ export class SearchBox {
    * Gets the text for a specific key from the dictionary prop.
    * Prioritizes direct props (searchPlaceholder, chatPlaceholder) for backward compatibility,
    * then falls back to the dictionary prop, and finally to the defaultTextDictionary.
-   * 
+   *
    * @param key - The key to get the text for
    * @returns The text for the specified key
    */
@@ -422,9 +414,9 @@ export class SearchBox {
     const directProps: Partial<Record<keyof Dictionary, string>> = {
       searchPlaceholder: this.searchPlaceholder,
       chatPlaceholder: this.chatPlaceholder,
-    };
+    }
 
-    return getTextUtil(key, this.internalTextDictionary, directProps);
+    return getTextUtil(key, this.internalTextDictionary, directProps)
   }
 
   getSearchBox() {
@@ -484,6 +476,7 @@ export class SearchBox {
           chatMarkdownLinkTarget={this.chatMarkdownLinkTarget}
           disclaimer={this.disclaimer}
           dictionary={this.internalTextDictionary}
+          relatedQueries={this.relatedQueries}
         />
       </Fragment>
     )

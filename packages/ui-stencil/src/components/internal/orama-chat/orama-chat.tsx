@@ -15,7 +15,7 @@ import '@phosphor-icons/webcomponents/dist/icons/PhStopCircle.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhArrowDown.mjs'
 import { Store } from '@/StoreDecorator'
 import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
-import { defaultTextDictionary, getText as getTextUtil } from '@/utils/textDictionary'
+import { getText as getTextUtil } from '@/utils/textDictionary'
 
 const BOTTOM_THRESHOLD = 1
 
@@ -33,6 +33,7 @@ export class OramaChat {
   @Prop() defaultTerm?: string
   @Prop() focusInput?: boolean = false
   @Prop() suggestions?: string[]
+  @Prop() relatedQueries?: number
   @Prop() prompt?: string
   @Prop() systemPrompts?: string[]
   @Prop() clearChatOnDisconnect?: boolean
@@ -58,7 +59,7 @@ export class OramaChat {
   @Watch('defaultTerm')
   handleDefaultTermChange() {
     if (this.defaultTerm) {
-      this.chatStore.state.chatService?.sendQuestion(this.defaultTerm, this.systemPrompts, {
+      this.chatStore.state.chatService?.sendQuestion(this.defaultTerm, this.relatedQueries, this.systemPrompts, {
         onAnswerGeneratedCallback: (params) => this.answerGenerated.emit(params),
       })
     }
@@ -72,7 +73,7 @@ export class OramaChat {
   @Watch('prompt')
   promptWatcher(newValue: string, oldValue: string) {
     if (newValue !== oldValue) {
-      this.triggerSendQuestion(newValue)
+      this.triggerSendQuestion(newValue, this.relatedQueries)
       this.chatStore.state.prompt = newValue
     }
   }
@@ -81,30 +82,30 @@ export class OramaChat {
   handleTextDictionaryChange() {
     // If dictionary has a chatPlaceholder, update the placeholder prop
     if (this.dictionary?.chatPlaceholder) {
-      this.placeholder = this.dictionary.chatPlaceholder;
+      this.placeholder = this.dictionary.chatPlaceholder
     }
-    
+
     // If dictionary has a disclaimer, update the disclaimer prop
     if (this.dictionary?.disclaimer) {
-      this.disclaimer = this.dictionary.disclaimer;
+      this.disclaimer = this.dictionary.disclaimer
     }
 
     // Log the current values for debugging
     console.log('Updated from dictionary:', {
       placeholder: this.placeholder,
       disclaimer: this.disclaimer,
-      dictionary: this.dictionary
-    });
+      dictionary: this.dictionary,
+    })
   }
 
-  triggerSendQuestion = (question: string) => {
+  triggerSendQuestion = (question: string, relatedQueries?: number) => {
     if (this.chatStore.state.chatService === null) {
       throw new Error('Chat Service is not initialized')
     }
 
     this.startConversation.emit({ userPrompt: question, systemPrompts: this.systemPrompts })
 
-    this.chatStore.state.chatService.sendQuestion(question, this.systemPrompts, {
+    this.chatStore.state.chatService.sendQuestion(question, relatedQueries, this.systemPrompts, {
       onAnswerGeneratedCallback: (params) => this.answerGenerated.emit(params),
     })
   }
@@ -128,15 +129,15 @@ export class OramaChat {
 
   componentWillLoad() {
     // Initialize placeholder and disclaimer from dictionary if available
-    this.handleTextDictionaryChange();
-    
+    this.handleTextDictionaryChange()
+
     // Ensure the disclaimer has a default value if not set
     if (!this.disclaimer && this.dictionary?.disclaimer) {
-      this.disclaimer = this.dictionary.disclaimer;
+      this.disclaimer = this.dictionary.disclaimer
     } else if (!this.disclaimer) {
-      this.disclaimer = 'Orama can make mistakes. Please verify the information.';
+      this.disclaimer = 'Orama can make mistakes. Please verify the information.'
     }
-    
+
     this.chatStore.on('set', (prop, newInteractions, oldInteractions) => {
       if (prop !== 'interactions') {
         return
@@ -153,7 +154,7 @@ export class OramaChat {
    * Gets the text for a specific key from the dictionary prop.
    * Prioritizes direct props (placeholder) for backward compatibility,
    * then falls back to the dictionary prop, and finally to the defaultTextDictionary.
-   * 
+   *
    * @param key - The key to get the text for
    * @returns The text for the specified key
    */
@@ -161,16 +162,16 @@ export class OramaChat {
     // Create a map of direct props for backward compatibility
     const directProps: Partial<Record<keyof Dictionary, string>> = {
       chatPlaceholder: this.placeholder,
-    };
+    }
 
     // If the key exists in directProps and its value is defined, return its value
-    const directValue = directProps[key];
+    const directValue = directProps[key]
     if (directValue !== undefined) {
-      return directValue;
+      return directValue
     }
 
     // Otherwise, try to get the text from the dictionary prop or fall back to the defaultTextDictionary
-    return getTextUtil(key, this.dictionary);
+    return getTextUtil(key, this.dictionary)
   }
 
   handleFocus = () => {
@@ -342,7 +343,7 @@ export class OramaChat {
 
     this.startConversation.emit({ userPrompt: this.inputValue, systemPrompts: this.systemPrompts })
 
-    this.chatStore.state.chatService.sendQuestion(this.inputValue, this.systemPrompts, {
+    this.chatStore.state.chatService.sendQuestion(this.inputValue, this.relatedQueries, this.systemPrompts, {
       onAnswerGeneratedCallback: (params) => this.answerGenerated.emit(params),
     })
 
@@ -354,14 +355,14 @@ export class OramaChat {
     this.chatStore.state.chatService.abortAnswer()
   }
 
-  handleSuggestionClick = (suggestion: string) => {
+  handleSuggestionClick = (suggestion: string, relatedQueries?: number) => {
     if (this.chatStore.state.chatService === null) {
       throw new Error('Chat Service is not initialized')
     }
 
     this.startConversation.emit({ userPrompt: suggestion, systemPrompts: this.systemPrompts })
 
-    this.chatStore.state.chatService.sendQuestion(suggestion, undefined, {
+    this.chatStore.state.chatService.sendQuestion(suggestion, relatedQueries, undefined, {
       onAnswerGeneratedCallback: (params) => this.answerGenerated.emit(params),
     })
     this.inputValue = ''

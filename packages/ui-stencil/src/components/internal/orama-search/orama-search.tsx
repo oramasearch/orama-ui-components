@@ -22,6 +22,7 @@ export class OramaSearch {
   @Prop() linksTarget?: string
   @Prop() linksRel?: string
   @Prop() disableChat?: boolean = false
+  @Prop() relatedQueries?: number
   @Prop() highlightTitle?: HighlightOptions | false = false
   @Prop() highlightDescription?: HighlightOptions | false = false
   @Prop() dictionary?: Partial<Dictionary>
@@ -44,7 +45,7 @@ export class OramaSearch {
    * Gets the text for a specific key from the dictionary prop.
    * Prioritizes direct props (placeholder) for backward compatibility,
    * then falls back to the dictionary prop, and finally to the defaultTextDictionary.
-   * 
+   *
    * @param key - The key to get the text for
    * @returns The text for the specified key
    */
@@ -52,9 +53,9 @@ export class OramaSearch {
     // Create a map of direct props for backward compatibility
     const directProps: Partial<Record<keyof Dictionary, string>> = {
       searchPlaceholder: this.placeholder,
-    };
-    
-    return getTextUtil(key, this.dictionary, directProps);
+    }
+
+    return getTextUtil(key, this.dictionary, directProps)
   }
 
   doSearch() {
@@ -111,7 +112,7 @@ export class OramaSearch {
             suggestions={!this.globalStore.state.currentTerm?.length && !this.disableChat ? this.suggestions : []}
             setChatTerm={(term) => {
               this.globalStore.state.currentTask = 'chat'
-              this.chatStore.state.chatService?.sendQuestion(term, undefined, {
+              this.chatStore.state.chatService?.sendQuestion(term, this.relatedQueries, undefined, {
                 onAnswerGeneratedCallback: (onAnswerGeneratedCallbackProps) =>
                   this.answerGenerated.emit(onAnswerGeneratedCallbackProps),
               })

@@ -29,6 +29,7 @@ export const OramaChat = /*@__PURE__*/ defineContainer<JSX.OramaChat>('orama-cha
   'defaultTerm',
   'focusInput',
   'suggestions',
+  'relatedQueries',
   'prompt',
   'systemPrompts',
   'clearChatOnDisconnect',
@@ -61,6 +62,7 @@ export const OramaChatBox = /*@__PURE__*/ defineContainer<JSX.OramaChatBox>('ora
   'placeholder',
   'sourcesMap',
   'suggestions',
+  'relatedQueries',
   'autoFocus',
   'systemPrompts',
   'prompt',
@@ -173,6 +175,7 @@ export const OramaSearch = /*@__PURE__*/ defineContainer<JSX.OramaSearch>('orama
   'linksTarget',
   'linksRel',
   'disableChat',
+  'relatedQueries',
   'highlightTitle',
   'highlightDescription',
   'dictionary',
@@ -206,9 +209,10 @@ export const OramaSearchBox = /*@__PURE__*/ defineContainer<JSX.OramaSearchBox>(
   'chatMarkdownLinkTitle',
   'chatMarkdownLinkHref',
   'chatMarkdownLinkTarget',
+  'showKeyboardShortcuts',
   'disclaimer',
   'dictionary',
-  'showKeyboardShortcuts',
+  'relatedQueries',
   'searchCompleted',
   'searchResultClick',
   'clearChat',
@@ -294,3 +298,4 @@ export const OramaTextarea = /*@__PURE__*/ defineContainer<JSX.OramaTextarea>('o
 export const OramaToggler = /*@__PURE__*/ defineContainer<JSX.OramaToggler>('orama-toggler', undefined, [
   'performInitialAnimation'
 ]);
+

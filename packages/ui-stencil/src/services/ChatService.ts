@@ -10,6 +10,14 @@ import { TAnswerStatus, type OnAnswerGeneratedCallbackProps } from '@/types'
 import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
 import { Switch, type OramaSwitchClient } from '@orama/switch'
 
+const parseRelatedQueries = (relatedQueries: string) => {
+  try {
+    return JSON.parse(relatedQueries)
+  } catch (error) {
+    return []
+  }
+}
+
 export class ChatService {
   private answerSession: OSSAnswerSession | CloudAnswerSession<true> | CoreAnswerSession
   private client: Switch<OramaSwitchClient> | CollectionManager
@@ -22,6 +30,7 @@ export class ChatService {
 
   sendQuestion = async (
     term: string,
+    relatedQueries?: number,
     systemPrompts?: string[],
     callbacks?: {
       onAnswerGeneratedCallback?: (onAnswerGeneratedCallback: OnAnswerGeneratedCallbackProps) => unknown
@@ -92,12 +101,14 @@ export class ChatService {
                       })
                     }
 
+                    const relatedQueries = interaction.related
+
                     return {
                       query: interaction.query,
                       // interactionId for Old Orama and id for Orama Core
                       interactionId: interaction.interactionId || interaction.id,
                       response: interaction.response,
-                      relatedQueries: interaction.relatedQueries,
+                      relatedQueries: parseRelatedQueries(relatedQueries),
                       status: answerStatus,
                       latest: isLatest,
                       sources,
@@ -113,7 +124,6 @@ export class ChatService {
             ...(existingInteractions || []),
             {
               query: term,
-              interactionId: `interaction-${Date.now()}`,
               response: 'Sorry, this client does not support chat functionality.',
               status: TAnswerStatus.error,
               latest: true,
@@ -128,7 +138,6 @@ export class ChatService {
           ...(existingInteractions || []),
           {
             query: term,
-            interactionId: `interaction-${Date.now()}`,
             response: 'Sorry, there was an error creating the answer session. Please try again later.',
             status: TAnswerStatus.error,
             latest: true,
@@ -147,7 +156,7 @@ export class ChatService {
     try {
       // Check existence of answerStream method (means that the client is Orama Core)
       if ((this.answerSession as CoreAnswerSession).answer) {
-        this.askOramaCore(term)
+        this.askOramaCore(term, relatedQueries)
       } else {
         this.askOramaCloud(term)
       }
@@ -162,12 +171,19 @@ export class ChatService {
     }
   }
 
-  private askOramaCore = (query: string) => {
+  private askOramaCore = (query: string, relatedQueries?: number) => {
+    console.log('askOramaCore', query, relatedQueries)
     const streamParams: AnswerConfig = {
-      interactionID: `interaction-${Date.now()}`,
       query,
-      visitorID: `visitor-${Date.now()}`,
-      sessionID: `session-${Date.now()}`,
+      ...(relatedQueries
+        ? {
+            related: {
+              enabled: true,
+              size: relatedQueries,
+              format: 'query',
+            },
+          }
+        : {}),
     }
 
     const answerStream = (this.answerSession as CoreAnswerSession).answerStream(streamParams)
@@ -185,11 +201,6 @@ export class ChatService {
       term: term,
       limit: 10,
       threshold: 0.5,
-      userData: {
-        interactionID: `interaction-${Date.now()}`,
-        sessionID: `session-${Date.now()}`,
-        visitorID: `visitor-${Date.now()}`,
-      },
     }
 
     const oldAnswerSession = this.answerSession as OSSAnswerSession | CloudAnswerSession<true>
