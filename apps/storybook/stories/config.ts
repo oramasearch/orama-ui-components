@@ -92,9 +92,9 @@ const demoIndexes: DemoIndexConfig = {
   oramaCore: {
     open: true,
     oramaCoreClientInstance: new CollectionManager({
-      url: 'https://oramacore.orama.foo',
-      collectionID: 'cxlenmho72jp3qpbdphbmfdn',
-      readAPIKey: 'caTS1G81uC8uBoWICSQYzmGjGVBCqxrf',
+      url: 'https://collections.orama.com',
+      collectionID: 'str9h2sfs28um6xr04rh5hyj',
+      readAPIKey: 'WEfIzD90DFPvByJhMp3bxzU7fWY8atlm',
     }),
     sourceBaseUrl: 'https://docs.orama.com',
     sourcesMap: {
