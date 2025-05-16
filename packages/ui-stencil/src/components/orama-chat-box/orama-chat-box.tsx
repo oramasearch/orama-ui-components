@@ -7,6 +7,7 @@ import {
   updateThemeClasses,
   validateCloudIndexConfig,
 } from '@/utils/utils'
+import { defaultTextDictionary, getText as getTextUtil } from '@/utils/textDictionary'
 import type {
   ChatMarkdownLinkHref,
   ChatMarkdownLinkTarget,
@@ -18,6 +19,7 @@ import type {
   OnChatMarkdownLinkClickedCallbackProps,
   onStartConversationCallbackProps,
   SourcesMap,
+  Dictionary,
 } from '@/types'
 import type { TThemeOverrides } from '@/config/theme'
 import type { AnyOrama } from '@orama/orama'
@@ -53,9 +55,25 @@ export class ChatBox {
   @Prop() chatMarkdownLinkTarget?: ChatMarkdownLinkTarget
 
   /**
+   * Text dictionary for customizing all text content in the component.
+   * This can be set either via HTML attribute as a JSON string or via JavaScript as an object.
+   * It allows for customization of all text elements like placeholders, error messages, and UI labels.
+   * @example
+   * // Via HTML attribute
+   * <orama-chat-box dictionary='{"chatPlaceholder": "Ask about our docs..."}' />
+   * 
+   * // Via JavaScript
+   * const chatBox = document.querySelector('orama-chat-box');
+   * chatBox.dictionary = { chatPlaceholder: "Ask about our docs..." };
+   */
+  @Prop() dictionary?: Partial<Dictionary> = {}
+  @Prop() disclaimer?: string
+
+  /**
    * Component theme customization
    */
   @Prop() themeConfig?: Partial<TThemeOverrides>
+
   /**
    * Component color schema
    */
@@ -65,6 +83,23 @@ export class ChatBox {
   @State() systemScheme: Omit<ColorScheme, 'system'> = 'light'
 
   schemaQuery!: MediaQueryList
+
+  /**
+   * Gets the text for a specific key from the dictionary prop.
+   * Prioritizes direct props (placeholder) for backward compatibility,
+   * then falls back to the dictionary prop, and finally to the defaultTextDictionary.
+   * 
+   * @param key - The key to get the text for
+   * @returns The text for the specified key
+   */
+  getText(key: keyof Dictionary): string {
+    // Create a map of direct props for backward compatibility
+    const directProps: Partial<Record<keyof Dictionary, string>> = {
+      chatPlaceholder: this.placeholder,
+    };
+    
+    return getTextUtil(key, this.dictionary, directProps);
+  }
 
   /**
    * Fired when answer generation is successfully completed
@@ -103,6 +138,21 @@ export class ChatBox {
 
     this.startChatService()
     this.updateTheme()
+  }
+
+  /**
+   * Watch for changes to the dictionary prop
+   */
+  @Watch('dictionary')
+  handleTextDictionaryChange(newValue: Partial<Dictionary> | string) {
+    // Handle case where dictionary is passed as a string (via HTML attribute)
+    if (typeof newValue === 'string') {
+      try {
+        this.dictionary = JSON.parse(newValue);
+      } catch (e) {
+        console.error('Error parsing dictionary:', e);
+      }
+    }
   }
 
   private chatStore: ChatStoreType
@@ -170,7 +220,7 @@ export class ChatBox {
 
   render() {
     if (!this.chatStore.state.chatService) {
-      return <orama-text as="p">Unable to initialize chat service</orama-text>
+      return <orama-text as="p">{this.getText('initErrorChat')}</orama-text>
     }
 
     // Maintain backwards compatibility with dark theme default
@@ -180,7 +230,7 @@ export class ChatBox {
     return (
       <Host class={`theme-${currentScheme}`}>
         <orama-chat
-          placeholder={this.placeholder}
+          placeholder={this.getText('chatPlaceholder')}
           sourceBaseUrl={this.sourceBaseUrl}
           sourcesMap={this.sourcesMap}
           suggestions={this.suggestions}
@@ -191,6 +241,8 @@ export class ChatBox {
           clearChatOnDisconnect={this.clearChatOnDisconnect}
           chatMarkdownLinkTitle={this.chatMarkdownLinkTitle}
           chatMarkdownLinkHref={this.chatMarkdownLinkHref}
+          dictionary={this.dictionary}
+          disclaimer={this.disclaimer}
         >
           {!!this.chatStore.state?.interactions?.length && (
             <div slot="chat-empty-state">

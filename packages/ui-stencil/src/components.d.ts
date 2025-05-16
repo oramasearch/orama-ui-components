@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { ButtonProps } from "./components/internal/orama-button/orama-button";
-import { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, CloudIndexConfig, ColorScheme, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnChatMarkdownLinkClickedCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, onStartConversationCallbackProps, ResultItemRenderFunction, ResultMap, SearchResultBySection, SourcesMap, TChatInteraction } from "./types/index";
+import { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, CloudIndexConfig, ColorScheme, Dictionary, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnChatMarkdownLinkClickedCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, onStartConversationCallbackProps, ResultItemRenderFunction, ResultMap, SearchResultBySection, SourcesMap, TChatInteraction } from "./types/index";
 import { OramaClient } from "@oramacloud/client";
 import { AnyOrama, Orama, SearchParams } from "@orama/orama";
 import { CollectionManager } from "@orama/core";
@@ -17,7 +17,7 @@ import { TThemeOverrides as TThemeOverrides1 } from "./components.d";
 import { SearchResultsProps } from "./components/internal/orama-search-results/orama-search-results";
 import { TextProps } from "./components/internal/orama-text/orama-text";
 export { ButtonProps } from "./components/internal/orama-button/orama-button";
-export { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, CloudIndexConfig, ColorScheme, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnChatMarkdownLinkClickedCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, onStartConversationCallbackProps, ResultItemRenderFunction, ResultMap, SearchResultBySection, SourcesMap, TChatInteraction } from "./types/index";
+export { ChatMarkdownLinkHref, ChatMarkdownLinkTarget, ChatMarkdownLinkTitle, CloudIndexConfig, ColorScheme, Dictionary, Facet, OnAnswerGeneratedCallbackProps, OnAnswerSourceClickCallbackProps, OnChatMarkdownLinkClickedCallbackProps, OnSearchCompletedCallbackProps, OnSearchResultClickCallbackProps, onStartConversationCallbackProps, ResultItemRenderFunction, ResultMap, SearchResultBySection, SourcesMap, TChatInteraction } from "./types/index";
 export { OramaClient } from "@oramacloud/client";
 export { AnyOrama, Orama, SearchParams } from "@orama/orama";
 export { CollectionManager } from "@orama/core";
@@ -43,6 +43,8 @@ export namespace Components {
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "clearChatOnDisconnect"?: boolean;
         "defaultTerm"?: string;
+        "dictionary"?: Partial<Dictionary>;
+        "disclaimer"?: string;
         "focusInput"?: boolean;
         "linksRel"?: string;
         "linksTarget"?: string;
@@ -72,6 +74,12 @@ export namespace Components {
           * Component color schema
          */
         "colorScheme"?: ColorScheme;
+        /**
+          * Text dictionary for customizing all text content in the component. This can be set either via HTML attribute as a JSON string or via JavaScript as an object. It allows for customization of all text elements like placeholders, error messages, and UI labels.
+          * @example // Via HTML attribute <orama-chat-box dictionary='{"chatPlaceholder": "Ask about our docs..."}' />  // Via JavaScript const chatBox = document.querySelector('orama-chat-box'); chatBox.dictionary = { chatPlaceholder: "Ask about our docs..." };
+         */
+        "dictionary"?: Partial<Dictionary>;
+        "disclaimer"?: string;
         "index"?: CloudIndexConfig | CloudIndexConfig[];
         "linksRel"?: string;
         "linksTarget"?: string;
@@ -151,6 +159,7 @@ export namespace Components {
         "showChatActions": boolean;
     }
     interface OramaSearch {
+        "dictionary"?: Partial<Dictionary>;
         "disableChat"?: boolean;
         "focusInput"?: boolean;
         "highlightDescription"?: HighlightOptions | false;
@@ -188,9 +197,18 @@ export namespace Components {
          */
         "colorScheme"?: ColorScheme;
         /**
+          * Custom text dictionary for localization
+          * @example const searchBox = document.querySelector('orama-search-box'); searchBox.dictionary = { searchPlaceholder: "Search our products..." };
+         */
+        "dictionary"?: Partial<Dictionary>;
+        /**
           * Disables chat capabilities
          */
         "disableChat"?: boolean;
+        /**
+          * Disclaimer text to show below the chat input
+         */
+        "disclaimer"?: string;
         /**
           * Index result property to
          */
@@ -221,10 +239,6 @@ export namespace Components {
         "linksTarget"?: string;
         "open": boolean;
         "oramaCoreClientInstance"?: CollectionManager;
-        /**
-          * @deprecated it will be removed on next releases Placeholder for chat input
-         */
-        "placeholder"?: string;
         /**
           * Display automatic chat suggestions
          */
@@ -258,7 +272,7 @@ export namespace Components {
          */
         "sourcesMap"?: SourcesMap;
         /**
-          * List of initial questions for Orama Chat
+          * List of suggestions to show when the input is empty
          */
         "suggestions"?: string[];
         /**
@@ -268,10 +282,16 @@ export namespace Components {
     }
     interface OramaSearchButton {
         "colorScheme"?: ColorScheme;
+        /**
+          * Text dictionary for customizing all text content in the component. This can be set either via HTML attribute as a JSON string or via JavaScript as an object.
+          * @example // Via HTML attribute <orama-search-button dictionary='{"searchButtonLabel": "Search docs"}' />  // Via JavaScript const searchButton = document.querySelector('orama-search-button'); searchButton.dictionary = { searchButtonLabel: "Search docs" };
+         */
+        "dictionary"?: Partial<Dictionary>;
         "size": 'small' | 'medium' | 'large';
         "themeConfig"?: Partial<TThemeOverrides>;
     }
     interface OramaSearchResults {
+        "dictionary"?: Partial<Dictionary>;
         "error": boolean;
         "highlightDescription"?: HighlightOptions | false;
         "highlightTitle"?: HighlightOptions | false;
@@ -707,6 +727,8 @@ declare namespace LocalJSX {
         "chatMarkdownLinkTitle"?: ChatMarkdownLinkTitle;
         "clearChatOnDisconnect"?: boolean;
         "defaultTerm"?: string;
+        "dictionary"?: Partial<Dictionary>;
+        "disclaimer"?: string;
         "focusInput"?: boolean;
         "linksRel"?: string;
         "linksTarget"?: string;
@@ -739,6 +761,12 @@ declare namespace LocalJSX {
           * Component color schema
          */
         "colorScheme"?: ColorScheme;
+        /**
+          * Text dictionary for customizing all text content in the component. This can be set either via HTML attribute as a JSON string or via JavaScript as an object. It allows for customization of all text elements like placeholders, error messages, and UI labels.
+          * @example // Via HTML attribute <orama-chat-box dictionary='{"chatPlaceholder": "Ask about our docs..."}' />  // Via JavaScript const chatBox = document.querySelector('orama-chat-box'); chatBox.dictionary = { chatPlaceholder: "Ask about our docs..." };
+         */
+        "dictionary"?: Partial<Dictionary>;
+        "disclaimer"?: string;
         "index"?: CloudIndexConfig | CloudIndexConfig[];
         "linksRel"?: string;
         "linksTarget"?: string;
@@ -842,6 +870,7 @@ declare namespace LocalJSX {
         "showChatActions"?: boolean;
     }
     interface OramaSearch {
+        "dictionary"?: Partial<Dictionary>;
         "disableChat"?: boolean;
         "focusInput"?: boolean;
         "highlightDescription"?: HighlightOptions | false;
@@ -881,9 +910,18 @@ declare namespace LocalJSX {
          */
         "colorScheme"?: ColorScheme;
         /**
+          * Custom text dictionary for localization
+          * @example const searchBox = document.querySelector('orama-search-box'); searchBox.dictionary = { searchPlaceholder: "Search our products..." };
+         */
+        "dictionary"?: Partial<Dictionary>;
+        /**
           * Disables chat capabilities
          */
         "disableChat"?: boolean;
+        /**
+          * Disclaimer text to show below the chat input
+         */
+        "disclaimer"?: string;
         /**
           * Index result property to
          */
@@ -952,10 +990,6 @@ declare namespace LocalJSX {
         "open"?: boolean;
         "oramaCoreClientInstance"?: CollectionManager;
         /**
-          * @deprecated it will be removed on next releases Placeholder for chat input
-         */
-        "placeholder"?: string;
-        /**
           * Display automatic chat suggestions
          */
         "relatedQueries"?: number;
@@ -988,7 +1022,7 @@ declare namespace LocalJSX {
          */
         "sourcesMap"?: SourcesMap;
         /**
-          * List of initial questions for Orama Chat
+          * List of suggestions to show when the input is empty
          */
         "suggestions"?: string[];
         /**
@@ -998,10 +1032,16 @@ declare namespace LocalJSX {
     }
     interface OramaSearchButton {
         "colorScheme"?: ColorScheme;
+        /**
+          * Text dictionary for customizing all text content in the component. This can be set either via HTML attribute as a JSON string or via JavaScript as an object.
+          * @example // Via HTML attribute <orama-search-button dictionary='{"searchButtonLabel": "Search docs"}' />  // Via JavaScript const searchButton = document.querySelector('orama-search-button'); searchButton.dictionary = { searchButtonLabel: "Search docs" };
+         */
+        "dictionary"?: Partial<Dictionary>;
         "size"?: 'small' | 'medium' | 'large';
         "themeConfig"?: Partial<TThemeOverrides>;
     }
     interface OramaSearchResults {
+        "dictionary"?: Partial<Dictionary>;
         "error"?: boolean;
         "highlightDescription"?: HighlightOptions | false;
         "highlightTitle"?: HighlightOptions | false;
