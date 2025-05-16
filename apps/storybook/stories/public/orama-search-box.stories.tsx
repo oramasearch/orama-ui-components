@@ -1,4 +1,4 @@
-import type { Meta, StoryObj, WebComponentsRenderer } from '@storybook/web-components'
+import type { Meta, StoryObj } from '@storybook/web-components'
 import type { Components } from '@orama/wc-components'
 import demoIndexes from '../config'
 import { html } from 'lit-html'
@@ -97,6 +97,7 @@ const Template = ({
   resultMap,
   dictionary,
   showKeyboardShortcuts,
+  oramaCoreClientInstance,
 }: TemplateProps) => {
   return html`<div>
       <div style="width: 240px">
@@ -110,6 +111,7 @@ const Template = ({
       .themeConfig=${themeConfig || preset.themeConfig}
       .index=${index || preset.index}
       .clientInstance=${clientInstance || preset.clientInstance}
+      .oramaCoreClientInstance=${oramaCoreClientInstance || preset?.oramaCoreClientInstance}
       .suggestions=${suggestions || preset?.suggestions}
       .sourceBaseUrl=${sourceBaseUrl || preset?.sourceBaseUrl}
       .sourcesMap=${sourcesMap || preset?.sourcesMap}
@@ -138,6 +140,7 @@ const TemplateAsEmbed = ({
   themeConfig,
   index,
   clientInstance,
+  oramaCoreClientInstance,
   sourceBaseUrl,
   suggestions,
   sourcesMap,
@@ -154,6 +157,7 @@ const TemplateAsEmbed = ({
       .themeConfig=${themeConfig || preset.themeConfig}
       .index=${index || preset.index}
       .clientInstance=${clientInstance || preset.clientInstance}
+      .oramaCoreClientInstance=${oramaCoreClientInstance || preset?.oramaCoreClientInstance}
       .suggestions=${suggestions || preset?.suggestions}
       .sourceBaseUrl=${sourceBaseUrl || preset?.sourceBaseUrl}
       .sourcesMap=${sourcesMap || preset?.sourcesMap}
