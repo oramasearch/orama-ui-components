@@ -70,7 +70,6 @@ export class OramaChatAssistentMessage {
         <orama-sources
           sources={this.interaction.sources}
           sourceBaseURL={this.chatStore.state.sourceBaseURL}
-          sourcesMap={this.chatStore.state.sourcesMap}
           linksRel={this.chatStore.state.linksRel}
           linksTarget={this.chatStore.state.linksTarget}
         />

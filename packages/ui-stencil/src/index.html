@@ -28,11 +28,11 @@
       };
 
       const searchBox = document.querySelector('orama-search-box');
-      searchBox.suggestions = ['What is the email of Ramzy Hakewell? Can you generate more 15 emails adding a incremental counter on each email?'];
+      searchBox.suggestions = ['How old is Emma?'];
 
       const chatBox = document.querySelector('orama-chat-box');
       chatBox.style.height = '600px';
-      chatBox.suggestions = ['What is the email of Ramzy Hakewell? Can you generate more 15 emails adding a incremental counter on each email?'];
+      chatBox.suggestions = ['How old is Emma?'];
 
       const useOramaCore = true;
 
@@ -85,16 +85,56 @@
       // };
 
       searchBox.sourcesMap = {
-        title: 'first_name',
+        title: (item, datasourceId) => {
+          if (datasourceId === 'dyaqkvxo36199sn6yd7saegdf') {
+            return item.name;
+          }
+
+          return item.Title;
+        },
         description: 'email',
-        path: 'ip_address',
+        path: 'country',
       };
 
       chatBox.sourcesMap = {
-        title: 'first_name',
-        description: 'email',
-        path: 'ip_address',
+        title: (item, datasourceId) => {
+          if (datasourceId === 'dyaqkvxo36199sn6yd7saegdf') {
+            return item.name;
+          }
+
+          return item.Title;
+        },
+        description: (item, datasourceId) => {
+          if (datasourceId === 'dyaqkvxo36199sn6yd7saegdf') {
+            return `${item.sex} - ${item.country}`;
+          }
+
+          return item.Description;
+        },
+        path: 'country',
       };
+
+      // Or like this. Same as resultsMap
+      // chatBox.sourcesMap = [
+      //   {
+      //     title: 'name',
+      //     description: item => {
+      //       return `${item.sex} - ${item.country}`;
+      //     },
+      //     path: () => 'some_path',
+      //     datasourceId: 'dyaqkvxo36199sn6yd7saegdf',
+      //   },
+      //   {
+      //     title: item => {
+      //       return item.Title;
+      //     },
+      //     description: item => {
+      //       return item.Description;
+      //     },
+      //     path: () => 'some_path',
+      //     datasourceId: 'jrmilfazf47z8xq2v4n8xs6ww',
+      //   },
+      // ];
     </script>
   </body>
 </html>

@@ -213,10 +213,7 @@ export class OramaChat {
 
   setSources = () => {
     this.chatStore.state.sourceBaseURL = this.sourceBaseUrl
-    this.chatStore.state.sourcesMap = {
-      ...this.chatStore.state.sourcesMap,
-      ...this.sourcesMap,
-    }
+    this.chatStore.state.sourcesMap = this.sourcesMap
     this.chatStore.state.linksTarget = this.linksTarget
     this.chatStore.state.linksRel = this.linksRel
   }

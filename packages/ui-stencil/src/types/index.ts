@@ -33,7 +33,20 @@ export type ResultMapItem = { [K in ResultMapKeys]?: string | ResultMapRenderFun
 
 export type ResultMap = ResultMapItem | ResultMapItem[]
 
-export type SourcesMap = { [K in keyof Omit<SearchResult, 'id'>]?: string }
+export type SourcesMapKeys = keyof Omit<SearchResult, 'id'>
+
+export type SourcesMapRenderFunction = (item: unknown, datasourceId: string) => string
+
+export type SourcesMapItem = { [K in SourcesMapKeys]?: string | SourcesMapRenderFunction } & {
+  datasourceId?: string
+}
+
+export type SourceItem = {
+  title: string
+  description: string
+  path: string
+}
+export type SourcesMap = SourcesMapItem | SourcesMapItem[]
 
 export type CloudIndexConfig = {
   api_key: string
@@ -99,7 +112,7 @@ export type TSource = {
 export type TChatInteraction = {
   query: string
   response?: string
-  sources?: any // should be Results<any> from orama-client
+  sources?: SourceItem[]
   latest?: boolean
   status: TAnswerStatus
   interactionId?: string
