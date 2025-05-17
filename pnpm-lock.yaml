@@ -124,7 +124,7 @@ importers:
   apps/demo-nextjs:
     dependencies:
       '@orama/core':
-        specifier: ^0.1.3
+        specifier: ^0.1.8
         version: 0.1.8
       '@orama/react-components':
         specifier: workspace:*
@@ -167,7 +167,7 @@ importers:
   apps/demo-react:
     dependencies:
       '@orama/core':
-        specifier: ^0.1.3
+        specifier: ^0.1.8
         version: 0.1.8
       '@orama/react-components':
         specifier: workspace:*

@@ -43,7 +43,25 @@ const ChatBoxPage = () => {
         <h2 style={{ textAlign: 'center' }}>CHAT BOX</h2>
         <div className="component-row">
           <OramaChatBox
-            sourcesMap={{ description: 'content' }}
+            sourcesMap={{
+              title: (item: any, datasourceId) => {
+                console.log(item)
+                if (datasourceId === 'dyaqkvxo36199sn6yd7saegdf') {
+                  return item.name
+                }
+
+                return item.Title
+              },
+              // biome-ignore lint/suspicious/noExplicitAny: Indeed uknown data
+              description: (item: any, datasourceId) => {
+                if (datasourceId === 'dyaqkvxo36199sn6yd7saegdf') {
+                  return `${item.sex} - ${item.country}`
+                }
+
+                return item.Description
+              },
+              path: 'country',
+            }}
             oramaCoreClientInstance={collectionManager}
             style={{ height: '600px' }}
             onAnswerSourceClick={(e: Event) => console.log(e)}
@@ -88,6 +106,25 @@ const SearchBoxPage = () => {
                 datasourceId: 'jrmilfazf47z8xq2v4n8xs6ww',
               },
             ]}
+            sourcesMap={{
+              title: (item: any, datasourceId) => {
+                console.log(item)
+                if (datasourceId === 'dyaqkvxo36199sn6yd7saegdf') {
+                  return item.name
+                }
+
+                return item.Title
+              },
+              // biome-ignore lint/suspicious/noExplicitAny: Indeed uknown data
+              description: (item: any, datasourceId) => {
+                if (datasourceId === 'dyaqkvxo36199sn6yd7saegdf') {
+                  return `${item.sex} - ${item.country}`
+                }
+
+                return item.Description
+              },
+              path: 'country',
+            }}
             onModalClosed={() => {
               console.log('closed')
             }}

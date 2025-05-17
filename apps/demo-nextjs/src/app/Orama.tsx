@@ -5,9 +5,9 @@ import { CollectionManager } from '@orama/core'
 import { OramaChatBox, OramaSearchBox, OramaSearchButton } from '@orama/react-components'
 
 const clientInstance = new CollectionManager({
-  url: 'https://oramacore.orama.foo',
-  collectionID: 'cxlenmho72jp3qpbdphbmfdn',
-  readAPIKey: 'caTS1G81uC8uBoWICSQYzmGjGVBCqxrf',
+  url: 'https://collections.orama.com',
+  collectionID: 'ncd7zwmirytw1o47dogru4bz',
+  readAPIKey: 'df00PbXP0dbRUcJgFeFZSNNb7AhsqCw8',
 })
 
 const Orama = () => {
@@ -35,6 +35,48 @@ const Orama = () => {
             <OramaChatBox
               oramaCoreClientInstance={clientInstance}
               clearChatOnDisconnect={false}
+              resultMap={[
+                {
+                  title: 'name',
+                  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+                  description: (item: any) => {
+                    return `${item.sex} - ${item.country}`
+                  },
+                  datasourceId: 'dyaqkvxo36199sn6yd7saegdf',
+                },
+                {
+                  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+                  title: (item: any) => {
+                    return item.Title
+                  },
+                  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+                  description: (item: any) => {
+                    return item.Description
+                  },
+                  path: 'ip_address',
+                  datasourceId: 'jrmilfazf47z8xq2v4n8xs6ww',
+                },
+              ]}
+              sourcesMap={{
+                // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+                title: (item: any, datasourceId) => {
+                  console.log(item)
+                  if (datasourceId === 'dyaqkvxo36199sn6yd7saegdf') {
+                    return item.name
+                  }
+
+                  return item.Title
+                },
+                // biome-ignore lint/suspicious/noExplicitAny: Indeed uknown data
+                description: (item: any, datasourceId) => {
+                  if (datasourceId === 'dyaqkvxo36199sn6yd7saegdf') {
+                    return `${item.sex} - ${item.country}`
+                  }
+
+                  return item.Description
+                },
+                path: 'country',
+              }}
               onClearChat={() => setInitialPrompt('')}
               onStartConversation={(e: Event) => console.log('onStartConversation', e)}
               prompt={initialPrompt}

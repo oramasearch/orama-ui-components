@@ -54,7 +54,7 @@ export class ChatService {
     sourceMapObject: SourcesMapItem,
     rawSource: { document: unknown; index_id: string },
   ): string {
-    const sourcesMapFunctionOrString = sourceMapObject[sourceMapKey]
+    const sourcesMapFunctionOrString = sourceMapObject?.[sourceMapKey]
 
     if (!sourcesMapFunctionOrString) {
       return undefined
