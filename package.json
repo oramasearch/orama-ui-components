@@ -41,5 +41,5 @@
     "yarn": "Please use pnpm instead of Yarn to install dependencies",
     "pnpm": ">=8.10.0"
   },
-  "packageManager": "pnpm@8.10.0"
+  "packageManager": "pnpm@10.11.0"
 }
