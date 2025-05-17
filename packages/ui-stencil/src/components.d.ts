@@ -538,7 +538,6 @@ export namespace Components {
          */
         "source-base-u-r-l"?: string;
         "sources": any;
-        "sourcesMap"?: SourcesMap;
     }
     interface OramaSuggestions {
         "as": 'chips' | 'list';
@@ -1534,7 +1533,6 @@ declare namespace LocalJSX {
          */
         "source-base-u-r-l"?: string;
         "sources"?: any;
-        "sourcesMap"?: SourcesMap;
     }
     interface OramaSuggestions {
         "as"?: 'chips' | 'list';

@@ -262,7 +262,6 @@ export const OramaSources = /*@__PURE__*/ defineContainer<JSX.OramaSources>('ora
   'sourceBaseURL',
   'linksTarget',
   'linksRel',
-  'sourcesMap',
   'answerSourceClick'
 ]);
 
