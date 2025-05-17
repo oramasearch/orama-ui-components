@@ -376,8 +376,8 @@ importers:
   packages/ui-stencil:
     dependencies:
       '@orama/core':
-        specifier: ^0.1.3
-        version: 0.1.3
+        specifier: ^0.1.8
+        version: 0.1.8
       '@orama/highlight':
         specifier: ^0.1.6
         version: 0.1.9
@@ -386,7 +386,7 @@ importers:
         version: 3.1.6
       '@orama/switch':
         specifier: ^3.1.6
-        version: 3.1.6(@orama/core@0.1.3)(@orama/orama@3.1.6)(@oramacloud/client@2.1.4)
+        version: 3.1.6(@orama/core@0.1.8)(@orama/orama@3.1.6)(@oramacloud/client@2.1.4)
       '@oramacloud/client':
         specifier: ^2.1.4
         version: 2.1.4
@@ -5363,6 +5363,17 @@ packages:
       - babel-plugin-macros
     dev: false
 
+  /@orama/core@0.1.8:
+    resolution: {integrity: sha512-dVzUZsEJ/nnHyX+JjNO6KxTVY9bXV6YuEd+nJ5vDNn12S+cIobK3fSHdA4t2gI+2jVP9N67Ia5Uwxa8GNB743A==}
+    dependencies:
+      '@orama/cuid2': 2.2.3
+      dedent: 1.5.3
+      zod: 3.24.3
+      zod-to-json-schema: 3.24.5(zod@3.24.3)
+    transitivePeerDependencies:
+      - babel-plugin-macros
+    dev: false
+
   /@orama/cuid2@2.2.3:
     resolution: {integrity: sha512-Lcak3chblMejdlSHgYU2lS2cdOhDpU6vkfIJH4m+YKvqQyLqs1bB8+w6NT1MG5bO12NUK2GFc34Mn2xshMIQ1g==}
     dependencies:
@@ -5378,14 +5389,14 @@ packages:
     engines: {node: '>= 16.0.0'}
     dev: false
 
-  /@orama/switch@3.1.6(@orama/core@0.1.3)(@orama/orama@3.1.6)(@oramacloud/client@2.1.4):
+  /@orama/switch@3.1.6(@orama/core@0.1.8)(@orama/orama@3.1.6)(@oramacloud/client@2.1.4):
     resolution: {integrity: sha512-Swj9tQZWQ8tw44sAJmlF15xlJ5+h1GdgysvPGTe1NHJCcAOrX2qxp4OsWB+1vxmIxewP6brnP/U3nUehQNQi6g==}
     peerDependencies:
       '@orama/core': ^0.0.10
       '@orama/orama': 3.1.6
       '@oramacloud/client': ^2.1.1
     dependencies:
-      '@orama/core': 0.1.3
+      '@orama/core': 0.1.8
       '@orama/orama': 3.1.6
       '@oramacloud/client': 2.1.4
     dev: false
