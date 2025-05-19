@@ -4,7 +4,8 @@ import demoIndexes from '../config'
 import { html } from 'lit-html'
 import type { DemoIndexConfig } from '../config'
 
-const meta: Meta<Components.OramaSearchBox & { preset: keyof DemoIndexConfig }> = {
+type TemplateProps = Components.OramaSearchBox & { preset: Components.OramaSearchBox }
+const meta: Meta<TemplateProps> = {
   title: 'Components/SearchBox',
   component: 'orama-search-box',
   argTypes: {
@@ -50,6 +51,14 @@ const meta: Meta<Components.OramaSearchBox & { preset: keyof DemoIndexConfig }> 
       },
       control: { type: 'radio' },
     },
+    dictionary: {
+      control: { type: 'object' },
+      description: 'Dictionary of text strings used in the component',
+      table: {
+        type: { summary: 'Partial<dictionary>' },
+        defaultValue: { summary: '{}' },
+      },
+    },
     disableChat: {
       control: { type: 'boolean', defaultValue: false },
       table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
@@ -86,31 +95,33 @@ const Template = ({
   sourceBaseUrl,
   sourcesMap,
   resultMap,
+  dictionary,
   showKeyboardShortcuts,
-}) => {
+  oramaCoreClientInstance,
+}: TemplateProps) => {
   return html`<div>
       <div style="width: 240px">
         <orama-search-button>Search...</orama-search-button>
       </div>
       <orama-search-box
       .open=${open || preset?.open}
-      .facetProperty=${facetProperty || preset?.facetProperty}
+      .facetProperty=${facetProperty ? preset?.facetProperty : undefined}
       .resultMap=${resultMap || preset?.resultMap}
       .colorScheme=${colorScheme}
       .themeConfig=${themeConfig || preset.themeConfig}
       .index=${index || preset.index}
       .clientInstance=${clientInstance || preset.clientInstance}
-      .instance=${preset.instance}
+      .oramaCoreClientInstance=${oramaCoreClientInstance || preset?.oramaCoreClientInstance}
       .suggestions=${suggestions || preset?.suggestions}
       .sourceBaseUrl=${sourceBaseUrl || preset?.sourceBaseUrl}
       .sourcesMap=${sourcesMap || preset?.sourcesMap}
       .disableChat=${disableChat}
       .chatPlaceholder=${chatPlaceholder}
       .searchPlaceholder=${searchPlaceholder}
+      .dictionary=${dictionary}
       .highlightTitle=${preset?.highlightTitle}
       .highlightDescription=${preset?.highlightDescription}
       .linksTarget=${preset?.linksTarget}
-      .placeholder=${preset?.placeholder}
       .searchParams=${preset?.searchParams}
       .showKeyboardShortcuts=${showKeyboardShortcuts}
       .relatedQueries=${preset?.relatedQueries}
@@ -129,11 +140,13 @@ const TemplateAsEmbed = ({
   themeConfig,
   index,
   clientInstance,
-  sourceBaseURL,
+  oramaCoreClientInstance,
+  sourceBaseUrl,
   suggestions,
   sourcesMap,
+  dictionary,
   showKeyboardShortcuts,
-}) => {
+}: TemplateProps) => {
   return html`<div style="height: 420px">
     <orama-search-box
       layout="embed"
@@ -144,17 +157,17 @@ const TemplateAsEmbed = ({
       .themeConfig=${themeConfig || preset.themeConfig}
       .index=${index || preset.index}
       .clientInstance=${clientInstance || preset.clientInstance}
-      .instance=${preset.instance}
+      .oramaCoreClientInstance=${oramaCoreClientInstance || preset?.oramaCoreClientInstance}
       .suggestions=${suggestions || preset?.suggestions}
-      .sourceBaseUrl=${sourceBaseURL || preset?.sourceBaseUrl}
+      .sourceBaseUrl=${sourceBaseUrl || preset?.sourceBaseUrl}
       .sourcesMap=${sourcesMap || preset?.sourcesMap}
       .disableChat=${disableChat}
       .chatPlaceholder=${chatPlaceholder}
       .searchPlaceholder=${searchPlaceholder}
+      .dictionary=${dictionary}
       .highlightTitle=${preset?.highlightTitle}
       .highlightDescription=${preset?.highlightDescription}
       .linksTarget=${preset?.linksTarget}
-      .placeholder=${preset?.placeholder}
       .searchParams=${preset?.searchParams}
       .showKeyboardShortcuts=${showKeyboardShortcuts}
       .relatedQueries=${preset?.relatedQueries}
@@ -170,6 +183,22 @@ export const SearchBoxAsModal: Story = {
     preset: 'orama',
     colorScheme: 'light',
     disableChat: false,
+    dictionary: {
+      searchPlaceholder: 'Search our documentation...',
+      chatPlaceholder: 'Ask our AI assistant...',
+      noResultsFound: "We couldn't find any results",
+      noResultsFoundFor: 'for',
+      suggestions: 'You might want to try',
+      seeAll: 'View all results',
+      addMore: 'Load more',
+      clearChat: 'Reset conversation',
+      errorMessage: 'Oops! Something went wrong with your search.',
+      disclaimer: 'AI-generated responses may not always be accurate.',
+      startYourSearch: 'Begin your search',
+      initErrorSearch: 'Search service initialization failed',
+      initErrorChat: 'Chat service initialization failed',
+      chatButtonLabel: 'Get AI summary',
+    },
   },
 }
 
@@ -178,7 +207,22 @@ export const SearchBoxAsEmbed: Story = {
   args: {
     preset: 'orama',
     colorScheme: 'light',
-    chatPlaceholder: 'Ask me anything...',
     disableChat: false,
+    dictionary: {
+      searchPlaceholder: 'Search our documentation...',
+      chatPlaceholder: 'Ask our AI assistant...',
+      noResultsFound: "We couldn't find any results",
+      noResultsFoundFor: 'for',
+      suggestions: 'You might want to try',
+      seeAll: 'View all results',
+      addMore: 'Load more',
+      clearChat: 'Reset conversation',
+      errorMessage: 'Oops! Something went wrong with your search.',
+      disclaimer: 'AI-generated responses may not always be accurate.',
+      startYourSearch: 'Begin your search',
+      initErrorSearch: 'Search service initialization failed',
+      initErrorChat: 'Chat service initialization failed',
+      chatButtonLabel: 'Get AI summary',
+    },
   },
 }

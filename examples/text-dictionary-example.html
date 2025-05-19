@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orama SearchBox with Text Dictionary Example</title>
+  <script type="module" src="../packages/ui-stencil/dist/orama-ui/orama-ui.esm.js"></script>
+  <link rel="stylesheet" href="../packages/ui-stencil/dist/orama-ui/orama-ui.css">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .search-container {
+      width: 100%;
+      max-width: 400px;
+    }
+    h1 {
+      margin-bottom: 30px;
+    }
+    h2 {
+      margin-top: 40px;
+      margin-bottom: 10px;
+    }
+    pre {
+      background-color: #f5f5f5;
+      padding: 15px;
+      border-radius: 5px;
+      overflow: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Orama SearchBox with Text Dictionary Example</h1>
+  
+  <div class="container">
+    <div class="search-container">
+      <orama-search-button>Search with Custom Text...</orama-search-button>
+    </div>
+
+    <h2>Using the Text Dictionary</h2>
+    <p>The <code>dictionary</code> prop allows you to customize all text content in the SearchBox component. There are two ways to set it:</p>
+    
+    <ol>
+      <li><strong>Via HTML attribute</strong> - Pass a JSON string as an attribute (see example below)</li>
+      <li><strong>Via JavaScript</strong> - Set the property directly using JavaScript (recommended for complex objects)</li>
+    </ol>
+
+    <h2>Default Text Dictionary</h2>
+    <p>This search box uses the default text dictionary:</p>
+    <div class="search-container">
+      <orama-search-box
+        id="default-search"
+        index='{
+          "api_key": "YOUR_API_KEY",
+          "endpoint": "https://api.oramasearch.com"
+        }'
+      ></orama-search-box>
+    </div>
+
+    <h2>Custom Text Dictionary</h2>
+    <p>This search box uses a custom text dictionary:</p>
+    <div class="search-container">
+      <orama-search-box
+        id="custom-search"
+        index='{
+          "api_key": "YOUR_API_KEY",
+          "endpoint": "https://api.oramasearch.com"
+        }'
+      ></orama-search-box>
+    </div>
+
+    <h2>Custom Text Dictionary (HTML Attribute)</h2>
+    <p>This search box uses a custom text dictionary set via HTML attribute:</p>
+    <div class="search-container">
+      <orama-search-box
+        id="html-attribute-search"
+        index='{
+          "api_key": "YOUR_API_KEY",
+          "endpoint": "https://api.oramasearch.com"
+        }'
+        dictionary='{
+          "searchPlaceholder": "Search our documentation...",
+          "chatPlaceholder": "Ask our AI assistant...",
+          "noResultsFound": "We couldn\'t find any results",
+          "noResultsFoundFor": "for",
+          "suggestions": "You might want to try",
+          "seeAll": "View all results",
+          "addMore": "Load more",
+          "clearChat": "Reset conversation",
+          "errorMessage": "Oops! Something went wrong with your search.",
+          "disclaimer": "AI-generated responses may not always be accurate.",
+          "startYourSearch": "Begin your search",
+          "initErrorSearch": "Search service initialization failed",
+          "initErrorChat": "Chat service initialization failed",
+          "chatButtonLabel": "Get AI summary"
+        }'
+      ></orama-search-box>
+    </div>
+
+    <h2>Code Example</h2>
+    <pre><code>&lt;orama-search-box
+  id="custom-search"
+  index='{
+    "api_key": "YOUR_API_KEY",
+    "endpoint": "https://api.oramasearch.com"
+  }'
+&gt;&lt;/orama-search-box&gt;
+
+&lt;script&gt;
+  // Set the text dictionary programmatically
+  const searchBox = document.getElementById('custom-search');
+  searchBox.dictionary = {
+    searchPlaceholder: "Search our documentation...",
+    chatPlaceholder: "Ask our AI assistant...",
+    noResultsFound: "We couldn't find any results",
+    noResultsFoundFor: "for",
+    suggestions: "You might want to try",
+    seeAll: "View all results",
+    addMore: "Load more",
+    clearChat: "Reset conversation",
+    errorMessage: "Oops! Something went wrong with your search. Please try again.",
+    disclaimer: "AI-generated responses may not always be accurate. Please verify information.",
+    startYourSearch: "Begin your search",
+    initErrorSearch: "Search service initialization failed",
+    initErrorChat: "Chat service initialization failed",
+    chatButtonLabel: "Get AI summary"
+  };
+&lt;/script&gt;</code></pre>
+  </div>
+
+  <script>
+    // Set the text dictionary programmatically for the custom search box
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchBox = document.getElementById('custom-search');
+      searchBox.dictionary = {
+        searchPlaceholder: "Search our documentation...",
+        chatPlaceholder: "Ask our AI assistant...",
+        noResultsFound: "We couldn't find any results",
+        noResultsFoundFor: "for",
+        suggestions: "You might want to try",
+        seeAll: "View all results",
+        addMore: "Load more",
+        clearChat: "Reset conversation",
+        errorMessage: "Oops! Something went wrong with your search. Please try again.",
+        disclaimer: "AI-generated responses may not always be accurate. Please verify information.",
+        startYourSearch: "Begin your search",
+        initErrorSearch: "Search service initialization failed",
+        initErrorChat: "Chat service initialization failed",
+        chatButtonLabel: "Get AI summary"
+      };
+    });
+  </script>
+</body>
+</html>

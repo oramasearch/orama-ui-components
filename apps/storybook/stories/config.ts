@@ -1,7 +1,7 @@
 import type { Components } from '@orama/wc-components'
 import { OramaClient } from '@oramacloud/client'
 import { CollectionManager } from '@orama/core'
-import { create, insert, search } from '@orama/orama'
+import { create, insert } from '@orama/orama'
 
 export type DemoIndexConfig = Record<string, Components.OramaSearchBox>
 
@@ -57,6 +57,7 @@ const createOramaJSDatabase = async () => {
 }
 
 // Create the database instance
+// biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
 let oramaJSDatabase
 createOramaJSDatabase().then((db) => {
   oramaJSDatabase = db
@@ -74,7 +75,6 @@ const demoIndexes: DemoIndexConfig = {
       api_key: 'LerNlbp6379jVKaPs4wt2nZT4MJZbU1J',
       endpoint: 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd',
     }),
-    placeholder: 'What do you want to learn about Orama?',
     sourceBaseUrl: 'https://docs.orama.com',
     sourcesMap: {
       title: 'title',
@@ -91,25 +91,18 @@ const demoIndexes: DemoIndexConfig = {
 
   oramaCore: {
     open: true,
-    clientInstance: new CollectionManager({
+    oramaCoreClientInstance: new CollectionManager({
       url: 'https://collections.orama.com',
-      collectionID: 'bktkmbcrq6oevqjisagq61u8',
-      readAPIKey: 'dfshiLS0swg2SANbDkXrEtXzCg1WPpo8',
+      collectionID: 'str9h2sfs28um6xr04rh5hyj',
+      readAPIKey: 'WEfIzD90DFPvByJhMp3bxzU7fWY8atlm',
     }),
-    relatedQueries: 3,
-    // clientInstance: new CollectionManager({
-    //   url: 'https://staging.collections.orama.com',
-    //   collectionID: 'qlpn24gz9t4b6gkha642uzrk',
-    //   readAPIKey: 'aIFyiCsyWtgtFlEskNfJvf0a7CD9E577',
-    // }),
-    placeholder: 'What do you want to learn about Orama?',
     sourceBaseUrl: 'https://docs.orama.com',
     sourcesMap: {
       title: 'title',
       description: 'content',
     },
     suggestions: ['What is Orama?', 'Does Orama have an integration with Strapi?', 'How to create an answer session?'],
-    // facetProperty: 'category',
+    facetProperty: 'category',
     resultMap: {
       title: 'title',
       description: 'content',
@@ -120,7 +113,6 @@ const demoIndexes: DemoIndexConfig = {
     open: true,
     // Use the Orama.js database instance
     clientInstance: oramaJSDatabase,
-    placeholder: 'Search the Orama.js documentation',
     sourceBaseUrl: 'https://docs.orama.com',
     sourcesMap: {
       title: 'title',
@@ -151,7 +143,6 @@ const demoIndexes: DemoIndexConfig = {
       api_key: 'yl2JSnjLNBV6FVfUWEyadpjFr6KzPiDR',
       endpoint: 'https://cloud.orama.run/v1/indexes/recipes-m7w9mm',
     },
-    placeholder: 'What do you want to cook today?',
     sourcesMap: {
       description: 'category',
     },

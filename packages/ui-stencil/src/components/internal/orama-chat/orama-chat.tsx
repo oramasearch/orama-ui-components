@@ -8,12 +8,14 @@ import {
   type onStartConversationCallbackProps,
   type SearchResult,
   type SourcesMap,
+  type Dictionary,
 } from '@/types'
 import '@phosphor-icons/webcomponents/dist/icons/PhPaperPlaneTilt.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhStopCircle.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhArrowDown.mjs'
 import { Store } from '@/StoreDecorator'
 import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
+import { getText as getTextUtil } from '@/utils/textDictionary'
 
 const BOTTOM_THRESHOLD = 1
 
@@ -35,6 +37,8 @@ export class OramaChat {
   @Prop() prompt?: string
   @Prop() systemPrompts?: string[]
   @Prop() clearChatOnDisconnect?: boolean
+  @Prop() dictionary?: Partial<Dictionary>
+  @Prop() disclaimer?: string = 'Orama can make mistakes. Please verify the information.'
 
   @Prop() chatMarkdownLinkTitle?: ChatMarkdownLinkTitle
   @Prop() chatMarkdownLinkHref?: ChatMarkdownLinkHref
@@ -74,6 +78,26 @@ export class OramaChat {
     }
   }
 
+  @Watch('dictionary')
+  handleTextDictionaryChange() {
+    // If dictionary has a chatPlaceholder, update the placeholder prop
+    if (this.dictionary?.chatPlaceholder) {
+      this.placeholder = this.dictionary.chatPlaceholder
+    }
+
+    // If dictionary has a disclaimer, update the disclaimer prop
+    if (this.dictionary?.disclaimer) {
+      this.disclaimer = this.dictionary.disclaimer
+    }
+
+    // Log the current values for debugging
+    console.log('Updated from dictionary:', {
+      placeholder: this.placeholder,
+      disclaimer: this.disclaimer,
+      dictionary: this.dictionary,
+    })
+  }
+
   triggerSendQuestion = (question: string, relatedQueries?: number) => {
     if (this.chatStore.state.chatService === null) {
       throw new Error('Chat Service is not initialized')
@@ -104,6 +128,16 @@ export class OramaChat {
   private chatStore: ChatStoreType
 
   componentWillLoad() {
+    // Initialize placeholder and disclaimer from dictionary if available
+    this.handleTextDictionaryChange()
+
+    // Ensure the disclaimer has a default value if not set
+    if (!this.disclaimer && this.dictionary?.disclaimer) {
+      this.disclaimer = this.dictionary.disclaimer
+    } else if (!this.disclaimer) {
+      this.disclaimer = 'Orama can make mistakes. Please verify the information.'
+    }
+
     this.chatStore.on('set', (prop, newInteractions, oldInteractions) => {
       if (prop !== 'interactions') {
         return
@@ -114,6 +148,30 @@ export class OramaChat {
         this.pendingNewInteractionSideEffects = true
       }
     })
+  }
+
+  /**
+   * Gets the text for a specific key from the dictionary prop.
+   * Prioritizes direct props (placeholder) for backward compatibility,
+   * then falls back to the dictionary prop, and finally to the defaultTextDictionary.
+   *
+   * @param key - The key to get the text for
+   * @returns The text for the specified key
+   */
+  getText(key: keyof Dictionary): string {
+    // Create a map of direct props for backward compatibility
+    const directProps: Partial<Record<keyof Dictionary, string>> = {
+      chatPlaceholder: this.placeholder,
+    }
+
+    // If the key exists in directProps and its value is defined, return its value
+    const directValue = directProps[key]
+    if (directValue !== undefined) {
+      return directValue
+    }
+
+    // Otherwise, try to get the text from the dictionary prop or fall back to the defaultTextDictionary
+    return getTextUtil(key, this.dictionary)
   }
 
   handleFocus = () => {
@@ -334,7 +392,7 @@ export class OramaChat {
         {this.showClearChat && hasInteractions && (
           <div class="header">
             <button type="button" onClick={this.handleClearChat}>
-              <ph-arrow-clockwise weight="fill" size="14" /> Clear chat
+              <ph-arrow-clockwise weight="fill" size="14" /> {this.getText('clearChat')}
             </button>
           </div>
         )}
@@ -433,9 +491,11 @@ export class OramaChat {
               </orama-textarea>
             </div>
           </form>
-          <orama-text as="p" styledAs="small" align="center">
-            Orama can make mistakes. Please verify the information.
-          </orama-text>
+          {this.disclaimer && (
+            <orama-text as="p" styledAs="small" align="center" class="disclaimer-text">
+              {this.disclaimer}
+            </orama-text>
+          )}
         </div>
       </Host>
     )

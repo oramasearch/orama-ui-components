@@ -1,8 +1,9 @@
 import { Component, Watch, Prop, h, State, Element, Listen, Host } from '@stencil/core'
-import type { ColorScheme } from '@/types'
+import type { ColorScheme, Dictionary } from '@/types'
 import '@phosphor-icons/webcomponents/dist/icons/PhMagnifyingGlass.mjs'
 import type { TThemeOverrides } from '@/components'
 import { generateRandomID, updateCssVariables, updateThemeClasses } from '@/utils/utils'
+import { defaultTextDictionary, getText as getTextUtil } from '@/utils/textDictionary'
 
 export type ButtonClick = {
   id: HTMLElement
@@ -21,11 +22,49 @@ export class OramaSearchButton {
   @Prop() themeConfig?: Partial<TThemeOverrides>
   @Prop() colorScheme?: ColorScheme = 'light'
 
+  /**
+   * Text dictionary for customizing all text content in the component.
+   * This can be set either via HTML attribute as a JSON string or via JavaScript as an object.
+   * @example
+   * // Via HTML attribute
+   * <orama-search-button dictionary='{"searchButtonLabel": "Search docs"}' />
+   * 
+   * // Via JavaScript
+   * const searchButton = document.querySelector('orama-search-button');
+   * searchButton.dictionary = { searchButtonLabel: "Search docs" };
+   */
+  @Prop() dictionary?: Partial<Dictionary> = {}
+
+  /**
+   * Watch for changes to the dictionary prop
+   */
+  @Watch('dictionary')
+  handleTextDictionaryChange(newValue: Partial<Dictionary> | string) {
+    // Handle case where dictionary is passed as a string (via HTML attribute)
+    if (typeof newValue === 'string') {
+      try {
+        this.dictionary = JSON.parse(newValue);
+      } catch (e) {
+        console.error('Error parsing dictionary:', e);
+      }
+    }
+  }
+
   @State() systemScheme: Omit<ColorScheme, 'system'> = 'light'
   @State() shortcutLabel = ''
   @State() componentID = generateRandomID('search-button')
 
   schemaQuery!: MediaQueryList
+
+  /**
+   * Gets the text for a specific key from the dictionary prop.
+   * 
+   * @param key - The key to get the text for
+   * @returns The text for the specified key
+   */
+  getText(key: keyof Dictionary): string {
+    return getTextUtil(key, this.dictionary);
+  }
 
   @Watch('themeConfig')
   @Watch('colorScheme')
@@ -119,7 +158,9 @@ export class OramaSearchButton {
           <span slot="adorment-start">
             <ph-magnifying-glass />
           </span>
-          <slot />
+          <slot>
+            {this.getText('searchButtonLabel')}
+          </slot>
           <span slot="adorment-end" class="kyb-shortcut">
             {this.shortcutLabel}
           </span>
