@@ -57,7 +57,10 @@ const createOramaJSDatabase = async () => {
 }
 
 // Create the database instance
-const oramaJSDatabase = await createOramaJSDatabase()
+let oramaJSDatabase: Awaited<ReturnType<typeof createOramaJSDatabase>> | undefined = undefined
+createOramaJSDatabase().then((db) => {
+  oramaJSDatabase = db
+})
 
 const demoIndexes: DemoIndexConfig = {
   orama: {

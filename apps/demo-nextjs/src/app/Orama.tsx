@@ -16,7 +16,41 @@ const Orama = () => {
   return (
     <div>
       <OramaSearchButton style={{ marginBottom: '24px' }} />
-      <OramaSearchBox oramaCoreClientInstance={clientInstance} colorScheme={'light'} />
+      <OramaSearchBox
+        oramaCoreClientInstance={clientInstance}
+        colorScheme={'light'}
+        resultMap={[
+          {
+            title: 'name',
+            description: (item: { sex: string; country: string }) => {
+              return `${item.sex} - ${item.country}`
+            },
+            datasourceId: 'dyaqkvxo36199sn6yd7saegdf',
+          },
+          {
+            title: 'Title',
+            description: 'Genre',
+            path: 'ip_address',
+            datasourceId: 'jrmilfazf47z8xq2v4n8xs6ww',
+          },
+        ]}
+        sourcesMap={[
+          {
+            title: 'name',
+            description: (item: { sex: string; country: string }) => {
+              return `${item.sex} - ${item.country}`
+            },
+            path: 'country',
+            datasourceId: 'dyaqkvxo36199sn6yd7saegdf',
+          },
+          {
+            title: 'Title',
+            description: 'Genre',
+            path: 'Poster',
+            datasourceId: 'jrmilfazf47z8xq2v4n8xs6ww',
+          },
+        ]}
+      />
       <Tabs.Root className="TabsRoot" defaultValue="tab1">
         <Tabs.List className="TabsList" aria-label="Manage your account">
           <Tabs.Trigger className="TabsTrigger" value="tab1">
@@ -35,28 +69,6 @@ const Orama = () => {
             <OramaChatBox
               oramaCoreClientInstance={clientInstance}
               clearChatOnDisconnect={false}
-              resultMap={[
-                {
-                  title: 'name',
-                  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-                  description: (item: any) => {
-                    return `${item.sex} - ${item.country}`
-                  },
-                  datasourceId: 'dyaqkvxo36199sn6yd7saegdf',
-                },
-                {
-                  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-                  title: (item: any) => {
-                    return item.Title
-                  },
-                  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-                  description: (item: any) => {
-                    return item.Description
-                  },
-                  path: 'ip_address',
-                  datasourceId: 'jrmilfazf47z8xq2v4n8xs6ww',
-                },
-              ]}
               sourcesMap={{
                 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
                 title: (item: any, datasourceId) => {

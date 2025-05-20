@@ -35,7 +35,10 @@ export type ResultMap = ResultMapItem | ResultMapItem[]
 
 export type SourcesMapKeys = keyof Omit<SearchResult, 'id'>
 
-export type SourcesMapRenderFunction = (item: unknown, datasourceId: string) => string
+// biome-ignore lint/suspicious/noExplicitAny: Indeed ANY object. unknown would cause extra work for the user
+type NewType = (item: any, datasourceId: string) => string
+
+export type SourcesMapRenderFunction = NewType
 
 export type SourcesMapItem = { [K in SourcesMapKeys]?: string | SourcesMapRenderFunction } & {
   datasourceId?: string
