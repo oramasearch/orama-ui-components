@@ -22,9 +22,7 @@ const Orama = () => {
         resultMap={[
           {
             title: 'name',
-            description: (item: { sex: string; country: string }) => {
-              return `${item.sex} - ${item.country}`
-            },
+            description: (item: { sex: string; country: string }) => `${item.sex} - ${item.country}`,
             datasourceId: 'dyaqkvxo36199sn6yd7saegdf',
           },
           {
@@ -37,9 +35,7 @@ const Orama = () => {
         sourcesMap={[
           {
             title: 'name',
-            description: (item: { sex: string; country: string }) => {
-              return `${item.sex} - ${item.country}`
-            },
+            description: (item: { sex: string; country: string }) => `${item.sex} - ${item.country}`,
             path: 'country',
             datasourceId: 'dyaqkvxo36199sn6yd7saegdf',
           },

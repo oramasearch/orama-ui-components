@@ -43,25 +43,20 @@ const ChatBoxPage = () => {
         <h2 style={{ textAlign: 'center' }}>CHAT BOX</h2>
         <div className="component-row">
           <OramaChatBox
-            sourcesMap={{
-              title: (item: any, datasourceId) => {
-                console.log(item)
-                if (datasourceId === 'dyaqkvxo36199sn6yd7saegdf') {
-                  return item.name
-                }
-
-                return item.Title
+            sourcesMap={[
+              {
+                title: 'name',
+                description: (item: { sex: string; country: string }) => `${item.sex} - ${item.country}`,
+                path: 'country',
+                datasourceId: 'dyaqkvxo36199sn6yd7saegdf',
               },
-              // biome-ignore lint/suspicious/noExplicitAny: Indeed uknown data
-              description: (item: any, datasourceId) => {
-                if (datasourceId === 'dyaqkvxo36199sn6yd7saegdf') {
-                  return `${item.sex} - ${item.country}`
-                }
-
-                return item.Description
+              {
+                title: 'Title',
+                description: 'Genre',
+                path: 'Poster',
+                datasourceId: 'jrmilfazf47z8xq2v4n8xs6ww',
               },
-              path: 'country',
-            }}
+            ]}
             oramaCoreClientInstance={collectionManager}
             style={{ height: '600px' }}
             onAnswerSourceClick={(e: Event) => console.log(e)}

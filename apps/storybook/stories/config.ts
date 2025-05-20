@@ -185,44 +185,33 @@ const demoIndexes: DemoIndexConfig = {
     }),
     searchPlaceholder: 'As your question to a index with multiple datasources',
     suggestions: ['How old is Emma?', 'When Gotham was released?', 'Who is the writer of Game Of Thrones?'],
-    // Examples between resultMap and Source map are interchangeable
     resultMap: [
       {
         title: 'name',
-        description: (item) => {
-          return `${item.sex} - ${item.country}`
-        },
+        description: (item: { sex: string; country: string }) => `${item.sex} - ${item.country}`,
         datasourceId: 'dyaqkvxo36199sn6yd7saegdf',
       },
       {
-        title: (item) => {
-          return item.Title
-        },
-        description: (item) => {
-          return item.Genre
-        },
+        title: 'Title',
+        description: 'Genre',
         path: 'ip_address',
         datasourceId: 'jrmilfazf47z8xq2v4n8xs6ww',
       },
     ],
-    sourcesMap: {
-      title: (item: any, datasourceId) => {
-        if (datasourceId === 'dyaqkvxo36199sn6yd7saegdf') {
-          return item.name
-        }
-
-        return item.Title
+    sourcesMap: [
+      {
+        title: 'name',
+        description: (item: { sex: string; country: string }) => `${item.sex} - ${item.country}`,
+        path: 'country',
+        datasourceId: 'dyaqkvxo36199sn6yd7saegdf',
       },
-      // biome-ignore lint/suspicious/noExplicitAny: Indeed uknown data
-      description: (item: any, datasourceId) => {
-        if (datasourceId === 'dyaqkvxo36199sn6yd7saegdf') {
-          return `${item.sex} - ${item.country}`
-        }
-
-        return item.Genre
+      {
+        title: 'Title',
+        description: 'Genre',
+        path: 'Poster',
+        datasourceId: 'jrmilfazf47z8xq2v4n8xs6ww',
       },
-      path: 'country',
-    },
+    ],
   },
 }
 
