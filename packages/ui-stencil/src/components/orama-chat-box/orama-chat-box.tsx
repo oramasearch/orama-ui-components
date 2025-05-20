@@ -131,6 +131,7 @@ export class ChatBox {
   @Watch('themeConfig')
   @Watch('colorScheme')
   @Watch('oramaCoreClientInstance')
+  @Watch('clientInstance')
   watchHandler() {
     // This is a naive way to check if it is safe to eval this method (after componentWillLoad)
     if (!this.chatStore) {

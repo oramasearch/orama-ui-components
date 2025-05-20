@@ -48,13 +48,13 @@ const ChatBoxPage = () => {
                 title: 'name',
                 description: (item: { sex: string; country: string }) => `${item.sex} - ${item.country}`,
                 path: 'country',
-                datasourceId: 'dyaqkvxo36199sn6yd7saegdf',
+                datasourceId: 'afvto8jyhbt1we54zait7nmo',
               },
               {
                 title: 'Title',
                 description: 'Genre',
                 path: 'Poster',
-                datasourceId: 'jrmilfazf47z8xq2v4n8xs6ww',
+                datasourceId: 'qn426ptegyc8owv9y0kd3imj',
               },
             ]}
             oramaCoreClientInstance={collectionManager}
@@ -85,41 +85,30 @@ const SearchBoxPage = () => {
             resultMap={[
               {
                 title: 'name',
-                description: (item) => {
-                  return `${item.sex} - ${item.country}`
-                },
-                datasourceId: 'dyaqkvxo36199sn6yd7saegdf',
+                description: (item: { sex: string; country: string }) => `${item.sex} - ${item.country}`,
+                datasourceId: 'afvto8jyhbt1we54zait7nmo',
               },
               {
-                title: (item) => {
-                  return item.Title
-                },
-                description: (item) => {
-                  return item.Description
-                },
+                title: 'Title',
+                description: 'Genre',
                 path: 'ip_address',
-                datasourceId: 'jrmilfazf47z8xq2v4n8xs6ww',
+                datasourceId: 'qn426ptegyc8owv9y0kd3imj',
               },
             ]}
-            sourcesMap={{
-              title: (item: any, datasourceId) => {
-                console.log(item)
-                if (datasourceId === 'dyaqkvxo36199sn6yd7saegdf') {
-                  return item.name
-                }
-
-                return item.Title
+            sourcesMap={[
+              {
+                title: 'name',
+                description: (item: { sex: string; country: string }) => `${item.sex} - ${item.country}`,
+                path: 'country',
+                datasourceId: 'afvto8jyhbt1we54zait7nmo',
               },
-              // biome-ignore lint/suspicious/noExplicitAny: Indeed uknown data
-              description: (item: any, datasourceId) => {
-                if (datasourceId === 'dyaqkvxo36199sn6yd7saegdf') {
-                  return `${item.sex} - ${item.country}`
-                }
-
-                return item.Description
+              {
+                title: 'Title',
+                description: 'Genre',
+                path: 'Poster',
+                datasourceId: 'qn426ptegyc8owv9y0kd3imj',
               },
-              path: 'country',
-            }}
+            ]}
             onModalClosed={() => {
               console.log('closed')
             }}

@@ -189,6 +189,10 @@ export namespace Components {
          */
         "chatPlaceholder"?: string;
         /**
+          * Clear chat on disconnect
+         */
+        "clearChatOnDisconnect"?: boolean;
+        /**
           * Orama Instance or CollectionManager
          */
         "clientInstance"?: OramaClient | AnyOrama;
@@ -240,6 +244,10 @@ export namespace Components {
         "open": boolean;
         "oramaCoreClientInstance"?: CollectionManager;
         /**
+          * Prompt for the search box
+         */
+        "prompt"?: string;
+        /**
           * Display automatic chat suggestions
          */
         "relatedQueries"?: number;
@@ -275,6 +283,10 @@ export namespace Components {
           * List of suggestions to show when the input is empty
          */
         "suggestions"?: string[];
+        /**
+          * System prompts to be used for the chat
+         */
+        "systemPrompts"?: string[];
         /**
           * Component theme customization
          */
@@ -901,6 +913,10 @@ declare namespace LocalJSX {
          */
         "chatPlaceholder"?: string;
         /**
+          * Clear chat on disconnect
+         */
+        "clearChatOnDisconnect"?: boolean;
+        /**
           * Orama Instance or CollectionManager
          */
         "clientInstance"?: OramaClient | AnyOrama;
@@ -989,6 +1005,10 @@ declare namespace LocalJSX {
         "open"?: boolean;
         "oramaCoreClientInstance"?: CollectionManager;
         /**
+          * Prompt for the search box
+         */
+        "prompt"?: string;
+        /**
           * Display automatic chat suggestions
          */
         "relatedQueries"?: number;
@@ -1024,6 +1044,10 @@ declare namespace LocalJSX {
           * List of suggestions to show when the input is empty
          */
         "suggestions"?: string[];
+        /**
+          * System prompts to be used for the chat
+         */
+        "systemPrompts"?: string[];
         /**
           * Component theme customization
          */

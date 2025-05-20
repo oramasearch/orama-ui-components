@@ -2,11 +2,33 @@ import type { Components } from '@orama/wc-components'
 import { OramaClient } from '@oramacloud/client'
 import { CollectionManager } from '@orama/core'
 import { create, insert } from '@orama/orama'
+import { pluginSecureProxy } from '@orama/plugin-secure-proxy'
 
-export type DemoIndexConfig = Record<string, Components.OramaSearchBox>
+export type DemoIndexConfig = Record<
+  string,
+  (Components.OramaSearchBox | Components.OramaChatBox) & {
+    getOramaJSDatabase?: () => ReturnType<typeof createOramaJSDatabase>
+  }
+>
 
 // Create an Orama.js database for the OSS example
 const createOramaJSDatabase = async () => {
+  const secureProxy = await pluginSecureProxy({
+    apiKey: 'y7kclx34-h_ktyBa5t7F2hgFK=uZc4C1',
+    embeddings: {
+      model: 'openai/text-embedding-ada-002',
+      defaultProperty: 'embeddings',
+      onInsert: {
+        generate: true,
+        properties: ['description'],
+        verbose: true,
+      },
+    },
+    chat: {
+      model: 'openai/gpt-3.5-turbo',
+    },
+  })
+
   // Create a new database
   const db = await create({
     schema: {
@@ -15,6 +37,7 @@ const createOramaJSDatabase = async () => {
       category: 'string',
       url: 'string',
     },
+    plugins: [secureProxy],
   })
 
   // Insert some sample documents
@@ -56,20 +79,12 @@ const createOramaJSDatabase = async () => {
   return db
 }
 
-// Create the database instance
-let oramaJSDatabase: Awaited<ReturnType<typeof createOramaJSDatabase>> | undefined = undefined
-createOramaJSDatabase().then((db) => {
-  oramaJSDatabase = db
-})
+export type OramaDb = Awaited<ReturnType<typeof createOramaJSDatabase>>
+export type CreateOramaDbResult = ReturnType<typeof createOramaJSDatabase>
 
 const demoIndexes: DemoIndexConfig = {
   orama: {
     open: true,
-    // index: {
-    //   api_key: 'LerNlbp6379jVKaPs4wt2nZT4MJZbU1J',
-    //   endpoint: 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd',
-    // },
-    // Uncomment this line to use the OramaClient instance and comment the index prop
     clientInstance: new OramaClient({
       api_key: 'LerNlbp6379jVKaPs4wt2nZT4MJZbU1J',
       endpoint: 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd',
@@ -89,31 +104,31 @@ const demoIndexes: DemoIndexConfig = {
     },
   },
 
-  oramaCore: {
-    open: true,
-    oramaCoreClientInstance: new CollectionManager({
-      url: 'https://oramacore.orama.foo',
-      collectionID: 'cxlenmho72jp3qpbdphbmfdn',
-      readAPIKey: 'caTS1G81uC8uBoWICSQYzmGjGVBCqxrf',
-    }),
-    searchPlaceholder: 'What do you want to learn about Orama?',
-    sourceBaseUrl: 'https://docs.orama.com',
-    sourcesMap: {
-      title: 'title',
-      description: 'content',
-    },
-    suggestions: ['What is Orama?', 'Does Orama have an integration with Strapi?', 'How to create an answer session?'],
-    facetProperty: 'category',
-    resultMap: {
-      title: 'title',
-      description: 'content',
-      section: 'category',
-    },
-  },
+  // oramaCore: {
+  //   open: true,
+  //   oramaCoreClientInstance: new CollectionManager({
+  //     url: 'https://oramacore.orama.foo',
+  //     collectionID: 'cxlenmho72jp3qpbdphbmfdn',
+  //     readAPIKey: 'caTS1G81uC8uBoWICSQYzmGjGVBCqxrf',
+  //   }),
+  //   searchPlaceholder: 'What do you want to learn about Orama?',
+  //   sourceBaseUrl: 'https://docs.orama.com',
+  //   sourcesMap: {
+  //     title: 'title',
+  //     description: 'content',
+  //   },
+  //   suggestions: ['What is Orama?', 'Does Orama have an integration with Strapi?', 'How to create an answer session?'],
+  //   facetProperty: 'category',
+  //   resultMap: {
+  //     title: 'title',
+  //     description: 'content',
+  //     section: 'category',
+  //   },
+  // },
+  // Use the Orama.js database instance
   oramaJS: {
+    getOramaJSDatabase: createOramaJSDatabase,
     open: true,
-    // Use the Orama.js database instance
-    clientInstance: oramaJSDatabase,
     sourceBaseUrl: 'https://docs.orama.com',
     sourcesMap: {
       title: 'title',
@@ -125,6 +140,11 @@ const demoIndexes: DemoIndexConfig = {
       title: 'title',
       description: 'content',
       section: 'category',
+    },
+    dictionary: {
+      chatPlaceholder: 'Ask about our documentation...',
+      initErrorChat: 'Chat service could not be initialized',
+      disclaimer: 'Orama can make mistakes. Please verify the information.',
     },
     themeConfig: {
       colors: {
@@ -189,13 +209,13 @@ const demoIndexes: DemoIndexConfig = {
       {
         title: 'name',
         description: (item: { sex: string; country: string }) => `${item.sex} - ${item.country}`,
-        datasourceId: 'dyaqkvxo36199sn6yd7saegdf',
+        datasourceId: 'afvto8jyhbt1we54zait7nmo',
       },
       {
         title: 'Title',
         description: 'Genre',
         path: 'ip_address',
-        datasourceId: 'jrmilfazf47z8xq2v4n8xs6ww',
+        datasourceId: 'qn426ptegyc8owv9y0kd3imj',
       },
     ],
     sourcesMap: [
@@ -203,13 +223,13 @@ const demoIndexes: DemoIndexConfig = {
         title: 'name',
         description: (item: { sex: string; country: string }) => `${item.sex} - ${item.country}`,
         path: 'country',
-        datasourceId: 'dyaqkvxo36199sn6yd7saegdf',
+        datasourceId: 'afvto8jyhbt1we54zait7nmo',
       },
       {
         title: 'Title',
         description: 'Genre',
         path: 'Poster',
-        datasourceId: 'jrmilfazf47z8xq2v4n8xs6ww',
+        datasourceId: 'qn426ptegyc8owv9y0kd3imj',
       },
     ],
   },

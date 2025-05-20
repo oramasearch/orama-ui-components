@@ -23,13 +23,13 @@ const Orama = () => {
           {
             title: 'name',
             description: (item: { sex: string; country: string }) => `${item.sex} - ${item.country}`,
-            datasourceId: 'dyaqkvxo36199sn6yd7saegdf',
+            datasourceId: 'afvto8jyhbt1we54zait7nmo',
           },
           {
             title: 'Title',
             description: 'Genre',
             path: 'ip_address',
-            datasourceId: 'jrmilfazf47z8xq2v4n8xs6ww',
+            datasourceId: 'qn426ptegyc8owv9y0kd3imj',
           },
         ]}
         sourcesMap={[
@@ -37,13 +37,13 @@ const Orama = () => {
             title: 'name',
             description: (item: { sex: string; country: string }) => `${item.sex} - ${item.country}`,
             path: 'country',
-            datasourceId: 'dyaqkvxo36199sn6yd7saegdf',
+            datasourceId: 'afvto8jyhbt1we54zait7nmo',
           },
           {
             title: 'Title',
             description: 'Genre',
             path: 'Poster',
-            datasourceId: 'jrmilfazf47z8xq2v4n8xs6ww',
+            datasourceId: 'qn426ptegyc8owv9y0kd3imj',
           },
         ]}
       />
@@ -69,7 +69,7 @@ const Orama = () => {
                 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
                 title: (item: any, datasourceId) => {
                   console.log(item)
-                  if (datasourceId === 'dyaqkvxo36199sn6yd7saegdf') {
+                  if (datasourceId === 'afvto8jyhbt1we54zait7nmo') {
                     return item.name
                   }
 
@@ -77,7 +77,7 @@ const Orama = () => {
                 },
                 // biome-ignore lint/suspicious/noExplicitAny: Indeed uknown data
                 description: (item: any, datasourceId) => {
-                  if (datasourceId === 'dyaqkvxo36199sn6yd7saegdf') {
+                  if (datasourceId === 'afvto8jyhbt1we54zait7nmo') {
                     return `${item.sex} - ${item.country}`
                   }
 

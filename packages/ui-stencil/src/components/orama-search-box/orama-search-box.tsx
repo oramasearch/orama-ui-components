@@ -116,6 +116,10 @@ export class SearchBox {
    */
   @Prop() highlightDescription?: HighlightOptions | false = false
   /**
+   * Prompt for the search box
+   */
+  @Prop() prompt?: string
+  /**
    * Placeholder for chat input
    */
   @Prop() chatPlaceholder?: string
@@ -139,6 +143,14 @@ export class SearchBox {
    * Callback function used on every AI Chat link
    */
   @Prop() chatMarkdownLinkHref?: ChatMarkdownLinkHref
+  /**
+   * Clear chat on disconnect
+   */
+  @Prop() clearChatOnDisconnect?: boolean = true
+  /**
+   * System prompts to be used for the chat
+   */
+  @Prop() systemPrompts?: string[]
   /**
    * Callback function used on every AI Chat link target
    */
@@ -254,7 +266,7 @@ export class SearchBox {
       return
     }
 
-    this.startServices()
+    this.bootstrap()
   }
 
   @Watch('themeConfig')
@@ -314,6 +326,14 @@ export class SearchBox {
     return initOramaClient(this.index)
   }
 
+  bootstrap() {
+    this.searchStore.state.facetProperty = this.facetProperty
+    this.searchStore.state.resultMap = this.resultMap
+    this.searchStore.state.searchParams = this.searchParams
+
+    this.startServices()
+  }
+
   startServices() {
     if (!this.index && !this.clientInstance && !this.oramaCoreClientInstance) {
       // Skip initialization if no index or clientInstance is provided
@@ -331,15 +351,8 @@ export class SearchBox {
   }
 
   componentWillLoad() {
-    // TODO: We probable want to keep these props below whithin the respective service
-    // instance property. I seems to make sense to pass it as initialization prop.
-    // Same goes for any other Chat init prop. Lets talk about it as well, please.
-    this.searchStore.state.facetProperty = this.facetProperty
-    this.searchStore.state.resultMap = this.resultMap
-    this.searchStore.state.searchParams = this.searchParams
-
     this.htmlElement.id = this.componentID
-    this.startServices()
+    this.bootstrap()
 
     this.globalStore.state.open = this.open
 
@@ -476,6 +489,9 @@ export class SearchBox {
           chatMarkdownLinkTarget={this.chatMarkdownLinkTarget}
           disclaimer={this.disclaimer}
           dictionary={this.internalTextDictionary}
+          systemPrompts={this.systemPrompts}
+          prompt={this.prompt}
+          clearChatOnDisconnect={this.clearChatOnDisconnect}
           relatedQueries={this.relatedQueries}
         />
       </Fragment>

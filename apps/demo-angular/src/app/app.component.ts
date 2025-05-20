@@ -20,13 +20,13 @@ export class AppComponent {
       title: 'name',
       description: (item: { sex: string; country: string }) => `${item.sex} - ${item.country}`,
       path: 'country',
-      datasourceId: 'dyaqkvxo36199sn6yd7saegdf',
+      datasourceId: 'afvto8jyhbt1we54zait7nmo',
     },
     {
       title: 'Title',
       description: 'Genre',
       path: 'Poster',
-      datasourceId: 'jrmilfazf47z8xq2v4n8xs6ww',
+      datasourceId: 'qn426ptegyc8owv9y0kd3imj',
     },
   ]
 }

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/web-components'
+import type { Meta, StoryContext, StoryObj } from '@storybook/web-components'
 import type { Components } from '@orama/wc-components'
 import demoIndexes from '../config'
 import { html } from 'lit-html'
@@ -80,105 +80,101 @@ const meta: Meta<TemplateProps> = {
 }
 export default meta
 
-const Template = ({
-  preset,
-  chatPlaceholder,
-  searchPlaceholder,
-  colorScheme,
-  disableChat,
-  suggestions,
-  open,
-  facetProperty,
-  themeConfig,
-  index,
-  clientInstance,
-  sourceBaseUrl,
-  sourcesMap,
-  resultMap,
-  dictionary,
-  showKeyboardShortcuts,
-  oramaCoreClientInstance,
-}: TemplateProps) => {
+const Template = (args: TemplateProps, context: StoryContext) => {
+  const { preset } = args
+  const {
+    loaded: { oramaJsDatabaseInstance },
+  } = context
+
+  const presetOrOverrideData = (key: OptionKey) => {
+    return args[key] ?? preset[key]
+  }
+
   return html`<div>
       <div style="width: 240px">
         <orama-search-button>Search...</orama-search-button>
       </div>
       <orama-search-box
-      .open=${open || preset?.open}
-      .facetProperty=${facetProperty ? preset?.facetProperty : undefined}
-      .resultMap=${resultMap || preset?.resultMap}
-      .colorScheme=${colorScheme}
-      .themeConfig=${themeConfig || preset.themeConfig}
-      .index=${preset.oramaCoreClientInstance ? undefined : index || preset.index}
-      .clientInstance=${preset.oramaCoreClientInstance ? undefined : clientInstance || preset.clientInstance}
-      .oramaCoreClientInstance=${oramaCoreClientInstance || preset.oramaCoreClientInstance}
-      .suggestions=${suggestions || preset?.suggestions}
-      .sourceBaseUrl=${sourceBaseUrl || preset?.sourceBaseUrl}
-      .sourcesMap=${sourcesMap || preset?.sourcesMap}
-      .disableChat=${disableChat}
-      .chatPlaceholder=${chatPlaceholder}
-      .searchPlaceholder=${searchPlaceholder || preset?.searchPlaceholder}
-      .dictionary=${dictionary}
-      .highlightTitle=${preset?.highlightTitle}
-      .highlightDescription=${preset?.highlightDescription}
-      .linksTarget=${preset?.linksTarget}
-      .searchParams=${preset?.searchParams}
-      .showKeyboardShortcuts=${showKeyboardShortcuts}
-      .relatedQueries=${preset?.relatedQueries}
+      .open=${presetOrOverrideData('open')}
+      .facetProperty=${presetOrOverrideData('facetProperty')}
+      .resultMap=${presetOrOverrideData('resultMap')}
+      .colorScheme=${presetOrOverrideData('colorScheme')}
+      .themeConfig=${presetOrOverrideData('themeConfig')}
+      .index=${presetOrOverrideData('index')}
+      .clientInstance=${presetOrOverrideData('clientInstance') || oramaJsDatabaseInstance}
+      .oramaCoreClientInstance=${presetOrOverrideData('oramaCoreClientInstance')}
+      .suggestions=${presetOrOverrideData('suggestions')}
+      .sourceBaseUrl=${presetOrOverrideData('sourceBaseUrl')}
+      .sourcesMap=${presetOrOverrideData('sourcesMap')}
+      .disableChat=${presetOrOverrideData('disableChat')}
+      .chatPlaceholder=${presetOrOverrideData('chatPlaceholder')}
+      .searchPlaceholder=${presetOrOverrideData('searchPlaceholder')}
+      .dictionary=${presetOrOverrideData('dictionary')}
+      .highlightTitle=${presetOrOverrideData('highlightTitle')}
+      .highlightDescription=${presetOrOverrideData('highlightDescription')}
+      .linksTarget=${presetOrOverrideData('linksTarget')}
+      .searchParams=${presetOrOverrideData('searchParams')}
+      .showKeyboardShortcuts=${presetOrOverrideData('showKeyboardShortcuts')}
+      .relatedQueries=${presetOrOverrideData('relatedQueries')}
     ></orama-search-box></div>`
 }
 
-const TemplateAsEmbed = ({
-  preset,
-  chatPlaceholder,
-  searchPlaceholder,
-  colorScheme,
-  disableChat,
-  open,
-  facetProperty,
-  resultMap,
-  themeConfig,
-  index,
-  clientInstance,
-  oramaCoreClientInstance,
-  sourceBaseUrl,
-  suggestions,
-  sourcesMap,
-  dictionary,
-  showKeyboardShortcuts,
-}: TemplateProps) => {
+type OptionKey = keyof Components.OramaSearchBox
+
+const TemplateAsEmbed = (args: TemplateProps, context: StoryContext) => {
+  const { preset } = args
+  const {
+    loaded: { oramaJsDatabaseInstance },
+  } = context
+
+  const presetOrOverrideData = (key: OptionKey) => {
+    return args[key] ?? preset[key]
+  }
+
   return html`<div style="height: 420px">
     <orama-search-box
       layout="embed"
-      .open=${open || preset?.open}
-      .facetProperty=${facetProperty || preset?.facetProperty}
-      .resultMap=${resultMap || preset?.resultMap}
-      .colorScheme=${colorScheme}
-      .themeConfig=${themeConfig || preset.themeConfig}
-      .index=${preset.oramaCoreClientInstance ? undefined : index || preset.index}
-      .clientInstance=${preset.oramaCoreClientInstance ? undefined : clientInstance || preset.clientInstance}
-      .oramaCoreClientInstance=${oramaCoreClientInstance || preset?.oramaCoreClientInstance}
-      .suggestions=${suggestions || preset?.suggestions}
-      .sourceBaseUrl=${sourceBaseUrl || preset?.sourceBaseUrl}
-      .sourcesMap=${sourcesMap || preset?.sourcesMap}
-      .disableChat=${disableChat}
-      .chatPlaceholder=${chatPlaceholder}
-      .searchPlaceholder=${searchPlaceholder || preset?.searchPlaceholder}
-      .dictionary=${dictionary}
-      .highlightTitle=${preset?.highlightTitle}
-      .highlightDescription=${preset?.highlightDescription}
-      .linksTarget=${preset?.linksTarget}
-      .searchParams=${preset?.searchParams}
-      .showKeyboardShortcuts=${showKeyboardShortcuts}
-      .relatedQueries=${preset?.relatedQueries}
+      .open=${presetOrOverrideData('open')}
+      .facetProperty=${presetOrOverrideData('facetProperty')}
+      .resultMap=${presetOrOverrideData('resultMap')}
+      .colorScheme=${presetOrOverrideData('colorScheme')}
+      .themeConfig=${presetOrOverrideData('themeConfig')}
+      .index=${presetOrOverrideData('index')}
+      .clientInstance=${presetOrOverrideData('clientInstance') || oramaJsDatabaseInstance}
+      .oramaCoreClientInstance=${presetOrOverrideData('oramaCoreClientInstance')}
+      .suggestions=${presetOrOverrideData('suggestions')}
+      .sourceBaseUrl=${presetOrOverrideData('sourceBaseUrl')}
+      .sourcesMap=${presetOrOverrideData('sourcesMap')}
+      .disableChat=${presetOrOverrideData('disableChat')}
+      .chatPlaceholder=${presetOrOverrideData('chatPlaceholder')}
+      .searchPlaceholder=${presetOrOverrideData('searchPlaceholder')}
+      .dictionary=${presetOrOverrideData('dictionary')}
+      .highlightTitle=${presetOrOverrideData('highlightTitle')}
+      .highlightDescription=${presetOrOverrideData('highlightDescription')}
+      .linksTarget=${presetOrOverrideData('linksTarget')}
+      .searchParams=${presetOrOverrideData('searchParams')}
+      .showKeyboardShortcuts=${presetOrOverrideData('showKeyboardShortcuts')}
+      .relatedQueries=${presetOrOverrideData('relatedQueries')}
     ></orama-search-box>
   </div>`
 }
 
-type Story = StoryObj<Components.OramaSearchBox & { preset: keyof DemoIndexConfig }>
+type Story = StoryObj<
+  Components.OramaSearchBox & { preset: Omit<keyof DemoIndexConfig, keyof Components.OramaChatBox> }
+>
 
 export const SearchBoxAsModal: Story = {
   render: Template as any,
+  loaders: [
+    async ({ args }) => {
+      if ((args.preset as any).getOramaJSDatabase) {
+        const oramaJsDatabaseInstance = await (args.preset as any).getOramaJSDatabase()
+        return { oramaJsDatabaseInstance }
+      }
+
+      return { oramaJsDatabaseInstance: undefined }
+    },
+  ],
   args: {
     preset: 'orama',
     colorScheme: 'light',
@@ -204,6 +200,16 @@ export const SearchBoxAsModal: Story = {
 
 export const SearchBoxAsEmbed: Story = {
   render: TemplateAsEmbed as any,
+  loaders: [
+    async ({ args }) => {
+      if ((args.preset as any).getOramaJSDatabase) {
+        const oramaJsDatabaseInstance = await (args.preset as any).getOramaJSDatabase()
+        return { oramaJsDatabaseInstance }
+      }
+
+      return { oramaJsDatabaseInstance: undefined }
+    },
+  ],
   args: {
     preset: 'orama',
     colorScheme: 'light',
