@@ -57,11 +57,7 @@ const createOramaJSDatabase = async () => {
 }
 
 // Create the database instance
-// biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
-let oramaJSDatabase
-createOramaJSDatabase().then((db) => {
-  oramaJSDatabase = db
-})
+const oramaJSDatabase = await createOramaJSDatabase()
 
 const demoIndexes: DemoIndexConfig = {
   orama: {
@@ -75,6 +71,7 @@ const demoIndexes: DemoIndexConfig = {
       api_key: 'LerNlbp6379jVKaPs4wt2nZT4MJZbU1J',
       endpoint: 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd',
     }),
+    searchPlaceholder: 'What do you want to learn about Orama?',
     sourceBaseUrl: 'https://docs.orama.com',
     sourcesMap: {
       title: 'title',
@@ -92,10 +89,11 @@ const demoIndexes: DemoIndexConfig = {
   oramaCore: {
     open: true,
     oramaCoreClientInstance: new CollectionManager({
-      url: 'https://collections.orama.com',
-      collectionID: 'str9h2sfs28um6xr04rh5hyj',
-      readAPIKey: 'WEfIzD90DFPvByJhMp3bxzU7fWY8atlm',
+      url: 'https://oramacore.orama.foo',
+      collectionID: 'cxlenmho72jp3qpbdphbmfdn',
+      readAPIKey: 'caTS1G81uC8uBoWICSQYzmGjGVBCqxrf',
     }),
+    searchPlaceholder: 'What do you want to learn about Orama?',
     sourceBaseUrl: 'https://docs.orama.com',
     sourcesMap: {
       title: 'title',
@@ -143,6 +141,7 @@ const demoIndexes: DemoIndexConfig = {
       api_key: 'yl2JSnjLNBV6FVfUWEyadpjFr6KzPiDR',
       endpoint: 'https://cloud.orama.run/v1/indexes/recipes-m7w9mm',
     },
+    searchPlaceholder: 'What do you want to cook today?',
     sourcesMap: {
       description: 'category',
     },
@@ -172,6 +171,54 @@ const demoIndexes: DemoIndexConfig = {
     resultMap: {
       description: 'title',
       section: 'category',
+    },
+  },
+  multipleDatasources: {
+    open: true,
+    oramaCoreClientInstance: new CollectionManager({
+      url: 'https://collections.orama.com',
+      collectionID: 'ncd7zwmirytw1o47dogru4bz',
+      readAPIKey: 'df00PbXP0dbRUcJgFeFZSNNb7AhsqCw8',
+    }),
+    searchPlaceholder: 'As your question to a index with multiple datasources',
+    suggestions: ['How old is Emma?', 'When Gotham was released?', 'Who is the writer of Game Of Thrones?'],
+    // Examples between resultMap and Source map are interchangeable
+    resultMap: [
+      {
+        title: 'name',
+        description: (item) => {
+          return `${item.sex} - ${item.country}`
+        },
+        datasourceId: 'dyaqkvxo36199sn6yd7saegdf',
+      },
+      {
+        title: (item) => {
+          return item.Title
+        },
+        description: (item) => {
+          return item.Genre
+        },
+        path: 'ip_address',
+        datasourceId: 'jrmilfazf47z8xq2v4n8xs6ww',
+      },
+    ],
+    sourcesMap: {
+      title: (item: any, datasourceId) => {
+        if (datasourceId === 'dyaqkvxo36199sn6yd7saegdf') {
+          return item.name
+        }
+
+        return item.Title
+      },
+      // biome-ignore lint/suspicious/noExplicitAny: Indeed uknown data
+      description: (item: any, datasourceId) => {
+        if (datasourceId === 'dyaqkvxo36199sn6yd7saegdf') {
+          return `${item.sex} - ${item.country}`
+        }
+
+        return item.Genre
+      },
+      path: 'country',
     },
   },
 }

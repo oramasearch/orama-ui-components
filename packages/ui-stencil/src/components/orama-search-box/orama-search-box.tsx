@@ -571,11 +571,11 @@ export class SearchBox {
     }
 
     if (!this.searchStore.state.searchService) {
-      return <orama-text as="p">{this.getText('initErrorSearch')}</orama-text>
+      return null
     }
 
     if (!this.chatStore.state.chatService) {
-      return <orama-text as="p">{this.getText('initErrorChat')}</orama-text>
+      return null
     }
 
     return this.layout === 'modal' ? this.getModalLayout() : this.getEmbedLayout()

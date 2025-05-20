@@ -45,13 +45,11 @@
 
 ### Depends on
 
-- [orama-text](../internal/orama-text)
 - [orama-chat](../internal/orama-chat)
 
 ### Graph
 ```mermaid
 graph TD;
-  orama-chat-box --> orama-text
   orama-chat-box --> orama-chat
   orama-chat --> orama-chat-messages-container
   orama-chat --> orama-suggestions
