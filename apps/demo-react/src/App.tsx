@@ -3,9 +3,9 @@ import './App.css'
 import { BrowserRouter, Routes, Route, NavLink, Navigate } from 'react-router'
 import { CollectionManager } from '@orama/core'
 
-const ORAMACORE_ENDPOINT = 'https://oramacore.orama.foo'
-const ORAMACORE_COLLECTION_ID = 'cxlenmho72jp3qpbdphbmfdn'
-const ORAMACORE_READ_API_KEY = 'caTS1G81uC8uBoWICSQYzmGjGVBCqxrf'
+const ORAMACORE_ENDPOINT = 'https://collections.orama.com'
+const ORAMACORE_COLLECTION_ID = 'ncd7zwmirytw1o47dogru4bz'
+const ORAMACORE_READ_API_KEY = 'df00PbXP0dbRUcJgFeFZSNNb7AhsqCw8'
 
 // Create a CollectionManager instance
 const collectionManager = new CollectionManager({
@@ -13,7 +13,6 @@ const collectionManager = new CollectionManager({
   collectionID: ORAMACORE_COLLECTION_ID,
   readAPIKey: ORAMACORE_READ_API_KEY,
 })
-
 
 function App() {
   return (
@@ -44,7 +43,20 @@ const ChatBoxPage = () => {
         <h2 style={{ textAlign: 'center' }}>CHAT BOX</h2>
         <div className="component-row">
           <OramaChatBox
-            sourcesMap={{description: "content"}}
+            sourcesMap={[
+              {
+                title: 'name',
+                description: (item: { sex: string; country: string }) => `${item.sex} - ${item.country}`,
+                path: 'country',
+                datasourceId: 'afvto8jyhbt1we54zait7nmo',
+              },
+              {
+                title: 'Title',
+                description: 'Genre',
+                path: 'Poster',
+                datasourceId: 'qn426ptegyc8owv9y0kd3imj',
+              },
+            ]}
             oramaCoreClientInstance={collectionManager}
             style={{ height: '600px' }}
             onAnswerSourceClick={(e: Event) => console.log(e)}
@@ -68,9 +80,35 @@ const SearchBoxPage = () => {
       <main>
         <h2 style={{ textAlign: 'center' }}>SEARCH BOX</h2>
         <div className="component-row">
-        <OramaSearchButton colorScheme="system">Search</OramaSearchButton>
+          <OramaSearchButton colorScheme="system">Search</OramaSearchButton>
           <OramaSearchBox
-            resultMap={{description: "content"}}
+            resultMap={[
+              {
+                title: 'name',
+                description: (item: { sex: string; country: string }) => `${item.sex} - ${item.country}`,
+                datasourceId: 'afvto8jyhbt1we54zait7nmo',
+              },
+              {
+                title: 'Title',
+                description: 'Genre',
+                path: 'ip_address',
+                datasourceId: 'qn426ptegyc8owv9y0kd3imj',
+              },
+            ]}
+            sourcesMap={[
+              {
+                title: 'name',
+                description: (item: { sex: string; country: string }) => `${item.sex} - ${item.country}`,
+                path: 'country',
+                datasourceId: 'afvto8jyhbt1we54zait7nmo',
+              },
+              {
+                title: 'Title',
+                description: 'Genre',
+                path: 'Poster',
+                datasourceId: 'qn426ptegyc8owv9y0kd3imj',
+              },
+            ]}
             onModalClosed={() => {
               console.log('closed')
             }}

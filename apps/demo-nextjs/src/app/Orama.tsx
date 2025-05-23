@@ -5,9 +5,9 @@ import { CollectionManager } from '@orama/core'
 import { OramaChatBox, OramaSearchBox, OramaSearchButton } from '@orama/react-components'
 
 const clientInstance = new CollectionManager({
-  url: 'https://oramacore.orama.foo',
-  collectionID: 'cxlenmho72jp3qpbdphbmfdn',
-  readAPIKey: 'caTS1G81uC8uBoWICSQYzmGjGVBCqxrf',
+  url: 'https://collections.orama.com',
+  collectionID: 'ncd7zwmirytw1o47dogru4bz',
+  readAPIKey: 'df00PbXP0dbRUcJgFeFZSNNb7AhsqCw8',
 })
 
 const Orama = () => {
@@ -16,7 +16,37 @@ const Orama = () => {
   return (
     <div>
       <OramaSearchButton style={{ marginBottom: '24px' }} />
-      <OramaSearchBox oramaCoreClientInstance={clientInstance} colorScheme={'light'} />
+      <OramaSearchBox
+        oramaCoreClientInstance={clientInstance}
+        colorScheme={'light'}
+        resultMap={[
+          {
+            title: 'name',
+            description: (item: { sex: string; country: string }) => `${item.sex} - ${item.country}`,
+            datasourceId: 'afvto8jyhbt1we54zait7nmo',
+          },
+          {
+            title: 'Title',
+            description: 'Genre',
+            path: 'ip_address',
+            datasourceId: 'qn426ptegyc8owv9y0kd3imj',
+          },
+        ]}
+        sourcesMap={[
+          {
+            title: 'name',
+            description: (item: { sex: string; country: string }) => `${item.sex} - ${item.country}`,
+            path: 'country',
+            datasourceId: 'afvto8jyhbt1we54zait7nmo',
+          },
+          {
+            title: 'Title',
+            description: 'Genre',
+            path: 'Poster',
+            datasourceId: 'qn426ptegyc8owv9y0kd3imj',
+          },
+        ]}
+      />
       <Tabs.Root className="TabsRoot" defaultValue="tab1">
         <Tabs.List className="TabsList" aria-label="Manage your account">
           <Tabs.Trigger className="TabsTrigger" value="tab1">
@@ -35,6 +65,26 @@ const Orama = () => {
             <OramaChatBox
               oramaCoreClientInstance={clientInstance}
               clearChatOnDisconnect={false}
+              sourcesMap={{
+                // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+                title: (item: any, datasourceId) => {
+                  console.log(item)
+                  if (datasourceId === 'afvto8jyhbt1we54zait7nmo') {
+                    return item.name
+                  }
+
+                  return item.Title
+                },
+                // biome-ignore lint/suspicious/noExplicitAny: Indeed uknown data
+                description: (item: any, datasourceId) => {
+                  if (datasourceId === 'afvto8jyhbt1we54zait7nmo') {
+                    return `${item.sex} - ${item.country}`
+                  }
+
+                  return item.Description
+                },
+                path: 'country',
+              }}
               onClearChat={() => setInitialPrompt('')}
               onStartConversation={(e: Event) => console.log('onStartConversation', e)}
               prompt={initialPrompt}

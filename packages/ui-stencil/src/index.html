@@ -22,67 +22,119 @@
       import { CollectionManager } from 'https://esm.sh/@orama/core';
 
       const ORAMA_CORE_CONFIG = {
-        URL: 'https://oramacore.orama.foo',
-        COLLECTION_ID: 'tuhn04iqevs4vttgl865pigh',
-        READ_API_KEY: 'QaPXfBUHy4g35IUGhq0bdUc79AeXwzQb',
-      };
-
-      const ORAMA_CLOUD_CONFIG = {
-        API_KEY: 'zXwDwhqAfapCJ5WA2uHWNTjC0YeH22RU',
-        ENDPOINT: 'https://cloud.orama.run/v1/indexes/names-osgbzg',
+        URL: 'https://collections.orama.com',
+        COLLECTION_ID: 'ncd7zwmirytw1o47dogru4bz',
+        READ_API_KEY: 'df00PbXP0dbRUcJgFeFZSNNb7AhsqCw8',
       };
 
       const searchBox = document.querySelector('orama-search-box');
-      searchBox.suggestions = ['What is the email of Ramzy Hakewell? Can you generate more 15 emails adding a incremental counter on each email?'];
+      searchBox.suggestions = ['How old is Emma?'];
 
       const chatBox = document.querySelector('orama-chat-box');
       chatBox.style.height = '600px';
-      chatBox.suggestions = ['What is the email of Ramzy Hakewell? Can you generate more 15 emails adding a incremental counter on each email?'];
+      chatBox.suggestions = ['How old is Emma?'];
 
       const useOramaCore = true;
 
-      if (useOramaCore) {
-        const collectionManager = new CollectionManager({
-          url: ORAMA_CORE_CONFIG.URL,
-          collectionID: ORAMA_CORE_CONFIG.COLLECTION_ID,
-          readAPIKey: ORAMA_CORE_CONFIG.READ_API_KEY,
-        });
-        searchBox.oramaCoreClientInstance = collectionManager;
+      const collectionManager = new CollectionManager({
+        url: ORAMA_CORE_CONFIG.URL,
+        collectionID: ORAMA_CORE_CONFIG.COLLECTION_ID,
+        readAPIKey: ORAMA_CORE_CONFIG.READ_API_KEY,
+      });
+      searchBox.oramaCoreClientInstance = collectionManager;
+      chatBox.oramaCoreClientInstance = collectionManager;
 
-        chatBox.oramaCoreClientInstance = collectionManager;
-      } else {
-        searchBox.index = {
-          api_key: ORAMA_CLOUD_CONFIG.API_KEY,
-          endpoint: ORAMA_CLOUD_CONFIG.ENDPOINT,
-        };
-        searchBox.facetProperty = 'gender';
-
-        chatBox.index = {
-          api_key: ORAMA_CLOUD_CONFIG.API_KEY,
-          endpoint: ORAMA_CLOUD_CONFIG.ENDPOINT,
-        };
-      }
-
-      searchBox.resultMap = {
-        title: item => {
-          return `${item.first_name} ${item.last_name}`;
+      // Multiple result maps can be set like this
+      searchBox.resultMap = [
+        {
+          title: 'name',
+          description: item => {
+            return `${item.sex} - ${item.country}`;
+          },
+          datasourceId: 'afvto8jyhbt1we54zait7nmo',
         },
-        description: item => {
-          return `${item.email} ${item.ip_address}`;
+        {
+          title: item => {
+            return item.Title;
+          },
+          description: item => {
+            return item.Description;
+          },
+          path: 'ip_address',
+          datasourceId: 'qn426ptegyc8owv9y0kd3imj',
         },
-        path: 'ip_address',
-      };
+      ];
+
+      // Or like this
+      // searchBox.resultMap = {
+      //   title: (item, datasourceId) => {
+      //     if (datasourceId === 'afvto8jyhbt1we54zait7nmo') {
+      //       return item.name;
+      //     }
+
+      //     return item.Title;
+      //   },
+      //   description: (item, datasourceId) => {
+      //     if (datasourceId === 'afvto8jyhbt1we54zait7nmo') {
+      //       return `${item.sex} - ${item.country}`;
+      //     }
+
+      //     return item.Description;
+      //   },
+      //   datasourceId: 'afvto8jyhbt1we54zait7nmo',
+      // };
+
       searchBox.sourcesMap = {
-        title: 'first_name',
+        title: (item, datasourceId) => {
+          if (datasourceId === 'afvto8jyhbt1we54zait7nmo') {
+            return item.name;
+          }
+
+          return item.Title;
+        },
         description: 'email',
-        path: 'ip_address',
+        path: 'country',
       };
 
       chatBox.sourcesMap = {
-        title: 'first_name',
-        description: 'email',
-        path: 'ip_address',
+        title: (item, datasourceId) => {
+          if (datasourceId === 'afvto8jyhbt1we54zait7nmo') {
+            return item.name;
+          }
+
+          return item.Title;
+        },
+        description: (item, datasourceId) => {
+          if (datasourceId === 'afvto8jyhbt1we54zait7nmo') {
+            return `${item.sex} - ${item.country}`;
+          }
+
+          return item.Description;
+        },
+        path: 'country',
       };
+
+      // Or like this. Same as resultsMap
+      // chatBox.sourcesMap = [
+      //   {
+      //     title: 'name',
+      //     description: item => {
+      //       return `${item.sex} - ${item.country}`;
+      //     },
+      //     path: () => 'some_path',
+      //     datasourceId: 'afvto8jyhbt1we54zait7nmo',
+      //   },
+      //   {
+      //     title: item => {
+      //       return item.Title;
+      //     },
+      //     description: item => {
+      //       return item.Description;
+      //     },
+      //     path: () => 'some_path',
+      //     datasourceId: 'qn426ptegyc8owv9y0kd3imj',
+      //   },
+      // ];
     </script>
   </body>
 </html>

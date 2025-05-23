@@ -1,4 +1,4 @@
-import type { SourcesMap, SearchResult, OnAnswerSourceClickCallbackProps } from '@/types'
+import type { SourcesMap, SearchResult, OnAnswerSourceClickCallbackProps, SourcesMapItem, ResultMapItem } from '@/types'
 import { Component, Event, Prop, State, h, type EventEmitter } from '@stencil/core'
 import '@phosphor-icons/webcomponents/dist/icons/PhCaretLeft.mjs'
 import '@phosphor-icons/webcomponents/dist/icons/PhCaretRight.mjs'
@@ -17,11 +17,6 @@ export class OramaSources {
   @Prop() sourceBaseURL?: string = ''
   @Prop() linksTarget?: string = '_blank'
   @Prop() linksRel?: string = 'noopener noreferrer'
-  @Prop() sourcesMap?: SourcesMap = {
-    title: 'title',
-    description: 'description',
-    path: 'path',
-  }
   divElement!: HTMLDivElement
 
   @State() isCarouselScrollAtEnd = false
@@ -211,9 +206,7 @@ export class OramaSources {
             }}
           >
             {this.sources.map((source, index) => {
-              const showSources =
-                (!!source[this.sourcesMap.title] && !!source[this.sourcesMap.path]) ||
-                (!!source[this.sourcesMap.description] && !!source[this.sourcesMap.path])
+              const showSources = (!!source.title && !!source.path) || (!!source.description && !!source.path)
 
               if (!showSources) return
 
@@ -228,7 +221,7 @@ export class OramaSources {
                   }}
                 >
                   <a
-                    href={this.buildUrl(source[this.sourcesMap.path])}
+                    href={this.buildUrl(source.path)}
                     class="source"
                     target={this.linksTarget}
                     rel={this.linksRel}
@@ -236,10 +229,10 @@ export class OramaSources {
                     onClick={(onClickEvent) => this.handleItemClick(onClickEvent, source)}
                   >
                     <orama-text as="h3" styledAs="span" class="source-title">
-                      {source[this.sourcesMap.title]}
+                      {source.title}
                     </orama-text>
                     <orama-text as="p" styledAs="span" class="source-subtitle" variant="tertiary">
-                      {source[this.sourcesMap.description]}
+                      {source.description}
                     </orama-text>
                   </a>
                 </div>

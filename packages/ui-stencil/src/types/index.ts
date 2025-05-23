@@ -20,16 +20,36 @@ export type SearchResultBySection = {
 
 export type Facet = { name: string; count: number }
 
-export type ResultMapKeys = keyof Omit<SearchResult, 'id'> | 'section'
-export type ResultMapRenderFunction = (any) => string
-export type ResultItemRenderFunction = (any) => string | null | undefined
+export type ResultMapKeys = keyof Omit<SearchResult, 'id'> | 'section' | 'datasourceId'
+// biome-ignore lint/suspicious/noExplicitAny: Item is indeed not any
+export type ResultMapRenderFunction = (item: any, datasourceId: string) => string
+// biome-ignore lint/suspicious/noExplicitAny: Item is indeed not any
+export type ResultItemRenderFunction = (item: any, datasourceId: string) => string | null | undefined
 
 // TODO: callback function should have the type of the schema
-export type ResultMap = { [K in ResultMapKeys]?: string | ResultMapRenderFunction } & {
+export type ResultMapItem = { [K in ResultMapKeys]?: string | ResultMapRenderFunction } & {
   icon?: string | ResultItemRenderFunction
 }
 
-export type SourcesMap = { [K in keyof Omit<SearchResult, 'id'>]?: string }
+export type ResultMap = ResultMapItem | ResultMapItem[]
+
+export type SourcesMapKeys = keyof Omit<SearchResult, 'id'>
+
+// biome-ignore lint/suspicious/noExplicitAny: Indeed ANY object. unknown would cause extra work for the user
+type NewType = (item: any, datasourceId: string) => string
+
+export type SourcesMapRenderFunction = NewType
+
+export type SourcesMapItem = { [K in SourcesMapKeys]?: string | SourcesMapRenderFunction } & {
+  datasourceId?: string
+}
+
+export type SourceItem = {
+  title: string
+  description: string
+  path: string
+}
+export type SourcesMap = SourcesMapItem | SourcesMapItem[]
 
 export type CloudIndexConfig = {
   api_key: string
@@ -95,7 +115,7 @@ export type TSource = {
 export type TChatInteraction = {
   query: string
   response?: string
-  sources?: any // should be Results<any> from orama-client
+  sources?: SourceItem[]
   latest?: boolean
   status: TAnswerStatus
   interactionId?: string

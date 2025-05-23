@@ -61,7 +61,7 @@ export class ChatBox {
    * @example
    * // Via HTML attribute
    * <orama-chat-box dictionary='{"chatPlaceholder": "Ask about our docs..."}' />
-   * 
+   *
    * // Via JavaScript
    * const chatBox = document.querySelector('orama-chat-box');
    * chatBox.dictionary = { chatPlaceholder: "Ask about our docs..." };
@@ -88,17 +88,17 @@ export class ChatBox {
    * Gets the text for a specific key from the dictionary prop.
    * Prioritizes direct props (placeholder) for backward compatibility,
    * then falls back to the dictionary prop, and finally to the defaultTextDictionary.
-   * 
-   * @param key - The key to get the text for
+   *
+   * @param key - The key to get the text forstartChatService
    * @returns The text for the specified key
    */
   getText(key: keyof Dictionary): string {
     // Create a map of direct props for backward compatibility
     const directProps: Partial<Record<keyof Dictionary, string>> = {
       chatPlaceholder: this.placeholder,
-    };
-    
-    return getTextUtil(key, this.dictionary, directProps);
+    }
+
+    return getTextUtil(key, this.dictionary, directProps)
   }
 
   /**
@@ -130,6 +130,8 @@ export class ChatBox {
   @Watch('index')
   @Watch('themeConfig')
   @Watch('colorScheme')
+  @Watch('oramaCoreClientInstance')
+  @Watch('clientInstance')
   watchHandler() {
     // This is a naive way to check if it is safe to eval this method (after componentWillLoad)
     if (!this.chatStore) {
@@ -148,9 +150,9 @@ export class ChatBox {
     // Handle case where dictionary is passed as a string (via HTML attribute)
     if (typeof newValue === 'string') {
       try {
-        this.dictionary = JSON.parse(newValue);
+        this.dictionary = JSON.parse(newValue)
       } catch (e) {
-        console.error('Error parsing dictionary:', e);
+        console.error('Error parsing dictionary:', e)
       }
     }
   }
@@ -172,6 +174,9 @@ export class ChatBox {
     this.startChatService()
   }
 
+  /**
+   * Get the old Orama Client if oramaCore ins't available
+   */
   getOldOramaClient() {
     if (this.oramaCoreClientInstance) {
       return undefined
@@ -185,9 +190,8 @@ export class ChatBox {
   }
 
   private startChatService() {
-    if (this.chatStore.state.chatService) return
-
     if (!this.index && !this.clientInstance && !this.oramaCoreClientInstance) {
+      console.error('Missing Index, ClientInstance or OramaCoreClientInstance')
       // Skip initialization if no index or clientInstance is provided
       return
     }
@@ -195,6 +199,10 @@ export class ChatBox {
     validateCloudIndexConfig(this.htmlElement, this.index, this.clientInstance, this.oramaCoreClientInstance)
     const oldOramaClient = this.getOldOramaClient()
     this.chatStore.state.chatService = new ChatService(oldOramaClient, this.oramaCoreClientInstance, this.chatStore)
+
+    if (!this.chatStore.state.chatService) {
+      console.error('Failed to initialize chat service')
+    }
   }
 
   updateTheme() {
@@ -220,7 +228,7 @@ export class ChatBox {
 
   render() {
     if (!this.chatStore.state.chatService) {
-      return <orama-text as="p">{this.getText('initErrorChat')}</orama-text>
+      return null
     }
 
     // Maintain backwards compatibility with dark theme default

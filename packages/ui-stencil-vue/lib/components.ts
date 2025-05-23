@@ -202,12 +202,15 @@ export const OramaSearchBox = /*@__PURE__*/ defineContainer<JSX.OramaSearchBox>(
   'layout',
   'highlightTitle',
   'highlightDescription',
+  'prompt',
   'chatPlaceholder',
   'searchPlaceholder',
   'suggestions',
   'searchParams',
   'chatMarkdownLinkTitle',
   'chatMarkdownLinkHref',
+  'clearChatOnDisconnect',
+  'systemPrompts',
   'chatMarkdownLinkTarget',
   'showKeyboardShortcuts',
   'disclaimer',
@@ -262,7 +265,6 @@ export const OramaSources = /*@__PURE__*/ defineContainer<JSX.OramaSources>('ora
   'sourceBaseURL',
   'linksTarget',
   'linksRel',
-  'sourcesMap',
   'answerSourceClick'
 ]);
 

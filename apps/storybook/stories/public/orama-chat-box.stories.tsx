@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/web-components'
+import type { Meta, StoryContext, StoryObj } from '@storybook/web-components'
 import type { Components } from '@orama/wc-components'
 import { html } from 'lit-html'
 import demoIndexes from '../config'
@@ -6,7 +6,7 @@ import type { DemoIndexConfig } from '../config'
 
 const meta: Meta<
   Components.OramaChatBox & {
-    preset: keyof DemoIndexConfig
+    preset: DemoIndexConfig[keyof DemoIndexConfig]
   }
 > = {
   title: 'Components/ChatBox',
@@ -67,6 +67,7 @@ const meta: Meta<
       },
     },
     sourceBaseUrl: {
+      control: { type: 'text' },
       table: {
         type: {
           summary: 'string',
@@ -74,6 +75,7 @@ const meta: Meta<
       },
     },
     sourcesMap: {
+      control: { type: 'object' },
       table: {
         type: {
           summary: 'SourcesMap',
@@ -86,6 +88,7 @@ const meta: Meta<
       },
     },
     suggestions: {
+      control: { object: 'object' },
       table: {
         type: {
           summary: 'string[]',
@@ -96,59 +99,72 @@ const meta: Meta<
   parameters: {
     layout: 'set-height',
   },
+  args: {
+    colorScheme: 'dark' as const,
+    dictionary: {
+      searchPlaceholder: 'Search our documentation...',
+      chatPlaceholder: 'Ask our AI assistant...',
+      noResultsFound: "We couldn't find any results",
+      noResultsFoundFor: 'for',
+      suggestions: 'You might want to try',
+      seeAll: 'View all results',
+      addMore: 'Load more',
+      clearChat: 'Reset conversation',
+      errorMessage: 'Oops! Something went wrong with your search.',
+      disclaimer: 'AI-generated responses may not always be accurate.',
+      startYourSearch: 'Begin your search',
+      initErrorSearch: 'Search service initialization failed',
+      initErrorChat: 'Chat service initialization failed',
+      chatButtonLabel: 'Get AI summary',
+    },
+  },
 } satisfies Meta
 
 export default meta
 
-const Template = ({ preset, colorScheme, dictionary, disclaimer }: {
-  preset: any;
-  colorScheme?: string;
-  dictionary?: Record<string, string>;
-  disclaimer?: string;
-}) => {
+type TemplateProps = Components.OramaChatBox & { preset: DemoIndexConfig[keyof DemoIndexConfig] }
+
+type OptionKey = keyof Components.OramaChatBox & keyof DemoIndexConfig[keyof DemoIndexConfig]
+
+const Template = (args: TemplateProps, context: StoryContext) => {
+  const { preset } = args
+  const { loaded: oramaJsDatabaseInstance } = context
+
+  const presetOrOverrideData = (key: OptionKey) => {
+    return args[key] ?? preset[key]
+  }
+
   return html`
     <orama-chat-box
-      .index=${preset?.index}
-      .clientInstance=${preset?.clientInstance}
-      .placeholder=${preset?.placeholder}
-      .sourceBaseUrl=${preset?.sourceBaseUrl}
-      .sourcesMap=${preset?.sourcesMap}
-      .suggestions=${preset?.suggestions}
-      .systemPrompts=${preset?.systemPrompts}
-      .colorScheme=${colorScheme || preset?.colorScheme}
-      .themeConfig=${preset?.themeConfig}
-      .dictionary=${dictionary}
-      .clearChatOnDisconnect=${preset?.clearChatOnDisconnect}
-      .disclaimer=${disclaimer}
-      prompt=${preset?.prompt}
+      .index=${presetOrOverrideData('index')}
+      .clientInstance=${presetOrOverrideData('clientInstance') || oramaJsDatabaseInstance}
+      .oramaCoreClientInstance=${presetOrOverrideData('oramaCoreClientInstance')}
+      .sourceBaseUrl=${presetOrOverrideData('sourceBaseUrl')}
+      .sourcesMap=${presetOrOverrideData('sourcesMap')}
+      .suggestions=${presetOrOverrideData('suggestions')}
+      .systemPrompts=${presetOrOverrideData('systemPrompts')}
+      .colorScheme=${presetOrOverrideData('colorScheme')}
+      .themeConfig=${presetOrOverrideData('themeConfig')}
+      .dictionary=${presetOrOverrideData('dictionary')}
+      .clearChatOnDisconnect=${presetOrOverrideData('clearChatOnDisconnect')}
+      prompt=${presetOrOverrideData('prompt')}
     ></orama-chat-box>
   `
 }
 
-type Story = StoryObj<Components.OramaChatBox & { preset: keyof DemoIndexConfig }>
+type Story = StoryObj<Components.OramaChatBox & { preset: DemoIndexConfig[keyof DemoIndexConfig] }>
 
 export const ChatBox: Story = {
   render: Template as any,
+  loaders: [
+    async ({ args }) => {
+      if (args.preset.getOramaJSDatabase) {
+        const oramaJsDatabaseInstance = await args.preset.getOramaJSDatabase()
+        return oramaJsDatabaseInstance
+      }
+    },
+  ],
   args: {
-    preset: 'orama',
-    colorScheme: 'dark',
-    dictionary: {
-      chatPlaceholder: 'Ask about our documentation...',
-      initErrorChat: 'Chat service could not be initialized',
-      disclaimer: 'Orama can make mistakes. Please verify the information.',
-    },
-    disclaimer: 'Orama can make mistakes. Please verify the information.',
-    index: {
-      api_key: 'LerNlbp6379jVKaPs4wt2nZT4MJZbU1J',
-      endpoint: 'https://cloud.orama.run/v1/indexes/docs-orama-b3f5xd'
-    },
-    themeConfig: {
-      radius: {
-        // "--textarea-radius": '0px'
-      },
-      shadow: {
-        // "--textarea-shadow": '0px 4px 24px 0px white'
-      },
-    },
+    preset: demoIndexes.orama,
   },
 }

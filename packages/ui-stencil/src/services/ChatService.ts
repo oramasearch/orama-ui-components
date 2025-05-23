@@ -6,7 +6,14 @@ import type { OramaClient } from '@oramacloud/client'
 import type { CollectionManager } from '@orama/core'
 import type { AnyOrama } from '@orama/orama'
 import { OramaClientNotInitializedError } from '@/erros/OramaClientNotInitialized'
-import { TAnswerStatus, type OnAnswerGeneratedCallbackProps } from '@/types'
+import {
+  type SourcesMap,
+  TAnswerStatus,
+  type OnAnswerGeneratedCallbackProps,
+  type SourcesMapItem,
+  type SourcesMapKeys,
+  type SourcesMapRenderFunction,
+} from '@/types'
 import type { ChatStoreType } from '@/ParentComponentStore/ChatStore'
 import { Switch, type OramaSwitchClient } from '@orama/switch'
 
@@ -26,6 +33,40 @@ export class ChatService {
   constructor(oramaClient: OramaClient | AnyOrama, oramaCoreClient: CollectionManager, chatStore: ChatStoreType) {
     this.client = oramaCoreClient ? oramaCoreClient : new Switch(oramaClient)
     this.chatStore = chatStore
+  }
+
+  private getSourcesMapObjectByIndexId = (resultMapArrayOrObject: SourcesMap, indexId: string): SourcesMapItem => {
+    const searchMapArray = Array.isArray(resultMapArrayOrObject) ? resultMapArrayOrObject : [resultMapArrayOrObject]
+
+    // If there is only one source map, assume it's the one for all hits, regardless of datasourceId
+    if (searchMapArray.length === 1) {
+      return searchMapArray[0]
+    }
+
+    // TODO: Instead of doing it per each HIT, we may want to create a map of datasourceId -> resultMap to avoid the O(n) lookup
+    const sourcesMapMatch = searchMapArray.find((resultMap) => resultMap.datasourceId === indexId)
+
+    return sourcesMapMatch || {}
+  }
+
+  private getResultMapValue(
+    sourceMapKey: SourcesMapKeys,
+    sourceMapObject: SourcesMapItem,
+    rawSource: { document: unknown; index_id: string },
+  ): string {
+    const sourcesMapFunctionOrString = sourceMapObject?.[sourceMapKey]
+
+    if (!sourcesMapFunctionOrString) {
+      return undefined
+    }
+
+    if (typeof sourcesMapFunctionOrString === 'function') {
+      const sourcesMapFunction = sourcesMapFunctionOrString as SourcesMapRenderFunction
+      return sourcesMapFunction(rawSource.document, rawSource.index_id)
+    }
+
+    const resultMapString = sourceMapObject[sourceMapKey] as string
+    return rawSource.document[resultMapString]
   }
 
   sendQuestion = async (
@@ -85,9 +126,26 @@ export class ChatService {
 
                     // Handle sources in different formats
                     if (interaction.sources) {
-                      sources = Array.isArray(interaction.sources)
-                        ? (interaction.sources as any)?.map((source) => source.document)
-                        : (interaction.sources.hits as any)?.map((source) => source.document)
+                      const rawSources: { document: unknown; index_id: string }[] = Array.isArray(interaction.sources)
+                        ? interaction.sources
+                        : interaction.sources.hits
+
+                      sources = rawSources.map((source) => {
+                        const matchingMap = this.getSourcesMapObjectByIndexId(
+                          this.chatStore.state.sourcesMap,
+                          source.index_id,
+                        )
+
+                        const title = this.getResultMapValue('title', matchingMap, source)
+                        const description = this.getResultMapValue('description', matchingMap, source)
+                        const path = this.getResultMapValue('path', matchingMap, source)
+
+                        return {
+                          title,
+                          description,
+                          path,
+                        }
+                      })
                     }
 
                     if (isLatest && answerStatus === TAnswerStatus.done) {
