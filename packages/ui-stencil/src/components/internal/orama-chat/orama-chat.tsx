@@ -126,6 +126,7 @@ export class OramaChat {
 
   @Store('chat')
   private chatStore: ChatStoreType
+  private isDisconnecting = false;
 
   componentWillLoad() {
     // Initialize placeholder and disclaimer from dictionary if available
@@ -322,30 +323,35 @@ export class OramaChat {
   }
 
   disconnectedCallback() {
-    this.messagesContainerRef?.removeEventListener('wheel', this.handleWheel)
-    this.scrollableContainerResizeObserver?.disconnect()
-    this.nonScrollableContainerResizeObserver?.disconnect()
+    this.isDisconnecting = true;
+    this.messagesContainerRef?.removeEventListener('wheel', this.handleWheel);
+    this.scrollableContainerResizeObserver?.disconnect();
+    this.nonScrollableContainerResizeObserver?.disconnect();
 
     if (this.clearChatOnDisconnect) {
-      this.chatStore.state.interactions = []
+      if (this.chatStore) {
+        if (this.chatStore.state) {
+          this.chatStore.state.interactions = [];
+        }
+      }
     }
   }
 
-  handleSubmit = (e: Event) => {
-    e.preventDefault()
+handleSubmit = (e: Event) => {
+  e.preventDefault()
 
-    if (this.chatStore.state.chatService === null) {
-      throw new Error('Chat Service is not initialized')
-    }
+  if (this.chatStore.state.chatService === null) {
+    throw new Error('Chat Service is not initialized');
+  }
 
-    this.startConversation.emit({ userPrompt: this.inputValue, systemPrompts: this.systemPrompts })
+  this.startConversation.emit({ userPrompt: this.inputValue, systemPrompts: this.systemPrompts });
 
-    this.chatStore.state.chatService.sendQuestion(this.inputValue, this.relatedQueries, this.systemPrompts, {
-      onAnswerGeneratedCallback: (params) => this.answerGenerated.emit(params),
-    })
+  this.chatStore.state.chatService.sendQuestion(this.inputValue, this.relatedQueries, this.systemPrompts, {
+    onAnswerGeneratedCallback: (params) => this.answerGenerated.emit(params),
+  });
 
-    this.chatStore.state.prompt = this.inputValue
-    this.inputValue = ''
+  this.chatStore.state.prompt = this.inputValue;
+  this.inputValue = '';
   }
 
   handleAbortAnswerClick = () => {
@@ -375,11 +381,11 @@ export class OramaChat {
       return false
     }
 
-    return this.messagesContainerRef.scrollHeight > this.messagesContainerRef.clientHeight
+    return this.messagesContainerRef.scrollHeight > this.messagesContainerRef.clientHeight;
   }
 
   render() {
-    const lastInteraction = this.chatStore.state.interactions?.[this.chatStore.state.interactions.length - 1]
+    const lastInteraction = this.chatStore.state.interactions?.[this.chatStore.state.interactions.length - 1];
     const lastInteractionStatus = lastInteraction?.status
     const hasInteractions = this.chatStore.state.interactions?.length > 0
 

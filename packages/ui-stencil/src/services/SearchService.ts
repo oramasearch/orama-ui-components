@@ -193,19 +193,26 @@ export class SearchService {
 
   private hitToSearchResultParser = (hit: OramaHit, resultMapObject: ResultMapItem): SearchResultWithIcon => {
     function getResultMapValue(resultMapKey: ResultMapKeys): string {
-      const resultMapFunctionOrString = resultMapObject[resultMapKey]
+      if (!hit.document) {
+        return '';
+      }
+
+      const resultMapFunctionOrString = resultMapObject[resultMapKey];
 
       if (!resultMapFunctionOrString) {
-        return hit.document[resultMapKey]
+        const value = hit.document[resultMapKey];
+        return typeof value === 'string' ? value : String(value ?? '');
       }
 
       if (typeof resultMapFunctionOrString === 'function') {
-        const resultMapFunction = resultMapFunctionOrString as ResultMapRenderFunction
-        return resultMapFunction(hit.document, hit.datasource_id)
+        const resultMapFunction = resultMapFunctionOrString as ResultMapRenderFunction;
+        const value = resultMapFunction(hit.document, hit.datasource_id);
+        return typeof value === 'string' ? value : String(value ?? '');
       }
 
-      const resultMapString = resultMapObject[resultMapKey] as string
-      return hit.document[resultMapString]
+      const resultMapString = resultMapFunctionOrString as string;
+      const value = hit.document[resultMapString];
+      return typeof value === 'string' ? value : String(value ?? '');
     }
 
     function getIcon(): string | null {
