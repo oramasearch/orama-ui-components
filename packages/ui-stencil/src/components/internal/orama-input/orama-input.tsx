@@ -124,8 +124,11 @@ export class Input {
                 type="button"
                 class="reset-button"
                 onClick={() => {
-                  this.inputRef.focus()
+                  if (this.inputRef) {
+                    this.inputRef.value = ''
+                  }
                   this.inputChanged.emit('')
+                  this.inputRef?.focus()
                 }}
               >
                 <ph-x size={16} />

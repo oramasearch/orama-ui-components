@@ -4,8 +4,8 @@ import { BrowserRouter, Routes, Route, NavLink, Navigate } from 'react-router'
 import { CollectionManager } from '@orama/core'
 
 const ORAMACORE_ENDPOINT = 'https://collections.orama.com'
-const ORAMACORE_COLLECTION_ID = 'ncd7zwmirytw1o47dogru4bz'
-const ORAMACORE_READ_API_KEY = 'df00PbXP0dbRUcJgFeFZSNNb7AhsqCw8'
+const ORAMACORE_COLLECTION_ID = 'lnyr5uc7v7bievfrivgvony1'
+const ORAMACORE_READ_API_KEY = 'dyBSIl7O5TEXOZ7KfnNpxCaZ7ZlekZKm'
 
 // Create a CollectionManager instance
 const collectionManager = new CollectionManager({
