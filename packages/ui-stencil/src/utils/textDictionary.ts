@@ -8,7 +8,7 @@ export const defaultTextDictionary: Dictionary = {
   chatPlaceholder: 'Ask me anything',
   noResultsFound: 'No results found',
   noResultsFoundFor: 'No results found for',
-  suggestions: 'Suggestions',
+  suggestionsTitle: 'Suggestions',
   seeAll: 'See all',
   addMore: 'Add more',
   clearChat: 'Clear chat',
@@ -25,7 +25,7 @@ export const defaultTextDictionary: Dictionary = {
  * Gets the text for a specific key from the dictionary prop.
  * Prioritizes direct props (searchPlaceholder, chatPlaceholder) for backward compatibility,
  * then falls back to the dictionary prop, and finally to the defaultTextDictionary.
- * 
+ *
  * @param key - The key to get the text for
  * @param dictionary - The custom text dictionary provided by the user
  * @param directProps - Optional direct props that take precedence (for backward compatibility)
@@ -34,13 +34,13 @@ export const defaultTextDictionary: Dictionary = {
 export function getText(
   key: keyof Dictionary,
   dictionary: Partial<Dictionary> = {},
-  directProps: Partial<Record<keyof Dictionary, string>> = {}
+  directProps: Partial<Record<keyof Dictionary, string>> = {},
 ): string {
   // First check if there's a direct prop for this key (for backward compatibility)
   if (directProps[key]) {
-    return directProps[key];
+    return directProps[key]
   }
-  
+
   // Then check the dictionary prop
-  return dictionary[key] || defaultTextDictionary[key];
+  return dictionary[key] || defaultTextDictionary[key]
 }
