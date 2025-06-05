@@ -130,7 +130,7 @@ export type Dictionary = {
   chatPlaceholder: string
   noResultsFound: string
   noResultsFoundFor: string
-  suggestions: string
+  suggestionsTitle: string
   seeAll: string
   addMore: string
   clearChat: string

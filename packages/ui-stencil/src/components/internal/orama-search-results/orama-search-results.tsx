@@ -99,7 +99,7 @@ export class SearchResults {
         <div class="suggestions-wrapper">
           {!!this.suggestions?.length && (
             <orama-text as="h2" styledAs="small" class="suggestions-title" variant="secondary">
-              {this.dictionary?.suggestions || 'Suggestions'}
+              {this.dictionary?.suggestionsTitle || 'Suggestions'}
             </orama-text>
           )}
           <orama-suggestions
